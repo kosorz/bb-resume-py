@@ -1,0 +1,17 @@
+{
+  "workbench.iconTheme": "material-icon-theme",
+  "gitlens.views.repositories.location": "gitlens",
+  "gitlens.views.fileHistory.location": "gitlens",
+  "gitlens.views.lineHistory.location": "gitlens",
+  "gitlens.views.compare.location": "gitlens",
+  "gitlens.views.search.location": "gitlens",
+  "editor.suggestSelection": "first",
+  "editor.fontFamily": "Jetbrains Mono, Menlo, Monaco, 'Courier New'",
+  "window.zoomLevel": 0,
+  "gitlens.views.compare.files.layout": "tree",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "python.formatting.provider": "yapf",
+  "editor.formatOnSave": true
+}
