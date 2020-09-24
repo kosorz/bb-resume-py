@@ -21,17 +21,40 @@ class Item(ItemBase):
 
 
 class UserBase(BaseModel):
-    email: str
+    username: str
 
 
 class UserCreate(UserBase):
     password: str
+    password_confirm: str
 
 
-class User(UserBase):
+class UserPublic(UserBase):
     id: int
-    is_active: bool
+    disabled: bool
+
+    class Config:
+        orm_mode = True
+
+
+class User(UserPublic):
     items: List[Item] = []
 
     class Config:
         orm_mode = True
+
+
+class UserInDB(User):
+    hashed_password: str
+
+    class Config:
+        orm_mode = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
