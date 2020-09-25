@@ -5,7 +5,7 @@ from fastapi import Depends, status, APIRouter, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
 
-from .util.schemas import User, UserCreate, Token
+from .util.schemas import User, UserCreate, Token, UserPublic
 from ..database import crud
 from ..database.db import get_db as db
 from .util.auth_config import ACCESS_TOKEN_EXPIRE_MINUTES, pwd_context, SECRET_KEY, ALGORITHM
@@ -41,7 +41,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-@router.post("/join", response_model=User)
+@router.post("/join", response_model=UserPublic)
 def create_user(user: UserCreate, db: Session = Depends(db)):
     db_user = crud.get_user_by_username(db, username=user.username)
     if db_user:
