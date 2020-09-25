@@ -12,7 +12,7 @@ from ..database.db import get_db as db
 
 SECRET_KEY = "bc01f6cece24df9cf151e5f772618bba6f0a1ee0ba8bb5ff286d29204f6c1e26"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -52,7 +52,7 @@ def get_current_user(token: str = Depends(oauth2_scheme),
                      db: Session = Depends(db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
+        detail="Unauthorized",
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
@@ -79,11 +79,12 @@ def get_current_active_user(current_user: User = Depends(get_current_user)):
 def create_user(user: UserCreate, db: Session = Depends(db)):
     db_user = crud.get_user_by_username(db, username=user.username)
     if db_user:
-        raise HTTPException(status_code=400,
-                            detail="Username already registered")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Bad request")
     password_match = user.password == user.password_confirm
     if not password_match:
-        raise HTTPException(status_code=422, detail="Password do not match")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            detail="Unprocessable Entity")
     return crud.create_user(db=db, user=user)
 
 
@@ -94,7 +95,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Unauthorized",
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

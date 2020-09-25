@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 
 from .database import models
-from .routers import users, items, auth
+from .routers import users, resumes, auth
 from .database.db_config import engine
 
 models.Base.metadata.create_all(bind=engine)
@@ -23,7 +23,7 @@ app.include_router(
 )
 
 app.include_router(
-    items.router,
-    prefix="/items",
-    tags=["items"],
+    resumes.router,
+    prefix="/resumes",
+    tags=["resumes"],
 )

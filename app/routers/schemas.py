@@ -1,23 +1,27 @@
 from typing import List, Optional
-
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
+class ResumeBase(BaseModel):
     title: str
-    description: Optional[str] = None
 
 
-class ItemCreate(ItemBase):
+class ResumeCreate(ResumeBase):
     pass
 
 
-class Item(ItemBase):
+class Resume(ResumeBase):
     id: int
     owner_id: int
+    deleted: bool
 
     class Config:
         orm_mode = True
+
+
+class ResumeUpdate(BaseModel):
+    deleted: Optional[bool]
+    title: Optional[str]
 
 
 class UserBase(BaseModel):
@@ -38,7 +42,7 @@ class UserPublic(UserBase):
 
 
 class User(UserPublic):
-    items: List[Item] = []
+    resumes: List[Resume] = []
 
     class Config:
         orm_mode = True
