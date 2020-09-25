@@ -2,20 +2,19 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 
-from .schemas import Resume, ResumeCreate, User, ResumeUpdate
+from .util.schemas import Resume, ResumeCreate, User, ResumeUpdate
 from ..database import crud
 from ..database.db import get_db as db
-from ..routers.auth import get_current_active_user
+from ..routers.util.deps import get_current_active_user
 
 router = APIRouter()
 
 
 @router.post("/", response_model=Resume)
-def create_resume_for_user(
-    resume: ResumeCreate,
-    db: Session = Depends(db),
-    current_user: User = Depends(get_current_active_user)):
-    return crud.create_user_resume(db, resume, user_id=current_user.id)
+def create_resume(resume: ResumeCreate,
+                  db: Session = Depends(db),
+                  current_user: User = Depends(get_current_active_user)):
+    return crud.create_user_resume(db, resume, current_user.id)
 
 
 @router.patch("/{resume_id}", response_model=Resume)

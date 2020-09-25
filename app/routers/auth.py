@@ -1,21 +1,14 @@
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from fastapi import Depends, status, APIRouter, HTTPException, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
-from passlib.context import CryptContext
+from fastapi import Depends, status, APIRouter, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
 
-from .schemas import User, UserInDB, UserCreate, TokenData, Token
+from .util.schemas import User, UserCreate, Token
 from ..database import crud
 from ..database.db import get_db as db
-
-SECRET_KEY = "bc01f6cece24df9cf151e5f772618bba6f0a1ee0ba8bb5ff286d29204f6c1e26"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+from .util.auth_config import ACCESS_TOKEN_EXPIRE_MINUTES, pwd_context, SECRET_KEY, ALGORITHM
 
 router = APIRouter()
 
@@ -48,33 +41,6 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-def get_current_user(token: str = Depends(oauth2_scheme),
-                     db: Session = Depends(db)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Unauthorized",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-    except JWTError:
-        raise credentials_exception
-    user = crud.get_user_by_username(db, username=token_data.username)
-    if user is None:
-        raise credentials_exception
-    return user
-
-
-def get_current_active_user(current_user: User = Depends(get_current_user)):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
-
-
 @router.post("/join", response_model=User)
 def create_user(user: UserCreate, db: Session = Depends(db)):
     db_user = crud.get_user_by_username(db, username=user.username)
@@ -85,7 +51,7 @@ def create_user(user: UserCreate, db: Session = Depends(db)):
     if not password_match:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                             detail="Unprocessable Entity")
-    return crud.create_user(db=db, user=user)
+    return crud.create_user(db, user)
 
 
 @router.post("/token", response_model=Token)
