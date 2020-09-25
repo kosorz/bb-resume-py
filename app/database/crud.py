@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update
 
 from . import models
-from ..routers.util.schemas import UserCreate, Resume, ResumeCreate
+from ..routers.util.schemas import UserCreate, Resume, ResumeCreate, Info
 from ..routers.auth import get_password_hash
 
 
@@ -48,3 +48,28 @@ def create_user_resume(db: Session, resume: ResumeCreate, user_id: int):
     db.commit()
     db.refresh(db_resume)
     return db_resume
+
+
+def get_resume_info(db: Session, resume_id: int):
+    return db.query(
+        models.Info).filter(models.Info.resume_id == resume_id).first()
+
+
+def update_resume_info(db: Session, resume: Info):
+    old_resume = db.query(
+        models.Info).filter(models.Info.resume_id == resume.id).first()
+
+    for key, value in resume:
+        setattr(old_resume, key, value)
+
+    db.commit()
+    db.refresh(old_resume)
+    return old_resume
+
+
+def create_resume_info(db: Session, resume_id: int, name: str, user_id: int):
+    db_info = models.Info(resume_id=resume_id, name=name, owner_id=user_id)
+    db.add(db_info)
+    db.commit()
+    db.refresh(db_info)
+    return db_info

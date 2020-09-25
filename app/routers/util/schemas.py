@@ -2,6 +2,32 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
+class InfoBase(BaseModel):
+    name: str
+
+
+class Info(InfoBase):
+    id: int
+    resume_id: int
+    phone: str
+    link: str
+    email: str
+    location: str
+    role: str
+    owner_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class InfoUpdate(BaseModel):
+    phone: Optional[str]
+    link: Optional[str]
+    email: Optional[str]
+    location: Optional[str]
+    role: Optional[str]
+
+
 class ResumeBase(BaseModel):
     title: str
 
