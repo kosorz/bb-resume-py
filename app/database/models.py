@@ -29,12 +29,12 @@ class Info(Base):
     __tablename__ = "infos"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    phone = Column(String)
-    link = Column(String)
-    email = Column(String)
-    location = Column(String)
-    role = Column(String)
+    name = Column(String, default="")
+    phone = Column(String, default="")
+    link = Column(String, default="")
+    email = Column(String, default="")
+    location = Column(String, default="")
+    role = Column(String, default="")
     phone_enabled = Column(Boolean, default=True)
     link_enabled = Column(Boolean, default=True)
     email_enabled = Column(Boolean, default=True)
