@@ -2,6 +2,48 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
+class SkillsBase(BaseModel):
+    title: str
+
+
+class SkillsCreate(SkillsBase):
+    pass
+
+
+class SkillsUpdate(BaseModel):
+    deleted: Optional[bool]
+    title: Optional[str]
+
+
+class Skills(SkillsBase):
+    id: int
+    title: str
+    deleted: bool
+    resume_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class SkillsGroupBase(BaseModel):
+    title: str
+
+
+class SkillsGroupUpdate(BaseModel):
+    title: Optional[str]
+    values: Optional[str]
+    deleted: Optional[str]
+
+
+class SkillsGroup(SkillsGroupBase):
+    id: int
+    values = str
+    deleted = bool
+
+    class Config:
+        orm_mode = True
+
+
 class InfoBase(BaseModel):
     name: str
 
@@ -14,7 +56,6 @@ class Info(InfoBase):
     email: str
     location: str
     role: str
-    owner_id: int
     phone_enabled: bool
     link_enabled: bool
     email_enabled: bool
