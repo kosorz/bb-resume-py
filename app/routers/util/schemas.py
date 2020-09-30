@@ -29,16 +29,23 @@ class SkillsGroupBase(BaseModel):
     title: str
 
 
+class SkillsGroup(SkillsGroupBase):
+    id: int
+    values: str
+    deleted: bool
+
+    class Config:
+        orm_mode = True
+
+
 class SkillsGroupUpdate(BaseModel):
     title: Optional[str]
     values: Optional[str]
-    deleted: Optional[str]
+    deleted: Optional[bool]
 
 
-class SkillsGroup(SkillsGroupBase):
-    id: int
-    values = str
-    deleted = bool
+class FullSkills(Skills):
+    groups: List[SkillsGroup] = []
 
     class Config:
         orm_mode = True
@@ -91,6 +98,14 @@ class Resume(ResumeBase):
     id: int
     owner_id: int
     deleted: bool
+
+    class Config:
+        orm_mode = True
+
+
+class FullResume(Resume):
+    skills: FullSkills
+    info: Info
 
     class Config:
         orm_mode = True

@@ -2,7 +2,7 @@ from typing import List, Callable, Dict, Any
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 
-from .util.schemas import Resume, ResumeCreate, User, ResumeUpdate, InfoUpdate, Info, Skills, SkillsCreate, SkillsUpdate, SkillsGroup, SkillsGroupUpdate
+from .util.schemas import Resume, ResumeCreate, User, ResumeUpdate, InfoUpdate, Info, Skills, SkillsCreate, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, FullResume
 from ..database import crud
 from ..database.db import get_db as db
 from ..routers.util.deps import get_current_active_user, current_user_owns_resume
@@ -45,6 +45,13 @@ def update_resume(resume_id: int,
                   owns_resume: bool = Depends(current_user_owns_resume)):
     return execute_update(db, resume_id, resume, Resume, crud.get_resume,
                           crud.update_resume)
+
+
+@router.get("/{resume_id}", response_model=FullResume)
+def get_resume(resume_id: int,
+               db: Session = Depends(db),
+               owns_resume: bool = Depends(current_user_owns_resume)):
+    return crud.get_full_resume(db, resume_id)
 
 
 @router.patch("/{resume_id}/info", response_model=Info)

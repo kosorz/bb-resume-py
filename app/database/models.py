@@ -66,7 +66,7 @@ class SkillsGroup(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
     values = Column(String, default="")
-    deleted = Column(String, default=False)
+    deleted = Column(Boolean, default=False)
     skills_id = Column(Integer, ForeignKey("skills.id"))
 
     skillsSet = relationship("Skills", back_populates="groups")

@@ -30,6 +30,12 @@ def get_resume(db: Session, resume_id: int):
         models.Resume).filter(models.Resume.id == resume_id).first()
 
 
+def get_full_resume(db: Session, resume_id: int):
+    data = db.query(
+        models.Resume).filter(models.Resume.id == resume_id).first()
+    return data
+
+
 def update_resume(db: Session, resume: Resume):
     old_resume = db.query(
         models.Resume).filter(models.Resume.id == resume.id).first()
