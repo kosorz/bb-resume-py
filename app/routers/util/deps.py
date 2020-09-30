@@ -41,7 +41,6 @@ def current_user_owns_resume(
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(db)):
     stored_resume_data = crud.get_resume(db, resume_id)
-
     if not stored_resume_data:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Not Found")

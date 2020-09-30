@@ -6,10 +6,6 @@ class SkillsBase(BaseModel):
     title: str
 
 
-class SkillsCreate(SkillsBase):
-    pass
-
-
 class SkillsUpdate(BaseModel):
     deleted: Optional[bool]
     title: Optional[str]
@@ -44,7 +40,7 @@ class SkillsGroupUpdate(BaseModel):
     deleted: Optional[bool]
 
 
-class FullSkills(Skills):
+class SkillsFull(Skills):
     groups: List[SkillsGroup] = []
 
     class Config:
@@ -103,8 +99,8 @@ class Resume(ResumeBase):
         orm_mode = True
 
 
-class FullResume(Resume):
-    skills: FullSkills
+class ResumeFull(Resume):
+    skills: SkillsFull
     info: Info
 
     class Config:

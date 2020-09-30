@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update
 
 from . import models
-from ..routers.util.schemas import UserCreate, Resume, ResumeCreate, Info, SkillsCreate, SkillsGroup
+from ..routers.util.schemas import UserCreate, Resume, ResumeCreate, Info, SkillsGroup
 from ..routers.auth import get_password_hash
 
 
