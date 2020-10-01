@@ -1,9 +1,10 @@
 from typing import Callable
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+from .schemas import SkillsGroup
 
 
-def execute_update(
+def update_existing_resource(
     db: Session,
     resource_id: int,
     data,
@@ -20,3 +21,18 @@ def execute_update(
     updated_data = stored_model.copy(update=update_data)
     update_fn(db, updated_data)
     return updated_data
+
+
+def get_existing_resource(db: Session, resource_id: int, read_fn: Callable):
+    stored_resource = read_fn(db, resource_id)
+    if not stored_resource:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Not found")
+    return stored_resource
+
+
+def check_resource_appurtenance(resource: SkillsGroup, foreign_key: str,
+                                key: str):
+    if not resource.__dict__[foreign_key] == key:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Bad request")

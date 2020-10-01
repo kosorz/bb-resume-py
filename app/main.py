@@ -17,6 +17,4 @@ app.include_router(users.router, prefix="/users", tags=["Users"])
 
 app.include_router(resumes.router, prefix="/resumes", tags=['Resumes'])
 
-app.include_router(resumes_parts.router,
-                   prefix="/resumes_parts",
-                   tags=['Resumes Parts'])
+app.include_router(resumes_parts.router, prefix="/resumes_parts")

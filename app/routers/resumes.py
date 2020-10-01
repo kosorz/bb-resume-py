@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from .util.schemas import Resume, ResumeCreate, User, ResumeUpdate, ResumeFull
 from ..database import crud
 from ..database.db import get_db as db
-from .util.deps import get_current_active_user, current_user_owns_resume
-from .util.fns import execute_update
+from .util.deps import get_current_active_user, get_owned_resume
+from .util.fns import update_existing_resource
 
 router = APIRouter()
 
@@ -23,13 +23,13 @@ def create_resume(resume: ResumeCreate,
 def update_resume(resume_id: int,
                   resume: ResumeUpdate,
                   db: Session = Depends(db),
-                  owns_resume: bool = Depends(current_user_owns_resume)):
-    return execute_update(db, resume_id, resume, Resume, crud.get_resume,
-                          crud.update_resume)
+                  owned_resume: bool = Depends(get_owned_resume)):
+    return update_existing_resource(db, resume_id, resume, Resume,
+                                    crud.get_resume, crud.update_resume)
 
 
 @router.get("/{resume_id}", response_model=ResumeFull)
 def get_resume(resume_id: int,
                db: Session = Depends(db),
-               owns_resume: bool = Depends(current_user_owns_resume)):
-    return crud.get_full_resume(db, resume_id)
+               owned_resume: bool = Depends(get_owned_resume)):
+    return owned_resume

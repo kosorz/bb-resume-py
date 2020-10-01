@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 
 
 class SkillsBase(BaseModel):
@@ -71,7 +71,7 @@ class Info(InfoBase):
 
 class InfoUpdate(BaseModel):
     phone: Optional[str]
-    link: Optional[str]
+    link: Optional[HttpUrl]
     email: Optional[str]
     location: Optional[str]
     role: Optional[str]
@@ -100,7 +100,7 @@ class Resume(ResumeBase):
 
 
 class ResumeFull(Resume):
-    skills: SkillsFull
+    skills: Optional[SkillsFull]
     info: Info
 
     class Config:
