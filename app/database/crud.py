@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update
 
 from . import models
-from ..routers.util.schemas import UserCreate, Resume, ResumeCreate, Info, SkillsGroup
+from ..routers.util.schemas import UserCreate, Resume, ResumeCreate, Info, SkillsGroup, Experience, ExperienceUnit
 from ..routers.auth import get_password_hash
 
 
@@ -125,3 +125,53 @@ def update_skills_group(db: Session, skills_group: SkillsGroup):
     db.commit()
     db.refresh(old_skills_group)
     return old_skills_group
+
+
+def get_resume_experience(db: Session, resume_id: int):
+    return db.query(models.Experience).filter(
+        models.Experience.resume_id == resume_id).first()
+
+
+def create_resume_experience(db: Session, resume_id: int):
+    db_experience = models.Experience(resume_id=resume_id)
+    db.add(db_experience)
+    db.commit()
+    db.refresh(db_experience)
+    return db_experience
+
+
+def update_resume_experience(db: Session, skills: Info):
+    old_experience = db.query(models.Experience).filter(
+        models.Experience.resume_id == skills.resume_id).first()
+
+    for key, value in skills:
+        setattr(old_experience, key, value)
+
+    db.commit()
+    db.refresh(old_experience)
+    return old_experience
+
+
+def create_experience_unit(db: Session, experience_id: int):
+    db_experience_unit = models.ExperienceUnit(experience_id=experience_id)
+    db.add(db_experience_unit)
+    db.commit()
+    db.refresh(db_experience_unit)
+    return db_experience_unit
+
+
+def get_experience_unit(db: Session, group_id: int):
+    return db.query(models.ExperienceUnit).filter(
+        models.ExperienceUnit.id == group_id).first()
+
+
+def update_experience_unit(db: Session, skills_group: ExperienceUnit):
+    old_experience_unit = db.query(models.ExperienceUnit).filter(
+        models.ExperienceUnit.id == skills_group.id).first()
+
+    for key, value in skills_group:
+        setattr(old_experience_unit, key, value)
+
+    db.commit()
+    db.refresh(old_experience_unit)
+    return old_experience_unit

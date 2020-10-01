@@ -31,8 +31,7 @@ def get_existing_resource(db: Session, resource_id: int, read_fn: Callable):
     return stored_resource
 
 
-def check_resource_appurtenance(resource: SkillsGroup, foreign_key: str,
-                                key: str):
+def check_resource_appurtenance(resource, foreign_key: str, key: str):
     if not resource.__dict__[foreign_key] == key:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Bad request")
