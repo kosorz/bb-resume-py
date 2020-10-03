@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Iterable
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from .schemas import SkillsGroup
@@ -23,15 +23,15 @@ def update_existing_resource(
     return updated_data
 
 
-def get_existing_resource(db: Session, resource_id: int, read_fn: Callable):
-    stored_resource = read_fn(db, resource_id)
-    if not stored_resource:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail="Not found")
-    return stored_resource
-
-
-def check_resource_appurtenance(resource, foreign_key: str, key: str):
-    if not resource.__dict__[foreign_key] == key:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="Bad request")
+def find_item_with_key_value(list: Iterable,
+                             key: str,
+                             value: int,
+                             error: bool = True):
+    for resource in list:
+        if resource.__dict__[key] == value:
+            return resource
+    else:
+        if error:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="Not found")
+        return None
