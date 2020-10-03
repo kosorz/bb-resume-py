@@ -1,7 +1,6 @@
 from typing import Callable, Iterable
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from .schemas import SkillsGroup
 
 
 def update_existing_resource(
@@ -13,9 +12,6 @@ def update_existing_resource(
     update_fn: Callable,
 ):
     stored_data = read_fn(db, resource_id)
-    if not stored_data:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail="Not Found")
     stored_model = model(**stored_data.__dict__)
     update_data = data.dict(exclude_unset=True)
     updated_data = stored_model.copy(update=update_data)

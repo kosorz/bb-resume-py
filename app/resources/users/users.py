@@ -1,11 +1,11 @@
 from typing import List
-from fastapi import Depends, APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from .util.schemas import UserPublic, User
-from ..database import crud
-from ..database.db import get_db as db
-from ..routers.util.deps import get_current_active_user
+from .schemas import UserPublic, User
+from ...database import crud
+from ...database.db import get_db as db
+from ...resources.util.deps import get_current_active_user
 
 router = APIRouter()
 

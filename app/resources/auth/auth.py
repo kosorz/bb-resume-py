@@ -5,20 +5,17 @@ from fastapi import Depends, status, APIRouter, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
 
-from .util.schemas import User, UserCreate, Token, UserPublic
-from ..database import crud
-from ..database.db import get_db as db
-from .util.auth_config import ACCESS_TOKEN_EXPIRE_MINUTES, pwd_context, SECRET_KEY, ALGORITHM
+from .schemas import Token
+from ..users.schemas import User, UserCreate, UserPublic
+from ..auth.config import ACCESS_TOKEN_EXPIRE_MINUTES, pwd_context, SECRET_KEY, ALGORITHM
+from ...database import crud
+from ...database.db import get_db as db
 
 router = APIRouter()
 
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
 
 
 def authenticate_user(username: str, password: str, db: Session = Depends(db)):

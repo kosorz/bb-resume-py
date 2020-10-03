@@ -2,8 +2,16 @@ from sqlalchemy.orm import Session
 from sqlalchemy import update
 
 from . import models
-from ..routers.util.schemas import UserCreate, Resume, ResumeCreate, Info, SkillsGroup, Experience, ExperienceUnit, Skills
-from ..routers.auth import get_password_hash
+from ..resources.users.schemas import UserCreate
+from ..resources.resumes.schemas import Resume, ResumeCreate
+from ..resources.parts.info.schemas import Info
+from ..resources.parts.experience.schemas import Experience, ExperienceUnit
+from ..resources.parts.skills.schemas import Skills, SkillsGroup
+from ..resources.auth.config import pwd_context
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 
 def finalize_create(db: Session, resource):
