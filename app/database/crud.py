@@ -74,6 +74,15 @@ def get_resume_skills(db: Session, resume_id: int):
         models.Skills).filter(models.Skills.resume_id == resume_id).first()
 
 
+def get_skills(db: Session, skills_id: int):
+    return db.query(
+        models.Skills).filter(models.Skills.id == skills_id).first()
+
+
+def update_skills(db: Session, skills: Skills):
+    return finalize_update(db, get_skills(db, skills.id), skills)
+
+
 def create_resume_skills(db: Session, resume_id: int):
     return finalize_create(db, models.Skills(resume_id=resume_id))
 
@@ -97,6 +106,15 @@ def update_skills_group(db: Session, skills_group: SkillsGroup):
 
 
 # Experiences
+def get_experience(db: Session, experience_id: int):
+    return db.query(models.Experience).filter(
+        models.Experience.id == experience_id).first()
+
+
+def update_experience(db: Session, experience: Experience):
+    return finalize_update(db, get_experience(db, experience.id), experience)
+
+
 def create_resume_experience(db: Session, resume_id: int):
     return finalize_create(db, models.Experience(resume_id=resume_id))
 

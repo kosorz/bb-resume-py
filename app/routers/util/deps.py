@@ -1,13 +1,15 @@
+from typing import List
 from sqlalchemy.orm import Session
 from fastapi import Depends, status, HTTPException
 from jose import JWTError, jwt
 
-from .schemas import User, TokenData, Resume
+from .schemas import User, TokenData, Resume, User, SkillsFull, ResumeFull, ExperienceFull
 from ...database import crud
 from ...database.db import get_db as db
 from .auth_config import SECRET_KEY, ALGORITHM, oauth2_scheme
 
 
+# Current user
 def get_current_user(token: str = Depends(oauth2_scheme),
                      db: Session = Depends(db)):
     credentials_exception = HTTPException(
@@ -36,6 +38,50 @@ def get_current_active_user(current_user: User = Depends(get_current_user)):
     return current_user
 
 
+def get_current_user_resumes(
+        current_user: User = Depends(get_current_active_user)):
+    return current_user.resumes
+
+
+def get_current_user_skills(current_user_resumes: List[ResumeFull] = Depends(
+    get_current_user_resumes)):
+    return [
+        skills for skills in list(
+            map(lambda resume: resume.skills, current_user_resumes)) if skills
+    ]
+
+
+def get_current_user_skills_groups(
+        current_user_skills: List[SkillsFull] = Depends(
+            get_current_user_skills)):
+    return [
+        skills_group for skills in list(
+            map(lambda skills: skills.groups, current_user_skills))
+        for skills_group in skills
+    ]
+
+
+def get_current_user_experience(
+        current_user_resumes: List[ResumeFull] = Depends(
+            get_current_user_resumes)):
+    return [
+        experience for experience in list(
+            map(lambda resume: resume.experience, current_user_resumes))
+        if experience
+    ]
+
+
+def get_current_user_experience_units(
+        current_user_experience: List[ExperienceFull] = Depends(
+            get_current_user_experience)):
+    return [
+        experience_unit for experience in list(
+            map(lambda experience: experience.units, current_user_experience))
+        for experience_unit in experience
+    ]
+
+
+# Requested resume
 def get_requested_resume(resume_id: str, db: Session = Depends(db)):
     requested_resume = crud.get_resume(db, resume_id)
     if not requested_resume:
@@ -44,13 +90,13 @@ def get_requested_resume(resume_id: str, db: Session = Depends(db)):
     return requested_resume
 
 
-def get_owned_resume(requested_resume: Resume = Depends(get_requested_resume),
-                     db: Session = Depends(db),
-                     current_user: User = Depends(get_current_active_user)):
+def get_owns_resume(db: Session = Depends(db),
+                    requested_resume: Resume = Depends(get_requested_resume),
+                    current_user: User = Depends(get_current_active_user)):
     if not requested_resume.owner_id == current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Forbidden",
         )
 
-    return requested_resume
+    return True
