@@ -7,6 +7,7 @@ Create Date: 2020-10-14 21:08:21.914699
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
 import datetime
 
 # revision identifiers, used by Alembic
@@ -77,7 +78,7 @@ def create_main_tables() -> None:
         "skills_groups",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
-        sa.Column("values", sa.String, default=""),
+        sa.Column("values", postgresql.ARRAY(sa.String), default=[]),
         sa.Column("deleted", sa.Boolean, default=False),
         sa.Column(
             "skills_id",
@@ -130,4 +131,10 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    op.drop_table("experience_units")
+    op.drop_table("experiences")
+    op.drop_table("skills_groups")
+    op.drop_table("skills")
+    op.drop_table("infos")
+    op.drop_table("resumes")
     op.drop_table("users")

@@ -1,5 +1,6 @@
 import datetime
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -70,7 +71,7 @@ class SkillsGroup(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
-    values = Column(String, default="")
+    values = Column(ARRAY(String), default=[])
     deleted = Column(Boolean, default=False)
 
     skills_id = Column(Integer, ForeignKey("skills.id"))
