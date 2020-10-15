@@ -7,7 +7,7 @@ from ..resources.resumes.schemas import Resume, ResumeCreate
 from ..resources.parts.info.schemas import Info
 from ..resources.parts.experience.schemas import Experience, ExperienceUnit
 from ..resources.parts.skills.schemas import Skills, SkillsGroup
-from ..resources.auth.config import pwd_context
+from ..core.config import pwd_context
 
 
 def get_password_hash(password):

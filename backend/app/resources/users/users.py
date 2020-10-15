@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from .schemas import UserPublic, User
-from ...database import crud
-from ...database.db import get_db as db
+from ...db import crud
+from ...db.deps import get_db as db
 from ...resources.util.deps import get_current_active_user
 
 router = APIRouter()

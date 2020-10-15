@@ -3,14 +3,14 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, status, HTTPException
 from jose import JWTError, jwt
 
-from ..auth.config import SECRET_KEY, ALGORITHM, oauth2_scheme
+from ...core.config import SECRET_KEY, ALGORITHM, oauth2_scheme
 from ..resumes.schemas import Resume, ResumeFull
 from ..auth.schemas import TokenData
 from ..users.schemas import User
 from ..parts.experience.schemas import ExperienceFull
 from ..parts.skills.schemas import SkillsFull
-from ...database import crud
-from ...database.db import get_db as db
+from ...db import crud
+from ...db.deps import get_db as db
 
 
 # Current user

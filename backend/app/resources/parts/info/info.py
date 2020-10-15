@@ -1,13 +1,13 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from .schemas import Info, InfoUpdate
 from ...resumes.schemas import ResumeFull
-from ...util.deps import get_owns_resume, get_current_user_skills, get_current_user_skills_groups, get_current_user_resumes, get_current_user_experience, get_current_user_experience_units
+from ...util.deps import get_current_user_resumes
 from ...util.fns import update_existing_resource, find_item_with_key_value
-from ....database import crud
-from ....database.db import get_db as db
+from ....db import crud
+from ....db.deps import get_db as db
 
 router = APIRouter()
 

@@ -6,8 +6,8 @@ from ..resumes.schemas import Resume, ResumeCreate, ResumeUpdate, ResumeFull
 from ..users.schemas import User
 from ..util.deps import get_current_active_user, get_current_user_resumes
 from ..util.fns import update_existing_resource, find_item_with_key_value
-from ...database import crud
-from ...database.db import get_db as db
+from ...db import crud
+from ...db.deps import get_db as db
 
 router = APIRouter()
 
