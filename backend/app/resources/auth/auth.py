@@ -39,7 +39,11 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-@router.post("/join", response_model=UserPublic)
+@router.post(
+    "/join",
+    response_model=UserPublic,
+    name="auth:join",
+)
 def create_user(user: UserCreate, db: Session = Depends(db)):
     db_user = crud.get_user_by_username(db, username=user.username)
     if db_user:
@@ -52,7 +56,11 @@ def create_user(user: UserCreate, db: Session = Depends(db)):
     return crud.create_user(db, user)
 
 
-@router.post("/token", response_model=Token)
+@router.post(
+    "/token",
+    response_model=Token,
+    name="auth:token",
+)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
                            db: Session = Depends(db)):
     user = authenticate_user(form_data.username, form_data.password, db)
