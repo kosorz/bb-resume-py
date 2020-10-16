@@ -12,6 +12,8 @@ from databases import Database
 
 import alembic
 from alembic.config import Config
+from app.resources.util.deps import get_current_user
+from app.db.crud import get_user_by_username
 
 
 @pytest.fixture(scope="session")
@@ -59,7 +61,25 @@ def db(app: FastAPI):
 
 
 @pytest.fixture
+def new_user():
+    return {
+        "username": "string",
+        "password": "string",
+        "password_confirm": "string"
+    }
+
+
+@pytest.fixture
 async def client(app: FastAPI) -> AsyncClient:
+    async def override_get_current_user():
+        user = get_user_by_username(
+            app.state._db,
+            username="string",
+        )
+        return user
+
+    app.dependency_overrides[get_current_user] = override_get_current_user
+
     async with LifespanManager(app):
         async with AsyncClient(app=app,
                                base_url="http://testserver",

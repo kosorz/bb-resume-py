@@ -5,12 +5,15 @@ from fastapi import FastAPI, Depends
 from app.db.crud import get_user_by_username
 from app.resources.users.schemas import UserCreate
 from typing import Dict
+from jose import JWTError, jwt
+from app.core.config import SECRET_KEY, ALGORITHM, oauth2_scheme
 
 from starlette.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
     HTTP_422_UNPROCESSABLE_ENTITY,
+    HTTP_401_UNAUTHORIZED,
 )
 
 pytestmark = pytest.mark.asyncio
@@ -39,11 +42,10 @@ class TestAuthRoutes:
 
 
 @pytest.fixture
-def new_user():
+def new_user_login():
     return {
         "username": "string",
         "password": "string",
-        "password_confirm": "string"
     }
 
 
@@ -112,3 +114,73 @@ class TestAuth:
             json=new_user,
         )
         assert res.status_code == HTTP_400_BAD_REQUEST
+
+    @pytest.mark.parametrize(
+        "credentials",
+        (
+            ({
+                "username": "invalid_username",
+            }),
+            ({
+                "password": "string",
+            }),
+        ),
+    )
+    async def test_login_form_data_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        credentials: str,
+    ) -> None:
+        client.headers["content-type"] = "application/x-www-form-urlencoded"
+        res = await client.post(app.url_path_for("auth:token"),
+                                data=credentials)
+        assert res.status_code == HTTP_422_UNPROCESSABLE_ENTITY
+
+    @pytest.mark.parametrize(
+        "credentials",
+        (
+            ({
+                "username": "invalid_username",
+                "password": "string"
+            }),
+            ({
+                "username": "string",
+                "password": "invalid_password"
+            }),
+        ),
+    )
+    async def test_login_with_invalid_credentials(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        credentials: str,
+    ) -> None:
+        client.headers["content-type"] = "application/x-www-form-urlencoded"
+        res = await client.post(app.url_path_for("auth:token"),
+                                data=credentials)
+        assert res.status_code == HTTP_401_UNAUTHORIZED
+
+    async def test_login_and_its__valid_outcome(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        new_user_login: UserCreate,
+    ) -> None:
+        # Check if valid credentials will be accepted
+        client.headers["content-type"] = "application/x-www-form-urlencoded"
+        res = await client.post(app.url_path_for("auth:token"),
+                                data=new_user_login)
+        assert res.status_code == HTTP_200_OK
+
+        # Check if response has a proper structure
+        assert "token_type" in res.json()
+        assert "access_token" in res.json()
+        assert res.json()["token_type"] == "bearer"
+
+        # Check if token can be decoded and it contains appropriate data inside
+        token = res.json().get("access_token")
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        assert "exp" in payload
+        assert "sub" in payload
+        assert payload['sub'] == new_user_login['username']
