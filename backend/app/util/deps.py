@@ -4,13 +4,13 @@ from fastapi import Depends, status, HTTPException
 from jose import JWTError, jwt
 from starlette.requests import Request
 
-from ...core.config import SECRET_KEY, ALGORITHM, oauth2_scheme
-from ..resumes.schemas import Resume, ResumeFull
-from ..auth.schemas import TokenData
-from ..users.schemas import User
-from ..parts.experience.schemas import ExperienceFull
-from ..parts.skills.schemas import SkillsFull
-from ...db import crud
+from ..core.config import SECRET_KEY, ALGORITHM, oauth2_scheme
+from ..resources.resumes.schemas import Resume, ResumeFull
+from ..resources.auth.schemas import TokenData
+from ..resources.users.schemas import User
+from ..resources.parts.experience.schemas import ExperienceFull
+from ..resources.parts.skills.schemas import SkillsFull
+from ..db import crud
 
 
 # DB session

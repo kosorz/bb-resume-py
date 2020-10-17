@@ -12,7 +12,7 @@ from databases import Database
 
 import alembic
 from alembic.config import Config
-from app.resources.util.deps import get_current_user
+from app.util.deps import get_current_user
 from app.db.crud import get_user_by_username, create_user
 from app.resources.users.schemas import UserCreate
 

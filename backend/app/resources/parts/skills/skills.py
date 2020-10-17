@@ -4,10 +4,9 @@ from sqlalchemy.orm import Session
 
 from .schemas import Skills, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, SkillsFull
 from ...resumes.schemas import ResumeFull
-from ...util.deps import get_owns_resume, get_current_user_skills, get_current_user_skills_groups
-from ...util.fns import update_existing_resource, find_item_with_key_value
+from ....util.deps import get_owns_resume, get_current_user_skills, get_current_user_skills_groups, db
+from ....util.fns import update_existing_resource, find_item_with_key_value
 from ....db import crud
-from ...util.deps import db
 
 router = APIRouter()
 

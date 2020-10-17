@@ -2,7 +2,7 @@ import pytest
 
 from httpx import AsyncClient
 from fastapi import FastAPI
-from app.resources.util.deps import get_current_user
+from app.util.deps import get_current_user
 
 from starlette import status
 

@@ -4,10 +4,9 @@ from sqlalchemy.orm import Session
 
 from .schemas import Info, InfoUpdate
 from ...resumes.schemas import ResumeFull
-from ...util.deps import get_current_user_resumes
-from ...util.fns import update_existing_resource, find_item_with_key_value
+from ....util.deps import get_current_user_resumes, db
+from ....util.fns import update_existing_resource, find_item_with_key_value
 from ....db import crud
-from ...util.deps import db
 
 router = APIRouter()
 
