@@ -1,10 +1,10 @@
 import pytest
-
+from starlette import status
 from httpx import AsyncClient
 from fastapi import FastAPI
-from app.util.deps import get_current_user
 
-from starlette import status
+from app.util.deps import get_current_user
+from app.db.crud import get_resume
 
 pytestmark = pytest.mark.asyncio
 
@@ -148,6 +148,17 @@ class TestResumes:
             "deleted": True
         }
         assert res.status_code == status.HTTP_200_OK
+
+    @pytest.mark.asyncio
+    async def test_update_resume_outcome(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if resume will be updated when correct data submitted and user owns resume
+        info = get_resume(app.state._db, 2)
+        assert info.title == "updated_string"
+        assert info.deleted == True
 
     @pytest.mark.asyncio
     async def test_update_resume_access(

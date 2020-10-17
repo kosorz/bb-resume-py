@@ -11,7 +11,11 @@ from ....db import crud
 router = APIRouter()
 
 
-@router.patch("/{resume_id}/info", response_model=Info)
+@router.patch(
+    "/{resume_id}/info",
+    response_model=Info,
+    name="info:update-info",
+)
 def update_resume_info(resume_id: int,
                        info: InfoUpdate,
                        db: Session = Depends(db),
