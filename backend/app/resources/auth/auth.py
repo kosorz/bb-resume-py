@@ -10,7 +10,7 @@ from ..users.schemas import User, UserCreate, UserPublic
 from ...core.config import pwd_context
 from ...core.config import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
 from ...db import crud
-from ...db.deps import get_db as db
+from ..util.deps import db
 
 router = APIRouter()
 

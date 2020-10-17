@@ -7,7 +7,7 @@ from ...resumes.schemas import ResumeFull
 from ...util.deps import get_owns_resume, get_current_user_experience, get_current_user_experience_units
 from ...util.fns import update_existing_resource, find_item_with_key_value
 from ....db import crud
-from ....db.deps import get_db as db
+from ...util.deps import db
 
 router = APIRouter()
 

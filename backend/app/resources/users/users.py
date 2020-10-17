@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from .schemas import UserPublic, User
 from ...db import crud
-from ...db.deps import get_db as db
+from ..util.deps import db
 from ...resources.util.deps import get_current_active_user
 
 router = APIRouter()

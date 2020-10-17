@@ -7,7 +7,7 @@ from ..users.schemas import User
 from ..util.deps import get_current_active_user, get_current_user_resumes
 from ..util.fns import update_existing_resource, find_item_with_key_value
 from ...db import crud
-from ...db.deps import get_db as db
+from ..util.deps import db
 
 router = APIRouter()
 

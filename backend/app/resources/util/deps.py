@@ -2,6 +2,7 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi import Depends, status, HTTPException
 from jose import JWTError, jwt
+from starlette.requests import Request
 
 from ...core.config import SECRET_KEY, ALGORITHM, oauth2_scheme
 from ..resumes.schemas import Resume, ResumeFull
@@ -10,7 +11,11 @@ from ..users.schemas import User
 from ..parts.experience.schemas import ExperienceFull
 from ..parts.skills.schemas import SkillsFull
 from ...db import crud
-from ...db.deps import get_db as db
+
+
+# DB session
+def db(request: Request):
+    return request.app.state._db
 
 
 # Current user
