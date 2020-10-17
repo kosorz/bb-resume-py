@@ -6,14 +6,12 @@ from fastapi import FastAPI
 
 from app.util.deps import get_current_user
 from app.db.crud import get_resume_info
-from app.resources.parts.info.schemas import Info
 
 pytestmark = pytest.mark.asyncio
 
 
 class TestInfosRoutes:
-    @pytest.mark.asyncio
-    async def test_update_info_exist(
+    async def test_update_info_endpoint_existence(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -30,7 +28,6 @@ class TestInfosRoutes:
 
 
 class TestInfos:
-    @pytest.mark.asyncio
     async def test_update_info_authorization_check(
         self,
         app: FastAPI,
@@ -47,7 +44,6 @@ class TestInfos:
         )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
-    @pytest.mark.asyncio
     async def test_update_resume_info_validation(
         self,
         app: FastAPI,
@@ -101,7 +97,6 @@ class TestInfos:
             }),
         ),
     )
-    @pytest.mark.asyncio
     async def test_update_resume_info_validation_error(
         self,
         app: FastAPI,
@@ -118,7 +113,6 @@ class TestInfos:
         )
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
-    @pytest.mark.asyncio
     async def test_update_resume_info_response(
         self,
         app: FastAPI,
@@ -160,7 +154,6 @@ class TestInfos:
         }
         assert res.status_code == status.HTTP_200_OK
 
-    @pytest.mark.asyncio
     async def test_update_resume_info_outcome(
         self,
         app: FastAPI,
@@ -179,7 +172,6 @@ class TestInfos:
         assert info.location_enabled == False
         assert info.role_enabled == False
 
-    @pytest.mark.asyncio
     async def test_update_resume_info_access(
         self,
         app: FastAPI,

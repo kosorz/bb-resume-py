@@ -14,7 +14,6 @@ pytestmark = pytest.mark.asyncio
 
 
 class TestAuthRoutes:
-    @pytest.mark.asyncio
     async def test_login_endpoint_existence(
         self,
         app: FastAPI,
@@ -24,7 +23,6 @@ class TestAuthRoutes:
         res = await client.post(app.url_path_for("auth:token"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
-    @pytest.mark.asyncio
     async def test_registration_endpoint_existence(
         self,
         app: FastAPI,

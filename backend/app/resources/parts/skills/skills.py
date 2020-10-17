@@ -11,7 +11,11 @@ from ....db import crud
 router = APIRouter()
 
 
-@router.post("/{resume_id}/skills", response_model=Skills)
+@router.post(
+    "/{resume_id}/skills",
+    response_model=Skills,
+    name="skills:create-skills",
+)
 def create_skills(
     resume_id: int,
     db: Session = Depends(db),
@@ -31,7 +35,11 @@ def create_skills(
     return db_skills
 
 
-@router.patch("/skills/{skills_id}", response_model=Skills)
+@router.patch(
+    "/skills/{skills_id}",
+    response_model=Skills,
+    name="skills:update-skills",
+)
 def update_skills(
     skills_id: int,
     skills: SkillsUpdate,
@@ -42,7 +50,11 @@ def update_skills(
                                     crud.get_skills, crud.update_skills)
 
 
-@router.post("/{skills_id}/skills_group", response_model=SkillsGroup)
+@router.post(
+    "/{skills_id}/skills_group",
+    response_model=SkillsGroup,
+    name="skills:create-skills-group",
+)
 def create_skill_group(
     skills_id: int,
     db: Session = Depends(db),
@@ -51,7 +63,11 @@ def create_skill_group(
     return crud.create_skills_group(db, skills_id)
 
 
-@router.patch("/skills_group/{group_id}", response_model=SkillsGroup)
+@router.patch(
+    "/skills_group/{group_id}",
+    response_model=SkillsGroup,
+    name="skills:update-skills-group",
+)
 def update_skill_group(group_id: int,
                        skills_group: SkillsGroupUpdate,
                        db: Session = Depends(db),

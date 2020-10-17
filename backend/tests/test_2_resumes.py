@@ -10,7 +10,6 @@ pytestmark = pytest.mark.asyncio
 
 
 class TestResumesRoutes:
-    @pytest.mark.asyncio
     async def test_create_resume_endpoint_existence(
         self,
         app: FastAPI,
@@ -20,8 +19,7 @@ class TestResumesRoutes:
         res = await client.post(app.url_path_for("resumes:create-resume"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
-    @pytest.mark.asyncio
-    async def test_get_resume_exist(
+    async def test_get_resume_endpoint_existence(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -32,8 +30,7 @@ class TestResumesRoutes:
         print(res)
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
-    @pytest.mark.asyncio
-    async def test_update_resume_exist(
+    async def test_update_resume_endpoint_existence(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -45,7 +42,48 @@ class TestResumesRoutes:
 
 
 class TestResumes:
-    @pytest.mark.asyncio
+    async def test_create_resume_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        new_resume = {"title": "string"}
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.post(
+            app.url_path_for("resumes:create-resume"),
+            json=new_resume,
+        )
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    async def test_update_resume_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.patch(
+            app.url_path_for("resumes:update-resume", resume_id=1))
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    async def test_get_resume_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.get(
+            app.url_path_for("resumes:get-resume", resume_id=1))
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
     async def test_create_resume_validation(
         self,
         app: FastAPI,
@@ -55,7 +93,6 @@ class TestResumes:
         res = await client.post(app.url_path_for("resumes:create-resume"))
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
-    @pytest.mark.asyncio
     async def test_create_resume_response(
         self,
         app: FastAPI,
@@ -75,24 +112,39 @@ class TestResumes:
         }
         assert res.status_code == status.HTTP_200_OK
 
-    @pytest.mark.asyncio
-    async def test_create_resume_authorization_check(
+    async def test_get_resume_response(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        new_resume = {"title": "string"}
-        # Replace get_current_user dependency override with it's genuine counterpart
-        app.dependency_overrides[get_current_user] = get_current_user
+        # Checks if received resume will be appropriate and will have it's related keys
+        res = await client.get(
+            app.url_path_for("resumes:get-resume", resume_id=2))
+        assert res.json() == {
+            "title": "string",
+            "id": 2,
+            "owner_id": 2,
+            "deleted": False,
+            "skills": None,
+            "experience": None,
+            "info": {
+                "name": "string",
+                "id": 2,
+                "resume_id": 2,
+                "phone": "",
+                "link": "",
+                "email": "",
+                "location": "",
+                "role": "",
+                "phone_enabled": True,
+                "link_enabled": True,
+                "email_enabled": True,
+                "location_enabled": True,
+                "role_enabled": True
+            }
+        }
+        assert res.status_code == status.HTTP_200_OK
 
-        # Checks if request will be rejected if user is not authorized
-        res = await client.post(
-            app.url_path_for("resumes:create-resume"),
-            json=new_resume,
-        )
-        assert res.status_code == status.HTTP_401_UNAUTHORIZED
-
-    @pytest.mark.asyncio
     async def test_update_resume_validation(
         self,
         app: FastAPI,
@@ -124,7 +176,6 @@ class TestResumes:
         )
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
-    @pytest.mark.asyncio
     async def test_update_resume_response(
         self,
         app: FastAPI,
@@ -149,7 +200,6 @@ class TestResumes:
         }
         assert res.status_code == status.HTTP_200_OK
 
-    @pytest.mark.asyncio
     async def test_update_resume_outcome(
         self,
         app: FastAPI,
@@ -160,7 +210,6 @@ class TestResumes:
         assert info.title == "updated_string"
         assert info.deleted == True
 
-    @pytest.mark.asyncio
     async def test_update_resume_access(
         self,
         app: FastAPI,
@@ -177,4 +226,17 @@ class TestResumes:
                 "title": "updated_string"
             },
         )
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_get_resume_access(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if resume will not be presented when user doesn't own the resume
+        res = await client.get(
+            app.url_path_for(
+                "resumes:get-resume",
+                resume_id=1,
+            ))
         assert res.status_code == status.HTTP_403_FORBIDDEN

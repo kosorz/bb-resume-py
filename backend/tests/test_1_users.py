@@ -12,7 +12,6 @@ pytestmark = pytest.mark.asyncio
 
 
 class TestUsersRoutes:
-    @pytest.mark.asyncio
     async def test_get_users_endpoint_existence(
         self,
         app: FastAPI,
@@ -22,7 +21,6 @@ class TestUsersRoutes:
         res = await client.get(app.url_path_for("users:get-users"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
-    @pytest.mark.asyncio
     async def test_get_user_me_exist(
         self,
         app: FastAPI,
@@ -33,8 +31,7 @@ class TestUsersRoutes:
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
 
-class TestAuth:
-    @pytest.mark.asyncio
+class TestUsers:
     async def test_get_user_me_response(
         self,
         app: FastAPI,
@@ -50,7 +47,6 @@ class TestAuth:
         }
         assert res.status_code == status.HTTP_200_OK
 
-    @pytest.mark.asyncio
     async def test_create_resume_authorization_check(
         self,
         app: FastAPI,
@@ -63,7 +59,6 @@ class TestAuth:
         res = await client.get(app.url_path_for("users:get-me"), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
-    @pytest.mark.asyncio
     async def test_get_user_response(
         self,
         app: FastAPI,
