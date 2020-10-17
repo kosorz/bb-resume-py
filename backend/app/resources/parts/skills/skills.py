@@ -18,7 +18,7 @@ def create_skills(
     db: Session = Depends(db),
     current_user_skills: List[SkillsFull] = Depends(get_current_user_skills),
     owns_resume: ResumeFull = Depends(get_owns_resume)):
-    stored_skills = find_item_with_key_value(current_user_skills, 'resume_id',
+    stored_skills = find_item_with_key_value(current_user_skills, "resume_id",
                                              resume_id, False)
     if stored_skills:
         if not stored_skills.deleted:
@@ -38,7 +38,7 @@ def update_skills(
     skills: SkillsUpdate,
     db: Session = Depends(db),
     current_user_skills: List[SkillsFull] = Depends(get_current_user_skills)):
-    find_item_with_key_value(current_user_skills, 'id', skills_id)
+    find_item_with_key_value(current_user_skills, "id", skills_id)
     return update_existing_resource(db, skills_id, skills, Skills,
                                     crud.get_skills, crud.update_skills)
 
@@ -48,7 +48,7 @@ def create_skill_group(
     skills_id: int,
     db: Session = Depends(db),
     current_user_skills: List[SkillsFull] = Depends(get_current_user_skills)):
-    find_item_with_key_value(current_user_skills, 'id', skills_id)
+    find_item_with_key_value(current_user_skills, "id", skills_id)
     return crud.create_skills_group(db, skills_id)
 
 
@@ -58,7 +58,7 @@ def update_skill_group(group_id: int,
                        db: Session = Depends(db),
                        current_user_skills_groups: List[SkillsGroup] = Depends(
                            get_current_user_skills_groups)):
-    find_item_with_key_value(current_user_skills_groups, 'id', group_id)
+    find_item_with_key_value(current_user_skills_groups, "id", group_id)
     return update_existing_resource(db, group_id, skills_group, SkillsGroup,
                                     crud.get_skills_group,
                                     crud.update_skills_group)

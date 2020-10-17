@@ -67,7 +67,7 @@ class Skills(Base):
 
 
 class SkillsGroup(Base):
-    __tablename__ = 'skills_groups'
+    __tablename__ = "skills_groups"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
@@ -91,7 +91,7 @@ class Experience(Base):
 
 
 class ExperienceUnit(Base):
-    __tablename__ = 'experience_units'
+    __tablename__ = "experience_units"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")

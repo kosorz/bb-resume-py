@@ -18,7 +18,7 @@ def update_resume_info(resume_id: int,
                        db: Session = Depends(db),
                        current_user_resumes: List[ResumeFull] = Depends(
                            get_current_user_resumes)):
-    find_item_with_key_value(current_user_resumes, 'id', resume_id)
+    find_item_with_key_value(current_user_resumes, "id", resume_id)
     return update_existing_resource(db, resume_id, info, Info,
                                     crud.get_resume_info,
                                     crud.update_resume_info)

@@ -1,20 +1,14 @@
 import pytest
 
 from httpx import AsyncClient
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from app.db.crud import get_user_by_username
 from app.resources.users.schemas import UserCreate
 from typing import Dict
-from jose import JWTError, jwt
-from app.core.config import SECRET_KEY, ALGORITHM, oauth2_scheme
+from jose import jwt
+from app.core.config import SECRET_KEY, ALGORITHM
 
-from starlette.status import (
-    HTTP_404_NOT_FOUND,
-    HTTP_200_OK,
-    HTTP_400_BAD_REQUEST,
-    HTTP_422_UNPROCESSABLE_ENTITY,
-    HTTP_401_UNAUTHORIZED,
-)
+from starlette import status
 
 pytestmark = pytest.mark.asyncio
 
@@ -28,7 +22,7 @@ class TestAuthRoutes:
     ) -> None:
         # Checks if login endpoint is available
         res = await client.post(app.url_path_for("auth:token"))
-        assert res.status_code != HTTP_404_NOT_FOUND
+        assert res.status_code != status.HTTP_404_NOT_FOUND
 
     @pytest.mark.asyncio
     async def test_registration_endpoint_existence(
@@ -38,7 +32,7 @@ class TestAuthRoutes:
     ) -> None:
         # Checks if join endpoint is available
         res = await client.post(app.url_path_for("auth:join"))
-        assert res.status_code != HTTP_404_NOT_FOUND
+        assert res.status_code != status.HTTP_404_NOT_FOUND
 
 
 @pytest.fixture
@@ -80,7 +74,7 @@ class TestAuth:
     ) -> None:
         # Check if request with invalid body is rejected
         res = await client.post(app.url_path_for("auth:join"), json=body)
-        assert res.status_code == HTTP_422_UNPROCESSABLE_ENTITY
+        assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     async def test_registration(
         self,
@@ -95,7 +89,7 @@ class TestAuth:
             app.url_path_for("auth:join"),
             json=new_user,
         )
-        assert res.status_code == HTTP_200_OK
+        assert res.status_code == status.HTTP_200_OK
 
     async def test_registration_outcome(
         self,
@@ -113,7 +107,7 @@ class TestAuth:
             app.url_path_for("auth:join"),
             json=new_user,
         )
-        assert res.status_code == HTTP_400_BAD_REQUEST
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.parametrize(
         "credentials",
@@ -135,7 +129,7 @@ class TestAuth:
         client.headers["content-type"] = "application/x-www-form-urlencoded"
         res = await client.post(app.url_path_for("auth:token"),
                                 data=credentials)
-        assert res.status_code == HTTP_422_UNPROCESSABLE_ENTITY
+        assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     @pytest.mark.parametrize(
         "credentials",
@@ -159,7 +153,7 @@ class TestAuth:
         client.headers["content-type"] = "application/x-www-form-urlencoded"
         res = await client.post(app.url_path_for("auth:token"),
                                 data=credentials)
-        assert res.status_code == HTTP_401_UNAUTHORIZED
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_login_and_its__valid_outcome(
         self,
@@ -171,7 +165,7 @@ class TestAuth:
         client.headers["content-type"] = "application/x-www-form-urlencoded"
         res = await client.post(app.url_path_for("auth:token"),
                                 data=new_user_login)
-        assert res.status_code == HTTP_200_OK
+        assert res.status_code == status.HTTP_200_OK
 
         # Check if response has a proper structure
         assert "token_type" in res.json()

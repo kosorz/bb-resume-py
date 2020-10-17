@@ -19,7 +19,7 @@ def create_experience(resume_id: int,
                           get_current_user_experience),
                       owns_resume: ResumeFull = Depends(get_owns_resume)):
     stored_experience = find_item_with_key_value(current_user_experience,
-                                                 'resume_id', resume_id, False)
+                                                 "resume_id", resume_id, False)
     if stored_experience:
         if not stored_experience.deleted:
             return stored_experience
@@ -38,7 +38,7 @@ def update_experience(experience_id: int,
                       db: Session = Depends(db),
                       current_user_experience: List[ExperienceFull] = Depends(
                           get_current_user_experience)):
-    find_item_with_key_value(current_user_experience, 'id', experience_id)
+    find_item_with_key_value(current_user_experience, "id", experience_id)
     return update_existing_resource(db, experience_id, experience, Experience,
                                     crud.get_experience,
                                     crud.update_experience)
@@ -50,7 +50,7 @@ def create_experience_unit(
     db: Session = Depends(db),
     current_user_experience: List[ExperienceFull] = Depends(
         get_current_user_experience)):
-    find_item_with_key_value(current_user_experience, 'id', experience_id)
+    find_item_with_key_value(current_user_experience, "id", experience_id)
     return crud.create_experience_unit(db, experience_id)
 
 
@@ -62,7 +62,7 @@ def update_experience_unit(
     db: Session = Depends(db),
     current_user_experience_units: List[ExperienceUnit] = Depends(
         get_current_user_experience_units)):
-    find_item_with_key_value(current_user_experience_units, 'id',
+    find_item_with_key_value(current_user_experience_units, "id",
                              experience_id)
     return update_existing_resource(db, experience_id, experience_unit,
                                     ExperienceUnit, crud.get_experience_unit,

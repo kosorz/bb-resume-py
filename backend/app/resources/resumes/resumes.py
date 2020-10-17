@@ -12,7 +12,11 @@ from ...db.deps import get_db as db
 router = APIRouter()
 
 
-@router.post("/", response_model=Resume)
+@router.post(
+    "/",
+    response_model=Resume,
+    name="resumes:create-resume",
+)
 def create_resume(resume: ResumeCreate,
                   db: Session = Depends(db),
                   current_user: User = Depends(get_current_active_user)):
@@ -21,22 +25,30 @@ def create_resume(resume: ResumeCreate,
     return db_resume
 
 
-@router.patch("/{resume_id}", response_model=Resume)
-def update_resume(
+@router.patch(
+    "/{resume_id}",
+    response_model=Resume,
+    name="resumes:update-resume",
+)
+async def update_resume(
     resume_id: int,
     resume: ResumeUpdate,
     db: Session = Depends(db),
     current_user_resumes: List[Resume] = Depends(get_current_user_resumes)):
-    find_item_with_key_value(current_user_resumes, 'id', resume_id)
+    find_item_with_key_value(current_user_resumes, "id", resume_id)
     return update_existing_resource(db, resume_id, resume, Resume,
                                     crud.get_resume, crud.update_resume)
 
 
-@router.get("/{resume_id}", response_model=ResumeFull)
+@router.get(
+    "/{resume_id}",
+    response_model=ResumeFull,
+    name="resumes:get-resume",
+)
 def get_resume(
     resume_id: int,
     db: Session = Depends(db),
     current_user_resumes: List[Resume] = Depends(get_current_user_resumes)):
-    owned_resume = find_item_with_key_value(current_user_resumes, 'id',
+    owned_resume = find_item_with_key_value(current_user_resumes, "id",
                                             resume_id)
     return owned_resume

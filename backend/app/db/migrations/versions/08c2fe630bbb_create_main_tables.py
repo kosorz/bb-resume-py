@@ -11,14 +11,14 @@ from sqlalchemy.dialects import postgresql
 import datetime
 
 # revision identifiers, used by Alembic
-revision = '08c2fe630bbb'
+revision = "08c2fe630bbb"
 down_revision = None
 branch_labels = None
 depends_on = None
 
 
-def create_main_tables() -> None:
-    op.create_table(
+def create_main_tables_seed_data() -> None:
+    users = op.create_table(
         "users",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("username", sa.String, unique=True, index=True),
@@ -26,7 +26,7 @@ def create_main_tables() -> None:
         sa.Column("disabled", sa.Boolean, default=False),
     )
 
-    op.create_table(
+    resumes = op.create_table(
         "resumes",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String),
@@ -39,7 +39,7 @@ def create_main_tables() -> None:
         ),
     )
 
-    op.create_table(
+    infos = op.create_table(
         "infos",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("name", sa.String),
@@ -61,7 +61,7 @@ def create_main_tables() -> None:
         ),
     )
 
-    op.create_table(
+    skills = op.create_table(
         "skills",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
@@ -74,7 +74,7 @@ def create_main_tables() -> None:
         ),
     )
 
-    op.create_table(
+    skills_groups = op.create_table(
         "skills_groups",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
@@ -88,7 +88,7 @@ def create_main_tables() -> None:
         ),
     )
 
-    op.create_table(
+    experiences = op.create_table(
         "experiences",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
@@ -101,7 +101,7 @@ def create_main_tables() -> None:
         ),
     )
 
-    op.create_table(
+    experience_units = op.create_table(
         "experience_units",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
@@ -125,9 +125,20 @@ def create_main_tables() -> None:
         ),
     )
 
+    op.bulk_insert(users, [{
+        "username": "seed_user",
+        "hashed_password": "seed_hashed_password",
+    }])
+    op.bulk_insert(resumes, [{"title": "seed_title", "owner_id": 1}])
+    op.bulk_insert(infos, [{"name": "seed_user", "resume_id": 1}])
+    op.bulk_insert(skills, [{"resume_id": 1}])
+    op.bulk_insert(skills_groups, [{"skills_id": 1}])
+    op.bulk_insert(experiences, [{"resume_id": 1}])
+    op.bulk_insert(experience_units, [{"experience_id": 1}])
+
 
 def upgrade() -> None:
-    create_main_tables()
+    create_main_tables_seed_data()
 
 
 def downgrade() -> None:
