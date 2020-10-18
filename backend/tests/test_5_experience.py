@@ -55,7 +55,7 @@ class TestExperience:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -68,7 +68,7 @@ class TestExperience:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -246,7 +246,7 @@ class TestExperienceUnits:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -260,7 +260,7 @@ class TestExperienceUnits:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -356,7 +356,6 @@ class TestExperienceUnits:
             "deleted": True,
             "title": "updated_title",
             "company_name": "updated_company_name",
-            "description": "updated_description",
             "description": "updated_description",
             "location": "updated_location",
             "link": "https://heeeeeeeey.com/",

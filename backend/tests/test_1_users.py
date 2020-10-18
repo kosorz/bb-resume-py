@@ -52,7 +52,7 @@ class TestUsers:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized

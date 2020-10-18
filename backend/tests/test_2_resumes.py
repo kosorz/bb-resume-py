@@ -48,7 +48,7 @@ class TestResumes:
         client: AsyncClient,
     ) -> None:
         new_resume = {"title": "string"}
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -63,7 +63,7 @@ class TestResumes:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -76,7 +76,7 @@ class TestResumes:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it"s genuine counterpart
+        # Replace get_current_user dependency override with it's genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -117,7 +117,7 @@ class TestResumes:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if received resume will be appropriate and will have it"s related keys
+        # Checks if received resume will be appropriate and will have it's related keys
         res = await client.get(
             app.url_path_for("resumes:get-resume", resume_id=2))
         assert res.json() == {
