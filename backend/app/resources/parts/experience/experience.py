@@ -11,7 +11,11 @@ from ....db import crud
 router = APIRouter()
 
 
-@router.post("/{resume_id}/experience", response_model=Experience)
+@router.post(
+    "/{resume_id}/experience",
+    response_model=Experience,
+    name="experience:create-experience",
+)
 def create_experience(resume_id: int,
                       db: Session = Depends(db),
                       current_user_experience: List[ExperienceFull] = Depends(
@@ -31,7 +35,11 @@ def create_experience(resume_id: int,
     return db_experience
 
 
-@router.patch("/experience/{experience_id}", response_model=Experience)
+@router.patch(
+    "/experience/{experience_id}",
+    response_model=Experience,
+    name="experience:update-experience",
+)
 def update_experience(experience_id: int,
                       experience: ExperienceUpdate,
                       db: Session = Depends(db),
@@ -43,7 +51,11 @@ def update_experience(experience_id: int,
                                     crud.update_experience)
 
 
-@router.post("/{experience_id}/experience_unit", response_model=ExperienceUnit)
+@router.post(
+    "/{experience_id}/experience_unit",
+    response_model=ExperienceUnit,
+    name="experience:create-experience-unit",
+)
 def create_experience_unit(
     experience_id: int,
     db: Session = Depends(db),
@@ -53,16 +65,18 @@ def create_experience_unit(
     return crud.create_experience_unit(db, experience_id)
 
 
-@router.patch("/experience_unit/{experience_id}",
-              response_model=ExperienceUnit)
+@router.patch(
+    "/experience_unit/{unit_id}",
+    response_model=ExperienceUnit,
+    name="experience:update-experience-unit",
+)
 def update_experience_unit(
-    experience_id: int,
+    unit_id: int,
     experience_unit: ExperienceUnitUpdate,
     db: Session = Depends(db),
     current_user_experience_units: List[ExperienceUnit] = Depends(
         get_current_user_experience_units)):
-    find_item_with_key_value(current_user_experience_units, "id",
-                             experience_id)
-    return update_existing_resource(db, experience_id, experience_unit,
+    find_item_with_key_value(current_user_experience_units, "id", unit_id)
+    return update_existing_resource(db, unit_id, experience_unit,
                                     ExperienceUnit, crud.get_experience_unit,
                                     crud.update_experience_unit)

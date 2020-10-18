@@ -77,36 +77,36 @@ class TestInfos:
     @pytest.mark.parametrize(
         "body",
         (
-            ({
+            {
                 "link": "not_really_a_link",
-            }),
-            ({
+            },
+            {
                 "phone": [],
-            }),
-            ({
+            },
+            {
                 "email": [],
-            }),
-            ({
+            },
+            {
                 "location": [],
-            }),
-            ({
+            },
+            {
                 "role": [],
-            }),
-            ({
+            },
+            {
                 "phone_enabled": "not_a_boolean_value",
-            }),
-            ({
+            },
+            {
                 "link_enabled": "not_a_boolean_value",
-            }),
-            ({
+            },
+            {
                 "email_enabled": "not_a_boolean_value",
-            }),
-            ({
+            },
+            {
                 "location_enabled": "not_a_boolean_value",
-            }),
-            ({
+            },
+            {
                 "role_enabled": "not_a_boolean_value",
-            }),
+            },
         ),
     )
     async def test_update_resume_info_validation_error(

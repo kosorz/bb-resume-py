@@ -40,10 +40,10 @@ class TestUsers:
         # Checks if get users me endpoint responds correctly
         res = await client.get(app.url_path_for("users:get-me"))
         assert res.json() == {
-            'username': 'string',
-            'id': 2,
-            'disabled': False,
-            'resumes': [],
+            "username": "string",
+            "id": 2,
+            "disabled": False,
+            "resumes": [],
         }
         assert res.status_code == status.HTTP_200_OK
 
@@ -52,7 +52,7 @@ class TestUsers:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Replace get_current_user dependency override with it's genuine counterpart
+        # Replace get_current_user dependency override with it"s genuine counterpart
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
@@ -67,12 +67,12 @@ class TestUsers:
         # Checks if get users endpoint responds correctly
         res = await client.get(app.url_path_for("users:get-users"))
         assert res.json() == [{
-            'disabled': False,
-            'id': 1,
-            'username': 'seed_user'
+            "disabled": False,
+            "id": 1,
+            "username": "seed_user"
         }, {
-            'disabled': False,
-            'id': 2,
-            'username': 'string'
+            "disabled": False,
+            "id": 2,
+            "username": "string"
         }]
         assert res.status_code == status.HTTP_200_OK

@@ -1,4 +1,4 @@
-from typing import Callable, Iterable
+from typing import Callable, Iterable, Dict
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -31,3 +31,12 @@ def find_item_with_key_value(list: Iterable,
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                                 detail="Forbidden")
         return None
+
+
+def compare_while_excluding(
+    value: Dict,
+    compare_value: Dict,
+    exclude_keys: Dict,
+):
+    return {k
+            for k, _ in value.items() ^ compare_value.items()} == exclude_keys

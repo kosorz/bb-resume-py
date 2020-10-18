@@ -45,23 +45,23 @@ class TestAuth:
     @pytest.mark.parametrize(
         "body",
         (
-            ({
+            {
                 "username": "string",
                 "password": "string"
-            }),
-            ({
+            },
+            {
                 "username": "string",
                 "password_confirm": "string",
-            }),
-            ({
+            },
+            {
                 "password": "string",
                 "password_confirm": "string",
-            }),
-            ({
+            },
+            {
                 "username": "string",
                 "password": "string",
                 "password_confirm": "string_not_match",
-            }),
+            },
         ),
     )
     async def test_registration_body_validation(
@@ -110,12 +110,12 @@ class TestAuth:
     @pytest.mark.parametrize(
         "credentials",
         (
-            ({
+            {
                 "username": "invalid_username",
-            }),
-            ({
+            },
+            {
                 "password": "string",
-            }),
+            },
         ),
     )
     async def test_login_form_data_validation(
@@ -133,14 +133,14 @@ class TestAuth:
     @pytest.mark.parametrize(
         "credentials",
         (
-            ({
+            {
                 "username": "invalid_username",
                 "password": "string"
-            }),
-            ({
+            },
+            {
                 "username": "string",
                 "password": "invalid_password"
-            }),
+            },
         ),
     )
     async def test_login_with_invalid_credentials(
@@ -177,4 +177,4 @@ class TestAuth:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         assert "exp" in payload
         assert "sub" in payload
-        assert payload['sub'] == new_user_login['username']
+        assert payload["sub"] == new_user_login["username"]
