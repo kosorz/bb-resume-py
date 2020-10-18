@@ -81,6 +81,18 @@ class TestInfos:
                 "link": "not_really_a_link",
             }),
             ({
+                "phone": [],
+            }),
+            ({
+                "email": [],
+            }),
+            ({
+                "location": [],
+            }),
+            ({
+                "role": [],
+            }),
+            ({
                 "phone_enabled": "not_a_boolean_value",
             }),
             ({

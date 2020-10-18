@@ -125,6 +125,7 @@ class TestAuth:
         credentials: str,
     ) -> None:
         client.headers["content-type"] = "application/x-www-form-urlencoded"
+        # Checks if request will be rejected when invalid data submitted
         res = await client.post(app.url_path_for("auth:token"),
                                 data=credentials)
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
@@ -149,6 +150,7 @@ class TestAuth:
         credentials: str,
     ) -> None:
         client.headers["content-type"] = "application/x-www-form-urlencoded"
+        # Checks if will not authorize for invalid credentials
         res = await client.post(app.url_path_for("auth:token"),
                                 data=credentials)
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
