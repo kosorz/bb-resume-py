@@ -26,6 +26,7 @@ class Info(InfoBase):
 
 
 class InfoUpdate(BaseModel):
+    name: Optional[str]
     phone: Optional[str]
     link: Optional[HttpUrl]
     email: Optional[str]
