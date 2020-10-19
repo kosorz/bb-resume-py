@@ -3,35 +3,12 @@ import style from "./App.module.scss";
 import axios from "./util/axios";
 
 import Info from "./components/Info/Info";
-import InfoShape from "./components/Info/Info.typing";
-
-import SkillsShape from "./components/Skills/Skills.typing";
+import Experience from "./components/Experience/Experience";
 import Skills from "./components/Skills/Skills";
 
-interface ExperienceUnitShape {
-  title: string;
-  id: number;
-  deleted: true;
-  company_name: string;
-  description: string;
-  location: string;
-  date_start: string;
-  date_end: string;
-  link: string;
-  company_name_enabled: true;
-  description_enabled: true;
-  location_enabled: true;
-  period_enabled: true;
-  link_enabled: true;
-}
-
-interface ExperienceShape {
-  title: string;
-  id: number;
-  deleted: true;
-  resume_id: number;
-  units: ExperienceUnitShape[];
-}
+import InfoShape from "./components/Info/Info.typing";
+import ExperienceShape from "./components/Experience/Experience.typing";
+import SkillsShape from "./components/Skills/Skills.typing";
 
 interface ResumeShape {
   title: string;
@@ -59,11 +36,11 @@ function App() {
       email: "",
       location: "",
       role: "",
-      phone_enabled: true,
-      link_enabled: true,
-      email_enabled: true,
-      location_enabled: true,
-      role_enabled: true,
+      phone_enabled: false,
+      link_enabled: false,
+      email_enabled: false,
+      location_enabled: false,
+      role_enabled: false,
     },
   });
 
@@ -80,6 +57,9 @@ function App() {
     <div className={style["App"]}>
       <Info {...resume.info} />
       {resume.skills && !resume.skills.deleted && <Skills {...resume.skills} />}
+      {resume.experience && !resume.experience.deleted && (
+        <Experience {...resume.experience} />
+      )}
     </div>
   );
 }

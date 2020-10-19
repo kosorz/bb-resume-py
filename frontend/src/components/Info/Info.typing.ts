@@ -6,11 +6,11 @@ type InfoShape = {
   email: string;
   location: string;
   role: string;
-  phone_enabled: true;
-  link_enabled: true;
-  email_enabled: true;
-  location_enabled: true;
-  role_enabled: true;
+  phone_enabled: boolean;
+  link_enabled: boolean;
+  email_enabled: boolean;
+  location_enabled: boolean;
+  role_enabled: boolean;
 };
 
 export interface InfoEditor extends InfoShape {

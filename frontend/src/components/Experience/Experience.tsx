@@ -3,19 +3,19 @@ import { useFormik } from "formik";
 import cn from "classnames";
 
 import Input from "../Input/Input";
+import ExperienceUnit from "../ExperienceUnit/ExperienceUnit";
 
 import axios from "../../util/axios";
+import { ExperienceEditor } from "./Experience.typing";
 import { getFieldProps } from "../../util/fns";
 
-import { SkillsGroupEditor } from "./SkillsGroup.typing";
-
-const SkillsGroup = ({ id, title, values, className }: SkillsGroupEditor) => {
+const Experience = ({ id, title, units, className }: ExperienceEditor) => {
   const formik = useFormik({
     initialValues: {
       title,
     },
     enableReinitialize: true,
-    onSubmit: (values) => axios.patch(`/parts/skills_group/${id}`, values),
+    onSubmit: (values) => axios.patch(`/parts/experience/${id}`, values),
   });
 
   return (
@@ -23,11 +23,14 @@ const SkillsGroup = ({ id, title, values, className }: SkillsGroupEditor) => {
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
         <button onClick={() => formik.submitForm()} type="button">
-          Save Skills Group {id}
+          Save Experience
         </button>
       </form>
+      {units.map((gr, i) => (
+        <ExperienceUnit key={`experience_unit_${i}`} {...gr} />
+      ))}
     </div>
   );
 };
 
-export default SkillsGroup;
+export default Experience;

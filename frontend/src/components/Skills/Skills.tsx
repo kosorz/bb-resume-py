@@ -3,19 +3,16 @@ import { useFormik } from "formik";
 import cn from "classnames";
 
 import Input from "../Input/Input";
+import SkillsGroup from "../SkillsGroup/SkillsGroup";
 
 import axios from "../../util/axios";
 import { getFieldProps } from "../../util/fns";
-
 import { SkillsEditor } from "./Skills.typing";
-import SkillsGroup from "../SkillsGroup/SkillsGroup";
 
 const Skills = ({ id, title, groups, className }: SkillsEditor) => {
   const formik = useFormik({
     initialValues: {
-      id,
       title,
-      groups,
     },
     enableReinitialize: true,
     onSubmit: (values) => axios.patch(`/parts/skills/${id}`, values),

@@ -43,6 +43,8 @@ const Info = ({
     onSubmit: (values) => axios.patch(`/parts/${resume_id}/info`, values),
   });
 
+  const { values } = formik;
+
   return (
     <div className={cn(className)}>
       <form>
@@ -52,22 +54,22 @@ const Info = ({
         <Checkbox {...getFieldProps(formik, "location_enabled")} />
         <Checkbox {...getFieldProps(formik, "role_enabled")} />
         <Input {...getFieldProps(formik, "name")} placeholder="Name" />
-        {formik.values.phone_enabled && (
+        {values.phone_enabled && (
           <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
         )}
-        {formik.values.link_enabled && (
+        {values.link_enabled && (
           <Input {...getFieldProps(formik, "link")} placeholder="Link" />
         )}
-        {formik.values.email_enabled && (
+        {values.email_enabled && (
           <Input {...getFieldProps(formik, "email")} placeholder="Email" />
         )}
-        {formik.values.location_enabled && (
+        {values.location_enabled && (
           <Input
             {...getFieldProps(formik, "location")}
-            placeholder="location"
+            placeholder="Location"
           />
         )}
-        {formik.values.role_enabled && (
+        {values.role_enabled && (
           <Input {...getFieldProps(formik, "role")} placeholder="Role" />
         )}
         <button onClick={() => formik.submitForm()} type="button">
