@@ -26,9 +26,11 @@ const Experience = ({ id, title, units, className }: ExperienceEditor) => {
           Save Experience
         </button>
       </form>
-      {units.map((gr, i) => (
-        <ExperienceUnit key={`experience_unit_${i}`} {...gr} />
-      ))}
+      {units
+        .filter((gr) => !gr.deleted)
+        .map((gr, i) => (
+          <ExperienceUnit key={`experience_unit_${i}`} {...gr} />
+        ))}
     </div>
   );
 };

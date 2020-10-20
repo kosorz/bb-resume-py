@@ -26,9 +26,11 @@ const Skills = ({ id, title, groups, className }: SkillsEditor) => {
           Save Skills
         </button>
       </form>
-      {groups.map((gr, i) => (
-        <SkillsGroup key={`skills_group_${i}`} {...gr} />
-      ))}
+      {groups
+        .filter((gr) => !gr.deleted)
+        .map((gr, i) => (
+          <SkillsGroup key={`skills_group_${i}`} {...gr} />
+        ))}
     </div>
   );
 };

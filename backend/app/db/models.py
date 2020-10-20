@@ -99,7 +99,7 @@ class ExperienceUnit(Base):
     description = Column(String, default="")
     location = Column(String, default="")
     date_start = Column(DateTime, default=datetime.datetime.utcnow)
-    date_end = Column(DateTime, default=datetime.datetime.utcnow)
+    date_end = Column(DateTime)
     link = Column(String, default="")
     company_name_enabled = Column(Boolean, default=True)
     description_enabled = Column(Boolean, default=True)

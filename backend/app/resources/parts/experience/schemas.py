@@ -33,7 +33,7 @@ class ExperienceUnit(ExperienceUnitBase):
     description: str
     location: str
     date_start: datetime
-    date_end: datetime
+    date_end: Optional[datetime]
     link: str
     company_name_enabled: bool
     description_enabled: bool
