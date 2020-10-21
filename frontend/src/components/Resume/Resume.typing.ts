@@ -12,4 +12,9 @@ type ResumeShape = {
   info: InfoShape;
 };
 
+export interface ResumeEditor {
+  className?: string;
+  editable?: boolean;
+}
+
 export default ResumeShape;

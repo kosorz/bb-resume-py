@@ -3,11 +3,11 @@ import SkillsGroupShape from "../SkillsGroup/SkillsGroup.typing";
 type SkillsShape = {
   title: string;
   id: number;
-  deleted: true;
+  deleted: boolean;
   groups: SkillsGroupShape[];
 };
 
-export interface SkillsEditor extends Omit<SkillsShape, "deleted"> {
+export interface SkillsEditor {
   className?: string;
 }
 

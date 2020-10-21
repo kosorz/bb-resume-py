@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 from datetime import datetime
 
 
@@ -28,7 +28,7 @@ class Info(InfoBase):
 class InfoUpdate(BaseModel):
     name: Optional[str]
     phone: Optional[str]
-    link: Optional[HttpUrl]
+    link: Optional[str]
     email: Optional[str]
     location: Optional[str]
     role: Optional[str]

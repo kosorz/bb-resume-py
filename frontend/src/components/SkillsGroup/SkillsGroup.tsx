@@ -1,27 +1,36 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import cn from "classnames";
 
 import Input from "../Input/Input";
+import Checkbox from "../Checkbox/Checkbox";
 
 import axios from "../../util/axios";
 import { getFieldProps } from "../../util/fns";
 
 import { SkillsGroupEditor } from "./SkillsGroup.typing";
+import { MobxContext } from "../../mobx";
 
-const SkillsGroup = ({ id, title, values, className }: SkillsGroupEditor) => {
+const SkillsGroup = (props: SkillsGroupEditor) => {
+  const store = useContext(MobxContext);
+  const { id, className, ...skillsGroupEditorData } = props;
+
   const formik = useFormik({
-    initialValues: {
-      title,
-    },
+    initialValues: skillsGroupEditorData,
     enableReinitialize: true,
-    onSubmit: (values) => axios.patch(`/parts/skills_group/${id}`, values),
+    onSubmit: (values) => {
+      axios
+        .patch(`/parts/skills_group/${id}`, values)
+        .then((res) => store.updateSkillsGroup(res.data))
+        .catch((err) => console.log(err));
+    },
   });
 
   return (
     <div className={cn(className)}>
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
+        <Checkbox {...getFieldProps(formik, "deleted")} />
         <button onClick={() => formik.submitForm()} type="button">
           Save Skills Group {id}
         </button>

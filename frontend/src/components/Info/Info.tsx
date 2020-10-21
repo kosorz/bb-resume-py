@@ -1,6 +1,7 @@
-import * as React from "react";
-import { useFormik } from "formik";
+import React, { useContext } from "react";
 import cn from "classnames";
+import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 
 import Checkbox from "../Checkbox/Checkbox";
 import Input from "../Input/Input";
@@ -9,41 +10,31 @@ import { getFieldProps } from "../../util/fns";
 import axios from "../../util/axios";
 
 import { InfoEditor } from "./Info.typing";
+import { MobxContext } from "../../mobx";
 
-const Info = ({
-  name,
-  resume_id,
-  phone,
-  link,
-  email,
-  location,
-  role,
-  phone_enabled,
-  link_enabled,
-  email_enabled,
-  location_enabled,
-  role_enabled,
-  className,
-}: InfoEditor) => {
+const Info = observer(({ className }: InfoEditor) => {
+  const store = useContext(MobxContext);
+  const { resume_id, ...infoEditorData } = store.resume.info;
+
   const formik = useFormik({
-    initialValues: {
-      name,
-      phone,
-      link,
-      email,
-      location,
-      role,
-      phone_enabled,
-      link_enabled,
-      email_enabled,
-      location_enabled,
-      role_enabled,
-    },
+    initialValues: infoEditorData,
     enableReinitialize: true,
-    onSubmit: (values) => axios.patch(`/parts/${resume_id}/info`, values),
+    onSubmit: (values) =>
+      axios
+        .patch(`/parts/${resume_id}/info`, values)
+        .then((res) => {
+          store.updateInfo(res.data);
+        })
+        .catch((err) => console.log(err)),
   });
 
-  const { values } = formik;
+  const {
+    phone_enabled,
+    link_enabled,
+    email_enabled,
+    location_enabled,
+    role_enabled,
+  } = formik.values;
 
   return (
     <div className={cn(className)}>
@@ -54,22 +45,22 @@ const Info = ({
         <Checkbox {...getFieldProps(formik, "location_enabled")} />
         <Checkbox {...getFieldProps(formik, "role_enabled")} />
         <Input {...getFieldProps(formik, "name")} placeholder="Name" />
-        {values.phone_enabled && (
+        {phone_enabled && (
           <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
         )}
-        {values.link_enabled && (
+        {link_enabled && (
           <Input {...getFieldProps(formik, "link")} placeholder="Link" />
         )}
-        {values.email_enabled && (
+        {email_enabled && (
           <Input {...getFieldProps(formik, "email")} placeholder="Email" />
         )}
-        {values.location_enabled && (
+        {location_enabled && (
           <Input
             {...getFieldProps(formik, "location")}
             placeholder="Location"
           />
         )}
-        {values.role_enabled && (
+        {role_enabled && (
           <Input {...getFieldProps(formik, "role")} placeholder="Role" />
         )}
         <button onClick={() => formik.submitForm()} type="button">
@@ -78,6 +69,6 @@ const Info = ({
       </form>
     </div>
   );
-};
+});
 
 export default Info;

@@ -15,8 +15,7 @@ type ExperienceUnitShape = {
   link_enabled: boolean;
 };
 
-export interface ExperienceUnitEditor
-  extends Omit<ExperienceUnitShape, "deleted"> {
+export interface ExperienceUnitEditor extends ExperienceUnitShape {
   className?: string;
 }
 

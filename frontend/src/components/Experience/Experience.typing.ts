@@ -7,7 +7,7 @@ type ExperienceShape = {
   units: ExperienceUnitShape[];
 };
 
-export interface ExperienceEditor extends Omit<ExperienceShape, "deleted"> {
+export interface ExperienceEditor {
   className?: string;
 }
 

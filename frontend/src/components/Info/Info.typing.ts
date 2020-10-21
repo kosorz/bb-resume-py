@@ -13,7 +13,7 @@ type InfoShape = {
   role_enabled: boolean;
 };
 
-export interface InfoEditor extends InfoShape {
+export interface InfoEditor {
   className?: string;
 }
 

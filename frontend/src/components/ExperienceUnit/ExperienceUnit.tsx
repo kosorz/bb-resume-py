@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import cn from "classnames";
 
@@ -8,44 +8,31 @@ import Checkbox from "../Checkbox/Checkbox";
 import axios from "../../util/axios";
 import { getFieldProps } from "../../util/fns";
 import { ExperienceUnitEditor } from "./ExperienceUnit.typing";
+import { MobxContext } from "../../mobx";
+import { observer } from "mobx-react-lite";
 
-const ExperienceUnit = ({
-  id,
-  title,
-  company_name,
-  description,
-  location,
-  date_start,
-  date_end,
-  link,
-  company_name_enabled,
-  description_enabled,
-  location_enabled,
-  period_enabled,
-  link_enabled,
-  className,
-}: ExperienceUnitEditor) => {
+const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
+  const store = useContext(MobxContext);
+  const { id, className, ...experienceUnitEditorData } = props;
+
   const formik = useFormik({
-    initialValues: {
-      id,
-      title,
-      company_name,
-      description,
-      location,
-      date_start,
-      date_end,
-      link,
-      company_name_enabled,
-      description_enabled,
-      location_enabled,
-      period_enabled,
-      link_enabled,
-    },
+    initialValues: experienceUnitEditorData,
     enableReinitialize: true,
-    onSubmit: (values) => axios.patch(`/parts/experience_unit/${id}`, values),
+    onSubmit: (values) => {
+      axios
+        .patch(`/parts/experience_unit/${id}`, values)
+        .then((res) => store.updateExperienceUnit(res.data))
+        .catch((err) => console.log(err));
+    },
   });
 
-  const { values } = formik;
+  const {
+    company_name_enabled,
+    description_enabled,
+    location_enabled,
+    period_enabled,
+    link_enabled,
+  } = formik.values;
 
   return (
     <div className={cn(className)}>
@@ -56,25 +43,25 @@ const ExperienceUnit = ({
         <Checkbox {...getFieldProps(formik, "period_enabled")} />
         <Checkbox {...getFieldProps(formik, "link_enabled")} />
         <Input {...getFieldProps(formik, "title")} placeholder="Title" />
-        {values.company_name_enabled && (
+        {company_name_enabled && (
           <Input
             {...getFieldProps(formik, "company_name")}
             placeholder="Company Name"
           />
         )}
-        {values.description_enabled && (
+        {description_enabled && (
           <Input
             {...getFieldProps(formik, "description")}
             placeholder="Description"
           />
         )}
-        {values.location_enabled && (
+        {location_enabled && (
           <Input
             {...getFieldProps(formik, "location")}
             placeholder="Location"
           />
         )}
-        {values.period_enabled && (
+        {period_enabled && (
           <>
             <Input
               {...getFieldProps(formik, "date_start")}
@@ -83,15 +70,16 @@ const ExperienceUnit = ({
             <Input {...getFieldProps(formik, "date_end")} placeholder="Today" />
           </>
         )}
-        {values.link_enabled && (
+        {link_enabled && (
           <Input {...getFieldProps(formik, "link")} placeholder="Link" />
         )}
+        <Checkbox {...getFieldProps(formik, "deleted")} />
         <button onClick={() => formik.submitForm()} type="button">
           Save Experience Unit {id}
         </button>
       </form>
     </div>
   );
-};
+});
 
 export default ExperienceUnit;

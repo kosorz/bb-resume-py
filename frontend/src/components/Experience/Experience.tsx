@@ -1,27 +1,39 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import cn from "classnames";
 
 import Input from "../Input/Input";
 import ExperienceUnit from "../ExperienceUnit/ExperienceUnit";
+import Checkbox from "../Checkbox/Checkbox";
 
 import axios from "../../util/axios";
 import { ExperienceEditor } from "./Experience.typing";
 import { getFieldProps } from "../../util/fns";
+import { MobxContext } from "../../mobx";
+import { observer } from "mobx-react-lite";
 
-const Experience = ({ id, title, units, className }: ExperienceEditor) => {
+const Experience = observer(({ className }: ExperienceEditor) => {
+  const store = useContext(MobxContext);
+  const { id, units, ...experienceEditorData } = store.resume.experience!;
+
   const formik = useFormik({
-    initialValues: {
-      title,
-    },
+    initialValues: experienceEditorData,
     enableReinitialize: true,
-    onSubmit: (values) => axios.patch(`/parts/experience/${id}`, values),
+    onSubmit: (values) => {
+      axios
+        .patch(`/parts/experience/${id}`, values)
+        .then((res) => {
+          store.updateExperience(res.data);
+        })
+        .catch((err) => console.log(err));
+    },
   });
 
   return (
     <div className={cn(className)}>
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
+        <Checkbox {...getFieldProps(formik, "deleted")} />
         <button onClick={() => formik.submitForm()} type="button">
           Save Experience
         </button>
@@ -33,6 +45,6 @@ const Experience = ({ id, title, units, className }: ExperienceEditor) => {
         ))}
     </div>
   );
-};
+});
 
 export default Experience;
