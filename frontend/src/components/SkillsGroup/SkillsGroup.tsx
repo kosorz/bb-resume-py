@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import cn from "classnames";
 
 import Input from "../Input/Input";
@@ -9,10 +10,10 @@ import axios from "../../util/axios";
 import { getFieldProps } from "../../util/fns";
 
 import { SkillsGroupEditor } from "./SkillsGroup.typing";
-import { MobxContext } from "../../mobx";
+import { ResumeBubble } from "../../Bubbles/ResumeBubble";
 
-const SkillsGroup = (props: SkillsGroupEditor) => {
-  const store = useContext(MobxContext);
+const SkillsGroup = observer((props: SkillsGroupEditor) => {
+  const resumeBubble = useContext(ResumeBubble);
   const { id, className, ...skillsGroupEditorData } = props;
 
   const formik = useFormik({
@@ -21,13 +22,13 @@ const SkillsGroup = (props: SkillsGroupEditor) => {
     onSubmit: (values) => {
       axios
         .patch(`/parts/skills_group/${id}`, values)
-        .then((res) => store.updateSkillsGroup(res.data))
+        .then((res) => resumeBubble.updateSkillsGroup(res.data))
         .catch((err) => console.log(err));
     },
   });
 
   return (
-    <div className={cn(className)}>
+    <section className={cn(className)}>
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
         <Checkbox {...getFieldProps(formik, "deleted")} />
@@ -35,8 +36,8 @@ const SkillsGroup = (props: SkillsGroupEditor) => {
           Save Skills Group {id}
         </button>
       </form>
-    </div>
+    </section>
   );
-};
+});
 
 export default SkillsGroup;

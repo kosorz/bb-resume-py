@@ -1,9 +1,9 @@
 import React, { createContext, ReactNode } from "react";
 import { useLocalObservable } from "mobx-react-lite";
-import axios from "./util/axios";
-import StoreShape from "./util/mobx.typing";
+import axios from "../util/axios";
+import ResumeBubbleShape from "./ResumeBubble.typing";
 
-let initialState: StoreShape = {
+let initialState: ResumeBubbleShape = {
   resume: {
     title: "",
     id: 0,
@@ -34,9 +34,9 @@ let initialState: StoreShape = {
   updateExperienceUnit: () => {},
 };
 
-export const MobxContext = createContext(initialState);
+export const ResumeBubble = createContext(initialState);
 
-const MobxProvider = ({ children }: { children: ReactNode }) => {
+const BubbleProvider = ({ children }: { children: ReactNode }) => {
   initialState = {
     ...initialState,
     setResume: async () => {
@@ -69,7 +69,9 @@ const MobxProvider = ({ children }: { children: ReactNode }) => {
   };
   const store = useLocalObservable(() => initialState);
 
-  return <MobxContext.Provider value={store}>{children}</MobxContext.Provider>;
+  return (
+    <ResumeBubble.Provider value={store}>{children}</ResumeBubble.Provider>
+  );
 };
 
-export default MobxProvider;
+export default BubbleProvider;

@@ -14,7 +14,6 @@ type ResumeShape = {
 
 export interface ResumeEditor {
   className?: string;
-  editable?: boolean;
 }
 
 export default ResumeShape;

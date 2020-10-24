@@ -5,26 +5,27 @@ import { observer } from "mobx-react-lite";
 import Experience from "../Experience/Experience";
 import Info from "../Info/Info";
 import Skills from "../Skills/Skills";
-import { MobxContext } from "../../mobx";
+import { ResumeBubble } from "../../Bubbles/ResumeBubble";
 import { ResumeEditor } from "./Resume.typing";
 
 import style from "./Resume.module.scss";
 
-const Resume = observer(({ editable = true, className }: ResumeEditor) => {
-  const store = useContext(MobxContext);
+const Resume = observer(({ className }: ResumeEditor) => {
+  const resumeBubble = useContext(ResumeBubble);
 
   useEffect(() => {
-    editable && store.setResume();
-  }, [editable, store]);
+    resumeBubble.setResume();
+  }, [resumeBubble]);
 
   return (
-    <div className={cn(style["Resume"], className)}>
+    <section className={cn(style["Resume"], className)}>
       <Info />
-      {store.resume.skills && !store.resume.skills.deleted && <Skills />}
-      {store.resume.experience && !store.resume.experience.deleted && (
-        <Experience />
+      {resumeBubble.resume.skills && !resumeBubble.resume.skills.deleted && (
+        <Skills />
       )}
-    </div>
+      {resumeBubble.resume.experience &&
+        !resumeBubble.resume.experience.deleted && <Experience />}
+    </section>
   );
 });
 

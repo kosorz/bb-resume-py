@@ -8,11 +8,11 @@ import Checkbox from "../Checkbox/Checkbox";
 import axios from "../../util/axios";
 import { getFieldProps } from "../../util/fns";
 import { ExperienceUnitEditor } from "./ExperienceUnit.typing";
-import { MobxContext } from "../../mobx";
+import { ResumeBubble } from "../../Bubbles/ResumeBubble";
 import { observer } from "mobx-react-lite";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
-  const store = useContext(MobxContext);
+  const resumeBubble = useContext(ResumeBubble);
   const { id, className, ...experienceUnitEditorData } = props;
 
   const formik = useFormik({
@@ -21,7 +21,7 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
     onSubmit: (values) => {
       axios
         .patch(`/parts/experience_unit/${id}`, values)
-        .then((res) => store.updateExperienceUnit(res.data))
+        .then((res) => resumeBubble.updateExperienceUnit(res.data))
         .catch((err) => console.log(err));
     },
   });
@@ -35,7 +35,7 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   } = formik.values;
 
   return (
-    <div className={cn(className)}>
+    <section className={cn(className)}>
       <form>
         <Checkbox {...getFieldProps(formik, "company_name_enabled")} />
         <Checkbox {...getFieldProps(formik, "description_enabled")} />
@@ -67,7 +67,7 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
               {...getFieldProps(formik, "date_start")}
               placeholder="Today"
             />
-            <Input {...getFieldProps(formik, "date_end")} placeholder="Today" />
+            {/* <Input {...getFieldProps(formik, "date_end")} placeholder="Today" /> */}
           </>
         )}
         {link_enabled && (
@@ -78,7 +78,7 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
           Save Experience Unit {id}
         </button>
       </form>
-    </div>
+    </section>
   );
 });
 

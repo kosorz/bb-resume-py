@@ -5,7 +5,7 @@ import SkillsGroupShape from "../components/SkillsGroup/SkillsGroup.typing";
 import ExperienceShape from "../components/Experience/Experience.typing";
 import ExperienceUnitShape from "../components/ExperienceUnit/ExperienceUnit.typing";
 
-type StoreShape = {
+type ResumeBubbleShape = {
   resume: ResumeShape;
   setResume: () => void;
   updateInfo: (data: InfoShape) => void;
@@ -15,4 +15,4 @@ type StoreShape = {
   updateExperienceUnit: (data: ExperienceUnitShape) => void;
 };
 
-export default StoreShape;
+export default ResumeBubbleShape;

@@ -10,10 +10,10 @@ import Checkbox from "../Checkbox/Checkbox";
 import axios from "../../util/axios";
 import { getFieldProps } from "../../util/fns";
 import { SkillsEditor } from "./Skills.typing";
-import { MobxContext } from "../../mobx";
+import { ResumeBubble } from "../../Bubbles/ResumeBubble";
 
 const Skills = observer(({ className }: SkillsEditor) => {
-  const store = React.useContext(MobxContext);
+  const store = React.useContext(ResumeBubble);
   const { id, groups, ...skillsEditorData } = store.resume.skills!;
 
   const formik = useFormik({
@@ -30,7 +30,7 @@ const Skills = observer(({ className }: SkillsEditor) => {
   });
 
   return (
-    <div className={cn(className)}>
+    <section className={cn(className)}>
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
         <Checkbox {...getFieldProps(formik, "deleted")} />
@@ -43,7 +43,7 @@ const Skills = observer(({ className }: SkillsEditor) => {
         .map((gr, i) => (
           <SkillsGroup key={`skills_group_${i}`} {...gr} />
         ))}
-    </div>
+    </section>
   );
 });
 

@@ -9,12 +9,16 @@ import Checkbox from "../Checkbox/Checkbox";
 import axios from "../../util/axios";
 import { ExperienceEditor } from "./Experience.typing";
 import { getFieldProps } from "../../util/fns";
-import { MobxContext } from "../../mobx";
+import { ResumeBubble } from "../../Bubbles/ResumeBubble";
 import { observer } from "mobx-react-lite";
 
 const Experience = observer(({ className }: ExperienceEditor) => {
-  const store = useContext(MobxContext);
-  const { id, units, ...experienceEditorData } = store.resume.experience!;
+  const resumeBubble = useContext(ResumeBubble);
+  const {
+    id,
+    units,
+    ...experienceEditorData
+  } = resumeBubble.resume.experience!;
 
   const formik = useFormik({
     initialValues: experienceEditorData,
@@ -23,14 +27,14 @@ const Experience = observer(({ className }: ExperienceEditor) => {
       axios
         .patch(`/parts/experience/${id}`, values)
         .then((res) => {
-          store.updateExperience(res.data);
+          resumeBubble.updateExperience(res.data);
         })
         .catch((err) => console.log(err));
     },
   });
 
   return (
-    <div className={cn(className)}>
+    <section className={cn(className)}>
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
         <Checkbox {...getFieldProps(formik, "deleted")} />
@@ -43,7 +47,7 @@ const Experience = observer(({ className }: ExperienceEditor) => {
         .map((gr, i) => (
           <ExperienceUnit key={`experience_unit_${i}`} {...gr} />
         ))}
-    </div>
+    </section>
   );
 });
 

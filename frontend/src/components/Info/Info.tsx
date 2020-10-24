@@ -10,11 +10,11 @@ import { getFieldProps } from "../../util/fns";
 import axios from "../../util/axios";
 
 import { InfoEditor } from "./Info.typing";
-import { MobxContext } from "../../mobx";
+import { ResumeBubble } from "../../Bubbles/ResumeBubble";
 
 const Info = observer(({ className }: InfoEditor) => {
-  const store = useContext(MobxContext);
-  const { resume_id, ...infoEditorData } = store.resume.info;
+  const resumeBubble = useContext(ResumeBubble);
+  const { resume_id, ...infoEditorData } = resumeBubble.resume.info;
 
   const formik = useFormik({
     initialValues: infoEditorData,
@@ -23,7 +23,7 @@ const Info = observer(({ className }: InfoEditor) => {
       axios
         .patch(`/parts/${resume_id}/info`, values)
         .then((res) => {
-          store.updateInfo(res.data);
+          resumeBubble.updateInfo(res.data);
         })
         .catch((err) => console.log(err)),
   });
@@ -37,7 +37,7 @@ const Info = observer(({ className }: InfoEditor) => {
   } = formik.values;
 
   return (
-    <div className={cn(className)}>
+    <section className={cn(className)}>
       <form>
         <Checkbox {...getFieldProps(formik, "phone_enabled")} />
         <Checkbox {...getFieldProps(formik, "link_enabled")} />
@@ -63,11 +63,9 @@ const Info = observer(({ className }: InfoEditor) => {
         {role_enabled && (
           <Input {...getFieldProps(formik, "role")} placeholder="Role" />
         )}
-        <button onClick={() => formik.submitForm()} type="button">
-          Save Info
-        </button>
+        <div onClick={() => formik.submitForm()}>Save Info</div>
       </form>
-    </div>
+    </section>
   );
 });
 
