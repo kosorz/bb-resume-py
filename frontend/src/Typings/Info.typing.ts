@@ -13,8 +13,4 @@ type InfoShape = {
   role_enabled: boolean;
 };
 
-export interface InfoEditor {
-  className?: string;
-}
-
 export default InfoShape;

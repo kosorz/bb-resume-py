@@ -1,18 +1,16 @@
 import React, { useContext } from "react";
-import cn from "classnames";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
-import Checkbox from "../Checkbox/Checkbox";
-import Input from "../Input/Input";
+import Checkbox from "./parts/Checkbox";
+import Input from "./parts/Input";
 
-import { getFieldProps } from "../../util/fns";
-import axios from "../../util/axios";
+import { getFieldProps } from "../../../util/fns";
+import axios from "../../../util/axios";
 
-import { InfoEditor } from "./Info.typing";
-import { ResumeBubble } from "../../Bubbles/ResumeBubble";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 
-const Info = observer(({ className }: InfoEditor) => {
+const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume_id, ...infoEditorData } = resumeBubble.resume.info;
 
@@ -37,7 +35,7 @@ const Info = observer(({ className }: InfoEditor) => {
   } = formik.values;
 
   return (
-    <section className={cn(className)}>
+    <section>
       <form>
         <Checkbox {...getFieldProps(formik, "phone_enabled")} />
         <Checkbox {...getFieldProps(formik, "link_enabled")} />

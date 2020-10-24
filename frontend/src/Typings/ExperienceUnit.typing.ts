@@ -15,8 +15,6 @@ type ExperienceUnitShape = {
   link_enabled: boolean;
 };
 
-export interface ExperienceUnitEditor extends ExperienceUnitShape {
-  className?: string;
-}
+export interface ExperienceUnitEditor extends ExperienceUnitShape {}
 
 export default ExperienceUnitShape;

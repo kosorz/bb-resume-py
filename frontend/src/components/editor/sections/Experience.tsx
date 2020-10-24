@@ -1,18 +1,16 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
-import cn from "classnames";
-
-import Input from "../Input/Input";
-import ExperienceUnit from "../ExperienceUnit/ExperienceUnit";
-import Checkbox from "../Checkbox/Checkbox";
-
-import axios from "../../util/axios";
-import { ExperienceEditor } from "./Experience.typing";
-import { getFieldProps } from "../../util/fns";
-import { ResumeBubble } from "../../Bubbles/ResumeBubble";
 import { observer } from "mobx-react-lite";
 
-const Experience = observer(({ className }: ExperienceEditor) => {
+import Input from "./parts/Input";
+import ExperienceUnit from "./ExperienceUnit";
+import Checkbox from "./parts/Checkbox";
+
+import axios from "../../../util/axios";
+import { getFieldProps } from "../../../util/fns";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+
+const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const {
     id,
@@ -34,7 +32,7 @@ const Experience = observer(({ className }: ExperienceEditor) => {
   });
 
   return (
-    <section className={cn(className)}>
+    <section>
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
         <Checkbox {...getFieldProps(formik, "deleted")} />

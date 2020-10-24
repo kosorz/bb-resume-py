@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode } from "react";
 import { useLocalObservable } from "mobx-react-lite";
 import axios from "../util/axios";
-import ResumeBubbleShape from "./ResumeBubble.typing";
+import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
   resume: {

@@ -1,4 +1,4 @@
-import ExperienceUnitShape from "../ExperienceUnit/ExperienceUnit.typing";
+import ExperienceUnitShape from "./ExperienceUnit.typing";
 
 type ExperienceShape = {
   id: number;
@@ -6,9 +6,5 @@ type ExperienceShape = {
   deleted: true;
   units: ExperienceUnitShape[];
 };
-
-export interface ExperienceEditor {
-  className?: string;
-}
 
 export default ExperienceShape;

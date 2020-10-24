@@ -1,7 +1,7 @@
 import React from "react";
 
-import ResumeBubble from "./Bubbles/ResumeBubble";
-import Resume from "./components/Resume/Resume";
+import ResumeBubble from "./bubbles/ResumeBubble";
+import Resume from "./components/editor/Resume";
 
 function App() {
   return (

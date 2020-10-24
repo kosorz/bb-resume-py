@@ -1,16 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import cn from "classnames";
 import { observer } from "mobx-react-lite";
 
-import Experience from "../Experience/Experience";
-import Info from "../Info/Info";
-import Skills from "../Skills/Skills";
-import { ResumeBubble } from "../../Bubbles/ResumeBubble";
-import { ResumeEditor } from "./Resume.typing";
+import Experience from "./sections/Experience";
+import Info from "./sections/Info";
+import Skills from "./sections/Skills";
+import { ResumeBubble } from "../../bubbles/ResumeBubble";
 
-import style from "./Resume.module.scss";
-
-const Resume = observer(({ className }: ResumeEditor) => {
+const Resume = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
 
   useEffect(() => {
@@ -18,7 +14,7 @@ const Resume = observer(({ className }: ResumeEditor) => {
   }, [resumeBubble]);
 
   return (
-    <section className={cn(style["Resume"], className)}>
+    <section>
       <Info />
       {resumeBubble.resume.skills && !resumeBubble.resume.skills.deleted && (
         <Skills />

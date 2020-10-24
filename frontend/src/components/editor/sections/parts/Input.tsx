@@ -1,8 +1,6 @@
 import * as React from "react";
 import { FieldInputProps, FieldMetaProps } from "formik";
 
-import style from "./Input.module.scss";
-
 const Input = (
   props: { placeholder: string } & FieldInputProps<any> & FieldMetaProps<any>
 ) => {
@@ -14,7 +12,7 @@ const Input = (
     error,
     ...rest
   } = props;
-  return <input className={style["input"]} {...rest} />;
+  return <input {...rest} />;
 };
 
 export default Input;

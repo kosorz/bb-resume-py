@@ -1,4 +1,4 @@
-import SkillsGroupShape from "../SkillsGroup/SkillsGroup.typing";
+import SkillsGroupShape from "./SkillsGroup.typing";
 
 type SkillsShape = {
   title: string;
@@ -6,9 +6,5 @@ type SkillsShape = {
   deleted: boolean;
   groups: SkillsGroupShape[];
 };
-
-export interface SkillsEditor {
-  className?: string;
-}
 
 export default SkillsShape;

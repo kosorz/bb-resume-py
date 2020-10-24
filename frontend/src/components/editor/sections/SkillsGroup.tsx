@@ -1,20 +1,19 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
-import cn from "classnames";
 
-import Input from "../Input/Input";
-import Checkbox from "../Checkbox/Checkbox";
+import Input from "./parts/Input";
+import Checkbox from "./parts/Checkbox";
 
-import axios from "../../util/axios";
-import { getFieldProps } from "../../util/fns";
+import axios from "../../../util/axios";
+import { getFieldProps } from "../../../util/fns";
 
-import { SkillsGroupEditor } from "./SkillsGroup.typing";
-import { ResumeBubble } from "../../Bubbles/ResumeBubble";
+import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 
 const SkillsGroup = observer((props: SkillsGroupEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { id, className, ...skillsGroupEditorData } = props;
+  const { id, ...skillsGroupEditorData } = props;
 
   const formik = useFormik({
     initialValues: skillsGroupEditorData,
@@ -28,7 +27,7 @@ const SkillsGroup = observer((props: SkillsGroupEditor) => {
   });
 
   return (
-    <section className={cn(className)}>
+    <section>
       <form>
         <Input {...getFieldProps(formik, "title")} placeholder="Name" />
         <Checkbox {...getFieldProps(formik, "deleted")} />

@@ -1,19 +1,18 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
-import cn from "classnames";
 
-import Input from "../Input/Input";
-import Checkbox from "../Checkbox/Checkbox";
+import Input from "./parts/Input";
+import Checkbox from "./parts/Checkbox";
 
-import axios from "../../util/axios";
-import { getFieldProps } from "../../util/fns";
-import { ExperienceUnitEditor } from "./ExperienceUnit.typing";
-import { ResumeBubble } from "../../Bubbles/ResumeBubble";
+import axios from "../../../util/axios";
+import { getFieldProps } from "../../../util/fns";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { observer } from "mobx-react-lite";
+import { ExperienceUnitEditor } from "../../../typings/ExperienceUnit.typing";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { id, className, ...experienceUnitEditorData } = props;
+  const { id, ...experienceUnitEditorData } = props;
 
   const formik = useFormik({
     initialValues: experienceUnitEditorData,
@@ -35,7 +34,7 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   } = formik.values;
 
   return (
-    <section className={cn(className)}>
+    <section>
       <form>
         <Checkbox {...getFieldProps(formik, "company_name_enabled")} />
         <Checkbox {...getFieldProps(formik, "description_enabled")} />

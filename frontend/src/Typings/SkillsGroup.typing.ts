@@ -5,8 +5,6 @@ type SkillsGroupShape = {
   deleted: true;
 };
 
-export interface SkillsGroupEditor extends SkillsGroupShape {
-  className?: string;
-}
+export interface SkillsGroupEditor extends SkillsGroupShape {}
 
 export default SkillsGroupShape;
