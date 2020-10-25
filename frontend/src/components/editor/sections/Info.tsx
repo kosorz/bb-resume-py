@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -9,14 +9,14 @@ import { getFieldProps } from "../../../util/fns";
 import axios from "../../../util/axios";
 
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { useDebounce } from "../../../util/hooks";
 
 const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
-  const { resume_id, ...infoEditorData } = resumeBubble.resume.info;
+  const { resume_id, ...infoEditorData } = resumeBubble.resume.info!;
 
   const formik = useFormik({
     initialValues: infoEditorData,
-    enableReinitialize: true,
     onSubmit: (values) =>
       axios
         .patch(`/parts/${resume_id}/info`, values)
@@ -25,6 +25,12 @@ const Info = observer(() => {
         })
         .catch((err) => console.log(err)),
   });
+
+  const debouncedValues = useDebounce(formik.values, 2000);
+
+  useEffect(() => {
+    resumeBubble.updateInfo({ ...debouncedValues, resume_id });
+  }, [debouncedValues, resumeBubble, resume_id]);
 
   const {
     phone_enabled,

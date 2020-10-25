@@ -5,6 +5,26 @@ import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
   updatedAt: new Date().getTime(),
+  theme: {
+    colors: {
+      main: "red",
+      secondary: "lightpink",
+    },
+    fontSize: {
+      big: 32,
+      main: 15,
+      small: 12,
+    },
+    fontWeight: {
+      light: "light",
+      normal: "normal",
+      bold: "bold",
+    },
+    paper: {
+      size: "A4",
+      margin: 20,
+    },
+  },
   resume: {
     title: "",
     id: 0,
@@ -12,20 +32,7 @@ let initialState: ResumeBubbleShape = {
     deleted: true,
     skills: undefined,
     experience: undefined,
-    info: {
-      resume_id: 0,
-      name: "",
-      phone: "",
-      link: "",
-      email: "",
-      location: "",
-      role: "",
-      phone_enabled: false,
-      link_enabled: false,
-      email_enabled: false,
-      location_enabled: false,
-      role_enabled: false,
-    },
+    info: undefined,
   },
   setUpdateTime: () => {},
   setResume: () => {},

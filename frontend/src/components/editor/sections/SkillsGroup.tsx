@@ -17,7 +17,6 @@ const SkillsGroup = observer((props: SkillsGroupEditor) => {
 
   const formik = useFormik({
     initialValues: skillsGroupEditorData,
-    enableReinitialize: true,
     onSubmit: (values) => {
       axios
         .patch(`/parts/skills_group/${id}`, values)

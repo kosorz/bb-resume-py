@@ -20,7 +20,6 @@ const Experience = observer(() => {
 
   const formik = useFormik({
     initialValues: experienceEditorData,
-    enableReinitialize: true,
     onSubmit: (values) => {
       axios
         .patch(`/parts/experience/${id}`, values)

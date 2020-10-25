@@ -21,7 +21,7 @@ const Editor = observer(() => {
 
   return (
     <Wrapper>
-      <Info />
+      {resumeBubble.resume.info && <Info />}
       {resumeBubble.resume.skills && !resumeBubble.resume.skills.deleted && (
         <Skills />
       )}

@@ -1,3 +1,5 @@
+import ThemeShape from "./Theme.typing";
+
 type InfoShape = {
   name: string;
   resume_id: number;
@@ -13,6 +15,8 @@ type InfoShape = {
   role_enabled: boolean;
 };
 
-export interface InfoViewer extends InfoShape {}
+export interface InfoViewer extends InfoShape {
+  theme: ThemeShape;
+}
 
 export default InfoShape;

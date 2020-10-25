@@ -1,6 +1,7 @@
 import ExperienceShape from "./Experience.typing";
 import InfoShape from "./Info.typing";
 import SkillsShape from "./Skills.typing";
+import ThemeShape from "./Theme.typing";
 
 type ResumeShape = {
   title: string;
@@ -9,11 +10,12 @@ type ResumeShape = {
   deleted: boolean;
   skills?: SkillsShape;
   experience?: ExperienceShape;
-  info: InfoShape;
+  info?: InfoShape;
 };
 
 export interface ResumeViewer {
   data: ResumeShape;
+  theme: ThemeShape;
   lastEdit: number;
 }
 

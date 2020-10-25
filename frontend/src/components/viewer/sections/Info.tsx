@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "@react-pdf/renderer";
+import { View, Text, StyleSheet } from "@react-pdf/renderer";
 import { InfoViewer } from "../../../typings/Info.typing";
 
 const Info = ({
@@ -14,10 +14,18 @@ const Info = ({
   email_enabled,
   location_enabled,
   role_enabled,
+  theme,
 }: InfoViewer) => {
+  const styles = StyleSheet.create({
+    name: {
+      color: theme.colors.main,
+      fontSize: theme.fontSize.big,
+    },
+  });
+
   return (
     <View>
-      <Text>{name}</Text>
+      <Text style={styles.name}>{name}</Text>
       {phone_enabled && <Text>{phone}</Text>}
       {link_enabled && <Text>{link}</Text>}
       {email_enabled && <Text>{email}</Text>}

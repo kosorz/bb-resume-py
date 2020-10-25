@@ -16,6 +16,7 @@ const Viewer = observer(() => {
         props: {
           updatedAt: resumeBubble.updatedAt,
           data: resumeBubble.resume,
+          theme: resumeBubble.theme,
         },
       }}
     />
