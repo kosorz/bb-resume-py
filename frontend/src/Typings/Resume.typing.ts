@@ -12,4 +12,9 @@ type ResumeShape = {
   info: InfoShape;
 };
 
+export interface ResumeViewer {
+  data: ResumeShape;
+  lastEdit: number;
+}
+
 export default ResumeShape;

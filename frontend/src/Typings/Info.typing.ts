@@ -13,4 +13,6 @@ type InfoShape = {
   role_enabled: boolean;
 };
 
+export interface InfoViewer extends InfoShape {}
+
 export default InfoShape;

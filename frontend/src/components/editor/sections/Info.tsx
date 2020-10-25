@@ -61,7 +61,9 @@ const Info = observer(() => {
         {role_enabled && (
           <Input {...getFieldProps(formik, "role")} placeholder="Role" />
         )}
-        <div onClick={() => formik.submitForm()}>Save Info</div>
+        <button onClick={() => formik.submitForm()} type={"button"}>
+          Save Info
+        </button>
       </form>
     </section>
   );

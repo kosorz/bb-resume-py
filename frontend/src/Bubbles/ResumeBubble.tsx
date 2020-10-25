@@ -4,6 +4,7 @@ import axios from "../util/axios";
 import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
+  updatedAt: new Date().getTime(),
   resume: {
     title: "",
     id: 0,
@@ -26,6 +27,7 @@ let initialState: ResumeBubbleShape = {
       role_enabled: false,
     },
   },
+  setUpdateTime: () => {},
   setResume: () => {},
   updateInfo: () => {},
   updateSkills: () => {},
@@ -39,15 +41,21 @@ export const ResumeBubble = createContext(initialState);
 const BubbleProvider = ({ children }: { children: ReactNode }) => {
   initialState = {
     ...initialState,
+    setUpdateTime: () => {
+      store.updatedAt = new Date().getTime();
+    },
     setResume: async () => {
       const res = await axios.get("/resumes/1");
       store.resume = res.data;
+      store.setUpdateTime();
     },
     updateInfo: (data) => {
       store.resume.info = data;
+      store.setUpdateTime();
     },
     updateSkills: (data) => {
       store.resume.skills = { ...store.resume.skills, ...data };
+      store.setUpdateTime();
     },
     updateSkillsGroup: (data) => {
       if (store.resume.skills) {
@@ -55,9 +63,11 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
           gr.id === data.id ? data : gr
         );
       }
+      store.setUpdateTime();
     },
     updateExperience: (data) => {
       store.resume.experience = { ...store.resume.experience, ...data };
+      store.setUpdateTime();
     },
     updateExperienceUnit: (data) => {
       if (store.resume.experience) {
@@ -65,6 +75,7 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
           u.id === data.id ? data : u
         );
       }
+      store.setUpdateTime();
     },
   };
   const store = useLocalObservable(() => initialState);

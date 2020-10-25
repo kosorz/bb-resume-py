@@ -6,7 +6,9 @@ import ExperienceShape from "./Experience.typing";
 import ExperienceUnitShape from "./ExperienceUnit.typing";
 
 type ResumeBubbleShape = {
+  updatedAt: number;
   resume: ResumeShape;
+  setUpdateTime: () => void;
   setResume: () => void;
   updateInfo: (data: InfoShape) => void;
   updateSkills: (data: SkillsShape) => void;
