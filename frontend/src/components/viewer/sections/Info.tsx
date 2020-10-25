@@ -24,7 +24,6 @@ const Info = ({
       marginHorizontal: theme.paper.space,
       marginVertical: theme.paper.space / 2,
       alignItems: "center",
-      paddingBottom: theme.paper.space / 3,
       // borderBottom: 1,
       // borderColor: theme.colors.secondary,
       color: theme.colors.secondary,
