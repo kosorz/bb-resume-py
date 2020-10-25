@@ -7,22 +7,23 @@ let initialState: ResumeBubbleShape = {
   updatedAt: new Date().getTime(),
   theme: {
     colors: {
-      main: "red",
-      secondary: "lightpink",
+      main: "#000",
+      secondary: "#686868",
     },
     fontSize: {
-      big: 32,
+      big: 42,
+      large: 22,
       main: 15,
       small: 12,
     },
-    fontWeight: {
-      light: "light",
-      normal: "normal",
-      bold: "bold",
+    fontFamily: {
+      light: "Roboto-Light",
+      normal: "Roboto-Regular",
+      bold: "Roboto-Bold",
     },
     paper: {
       size: "A4",
-      margin: 20,
+      space: 50,
     },
   },
   resume: {

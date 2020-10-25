@@ -19,12 +19,16 @@ const PageNavigator = ({
   numPages,
   onPreviousPage,
   onNextPage,
-}: Navigator) => (
-  <Wrapper>
-    {currentPage !== 1 && <div onClick={onPreviousPage}>{"<"}</div>}
-    <PageIndicator>{`Page ${currentPage} / ${numPages}`}</PageIndicator>
-    {currentPage !== numPages && <div onClick={onNextPage}>{">"}</div>}
-  </Wrapper>
-);
+}: Navigator) => {
+  return (
+    numPages && (
+      <Wrapper>
+        {currentPage !== 1 && <div onClick={onPreviousPage}>{"<"}</div>}
+        <PageIndicator>{`Page ${currentPage} / ${numPages}`}</PageIndicator>
+        {currentPage !== numPages && <div onClick={onNextPage}>{">"}</div>}
+      </Wrapper>
+    )
+  );
+};
 
 export default PageNavigator;

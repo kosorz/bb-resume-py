@@ -26,7 +26,7 @@ const Info = observer(() => {
         .catch((err) => console.log(err)),
   });
 
-  const debouncedValues = useDebounce(formik.values, 2000);
+  const debouncedValues = useDebounce(formik.values, 1000);
 
   useEffect(() => {
     resumeBubble.updateInfo({ ...debouncedValues, resume_id });

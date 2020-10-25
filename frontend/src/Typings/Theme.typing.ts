@@ -6,16 +6,17 @@ type ThemeShape = {
   fontSize: {
     small: 10 | 11 | 12;
     main: 13 | 14 | 15;
-    big: 30 | 32 | 34;
+    large: 24 | 22 | 18;
+    big: 34 | 38 | 42;
   };
-  fontWeight: {
-    light: "thin" | "ultralight" | "extralight" | "light";
-    normal: "normal" | "medium";
-    bold: "semibold" | "bold" | "ultrabold" | "extrabold";
+  fontFamily: {
+    light: "Roboto-Light";
+    normal: "Roboto-Regular";
+    bold: "Roboto-Bold";
   };
   paper: {
     size: "A4";
-    margin: 20 | 25 | 30;
+    space: 40 | 50 | 60;
   };
 };
 

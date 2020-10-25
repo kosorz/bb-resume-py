@@ -1,10 +1,40 @@
 import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
-import { pdf } from "@react-pdf/renderer";
+import { pdf, Font } from "@react-pdf/renderer";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
 import PageNavigator from "./PageNavigator";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+
+//@ts-ignore
+import RobotoBold from "./fonts/Roboto-Bold.ttf";
+//@ts-ignore
+import RobotoLight from "./fonts/Roboto-Light.ttf";
+//@ts-ignore
+import RobotoRegular from "./fonts/Roboto-Regular.ttf";
+
+Font.register({
+  family: "Roboto-Bold",
+  format: "truetype",
+  src: RobotoBold,
+});
+
+Font.register({
+  family: "Roboto-Light",
+  format: "truetype",
+  src: RobotoLight,
+});
+
+Font.register({
+  family: "Roboto-Regular",
+  format: "truetype",
+  src: RobotoRegular,
+});
+
+Font.registerEmojiSource({
+  format: "png",
+  url: "https://twemoji.maxcdn.com/2/72x72/",
+});
 
 const Wrapper = styled.div`
   flex: 1;
@@ -19,24 +49,9 @@ const DocumentWrapper = styled.div`
   padding: 1em;
   display: flex;
   z-index: 500;
+  min-height: 800px;
   align-items: center;
   justify-content: center;
-`;
-
-const Message = styled.div`
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  z-index: 1000;
-  position: absolute;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  transition: all 1s;
-  opacity: ${(props) => (props.active ? 1 : 0)};
-  pointer-events: ${(props) => (props.active ? "all" : "none")};
 `;
 
 const PDFViewer = (props) => {
@@ -88,7 +103,7 @@ const PDFViewer = (props) => {
     setState((prevState) => ({
       ...prevState,
       numPages,
-      currentPage: Math.min(currentPage, numPages),
+      currentPage: Math.min(currentPage),
     }));
   };
 
@@ -108,10 +123,6 @@ const PDFViewer = (props) => {
 
   return (
     <Wrapper>
-      <Message active={state.loading}>Rendering PDF...</Message>
-      <Message active={!state.loading && !props.document}>
-        You are not rendering a valid document
-      </Message>
       <DocumentWrapper>
         <Document
           file={state.document}

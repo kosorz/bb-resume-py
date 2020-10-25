@@ -7,7 +7,8 @@ const Resume = ({ data, theme }: ResumeViewer) => {
   const styles = StyleSheet.create({
     page: {
       backgroundColor: "#fff",
-      margin: theme.paper.margin,
+      fontFamily: theme.fontFamily.bold,
+      fontSize: theme.fontSize.small,
     },
   });
 
