@@ -23,7 +23,7 @@ let initialState: ResumeBubbleShape = {
     },
     paper: {
       size: "A4",
-      space: 50,
+      space: 40,
     },
   },
   resume: {

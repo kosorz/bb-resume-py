@@ -23,6 +23,7 @@ const Info = ({
       justifyContent: "space-between",
       marginHorizontal: theme.paper.space,
       marginVertical: theme.paper.space / 2,
+      marginBottom: theme.paper.space / 3,
       alignItems: "center",
       // borderBottom: 1,
       // borderColor: theme.colors.secondary,
