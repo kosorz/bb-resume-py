@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Document, Page } from "@react-pdf/renderer";
 
 import Info from "./sections/Info";
+import Skills from "./sections/Skills";
 import Experience from "./sections/Experience";
 import TwoColumns from "./sections/parts/TwoColumns";
 
@@ -22,11 +23,17 @@ const Resume = ({ data, theme }: ResumeViewer) => {
         {data.info && <Info {...data.info} theme={theme} />}
         <TwoColumns
           leftChildren={[
-            data.experience && (
+            (data.experience && !data.experience.deleted && (
               <Experience theme={theme} {...data.experience} />
-            ),
+            )) ||
+              undefined,
           ]}
-          rightChildren={[]}
+          rightChildren={[
+            (data.skills && !data.skills.deleted && (
+              <Skills {...data.skills} theme={theme} />
+            )) ||
+              undefined,
+          ]}
           theme={theme}
         />
       </Page>

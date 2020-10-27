@@ -23,8 +23,8 @@ const TwoColumns = ({
     },
     rightColumn: {
       flex: 40,
-      marginLeft: theme.paper.space / 2,
       display: "flex",
+      paddingLeft: theme.paper.space / 2,
     },
   });
 

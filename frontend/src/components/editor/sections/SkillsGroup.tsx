@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -10,6 +10,7 @@ import { getFieldProps } from "../../../util/fns";
 
 import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { useDebounce } from "../../../util/hooks";
 
 const SkillsGroup = observer((props: SkillsGroupEditor) => {
   const resumeBubble = useContext(ResumeBubble);
@@ -24,6 +25,12 @@ const SkillsGroup = observer((props: SkillsGroupEditor) => {
         .catch((err) => console.log(err));
     },
   });
+
+  const debouncedValues = useDebounce(formik.values, 1000);
+
+  useEffect(() => {
+    resumeBubble.updateSkillsGroup({ ...debouncedValues, id });
+  }, [debouncedValues, resumeBubble, id]);
 
   return (
     <section>

@@ -7,15 +7,15 @@ const Data = ({ value, style, type }: DataViewer) => {
   const getEmoji = (type: string) => {
     switch (type) {
       case "link":
-        return { emoji: "🌐", fallback: "www.example.com" };
+        return { emoji: " 🌐 ", fallback: "www.example.com" };
       case "email":
-        return { emoji: "✉️", fallback: "john@doe.com" };
+        return { emoji: " ✉️ ", fallback: "john@doe.com" };
       case "location":
-        return { emoji: "📍", fallback: "Somewhere" };
+        return { emoji: " 📍", fallback: "Somewhere" };
       case "date":
-        return { emoji: "📅", fallback: "00/0000" };
+        return { emoji: " 📅 ", fallback: "00/0000" };
       default:
-        return { emoji: "📞", fallback: "+00 0000000" };
+        return { emoji: " 📞 ", fallback: "+00 0000000" };
     }
   };
 
@@ -23,7 +23,8 @@ const Data = ({ value, style, type }: DataViewer) => {
 
   return (
     <Text style={style}>
-      {config.emoji} {value || config.fallback}
+      {config.emoji}
+      {value || config.fallback}
     </Text>
   );
 };

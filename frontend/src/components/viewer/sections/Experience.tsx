@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "@react-pdf/renderer";
 
-import SectionHeader from "./parts/SectionHeader";
+import SectionHeadline from "./parts/SectionHeadline";
 import ExperienceUnit from "./ExperienceUnit";
 
 import { ExperienceViewer } from "../../../typings/Experience.typing";
@@ -9,7 +9,7 @@ import { ExperienceViewer } from "../../../typings/Experience.typing";
 const Experience = ({ title, units, theme }: ExperienceViewer) => {
   return (
     <View wrap={true}>
-      <SectionHeader text={title} theme={theme} />
+      <SectionHeadline text={title} theme={theme} fallback={"experience"} />
       <View>
         {units
           .filter((u) => !u.deleted)

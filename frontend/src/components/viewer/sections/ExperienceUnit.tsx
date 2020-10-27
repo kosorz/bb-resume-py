@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text } from "@react-pdf/renderer";
 import { DateTime } from "luxon";
 
+import SubSectionHeadline from "./parts/SubSectionHeadline";
 import Data from "./parts/Data";
 
 import { ExperienceUnitViewer } from "../../../typings/ExperienceUnit.typing";
@@ -25,11 +26,6 @@ const ExperienceUnit = ({
     experienceUnit: {
       marginBottom: theme.paper.space / 4,
     },
-    title: {
-      fontFamily: theme.fontFamily.medium,
-      fontSize: theme.fontSize.medium,
-      marginBottom: theme.paper.space / 15,
-    },
     companyName: {
       fontFamily: theme.fontFamily.black,
       marginBottom: theme.paper.space / 20,
@@ -50,20 +46,22 @@ const ExperienceUnit = ({
 
   return (
     <View style={styles.experienceUnit} wrap={false}>
-      <Text style={styles.title}>{title || "TITLE"}</Text>
+      <SubSectionHeadline text={title} fallback={"Title"} theme={theme} />
       {company_name_enabled && (
         <Text style={styles.companyName}>{company_name || "COMPANY NAME"}</Text>
       )}
       <View style={styles.timeAndGeo}>
-        <Data
-          type={"date"}
-          value={
-            DateTime.fromISO(date_start).toFormat("MM/yyyy") +
-            (date_end
-              ? " - " + DateTime.fromISO(date_end).toFormat("MM/yyyy")
-              : "")
-          }
-        />
+        {period_enabled && (
+          <Data
+            type={"date"}
+            value={
+              DateTime.fromISO(date_start).toFormat("MM/yyyy") +
+              (date_end
+                ? " - " + DateTime.fromISO(date_end).toFormat("MM/yyyy")
+                : "")
+            }
+          />
+        )}
         {location_enabled && <Data type="location" value={location} />}
       </View>
       {link_enabled && <Data type="link" style={styles.info} value={link} />}

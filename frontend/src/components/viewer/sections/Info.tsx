@@ -27,8 +27,6 @@ const Info = ({
       marginVertical: theme.paper.space / 2,
       marginBottom: theme.paper.space / 3,
       alignItems: "center",
-      // borderBottom: 1,
-      // borderColor: theme.colors.secondary,
       color: theme.colors.secondary,
     },
     rest: {

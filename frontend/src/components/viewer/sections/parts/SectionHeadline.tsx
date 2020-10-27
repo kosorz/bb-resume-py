@@ -1,9 +1,9 @@
 import React from "react";
 import { Text, StyleSheet } from "@react-pdf/renderer";
 
-import { SectionHeaderViewer } from "../../../../typings/SectionHeader.typing";
+import { SectionHeadlineViewer } from "../../../../typings/SectionHeadline.typing";
 
-const SectionHeader = ({ text, theme }: SectionHeaderViewer) => {
+const SectionHeadline = ({ text, fallback, theme }: SectionHeadlineViewer) => {
   const styles = StyleSheet.create({
     text: {
       fontSize: theme.fontSize.large,
@@ -14,9 +14,7 @@ const SectionHeader = ({ text, theme }: SectionHeaderViewer) => {
     },
   });
 
-  return (
-    <Text style={styles.text}>{(text || "experience").toUpperCase()}</Text>
-  );
+  return <Text style={styles.text}>{(text || fallback).toUpperCase()}</Text>;
 };
 
-export default SectionHeader;
+export default SectionHeadline;

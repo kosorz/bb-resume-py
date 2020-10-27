@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -9,10 +9,11 @@ import SkillsGroup from "./SkillsGroup";
 import axios from "../../../util/axios";
 import { getFieldProps } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { useDebounce } from "../../../util/hooks";
 
 const Skills = observer(() => {
-  const store = React.useContext(ResumeBubble);
-  const { id, groups, ...skillsEditorData } = store.resume.skills!;
+  const resumeBubble = React.useContext(ResumeBubble);
+  const { id, groups, ...skillsEditorData } = resumeBubble.resume.skills!;
 
   const formik = useFormik({
     initialValues: skillsEditorData,
@@ -20,11 +21,17 @@ const Skills = observer(() => {
       axios
         .patch(`/parts/skills/${id}`, values)
         .then((res) => {
-          store.updateSkills(res.data);
+          resumeBubble.updateSkills(res.data);
         })
         .catch((err) => console.log(err));
     },
   });
+
+  const debouncedValues = useDebounce(formik.values, 1000);
+
+  useEffect(() => {
+    resumeBubble.updateSkills({ ...debouncedValues, id, groups });
+  }, [debouncedValues, resumeBubble, id, groups]);
 
   return (
     <section>
