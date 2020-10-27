@@ -2,8 +2,8 @@ import React from "react";
 import { StyleSheet, Document, Page } from "@react-pdf/renderer";
 
 import Info from "./sections/Info";
+import Experience from "./sections/Experience";
 import TwoColumns from "./sections/parts/TwoColumns";
-import SectionHeader from "./sections/parts/SectionHeader";
 
 import { ResumeViewer } from "../../typings/Resume.typing";
 
@@ -21,8 +21,12 @@ const Resume = ({ data, theme }: ResumeViewer) => {
       <Page size="A4" style={styles.page}>
         {data.info && <Info {...data.info} theme={theme} />}
         <TwoColumns
-          leftChildren={[<SectionHeader theme={theme} text={"experience"} />]}
-          rightChildren={[<SectionHeader theme={theme} text={"skills"} />]}
+          leftChildren={[
+            data.experience && (
+              <Experience theme={theme} {...data.experience} />
+            ),
+          ]}
+          rightChildren={[]}
           theme={theme}
         />
       </Page>

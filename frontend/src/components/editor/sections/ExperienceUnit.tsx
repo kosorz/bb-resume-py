@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useFormik } from "formik";
 
 import Input from "./parts/Input";
@@ -9,6 +9,7 @@ import { getFieldProps } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { observer } from "mobx-react-lite";
 import { ExperienceUnitEditor } from "../../../typings/ExperienceUnit.typing";
+import { useDebounce } from "../../../util/hooks";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const resumeBubble = useContext(ResumeBubble);
@@ -23,6 +24,12 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
         .catch((err) => console.log(err));
     },
   });
+
+  const debouncedValues = useDebounce(formik.values, 1000);
+
+  useEffect(() => {
+    resumeBubble.updateExperienceUnit({ ...debouncedValues, id });
+  }, [debouncedValues, resumeBubble, id]);
 
   const {
     company_name_enabled,

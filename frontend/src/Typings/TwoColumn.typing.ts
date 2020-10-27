@@ -1,8 +1,9 @@
 import ThemeShape from "./Theme.typing";
+import { ReactElement } from "react";
 
 type TwoColumnShape = {
-  leftChildren: any[];
-  rightChildren: any[];
+  leftChildren: (ReactElement | undefined)[];
+  rightChildren: (ReactElement | undefined)[];
 };
 
 export interface TwoColumnViewer extends TwoColumnShape {

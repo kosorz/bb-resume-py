@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -9,6 +9,7 @@ import Checkbox from "./parts/Checkbox";
 import axios from "../../../util/axios";
 import { getFieldProps } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { useDebounce } from "../../../util/hooks";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -29,6 +30,12 @@ const Experience = observer(() => {
         .catch((err) => console.log(err));
     },
   });
+
+  const debouncedValues = useDebounce(formik.values, 1000);
+
+  useEffect(() => {
+    resumeBubble.updateExperience({ ...debouncedValues, id, units });
+  }, [debouncedValues, resumeBubble, id, units]);
 
   return (
     <section>

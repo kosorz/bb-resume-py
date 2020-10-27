@@ -13,13 +13,16 @@ let initialState: ResumeBubbleShape = {
     fontSize: {
       big: 42,
       large: 22,
-      main: 15,
-      small: 12,
+      medium: 17,
+      main: 13,
+      small: 11,
     },
     fontFamily: {
       light: "Roboto-Light",
       normal: "Roboto-Regular",
+      medium: "Roboto-Medium",
       bold: "Roboto-Bold",
+      black: "Roboto-Black",
     },
     paper: {
       size: "A4",
@@ -82,8 +85,8 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.resume.experience.units = store.resume.experience.units.map((u) =>
           u.id === data.id ? data : u
         );
+        store.setUpdateTime();
       }
-      store.setUpdateTime();
     },
   };
   const store = useLocalObservable(() => initialState);

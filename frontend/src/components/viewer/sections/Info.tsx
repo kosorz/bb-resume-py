@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import { InfoViewer } from "../../../typings/Info.typing";
 
+import Data from "./parts/Data";
+
 const Info = ({
   name,
   phone,
@@ -70,22 +72,18 @@ const Info = ({
         </View>
         <View style={styles.contactInfo}>
           {phone_enabled && (
-            // eslint-disable-next-line
-            <Text style={styles.contact}>📞 {phone}</Text>
+            <Data type="phone" style={styles.contact} value={phone} />
           )}
           {link_enabled && (
-            // eslint-disable-next-line
-            <Text style={styles.contact}>🌐 {link}</Text>
+            <Data type="link" style={styles.contact} value={link} />
           )}
         </View>
         <View style={styles.contactInfo}>
           {email_enabled && (
-            // eslint-disable-next-line
-            <Text style={styles.contact}>✉️ {email}</Text>
+            <Data type="email" style={styles.contact} value={email} />
           )}
           {location_enabled && (
-            // eslint-disable-next-line
-            <Text style={styles.contact}>📍 {location}</Text>
+            <Data type="location" style={styles.contact} value={location} />
           )}
         </View>
       </View>

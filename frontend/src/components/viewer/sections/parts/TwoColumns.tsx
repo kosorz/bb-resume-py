@@ -1,5 +1,6 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
+
 import { TwoColumnViewer } from "../../../../typings/TwoColumn.typing";
 
 const TwoColumns = ({
@@ -27,10 +28,22 @@ const TwoColumns = ({
     },
   });
 
+  const renderWithKeys = (chs: (ReactElement | undefined)[], side: string) => {
+    return chs.map((ch, i) => {
+      if (!ch) return null;
+
+      return <React.Fragment key={`${side}-child-${i}`}>{ch}</React.Fragment>;
+    });
+  };
+
   return (
     <View style={styles.twoColumn}>
-      <View style={styles.leftColumn}>{leftChildren}</View>
-      <View style={styles.rightColumn}>{rightChildren}</View>
+      <View style={styles.leftColumn}>
+        {renderWithKeys(leftChildren, "left")}
+      </View>
+      <View style={styles.rightColumn}>
+        {renderWithKeys(rightChildren, "right")}
+      </View>
     </View>
   );
 };

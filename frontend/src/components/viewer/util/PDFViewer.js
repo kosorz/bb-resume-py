@@ -12,24 +12,25 @@ import RobotoBold from "./fonts/Roboto-Bold.ttf";
 import RobotoLight from "./fonts/Roboto-Light.ttf";
 //@ts-ignore
 import RobotoRegular from "./fonts/Roboto-Regular.ttf";
+//@ts-ignore
+import RobotoMedium from "./fonts/Roboto-Medium.ttf";
+//@ts-ignore
+import RobotoBlack from "./fonts/Roboto-Black.ttf";
 
-Font.register({
-  family: "Roboto-Bold",
-  format: "truetype",
-  src: RobotoBold,
-});
+const fonts = [
+  { family: "Roboto-Light", src: RobotoLight },
+  { family: "Roboto-Regular", src: RobotoRegular },
+  { family: "Roboto-Medium", src: RobotoMedium },
+  { family: "Roboto-Bold", src: RobotoBold },
+  { family: "Roboto-Black", src: RobotoBlack },
+];
 
-Font.register({
-  family: "Roboto-Light",
-  format: "truetype",
-  src: RobotoLight,
-});
-
-Font.register({
-  family: "Roboto-Regular",
-  format: "truetype",
-  src: RobotoRegular,
-});
+fonts.map((f) =>
+  Font.register({
+    ...f,
+    format: "truetype",
+  })
+);
 
 Font.registerEmojiSource({
   format: "png",
