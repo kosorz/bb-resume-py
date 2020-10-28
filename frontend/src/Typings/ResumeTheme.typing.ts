@@ -1,4 +1,4 @@
-type ThemeShape = {
+type ResumeThemeShape = {
   colors: {
     main: string;
     secondary: string;
@@ -23,4 +23,4 @@ type ThemeShape = {
   };
 };
 
-export default ThemeShape;
+export default ResumeThemeShape;

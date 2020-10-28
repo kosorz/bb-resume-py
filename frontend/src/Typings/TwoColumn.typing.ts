@@ -1,4 +1,4 @@
-import ThemeShape from "./Theme.typing";
+import ResumeThemeShape from "./ResumeTheme.typing";
 import { ReactElement } from "react";
 
 type TwoColumnShape = {
@@ -7,7 +7,7 @@ type TwoColumnShape = {
 };
 
 export interface TwoColumnViewer extends TwoColumnShape {
-  theme: ThemeShape;
+  theme: ResumeThemeShape;
 }
 
 export default TwoColumnShape;

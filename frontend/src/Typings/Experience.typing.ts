@@ -1,5 +1,5 @@
 import ExperienceUnitShape from "./ExperienceUnit.typing";
-import ThemeShape from "./Theme.typing";
+import ResumeThemeShape from "./ResumeTheme.typing";
 
 type ExperienceShape = {
   id: number;
@@ -10,7 +10,7 @@ type ExperienceShape = {
 
 export interface ExperienceViewer
   extends Omit<ExperienceShape, "deleted" | "id"> {
-  theme: ThemeShape;
+  theme: ResumeThemeShape;
 }
 
 export default ExperienceShape;

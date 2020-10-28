@@ -1,4 +1,4 @@
-import ThemeShape from "./Theme.typing";
+import ResumeThemeShape from "./ResumeTheme.typing";
 
 type SkillsGroupShape = {
   title: string;
@@ -11,7 +11,7 @@ export interface SkillsGroupEditor extends SkillsGroupShape {}
 
 export interface SkillsGroupViewer
   extends Omit<SkillsGroupShape, "deleted" | "id"> {
-  theme: ThemeShape;
+  theme: ResumeThemeShape;
 }
 
 export default SkillsGroupShape;

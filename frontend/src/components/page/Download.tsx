@@ -7,16 +7,24 @@ const Wrapper = styled.div`
   bottom: 20px;
 `;
 
-const Download = ({ url }: { url: string }) => {
+const Download = ({
+  url,
+  fileName,
+  label,
+}: {
+  url: string;
+  fileName: string;
+  label: string;
+}) => {
   return (
     <Wrapper>
       <a
-        download={"document.pdf"}
+        download={fileName}
         href={url}
         target={"_blank"}
         rel="noopener noreferrer"
       >
-        Download Free
+        {label}
       </a>
     </Wrapper>
   );

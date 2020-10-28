@@ -1,4 +1,4 @@
-import ThemeShape from "./Theme.typing";
+import ResumeThemeShape from "./ResumeTheme.typing";
 
 type SubSectionHeadlineShape = {
   text: string;
@@ -6,7 +6,7 @@ type SubSectionHeadlineShape = {
 };
 
 export interface SubSectionHeadlineViewer extends SubSectionHeadlineShape {
-  theme: ThemeShape;
+  theme: ResumeThemeShape;
 }
 
 export default SubSectionHeadlineShape;

@@ -1,4 +1,4 @@
-import ThemeShape from "./Theme.typing";
+import ResumeThemeShape from "./ResumeTheme.typing";
 
 type SectionHeadlineShape = {
   text: string;
@@ -6,7 +6,7 @@ type SectionHeadlineShape = {
 };
 
 export interface SectionHeadlineViewer extends SectionHeadlineShape {
-  theme: ThemeShape;
+  theme: ResumeThemeShape;
 }
 
 export default SectionHeadlineShape;
