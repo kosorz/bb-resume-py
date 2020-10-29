@@ -8,9 +8,9 @@ import Download from "./components/page/Download";
 
 import theme from "./styled/theme";
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 `;
 
 function App() {

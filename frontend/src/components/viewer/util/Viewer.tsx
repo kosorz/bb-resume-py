@@ -10,25 +10,12 @@ import Resume from "../Resume";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import Navigator from "../../../typings/PageNavigator.typing";
 import loadFonts from "./fonts/fonts-loader";
+import media from "../../../styled/media";
 
 loadFonts();
 
-const Wrapper = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-`;
-
 const DocumentWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  height: 100%;
-`;
-
-const StyledPage = styled(Page)`
-  width: 100%;
+  color: rgb(248, 249, 250);
 `;
 
 const PDFViewer = (props: {
@@ -108,14 +95,14 @@ const PDFViewer = (props: {
   };
 
   return (
-    <Wrapper>
+    <>
       <DocumentWrapper>
         <Document
           file={state.document}
           onLoadSuccess={onDocumentLoad}
           {...props}
         >
-          <StyledPage renderMode="svg" pageNumber={state.currentPage} />
+          <Page pageNumber={state.currentPage} />
         </Document>
       </DocumentWrapper>
       {state.numPages && (
@@ -126,7 +113,7 @@ const PDFViewer = (props: {
           onPreviousPage={onPreviousPage}
         />
       )}
-    </Wrapper>
+    </>
   );
 };
 
@@ -157,22 +144,43 @@ const PageNavigator = ({
   ) : null;
 };
 
+const Wrapper = styled.section`
+  width: 100%;
+  overflow: hidden;
+  flex: 45%;
+  box-sizing: border-box;
+  padding: 20px;
+  align-self: center;
+  text-align: center;
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  ${media.tablet`
+    padding: 0;
+  `}
+`;
+
 const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
   const resumeBubble = useContext(ResumeBubble);
 
   return (
-    <PDFViewer
-      onRenderError={() => console.log("error")}
-      onUrlChange={onUrlChange}
-      document={{
-        ...Resume,
-        props: {
-          updatedAt: resumeBubble.updatedAt,
-          data: resumeBubble.resume,
-          theme: resumeBubble.theme,
-        },
-      }}
-    />
+    <Wrapper>
+      <PDFViewer
+        onRenderError={() => console.log("error")}
+        onUrlChange={onUrlChange}
+        document={{
+          ...Resume,
+          props: {
+            updatedAt: resumeBubble.updatedAt,
+            data: resumeBubble.resume,
+            theme: resumeBubble.theme,
+          },
+        }}
+      />
+    </Wrapper>
   );
 });
 

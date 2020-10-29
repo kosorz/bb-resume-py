@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
+  flex: 100%;
 `;
 
 const Download = ({

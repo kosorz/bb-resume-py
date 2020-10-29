@@ -6,10 +6,15 @@ import Experience from "./sections/Experience";
 import Info from "./sections/Info";
 import Skills from "./sections/Skills";
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
+import media from "../../styled/media";
 
 const Wrapper = styled.section`
-  flex: 50%;
-  flex-grow: 0;
+  flex: 55%;
+  display: flex;
+  flex-direction: column;
+  ${media.tablet`
+    display: none;
+  `}
 `;
 
 const Editor = observer(() => {

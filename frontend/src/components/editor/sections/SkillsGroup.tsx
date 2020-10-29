@@ -1,47 +1,38 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
 import Input from "./parts/Input";
 import Checkbox from "./parts/Checkbox";
+import SubForm from "./parts/SubForm";
 
-import axios from "../../../util/axios";
-import { getFieldProps } from "../../../util/fns";
+import { getFieldProps, saveChangedValues } from "../../../util/fns";
 
 import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import { useDebounce } from "../../../util/hooks";
+import { useFormikAutoSave } from "../../../util/hooks";
 
 const SkillsGroup = observer((props: SkillsGroupEditor) => {
   const resumeBubble = useContext(ResumeBubble);
   const { id, ...skillsGroupEditorData } = props;
-
   const formik = useFormik({
     initialValues: skillsGroupEditorData,
     onSubmit: (values) => {
-      axios
-        .patch(`/parts/skills_group/${id}`, values)
-        .then((res) => resumeBubble.updateSkillsGroup(res.data))
-        .catch((err) => console.log(err));
+      saveChangedValues(
+        values,
+        skillsGroupEditorData,
+        `/parts/skills_group/${id}`,
+        resumeBubble.updateSkillsGroup
+      );
     },
   });
-
-  const debouncedValues = useDebounce(formik.values, 1000);
-
-  useEffect(() => {
-    resumeBubble.updateSkillsGroup({ ...debouncedValues, id });
-  }, [debouncedValues, resumeBubble, id]);
+  useFormikAutoSave(formik);
 
   return (
-    <section>
-      <form>
-        <Input {...getFieldProps(formik, "title")} placeholder="Name" />
-        <Checkbox {...getFieldProps(formik, "deleted")} />
-        <button onClick={() => formik.submitForm()} type="button">
-          Save Skills Group {id}
-        </button>
-      </form>
-    </section>
+    <SubForm>
+      <Input {...getFieldProps(formik, "title")} placeholder="Name" />
+      <Checkbox {...getFieldProps(formik, "deleted")} />
+    </SubForm>
   );
 });
 

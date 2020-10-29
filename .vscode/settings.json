@@ -19,11 +19,15 @@
   "gitlens.views.fileHistory.location": "gitlens",
   "gitlens.views.lineHistory.location": "gitlens",
   "gitlens.views.compare.location": "gitlens",
+  "editor.fontLigatures": true,
   "gitlens.views.search.location": "gitlens",
   "editor.suggestSelection": "first",
   "editor.fontFamily": "Jetbrains Mono, Menlo, Monaco, 'Courier New'",
   "window.zoomLevel": 0,
   "gitlens.views.compare.files.layout": "tree",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.cursorStyle": "line",
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },

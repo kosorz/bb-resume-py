@@ -1,15 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 
 import Input from "./parts/Input";
 import Checkbox from "./parts/Checkbox";
+import SubForm from "./parts/SubForm";
 
-import axios from "../../../util/axios";
-import { getFieldProps } from "../../../util/fns";
+import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { observer } from "mobx-react-lite";
 import { ExperienceUnitEditor } from "../../../typings/ExperienceUnit.typing";
-import { useDebounce } from "../../../util/hooks";
+import { useFormikAutoSave } from "../../../util/hooks";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const resumeBubble = useContext(ResumeBubble);
@@ -18,18 +18,15 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const formik = useFormik({
     initialValues: experienceUnitEditorData,
     onSubmit: (values) => {
-      axios
-        .patch(`/parts/experience_unit/${id}`, values)
-        .then((res) => resumeBubble.updateExperienceUnit(res.data))
-        .catch((err) => console.log(err));
+      saveChangedValues(
+        values,
+        experienceUnitEditorData,
+        `/parts/experience_unit/${id}`,
+        resumeBubble.updateExperienceUnit
+      );
     },
   });
-
-  const debouncedValues = useDebounce(formik.values, 1000);
-
-  useEffect(() => {
-    resumeBubble.updateExperienceUnit({ ...debouncedValues, id });
-  }, [debouncedValues, resumeBubble, id]);
+  useFormikAutoSave(formik);
 
   const {
     company_name_enabled,
@@ -40,50 +37,39 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   } = formik.values;
 
   return (
-    <section>
-      <form>
-        <Checkbox {...getFieldProps(formik, "company_name_enabled")} />
-        <Checkbox {...getFieldProps(formik, "description_enabled")} />
-        <Checkbox {...getFieldProps(formik, "location_enabled")} />
-        <Checkbox {...getFieldProps(formik, "period_enabled")} />
-        <Checkbox {...getFieldProps(formik, "link_enabled")} />
-        <Input {...getFieldProps(formik, "title")} placeholder="Title" />
-        {company_name_enabled && (
-          <Input
-            {...getFieldProps(formik, "company_name")}
-            placeholder="Company Name"
-          />
-        )}
-        {description_enabled && (
-          <Input
-            {...getFieldProps(formik, "description")}
-            placeholder="Description"
-          />
-        )}
-        {location_enabled && (
-          <Input
-            {...getFieldProps(formik, "location")}
-            placeholder="Location"
-          />
-        )}
-        {period_enabled && (
-          <>
-            <Input
-              {...getFieldProps(formik, "date_start")}
-              placeholder="Today"
-            />
-            {/* <Input {...getFieldProps(formik, "date_end")} placeholder="Today" /> */}
-          </>
-        )}
-        {link_enabled && (
-          <Input {...getFieldProps(formik, "link")} placeholder="Link" />
-        )}
-        <Checkbox {...getFieldProps(formik, "deleted")} />
-        <button onClick={() => formik.submitForm()} type="button">
-          Save Experience Unit {id}
-        </button>
-      </form>
-    </section>
+    <SubForm>
+      <Checkbox {...getFieldProps(formik, "company_name_enabled")} />
+      <Checkbox {...getFieldProps(formik, "description_enabled")} />
+      <Checkbox {...getFieldProps(formik, "location_enabled")} />
+      <Checkbox {...getFieldProps(formik, "period_enabled")} />
+      <Checkbox {...getFieldProps(formik, "link_enabled")} />
+      <Input {...getFieldProps(formik, "title")} placeholder="Title" />
+      {company_name_enabled && (
+        <Input
+          {...getFieldProps(formik, "company_name")}
+          placeholder="Company Name"
+        />
+      )}
+      {description_enabled && (
+        <Input
+          {...getFieldProps(formik, "description")}
+          placeholder="Description"
+        />
+      )}
+      {location_enabled && (
+        <Input {...getFieldProps(formik, "location")} placeholder="Location" />
+      )}
+      {period_enabled && (
+        <>
+          <Input {...getFieldProps(formik, "date_start")} placeholder="Today" />
+          {/* <Input {...getFieldProps(formik, "date_end")} placeholder="Today" /> */}
+        </>
+      )}
+      {link_enabled && (
+        <Input {...getFieldProps(formik, "link")} placeholder="Link" />
+      )}
+      <Checkbox {...getFieldProps(formik, "deleted")} />
+    </SubForm>
   );
 });
 

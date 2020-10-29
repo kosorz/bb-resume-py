@@ -1,15 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
 import Checkbox from "./parts/Checkbox";
 import Input from "./parts/Input";
-
-import { getFieldProps } from "../../../util/fns";
-import axios from "../../../util/axios";
+import Section from "./parts/Section";
 
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import { useDebounce } from "../../../util/hooks";
+import { getFieldProps, saveChangedValues } from "../../../util/fns";
+import { useFormikAutoSave } from "../../../util/hooks";
 
 const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -18,19 +17,14 @@ const Info = observer(() => {
   const formik = useFormik({
     initialValues: infoEditorData,
     onSubmit: (values) =>
-      axios
-        .patch(`/parts/${resume_id}/info`, values)
-        .then((res) => {
-          resumeBubble.updateInfo(res.data);
-        })
-        .catch((err) => console.log(err)),
+      saveChangedValues(
+        values,
+        infoEditorData,
+        `/parts/${resume_id}/info`,
+        resumeBubble.updateInfo
+      ),
   });
-
-  const debouncedValues = useDebounce(formik.values, 1000);
-
-  useEffect(() => {
-    resumeBubble.updateInfo({ ...debouncedValues, resume_id });
-  }, [debouncedValues, resumeBubble, resume_id]);
+  useFormikAutoSave(formik);
 
   const {
     phone_enabled,
@@ -41,7 +35,7 @@ const Info = observer(() => {
   } = formik.values;
 
   return (
-    <section>
+    <Section>
       <form>
         <Checkbox {...getFieldProps(formik, "phone_enabled")} />
         <Checkbox {...getFieldProps(formik, "link_enabled")} />
@@ -67,11 +61,8 @@ const Info = observer(() => {
         {role_enabled && (
           <Input {...getFieldProps(formik, "role")} placeholder="Role" />
         )}
-        <button onClick={() => formik.submitForm()} type={"button"}>
-          Save Info
-        </button>
       </form>
-    </section>
+    </Section>
   );
 });
 
