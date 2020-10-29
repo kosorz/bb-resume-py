@@ -7,10 +7,10 @@ import Checkbox from "./parts/Checkbox";
 import SubForm from "./parts/SubForm";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
-
 import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
+import { skillsGroupValidationSchema } from "../validationSchemas";
 
 const SkillsGroup = observer((props: SkillsGroupEditor) => {
   const resumeBubble = useContext(ResumeBubble);
@@ -25,6 +25,7 @@ const SkillsGroup = observer((props: SkillsGroupEditor) => {
         resumeBubble.updateSkillsGroup
       );
     },
+    validationSchema: skillsGroupValidationSchema,
   });
   useFormikAutoSave(formik);
 

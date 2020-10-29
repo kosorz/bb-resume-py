@@ -10,6 +10,7 @@ import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { observer } from "mobx-react-lite";
 import { ExperienceUnitEditor } from "../../../typings/ExperienceUnit.typing";
 import { useFormikAutoSave } from "../../../util/hooks";
+import { experienceUnitValidationSchema } from "../validationSchemas";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const resumeBubble = useContext(ResumeBubble);
@@ -25,6 +26,7 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
         resumeBubble.updateExperienceUnit
       );
     },
+    validationSchema: experienceUnitValidationSchema,
   });
   useFormikAutoSave(formik);
 

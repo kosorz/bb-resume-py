@@ -10,6 +10,7 @@ import Section from "./parts/Section";
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
+import { experienceValidationSchema } from "../validationSchemas";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -29,6 +30,7 @@ const Experience = observer(() => {
         resumeBubble.updateExperience
       );
     },
+    validationSchema: experienceValidationSchema,
   });
   useFormikAutoSave(formik);
 
