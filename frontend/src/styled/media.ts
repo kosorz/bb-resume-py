@@ -6,8 +6,7 @@ import CombinedQueriesShape, {
 } from "../typings/media.typing";
 
 const sizes: SizesShape = {
-  desktop: 992,
-  tablet: 768,
+  tablet: 992,
   phone: 576,
 };
 

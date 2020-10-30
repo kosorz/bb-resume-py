@@ -14,24 +14,20 @@ export const infoValidationSchema = yup.object().shape({
 });
 
 export const skillsValidationSchema = yup.object().shape({
-  deleted: yup.boolean().required(),
-  title: yup.string().required(),
+  title: yup.string(),
 });
 
 export const skillsGroupValidationSchema = yup.object().shape({
-  deleted: yup.boolean().required(),
-  title: yup.string().required(),
+  title: yup.string(),
   values: yup.array().of(yup.string()),
 });
 
 export const experienceValidationSchema = yup.object().shape({
-  deleted: yup.boolean().required(),
-  title: yup.string().required(),
+  title: yup.string(),
 });
 
 export const experienceUnitValidationSchema = yup.object().shape({
-  deleted: yup.boolean().required(),
-  title: yup.string().required(),
+  title: yup.string(),
   company_name_enabled: yup.boolean().required(),
   description_enabled: yup.boolean().required(),
   location_enabled: yup.boolean().required(),

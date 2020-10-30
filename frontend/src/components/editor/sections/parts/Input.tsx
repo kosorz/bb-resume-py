@@ -1,7 +1,14 @@
-import * as React from "react";
+import React from "react";
 import { FieldInputProps, FieldMetaProps } from "formik";
+import styled from "styled-components";
 
-const Input = (
+import FormikField from "./Field";
+
+const Input = styled.input`
+  width: auto;
+`;
+
+const FormikInput = (
   props: { placeholder: string } & FieldInputProps<any> & FieldMetaProps<any>
 ) => {
   const {
@@ -12,7 +19,14 @@ const Input = (
     error,
     ...rest
   } = props;
-  return <input {...rest} />;
+
+  return (
+    <>
+      <FormikField name={rest.name} touched={touched} error={error}>
+        <Input {...rest} />
+      </FormikField>
+    </>
+  );
 };
 
-export default Input;
+export default FormikInput;

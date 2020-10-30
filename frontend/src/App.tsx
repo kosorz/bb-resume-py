@@ -11,6 +11,7 @@ import theme from "./styled/theme";
 const Wrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
+  padding: ${({ theme }) => theme.space + "px"};
 `;
 
 function App() {

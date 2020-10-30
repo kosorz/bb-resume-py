@@ -16,6 +16,10 @@ export function getFieldProps(
   };
 }
 
+export function capitalize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export function saveChangedValues(
   values: Partial<InfoShape> | Partial<ExperienceShape> | Partial<SkillsShape>,
   initialValues:

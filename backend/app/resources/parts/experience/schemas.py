@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 from datetime import datetime
 
 
@@ -55,7 +55,7 @@ class ExperienceUnitUpdate(BaseModel):
     location: Optional[str]
     date_start: Optional[datetime]
     date_end: Optional[datetime]
-    link: Optional[str]
+    link: Optional[HttpUrl]
     company_name_enabled: Optional[bool]
     description_enabled: Optional[bool]
     location_enabled: Optional[bool]

@@ -1,12 +1,16 @@
-const theme: { [key: string]: string } = {
+const theme: { [key: string]: string | number } = {
   black: "#3E3E3E",
-  gray1: "#A6A6A6",
-  gray2: "#F1F1F1",
-  gray3: "#F8F8F8",
+  white: "#FFF",
+  text: "#A6A6A6",
+  gray: "#cbcbcc",
   red: "#F22300",
   lightRed: "#FCD3CC",
   darkRed: "#8D1602",
   blue: "#4F8FED",
+  smallFont: "14px",
+  spaceSmall: 10,
+  space: 20,
+  spaceBig: 30,
 };
 
 export default theme;

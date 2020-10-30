@@ -15,7 +15,9 @@ import media from "../../../styled/media";
 loadFonts();
 
 const DocumentWrapper = styled.div`
-  color: rgb(248, 249, 250);
+  color: #f8f9fa;
+  border: ${({ theme }) => "1px solid" + theme.gray};
+  border-radius: ${({ theme }) => theme.space / 2 + "px"};
 `;
 
 const PDFViewer = (props: {
@@ -96,6 +98,14 @@ const PDFViewer = (props: {
 
   return (
     <>
+      {state.numPages && state.numPages > 1 && (
+        <PageNavigator
+          currentPage={state.currentPage}
+          numPages={state.numPages}
+          onNextPage={onNextPage}
+          onPreviousPage={onPreviousPage}
+        />
+      )}
       <DocumentWrapper>
         <Document
           file={state.document}
@@ -147,19 +157,18 @@ const PageNavigator = ({
 const Wrapper = styled.section`
   width: 100%;
   overflow: hidden;
-  flex: 45%;
+  flex: 40%;
   box-sizing: border-box;
-  padding: 20px;
-  align-self: center;
   text-align: center;
 
   canvas {
     width: 100% !important;
     height: auto !important;
+    border-radius: ${({ theme }) => theme.space / 2 + "px"};
   }
 
   ${media.tablet`
-    padding: 0;
+    display: none;
   `}
 `;
 

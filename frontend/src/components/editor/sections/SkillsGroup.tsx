@@ -1,10 +1,13 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
+import styled from "styled-components";
 
 import Input from "./parts/Input";
-import Checkbox from "./parts/Checkbox";
-import SubForm from "./parts/SubForm";
+import Area from "./parts/Area";
+import SubSection from "./parts/SubSection";
+import Form from "./parts/Form";
+import VerticalKnobs from "./parts/VerticalKnobs";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
@@ -12,9 +15,22 @@ import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { skillsGroupValidationSchema } from "../validationSchemas";
 
+const FieldsHolder = styled.fieldset`
+  flex-wrap: wrap;
+  display: flex;
+  border-radius: ${({ theme }) => theme.space / 2 + "px"};
+  border: ${({ theme }) => "1px solid" + theme.gray};
+  flex: 100%;
+
+  input,
+  label {
+    flex: 100%;
+  }
+`;
+
 const SkillsGroup = observer((props: SkillsGroupEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { id, ...skillsGroupEditorData } = props;
+  const { id, deleted, ...skillsGroupEditorData } = props;
   const formik = useFormik({
     initialValues: skillsGroupEditorData,
     onSubmit: (values) => {
@@ -30,10 +46,18 @@ const SkillsGroup = observer((props: SkillsGroupEditor) => {
   useFormikAutoSave(formik);
 
   return (
-    <SubForm>
-      <Input {...getFieldProps(formik, "title")} placeholder="Name" />
-      <Checkbox {...getFieldProps(formik, "deleted")} />
-    </SubForm>
+    <SubSection>
+      <Form>
+        <FieldsHolder>
+          <Input {...getFieldProps(formik, "title")} placeholder="Name" />
+          <Area
+            {...getFieldProps(formik, "values")}
+            placeholder="Communication,problem solving,stress handling"
+          />
+        </FieldsHolder>
+      </Form>
+      <VerticalKnobs />
+    </SubSection>
   );
 });
 

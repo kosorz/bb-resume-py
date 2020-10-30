@@ -9,12 +9,19 @@ import { ResumeBubble } from "../../bubbles/ResumeBubble";
 import media from "../../styled/media";
 
 const Wrapper = styled.section`
-  flex: 55%;
+  flex: 60%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  padding-right: ${({ theme }) => theme.space + "px"};
+
   ${media.tablet`
+    //@ts-ignore
+    padding-right: 0;
+  `};
+  /* ${media.tablet`
     display: none;
-  `}
+  `} */
 `;
 
 const Editor = observer(() => {
