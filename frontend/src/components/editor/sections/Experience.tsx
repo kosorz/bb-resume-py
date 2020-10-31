@@ -6,7 +6,6 @@ import Input from "./parts/Input";
 import ExperienceUnit from "./ExperienceUnit";
 import Section from "./parts/Section";
 import Form from "./parts/Form";
-import Knob from "./parts/Knob";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
@@ -40,6 +39,8 @@ const Experience = observer(() => {
 
   return (
     <Section
+      expanded={expanded}
+      setExpanded={setExpanded}
       title={"Experience"}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
@@ -57,14 +58,15 @@ const Experience = observer(() => {
           </Form>
           {units
             .filter((gr) => !gr.deleted)
-            .map((gr, i) => (
-              <ExperienceUnit key={`experience_unit_${i}`} {...gr} />
+            .map((gr, i, arr) => (
+              <ExperienceUnit
+                key={`experience_unit_${i}`}
+                isLast={arr.length - 1 === i}
+                {...gr}
+              />
             ))}
         </>
       )}
-      <Knob onClick={() => setExpanded((prevState) => !prevState)}>
-        {expanded ? "<<< Close" : "Open >>>"}
-      </Knob>
     </Section>
   );
 });

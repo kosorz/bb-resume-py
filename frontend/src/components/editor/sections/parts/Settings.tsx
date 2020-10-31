@@ -5,7 +5,6 @@ import media from "../../../../styled/media";
 
 const Wrapper = styled.fieldset`
   border: ${({ theme }) => "1px solid" + theme.gray};
-  border-radius: ${({ theme }) => theme.space / 2 + "px"};
   flex-basis: 220px;
   flex-shrink: 0;
 

@@ -9,7 +9,6 @@ import Form from "./parts/Form";
 import Settings from "./parts/Settings";
 import Values from "./parts/Values";
 import VerticalKnobs from "./parts/VerticalKnobs";
-import SubSectionHeader from "./parts/SubSectionHeader";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
@@ -20,7 +19,7 @@ import { experienceUnitValidationSchema } from "../validationSchemas";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { id, deleted, ...experienceUnitEditorData } = props;
+  const { id, deleted, isLast, ...experienceUnitEditorData } = props;
 
   const formik = useFormik({
     initialValues: experienceUnitEditorData,
@@ -37,13 +36,11 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   useFormikAutoSave(formik);
 
   return (
-    <SubSection>
-      <SubSectionHeader>
-        <Input {...getFieldProps(formik, "title")} placeholder="Title" />
-      </SubSectionHeader>
+    <SubSection isLast={isLast}>
       <Form>
         <Values>
-          <legend>Details</legend>
+          <legend>Experience details</legend>
+          <Input {...getFieldProps(formik, "title")} placeholder="Title" />
           <Input
             {...getFieldProps(formik, "company_name")}
             placeholder="Company Name"

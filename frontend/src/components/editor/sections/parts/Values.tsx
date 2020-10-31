@@ -5,7 +5,6 @@ const Wrapper = styled.fieldset`
   display: flex;
   flex-wrap: wrap;
   flex-grow: 1;
-  border-radius: ${({ theme }) => theme.space / 2 + "px"};
   border: ${({ theme }) => "1px solid" + theme.gray};
 
   label,

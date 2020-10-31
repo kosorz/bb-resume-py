@@ -13,6 +13,10 @@ button,
 textarea {
   font-family: "Courier Prime", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   border: 1px solid #cbcbcc;
+}
+
+h1 {
+  font-size: 2em;
 }

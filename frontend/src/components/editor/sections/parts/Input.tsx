@@ -5,7 +5,8 @@ import styled from "styled-components";
 import FormikField from "./Field";
 
 const Input = styled.input`
-  width: auto;
+  width: 100%;
+  padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
 `;
 
 const FormikInput = (

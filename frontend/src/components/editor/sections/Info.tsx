@@ -1,24 +1,18 @@
 import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
-import styled from "styled-components";
 
 import Checkbox from "./parts/Checkbox";
 import Input from "./parts/Input";
 import Section from "./parts/Section";
 import Form from "./parts/Form";
 import Settings from "./parts/Settings";
-import Knob from "./parts/Knob";
 import Values from "./parts/Values";
 
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { infoValidationSchema } from "../validationSchemas";
-
-const SkillsKnob = styled.div`
-  margin-top: 30px;
-`;
 
 const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -40,6 +34,9 @@ const Info = observer(() => {
 
   return (
     <Section
+      movable={false}
+      expanded={expanded}
+      setExpanded={setExpanded}
       title={"Basic information"}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
@@ -48,16 +45,19 @@ const Info = observer(() => {
       {expanded && (
         <Form>
           <Values>
-            <legend>Entries</legend>
+            <legend>About you</legend>
             <Input {...getFieldProps(formik, "name")} placeholder="Name" />
-            <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
-            <Input {...getFieldProps(formik, "link")} placeholder="Link" />
-            <Input {...getFieldProps(formik, "email")} placeholder="Email" />
+            <Input {...getFieldProps(formik, "role")} placeholder="Role" />
             <Input
               {...getFieldProps(formik, "location")}
               placeholder="Location"
             />
-            <Input {...getFieldProps(formik, "role")} placeholder="Role" />
+          </Values>
+          <Values>
+            <legend>Contact</legend>
+            <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
+            <Input {...getFieldProps(formik, "email")} placeholder="Email" />
+            <Input {...getFieldProps(formik, "link")} placeholder="Link" />
           </Values>
           <Settings>
             <legend>Settings</legend>
@@ -69,11 +69,6 @@ const Info = observer(() => {
           </Settings>
         </Form>
       )}
-      <SkillsKnob>
-        <Knob onClick={() => setExpanded((prevState) => !prevState)}>
-          {expanded ? "<<< Close" : "Open >>>"}
-        </Knob>
-      </SkillsKnob>
     </Section>
   );
 });

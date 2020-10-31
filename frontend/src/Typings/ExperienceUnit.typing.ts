@@ -17,7 +17,9 @@ type ExperienceUnitShape = {
   link_enabled: boolean;
 };
 
-export interface ExperienceUnitEditor extends ExperienceUnitShape {}
+export interface ExperienceUnitEditor extends ExperienceUnitShape {
+  isLast: boolean;
+}
 
 export interface ExperienceUnitViewer
   extends Omit<ExperienceUnitShape, "deleted" | "id"> {

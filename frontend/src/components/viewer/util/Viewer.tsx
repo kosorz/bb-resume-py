@@ -17,7 +17,13 @@ loadFonts();
 const DocumentWrapper = styled.div`
   color: #f8f9fa;
   border: ${({ theme }) => "1px solid" + theme.gray};
-  border-radius: ${({ theme }) => theme.space / 2 + "px"};
+  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+`;
+
+const PageWrapper = styled.div`
+  position: sticky;
+  top: ${({ theme }) => theme.space + "px"};
+  overflow: hidden;
 `;
 
 const PDFViewer = (props: {
@@ -97,15 +103,7 @@ const PDFViewer = (props: {
   };
 
   return (
-    <>
-      {state.numPages && state.numPages > 1 && (
-        <PageNavigator
-          currentPage={state.currentPage}
-          numPages={state.numPages}
-          onNextPage={onNextPage}
-          onPreviousPage={onPreviousPage}
-        />
-      )}
+    <PageWrapper>
       <DocumentWrapper>
         <Document
           file={state.document}
@@ -123,7 +121,7 @@ const PDFViewer = (props: {
           onPreviousPage={onPreviousPage}
         />
       )}
-    </>
+    </PageWrapper>
   );
 };
 
@@ -156,15 +154,14 @@ const PageNavigator = ({
 
 const Wrapper = styled.section`
   width: 100%;
-  overflow: hidden;
-  flex: 40%;
+  flex: 35%;
   box-sizing: border-box;
   text-align: center;
 
   canvas {
     width: 100% !important;
     height: auto !important;
-    border-radius: ${({ theme }) => theme.space / 2 + "px"};
+    border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   }
 
   ${media.tablet`

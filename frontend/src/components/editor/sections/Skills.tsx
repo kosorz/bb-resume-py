@@ -7,7 +7,6 @@ import SkillsGroup from "./SkillsGroup";
 import Section from "./parts/Section";
 import Form from "./parts/Form";
 import SectionHeader from "./parts/SectionHeader";
-import Knob from "./parts/Knob";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
@@ -40,6 +39,8 @@ const Skills = observer(() => {
 
   return (
     <Section
+      expanded={expanded}
+      setExpanded={setExpanded}
       title={"Skills"}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
@@ -57,14 +58,15 @@ const Skills = observer(() => {
           </Form>
           {groups
             .filter((gr) => !gr.deleted)
-            .map((gr, i) => (
-              <SkillsGroup key={`skills_group_${i}`} {...gr} />
+            .map((gr, i, arr) => (
+              <SkillsGroup
+                key={`skills_group_${i}`}
+                isLast={arr.length - 1 === i}
+                {...gr}
+              />
             ))}
         </>
       )}
-      <Knob onClick={() => setExpanded((prevState) => !prevState)}>
-        {expanded ? "<<< Close" : "Open >>>"}
-      </Knob>
     </Section>
   );
 });

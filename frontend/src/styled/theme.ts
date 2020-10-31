@@ -1,4 +1,6 @@
-const theme: { [key: string]: string | number } = {
+import { ThemeShape } from "../typings/theme.typing";
+
+const theme: ThemeShape = {
   black: "#3E3E3E",
   white: "#FFF",
   text: "#A6A6A6",

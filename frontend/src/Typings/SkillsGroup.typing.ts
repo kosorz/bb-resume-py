@@ -7,7 +7,9 @@ type SkillsGroupShape = {
   deleted: true;
 };
 
-export interface SkillsGroupEditor extends SkillsGroupShape {}
+export interface SkillsGroupEditor extends SkillsGroupShape {
+  isLast: boolean;
+}
 
 export interface SkillsGroupViewer
   extends Omit<SkillsGroupShape, "deleted" | "id"> {

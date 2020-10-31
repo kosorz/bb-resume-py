@@ -8,6 +8,7 @@ const Area = styled.textarea`
   width: 100%;
   resize: none;
   box-sizing: border-box;
+  padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
 `;
 
 const FormikArea = ({
