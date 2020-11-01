@@ -66,7 +66,9 @@ const ExperienceUnit = ({
       </View>
       {link_enabled && <Data type="link" style={styles.info} value={link} />}
       {description_enabled && (
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.description}>
+          {description || "Lorem ipsum..."}
+        </Text>
       )}
     </View>
   );
