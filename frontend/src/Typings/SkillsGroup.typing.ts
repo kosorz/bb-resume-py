@@ -8,6 +8,7 @@ type SkillsGroupShape = {
 
 export interface SkillsGroupEditor extends SkillsGroupShape {
   isLast: boolean;
+  isFirst: boolean;
 }
 
 export interface SkillsGroupViewer extends Omit<SkillsGroupShape, "id"> {

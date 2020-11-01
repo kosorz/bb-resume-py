@@ -60,6 +60,7 @@ const Skills = observer(() => {
             <SkillsGroup
               key={`skills_group_${i}`}
               isLast={arr.length - 1 === i}
+              isFirst={i === 0}
               {...gr}
             />
           ))}

@@ -28,10 +28,6 @@ const Resume = ({ data, theme }: ResumeViewer) => {
               <Experience theme={theme} {...data.experience} />
             )) ||
               undefined,
-            (data.skills && !data.skills.unlisted && (
-              <Skills {...data.skills} theme={theme} />
-            )) ||
-              undefined,
           ]}
           rightChildren={[
             (data.skills && !data.skills.unlisted && (

@@ -60,6 +60,7 @@ const Experience = observer(() => {
             <ExperienceUnit
               key={`experience_unit_${i}`}
               isLast={arr.length - 1 === i}
+              isFirst={i === 0}
               {...gr}
             />
           ))}

@@ -19,7 +19,7 @@ import { experienceUnitValidationSchema } from "../validationSchemas";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { id, isLast, ...experienceUnitEditorData } = props;
+  const { id, isLast, isFirst, ...experienceUnitEditorData } = props;
 
   const formik = useFormik({
     initialValues: experienceUnitEditorData,
@@ -64,7 +64,7 @@ const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
           <Checkbox {...getFieldProps(formik, "link_enabled")} />
         </Settings>
       </Form>
-      <VerticalKnobs />
+      <VerticalKnobs renderUp={!isFirst} renderDown={!isLast} />
     </SubSection>
   );
 });
