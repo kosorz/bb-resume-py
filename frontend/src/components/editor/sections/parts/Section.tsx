@@ -27,7 +27,7 @@ const Footer = styled.div`
 
 const Chin = styled(Footer)`
   flex-direction: column;
-  border-top: ${({ theme }) => "1px solid" + theme.gray};
+  border-top: ${({ theme }) => "2px solid" + theme.gray};
 `;
 
 const NavTitle = styled.h4`
@@ -70,11 +70,11 @@ const Section = ({
         <NavTitle>Manage section:</NavTitle>
         <NavItems>
           <SectionVerticalKnobs
-            upLabel={`Move\xa0${title}\xa0up`}
-            downLabel={`Move\xa0${title}\xa0down`}
+            upLabel={`Move\xa0${title.toLowerCase()}\xa0up`}
+            downLabel={`Move\xa0${title.toLowerCase()}\xa0down`}
           />
           <Button onClick={() => {}}>
-            Migrate&nbsp;{title.toLocaleLowerCase()}&nbsp;to&nbsp;Column&nbsp;II
+            Migrate&nbsp;{title.toLowerCase()}&nbsp;to&nbsp;Column&nbsp;II
           </Button>
         </NavItems>
       </Chin>

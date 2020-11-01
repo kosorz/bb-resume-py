@@ -52,9 +52,6 @@ const Info = observer(() => {
               {...getFieldProps(formik, "location")}
               placeholder="Location"
             />
-          </Values>
-          <Values>
-            <legend>Contact</legend>
             <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
             <Input {...getFieldProps(formik, "email")} placeholder="Email" />
             <Input {...getFieldProps(formik, "link")} placeholder="Link" />

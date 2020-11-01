@@ -8,10 +8,10 @@ import Section from "./parts/Section";
 import Form from "./parts/Form";
 import SectionHeader from "./parts/SectionHeader";
 
-import { getFieldProps, saveChangedValues } from "../../../util/fns";
-import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import { useFormikAutoSave } from "../../../util/hooks";
 import { skillsValidationSchema } from "../validationSchemas";
+import { useFormikAutoSave } from "../../../util/hooks";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { getFieldProps, saveChangedValues } from "../../../util/fns";
 
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
