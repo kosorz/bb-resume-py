@@ -18,7 +18,7 @@ const Skills = observer(() => {
   const {
     id,
     groups,
-    deleted,
+    unlisted,
     ...skillsEditorData
   } = resumeBubble.resume.skills!;
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -56,15 +56,13 @@ const Skills = observer(() => {
               />
             </SectionHeader>
           </Form>
-          {groups
-            .filter((gr) => !gr.deleted)
-            .map((gr, i, arr) => (
-              <SkillsGroup
-                key={`skills_group_${i}`}
-                isLast={arr.length - 1 === i}
-                {...gr}
-              />
-            ))}
+          {groups.map((gr, i, arr) => (
+            <SkillsGroup
+              key={`skills_group_${i}`}
+              isLast={arr.length - 1 === i}
+              {...gr}
+            />
+          ))}
         </>
       )}
     </Section>

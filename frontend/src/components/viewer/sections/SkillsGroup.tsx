@@ -27,7 +27,7 @@ const SkillsGroup = ({ theme, title, values }: SkillsGroupViewer) => {
       <SubSectionHeadline text={title} fallback={"Title"} theme={theme} />
       <View style={styles.values}>
         {values.map((v, i) => (
-          <Text key={`skill-group-${i}`} style={styles.value}>
+          <Text key={`skill-group-${i}_values`} style={styles.value}>
             {v}
           </Text>
         ))}

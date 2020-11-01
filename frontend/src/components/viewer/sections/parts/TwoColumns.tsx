@@ -10,20 +10,17 @@ const TwoColumns = ({
 }: TwoColumnViewer) => {
   const styles = StyleSheet.create({
     twoColumn: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
       marginHorizontal: theme.paper.space,
       fontSize: theme.fontSize.main,
       fontFamily: theme.fontFamily.normal,
+      display: "flex",
+      flexDirection: "row",
     },
     leftColumn: {
-      flex: 60,
-      display: "flex",
+      width: 595 - 200 - 2 * theme.paper.space,
     },
     rightColumn: {
-      flex: 40,
-      display: "flex",
+      width: 200,
       paddingLeft: theme.paper.space / 2,
     },
   });
@@ -32,7 +29,7 @@ const TwoColumns = ({
     return chs.map((ch, i) => {
       if (!ch) return null;
 
-      return <React.Fragment key={`${side}-child-${i}`}>{ch}</React.Fragment>;
+      return <View key={`${side}-child-${i}`}>{ch}</View>;
     });
   };
 

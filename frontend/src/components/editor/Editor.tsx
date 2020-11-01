@@ -36,15 +36,13 @@ const Editor = observer(() => {
     <Wrapper>
       {resumeBubble.resume.info && <Info />}
       <Column title={"Column I"}>
-        {resumeBubble.resume.skills && !resumeBubble.resume.skills.deleted && (
+        {resumeBubble.resume.skills && !resumeBubble.resume.skills.unlisted && (
           <Skills />
         )}
-        {resumeBubble.resume.experience &&
-          !resumeBubble.resume.experience.deleted && <Experience />}
       </Column>
       <Column title={"Column II"}>
         {resumeBubble.resume.experience &&
-          !resumeBubble.resume.experience.deleted && <Experience />}
+          !resumeBubble.resume.experience.unlisted && <Experience />}
       </Column>
     </Wrapper>
   );

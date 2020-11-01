@@ -17,7 +17,7 @@ import { skillsGroupValidationSchema } from "../validationSchemas";
 
 const SkillsGroup = observer((props: SkillsGroupEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { id, deleted, isLast, ...skillsGroupEditorData } = props;
+  const { id, isLast, ...skillsGroupEditorData } = props;
   const formik = useFormik({
     initialValues: skillsGroupEditorData,
     onSubmit: (values) => {

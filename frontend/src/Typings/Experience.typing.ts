@@ -4,12 +4,12 @@ import ResumeThemeShape from "./ResumeTheme.typing";
 type ExperienceShape = {
   id: number;
   title: string;
-  deleted: true;
+  unlisted: true;
   units: ExperienceUnitShape[];
 };
 
 export interface ExperienceViewer
-  extends Omit<ExperienceShape, "deleted" | "id"> {
+  extends Omit<ExperienceShape, "unlisted" | "id"> {
   theme: ResumeThemeShape;
 }
 

@@ -8,14 +8,14 @@ class ExperienceBase(BaseModel):
 
 
 class ExperienceUpdate(BaseModel):
-    deleted: Optional[bool]
+    unlisted: Optional[bool]
     title: Optional[str]
 
 
 class Experience(ExperienceBase):
     id: int
     title: str
-    deleted: bool
+    unlisted: bool
     resume_id: int
 
     class Config:
@@ -28,7 +28,6 @@ class ExperienceUnitBase(BaseModel):
 
 class ExperienceUnit(ExperienceUnitBase):
     id: int
-    deleted: bool
     company_name: str
     description: str
     location: str
@@ -40,7 +39,6 @@ class ExperienceUnit(ExperienceUnitBase):
     location_enabled: bool
     period_enabled: bool
     link_enabled: bool
-    deleted: bool
 
     class Config:
         orm_mode = True
@@ -49,7 +47,6 @@ class ExperienceUnit(ExperienceUnitBase):
 class ExperienceUnitUpdate(BaseModel):
     title: Optional[str]
     values: Optional[str]
-    deleted: Optional[bool]
     company_name: Optional[str]
     description: Optional[str]
     location: Optional[str]
@@ -61,7 +58,6 @@ class ExperienceUnitUpdate(BaseModel):
     location_enabled: Optional[bool]
     period_enabled: Optional[bool]
     link_enabled: Optional[bool]
-    deleted: Optional[bool]
 
 
 class ExperienceFull(Experience):

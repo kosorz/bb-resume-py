@@ -22,9 +22,13 @@ def update_existing_resource(
 def find_item_with_key_value(list: Iterable,
                              key: str,
                              value: int,
-                             error: bool = True):
+                             error: bool = True,
+                             throw_on_present: bool = False):
     for resource in list:
         if resource.__dict__.get(key) == value:
+            if throw_on_present:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                    detail="Bad request")
             return resource
     else:
         if error:

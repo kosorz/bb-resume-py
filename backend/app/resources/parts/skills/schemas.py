@@ -8,14 +8,14 @@ class SkillsBase(BaseModel):
 
 
 class SkillsUpdate(BaseModel):
-    deleted: Optional[bool]
+    unlisted: Optional[bool]
     title: Optional[str]
 
 
 class Skills(SkillsBase):
     id: int
     title: str
-    deleted: bool
+    unlisted: bool
     resume_id: int
 
     class Config:
@@ -29,7 +29,6 @@ class SkillsGroupBase(BaseModel):
 class SkillsGroup(SkillsGroupBase):
     id: int
     values: List[str] = []
-    deleted: bool
 
     class Config:
         orm_mode = True
@@ -38,7 +37,6 @@ class SkillsGroup(SkillsGroupBase):
 class SkillsGroupUpdate(BaseModel):
     title: Optional[str]
     values: Optional[List[str]]
-    deleted: Optional[bool]
 
 
 class SkillsFull(Skills):

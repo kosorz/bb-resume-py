@@ -33,7 +33,7 @@ let initialState: ResumeBubbleShape = {
     title: "",
     id: 0,
     owner_id: 0,
-    deleted: true,
+    deleted: false,
     skills: undefined,
     experience: undefined,
     info: undefined,

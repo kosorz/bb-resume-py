@@ -65,7 +65,7 @@ def create_main_tables_seed_data() -> None:
         "skills",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
-        sa.Column("deleted", sa.Boolean, default=False),
+        sa.Column("unlisted", sa.Boolean, default=False),
         sa.Column(
             "resume_id",
             sa.Integer,
@@ -79,7 +79,6 @@ def create_main_tables_seed_data() -> None:
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
         sa.Column("values", postgresql.ARRAY(sa.String), default=[]),
-        sa.Column("deleted", sa.Boolean, default=False),
         sa.Column(
             "skills_id",
             sa.Integer,
@@ -92,7 +91,7 @@ def create_main_tables_seed_data() -> None:
         "experiences",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
-        sa.Column("deleted", sa.Boolean, default=False),
+        sa.Column("unlisted", sa.Boolean, default=False),
         sa.Column(
             "resume_id",
             sa.Integer,
@@ -116,7 +115,6 @@ def create_main_tables_seed_data() -> None:
         sa.Column("location_enabled", sa.Boolean, default=True),
         sa.Column("period_enabled", sa.Boolean, default=True),
         sa.Column("link_enabled", sa.Boolean, default=True),
-        sa.Column("deleted", sa.Boolean, default=False),
         sa.Column(
             "experience_id",
             sa.Integer,

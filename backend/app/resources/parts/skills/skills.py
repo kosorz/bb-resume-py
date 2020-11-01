@@ -21,15 +21,11 @@ def create_skills(
     db: Session = Depends(db),
     current_user_skills: List[SkillsFull] = Depends(get_current_user_skills),
     owns_resume: ResumeFull = Depends(get_owns_resume)):
-    stored_skills = find_item_with_key_value(current_user_skills, "resume_id",
-                                             resume_id, False)
-    if stored_skills:
-        if not stored_skills.deleted:
-            return stored_skills
-        return update_existing_resource(db, resume_id,
-                                        SkillsUpdate(deleted=False), Skills,
-                                        crud.get_resume_skills,
-                                        crud.update_resume_skills)
+    find_item_with_key_value(list=current_user_skills,
+                             key="resume_id",
+                             value=resume_id,
+                             error=False,
+                             throw_on_present=True)
     db_skills = crud.create_resume_skills(db, resume_id)
     crud.create_skills_group(db, db_skills.id)
     return db_skills

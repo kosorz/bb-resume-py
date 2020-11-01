@@ -40,11 +40,11 @@ class TestExperienceRoutes:
 
 
 @pytest.fixture
-def recreated_experience():
+def relisted_experience():
     return {
         "title": "updated_title",
         "id": 2,
-        "deleted": False,
+        "unlisted": False,
         "resume_id": 2
     }
 
@@ -95,7 +95,7 @@ class TestExperience:
         assert res.json() == {
             "title": "",
             "id": 2,
-            "deleted": False,
+            "unlisted": False,
             "resume_id": 2,
         }
         assert res.status_code == status.HTTP_200_OK
@@ -121,7 +121,7 @@ class TestExperience:
                 experience_id=2,
             ),
             json={
-                "deleted": "this_is_not_boolean",
+                "unlisted": "this_is_not_boolean",
                 "title": []
             },
         )
@@ -139,49 +139,36 @@ class TestExperience:
                 experience_id=2,
             ),
             json={
-                "deleted": True,
+                "unlisted": True,
                 "title": "updated_title"
             },
         )
         assert res.json() == {
             "title": "updated_title",
             "id": 2,
-            "deleted": True,
+            "unlisted": True,
             "resume_id": 2
         }
         assert res.status_code == status.HTTP_200_OK
 
-    async def test_resume_experience_existence_and_its_soft_deletion(
+    async def test_resume_experience_existence_and_its_unlisted_property(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
         resume = get_resume(app.state._db, 2)
-        assert resume.experience.deleted
+        assert resume.experience.unlisted
 
-    async def test_recreation_of_experience_response(
+    async def test_create_experience_rejection_if_already_created(
         self,
         app: FastAPI,
         client: AsyncClient,
-        recreated_experience: Dict,
+        relisted_experience: Dict,
     ) -> None:
-        # Checks if experience will be recreated
+        # Checks if request will be rejected if user already has experience
         res = await client.post(
             app.url_path_for("experience:create-experience", resume_id=2))
-        assert res.json() == recreated_experience
-        assert res.status_code == status.HTTP_200_OK
-
-    async def test_not_creating_experience_if_it_already_exist(
-        self,
-        app: FastAPI,
-        client: AsyncClient,
-        recreated_experience: Dict,
-    ) -> None:
-        # Checks if will return the same experience
-        res = await client.post(
-            app.url_path_for("experience:create-experience", resume_id=2), )
-        assert res.json() == recreated_experience
-        assert res.status_code == status.HTTP_200_OK
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     async def test_create_experience_access(
         self,
@@ -280,7 +267,6 @@ class TestExperienceUnits:
         proper_response = {
             "title": "",
             "id": 3,
-            "deleted": False,
             "company_name": "",
             "description": "",
             "location": "",
@@ -313,9 +299,6 @@ class TestExperienceUnits:
         },
         {
             "link": "not_a_link",
-        },
-        {
-            "deleted": "not_really_a_boolean_value",
         },
         {
             "company_name_enabled": "not_really_a_boolean_value",
@@ -353,7 +336,6 @@ class TestExperienceUnits:
     ) -> None:
         # Checks if experience unit will be updated when correct data submitted and user owns resume
         update_data = {
-            "deleted": True,
             "title": "updated_title",
             "company_name": "updated_company_name",
             "description": "updated_description",
@@ -386,7 +368,6 @@ class TestExperienceUnits:
         client: AsyncClient,
     ) -> None:
         experience_unit = get_experience_unit(app.state._db, 2)
-        assert experience_unit.deleted
         assert experience_unit.title == "updated_title"
         assert experience_unit.company_name == "updated_company_name"
         assert experience_unit.description == "updated_description"

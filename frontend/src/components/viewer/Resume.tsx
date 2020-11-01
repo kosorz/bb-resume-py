@@ -14,6 +14,7 @@ const Resume = ({ data, theme }: ResumeViewer) => {
       backgroundColor: "#fff",
       fontFamily: theme.fontFamily.bold,
       fontSize: theme.fontSize.small,
+      paddingVertical: theme.paper.space / 2,
     },
   });
 
@@ -23,13 +24,17 @@ const Resume = ({ data, theme }: ResumeViewer) => {
         {data.info && <Info {...data.info} theme={theme} />}
         <TwoColumns
           leftChildren={[
-            (data.experience && !data.experience.deleted && (
+            (data.experience && !data.experience.unlisted && (
               <Experience theme={theme} {...data.experience} />
+            )) ||
+              undefined,
+            (data.skills && !data.skills.unlisted && (
+              <Skills {...data.skills} theme={theme} />
             )) ||
               undefined,
           ]}
           rightChildren={[
-            (data.skills && !data.skills.deleted && (
+            (data.skills && !data.skills.unlisted && (
               <Skills {...data.skills} theme={theme} />
             )) ||
               undefined,

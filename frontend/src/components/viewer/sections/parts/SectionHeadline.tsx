@@ -8,7 +8,6 @@ const SectionHeadline = ({ text, fallback, theme }: SectionHeadlineViewer) => {
     text: {
       fontSize: theme.fontSize.large,
       fontFamily: theme.fontFamily.bold,
-      flex: 100,
       borderBottom: 2,
       marginBottom: theme.paper.space / 4,
     },

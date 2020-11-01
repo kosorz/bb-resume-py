@@ -4,11 +4,11 @@ import ResumeThemeShape from "./ResumeTheme.typing";
 type SkillsShape = {
   title: string;
   id: number;
-  deleted: boolean;
+  unlisted: boolean;
   groups: SkillsGroupShape[];
 };
 
-export interface SkillsViewer extends Omit<SkillsShape, "deleted" | "id"> {
+export interface SkillsViewer extends Omit<SkillsShape, "unlisted" | "id"> {
   theme: ResumeThemeShape;
 }
 

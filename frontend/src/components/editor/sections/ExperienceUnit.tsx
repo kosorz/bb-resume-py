@@ -19,7 +19,7 @@ import { experienceUnitValidationSchema } from "../validationSchemas";
 
 const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { id, deleted, isLast, ...experienceUnitEditorData } = props;
+  const { id, isLast, ...experienceUnitEditorData } = props;
 
   const formik = useFormik({
     initialValues: experienceUnitEditorData,

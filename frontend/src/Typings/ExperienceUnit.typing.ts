@@ -2,7 +2,6 @@ import ResumeThemeShape from "./ResumeTheme.typing";
 
 type ExperienceUnitShape = {
   id: number;
-  deleted: true;
   title: string;
   company_name: string;
   description: string;
@@ -21,8 +20,7 @@ export interface ExperienceUnitEditor extends ExperienceUnitShape {
   isLast: boolean;
 }
 
-export interface ExperienceUnitViewer
-  extends Omit<ExperienceUnitShape, "deleted" | "id"> {
+export interface ExperienceUnitViewer extends Omit<ExperienceUnitShape, "id"> {
   theme: ResumeThemeShape;
 }
 

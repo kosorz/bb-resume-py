@@ -195,9 +195,6 @@ class TestInfos:
                 "info:update-info",
                 resume_id=1,
             ),
-            json={
-                "deleted": True,
-                "title": "updated_string"
-            },
+            json={"title": "updated_string"},
         )
         assert res.status_code == status.HTTP_403_FORBIDDEN

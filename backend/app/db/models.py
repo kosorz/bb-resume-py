@@ -59,7 +59,7 @@ class Skills(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
-    deleted = Column(Boolean, default=False)
+    unlisted = Column(Boolean, default=False)
 
     groups = relationship("SkillsGroup", back_populates="skills")
     resume_id = Column(Integer, ForeignKey("resumes.id"))
@@ -72,7 +72,6 @@ class SkillsGroup(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
     values = Column(ARRAY(String), default=[])
-    deleted = Column(Boolean, default=False)
 
     skills_id = Column(Integer, ForeignKey("skills.id"))
     skills = relationship("Skills", back_populates="groups")
@@ -83,7 +82,7 @@ class Experience(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
-    deleted = Column(Boolean, default=False)
+    unlisted = Column(Boolean, default=False)
 
     units = relationship("ExperienceUnit", back_populates="experience")
     resume_id = Column(Integer, ForeignKey("resumes.id"))
@@ -106,7 +105,6 @@ class ExperienceUnit(Base):
     location_enabled = Column(Boolean, default=True)
     period_enabled = Column(Boolean, default=True)
     link_enabled = Column(Boolean, default=True)
-    deleted = Column(Boolean, default=False)
 
     experience_id = Column(Integer, ForeignKey("experiences.id"))
     experience = relationship("Experience", back_populates="units")

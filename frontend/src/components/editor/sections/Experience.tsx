@@ -18,7 +18,7 @@ const Experience = observer(() => {
   const {
     id,
     units,
-    deleted,
+    unlisted,
     ...experienceEditorData
   } = resumeBubble.resume.experience!;
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -56,15 +56,13 @@ const Experience = observer(() => {
               />
             </SectionHeader>
           </Form>
-          {units
-            .filter((gr) => !gr.deleted)
-            .map((gr, i, arr) => (
-              <ExperienceUnit
-                key={`experience_unit_${i}`}
-                isLast={arr.length - 1 === i}
-                {...gr}
-              />
-            ))}
+          {units.map((gr, i, arr) => (
+            <ExperienceUnit
+              key={`experience_unit_${i}`}
+              isLast={arr.length - 1 === i}
+              {...gr}
+            />
+          ))}
         </>
       )}
     </Section>

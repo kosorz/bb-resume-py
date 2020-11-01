@@ -4,15 +4,13 @@ type SkillsGroupShape = {
   title: string;
   id: number;
   values: string[];
-  deleted: true;
 };
 
 export interface SkillsGroupEditor extends SkillsGroupShape {
   isLast: boolean;
 }
 
-export interface SkillsGroupViewer
-  extends Omit<SkillsGroupShape, "deleted" | "id"> {
+export interface SkillsGroupViewer extends Omit<SkillsGroupShape, "id"> {
   theme: ResumeThemeShape;
 }
 

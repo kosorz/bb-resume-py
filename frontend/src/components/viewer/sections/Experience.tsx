@@ -9,13 +9,14 @@ import { ExperienceViewer } from "../../../typings/Experience.typing";
 const Experience = ({ title, units, theme }: ExperienceViewer) => {
   return (
     <View wrap={true}>
-      <SectionHeadline text={title} theme={theme} fallback={"experience"} />
+      <View wrap={false}>
+        <SectionHeadline text={title} theme={theme} fallback={"experience"} />
+        <ExperienceUnit key={`experience-unit-0`} {...units[0]} theme={theme} />
+      </View>
       <View>
-        {units
-          .filter((u) => !u.deleted)
-          .map((u, i) => (
-            <ExperienceUnit key={`experience-unit-${i}`} {...u} theme={theme} />
-          ))}
+        {units.slice(1).map((u, i) => (
+          <ExperienceUnit key={`experience-unit-${i}`} {...u} theme={theme} />
+        ))}
       </View>
     </View>
   );

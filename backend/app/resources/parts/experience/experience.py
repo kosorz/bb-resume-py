@@ -21,15 +21,11 @@ def create_experience(resume_id: int,
                       current_user_experience: List[ExperienceFull] = Depends(
                           get_current_user_experience),
                       owns_resume: ResumeFull = Depends(get_owns_resume)):
-    stored_experience = find_item_with_key_value(current_user_experience,
-                                                 "resume_id", resume_id, False)
-    if stored_experience:
-        if not stored_experience.deleted:
-            return stored_experience
-        return update_existing_resource(db, resume_id,
-                                        ExperienceUpdate(deleted=False),
-                                        Experience, crud.get_resume_experience,
-                                        crud.update_resume_experience)
+    find_item_with_key_value(list=current_user_experience,
+                             key="resume_id",
+                             value=resume_id,
+                             error=False,
+                             throw_on_present=True)
     db_experience = crud.create_resume_experience(db, resume_id)
     crud.create_experience_unit(db, db_experience.id)
     return db_experience

@@ -40,11 +40,11 @@ class TestSkillsRoutes:
 
 
 @pytest.fixture
-def recreated_skills():
+def relisted_skills():
     return {
         "title": "updated_title",
         "id": 2,
-        "deleted": False,
+        "unlisted": False,
         "resume_id": 2
     }
 
@@ -95,7 +95,7 @@ class TestSkills:
         assert res.json() == {
             "title": "",
             "id": 2,
-            "deleted": False,
+            "unlisted": False,
             "resume_id": 2,
         }
         assert res.status_code == status.HTTP_200_OK
@@ -121,7 +121,7 @@ class TestSkills:
                 skills_id=2,
             ),
             json={
-                "deleted": "this_is_not_boolean",
+                "unlisted": "this_is_not_boolean",
                 "title": []
             },
         )
@@ -139,49 +139,36 @@ class TestSkills:
                 skills_id=2,
             ),
             json={
-                "deleted": True,
+                "unlisted": True,
                 "title": "updated_title"
             },
         )
         assert res.json() == {
             "title": "updated_title",
             "id": 2,
-            "deleted": True,
+            "unlisted": True,
             "resume_id": 2
         }
         assert res.status_code == status.HTTP_200_OK
 
-    async def test_resume_skills_existence_and_its_soft_deletion(
+    async def test_resume_skills_existence_and_its_unlisted_property(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
         resume = get_resume(app.state._db, 2)
-        assert resume.skills.deleted
+        assert resume.skills.unlisted
 
-    async def test_recreation_of_skills_response(
+    async def test_create_skills_rejection_if_already_created(
         self,
         app: FastAPI,
         client: AsyncClient,
-        recreated_skills: Dict,
+        relisted_skills: Dict,
     ) -> None:
         # Checks if skills will be recreated
         res = await client.post(
             app.url_path_for("skills:create-skills", resume_id=2), )
-        assert res.json() == recreated_skills
-        assert res.status_code == status.HTTP_200_OK
-
-    async def test_not_creating_skills_if_it_already_exist(
-        self,
-        app: FastAPI,
-        client: AsyncClient,
-        recreated_skills: Dict,
-    ) -> None:
-        # Checks if will return the same skills
-        res = await client.post(
-            app.url_path_for("skills:create-skills", resume_id=2), )
-        assert res.json() == recreated_skills
-        assert res.status_code == status.HTTP_200_OK
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     async def test_create_skills_access(
         self,
@@ -275,21 +262,17 @@ class TestSkillsGroups:
         # Checks if skills group will be created
         res = await client.post(
             app.url_path_for("skills:create-skills-group", skills_id=2), )
-        assert res.json() == {
-            "title": "",
-            "id": 3,
-            "deleted": False,
-            "values": []
-        }
+        assert res.json() == {"title": "", "id": 3, "values": []}
         assert res.status_code == status.HTTP_200_OK
 
-    @pytest.mark.parametrize("body", ({
-        "values": False
-    }, {
-        "title": [],
-    }, {
-        "deleted": "not_really_a_boolean_value",
-    }))
+    @pytest.mark.parametrize("body", (
+        {
+            "values": False
+        },
+        {
+            "title": [],
+        },
+    ))
     async def test_update_skills_group_validation(
         self,
         app: FastAPI,
@@ -318,7 +301,6 @@ class TestSkillsGroups:
                 group_id=2,
             ),
             json={
-                "deleted": True,
                 "title": "updated_title",
                 "values": ["Added value"],
             },
@@ -326,18 +308,16 @@ class TestSkillsGroups:
         assert res.json() == {
             "title": "updated_title",
             "id": 2,
-            "deleted": True,
             "values": ["Added value"]
         }
         assert res.status_code == status.HTTP_200_OK
 
-    async def test_resume_skills_group_update_and_its_soft_deletion(
+    async def test_resume_skills_group_update(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
         skills_group = get_skills_group(app.state._db, 2)
-        assert skills_group.deleted
         assert skills_group.title == "updated_title"
         assert skills_group.values == ["Added value"]
 
