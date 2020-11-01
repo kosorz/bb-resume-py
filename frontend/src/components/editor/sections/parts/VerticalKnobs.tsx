@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import Button from "./Button";
+import Button from "../../../page/Button";
 
 const Wrapper = styled.div`
   justify-content: flex-end;
   display: flex;
-  margin-top: ${({ theme }) => theme.spaceSmall + "px"};
 `;
 
 const VerticalKnobs = ({

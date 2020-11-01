@@ -12,6 +12,7 @@ import { skillsValidationSchema } from "../validationSchemas";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
+import axios from "../../../util/axios";
 
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
@@ -37,11 +38,19 @@ const Skills = observer(() => {
   });
   useFormikAutoSave(formik);
 
+  const addFn = () => {
+    axios
+      .post(`/parts/${id}/skills_group`)
+      .then((res) => resumeBubble.addSkillsGroup(res.data));
+  };
+
   return (
     <Section
       expanded={expanded}
       setExpanded={setExpanded}
       title={"Skills"}
+      subtitle={"skills group"}
+      addFn={addFn}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
@@ -58,6 +67,7 @@ const Skills = observer(() => {
           </Form>
           {groups.map((gr, i, arr) => (
             <SkillsGroup
+              hasSiblings={arr.length > 1}
               key={`skills_group_${i}`}
               isLast={arr.length - 1 === i}
               isFirst={i === 0}

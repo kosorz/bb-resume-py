@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from .schemas import Experience, ExperienceUpdate, ExperienceFull, ExperienceUnit, ExperienceUnitUpdate
@@ -89,6 +89,9 @@ def delete_experience_unit(
     current_user_experience_units: List[ExperienceUnit] = Depends(
         get_current_user_experience_units),
 ):
+    if len(current_user_experience_units) <= 1:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Bad request")
     find_item_with_key_value(current_user_experience_units, "id", unit_id)
     return delete_existing_resource(db, unit_id, ExperienceUnit,
                                     crud.delete_experience_unit)

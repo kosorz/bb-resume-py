@@ -8,7 +8,6 @@ import SubSection from "./parts/SubSection";
 import Form from "./parts/Form";
 import Settings from "./parts/Settings";
 import Values from "./parts/Values";
-import VerticalKnobs from "./parts/VerticalKnobs";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
@@ -16,12 +15,14 @@ import { observer } from "mobx-react-lite";
 import { ExperienceUnitEditor } from "../../../typings/ExperienceUnit.typing";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { experienceUnitValidationSchema } from "../validationSchemas";
+import axios from "../../../util/axios";
 
 const ExperienceUnit = observer(
   ({
     id,
     isLast,
     isFirst,
+    hasSiblings,
     ...experienceUnitEditorData
   }: ExperienceUnitEditor) => {
     const resumeBubble = useContext(ResumeBubble);
@@ -40,11 +41,22 @@ const ExperienceUnit = observer(
     });
     useFormikAutoSave(formik);
 
+    const deleteFn = () =>
+      axios.delete(`/parts/experience_unit/${id}`).then((res) => {
+        resumeBubble.removeExperienceUnit(res.data);
+      });
+
     return (
-      <SubSection isLast={isLast}>
+      <SubSection
+        renderDelete={hasSiblings}
+        title={"experience"}
+        isLast={isLast}
+        isFirst={isFirst}
+        deleteFn={deleteFn}
+      >
         <Form>
           <Values>
-            <legend>Experience details</legend>
+            <legend>Experience unit details</legend>
             <Input {...getFieldProps(formik, "title")} placeholder="Title" />
             <Input
               {...getFieldProps(formik, "company_name")}
@@ -69,7 +81,6 @@ const ExperienceUnit = observer(
             <Checkbox {...getFieldProps(formik, "link_enabled")} />
           </Settings>
         </Form>
-        <VerticalKnobs renderUp={!isFirst} renderDown={!isLast} />
       </SubSection>
     );
   }

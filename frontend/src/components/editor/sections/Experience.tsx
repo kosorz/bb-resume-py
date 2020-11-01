@@ -12,6 +12,7 @@ import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { experienceValidationSchema } from "../validationSchemas";
 import SectionHeader from "./parts/SectionHeader";
+import axios from "../../../util/axios";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -37,11 +38,19 @@ const Experience = observer(() => {
   });
   useFormikAutoSave(formik);
 
+  const addFn = () => {
+    axios
+      .post(`/parts/${id}/experience_unit`)
+      .then((res) => resumeBubble.addExperienceUnit(res.data));
+  };
+
   return (
     <Section
       expanded={expanded}
+      subtitle={"experience"}
       setExpanded={setExpanded}
       title={"Experience"}
+      addFn={addFn}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
@@ -58,6 +67,7 @@ const Experience = observer(() => {
           </Form>
           {units.map((gr, i, arr) => (
             <ExperienceUnit
+              hasSiblings={arr.length > 1}
               key={`experience_unit_${i}`}
               isLast={arr.length - 1 === i}
               isFirst={i === 0}

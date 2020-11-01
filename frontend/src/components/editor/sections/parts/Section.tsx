@@ -1,7 +1,10 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import Button from "./Button";
+import Button from "../../../page/Button";
 import VerticalKnobs from "./VerticalKnobs";
+import NavItems from "./NavItems";
+import SuccessButton from "../../../page/SuccessButton";
+import WarningButton from "../../../page/WarningButton";
 
 const Wrapper = styled.section`
   margin-bottom: ${({ theme }) => theme.space + "px"};
@@ -34,14 +37,7 @@ const NavTitle = styled.h4`
   flex: 100%;
 `;
 
-const NavItems = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
-
 const SectionVerticalKnobs = styled(VerticalKnobs)`
-  margin-top: 0;
   flex-wrap: wrap;
   justify-content: flex-start;
 `;
@@ -51,12 +47,16 @@ const Section = ({
   title,
   expanded,
   setExpanded,
+  subtitle,
   purpose,
+  addFn,
   movable = true,
 }: {
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
+  addFn?: Function;
+  subtitle?: string;
   movable?: boolean;
   expanded?: boolean;
   setExpanded?: Function;
@@ -66,18 +66,26 @@ const Section = ({
     <Purpose>{purpose}</Purpose>
     {children}
     {expanded && movable && (
-      <Chin>
-        <NavTitle>Manage section:</NavTitle>
-        <NavItems>
-          <SectionVerticalKnobs
-            upLabel={`Move\xa0${title.toLowerCase()}\xa0up`}
-            downLabel={`Move\xa0${title.toLowerCase()}\xa0down`}
-          />
-          <Button onClick={() => {}}>
-            Migrate&nbsp;{title.toLowerCase()}&nbsp;to&nbsp;Column&nbsp;II
-          </Button>
-        </NavItems>
-      </Chin>
+      <>
+        {subtitle && addFn && (
+          <SuccessButton onClick={() => addFn()}>
+            + Add new {subtitle}
+          </SuccessButton>
+        )}
+        <Chin>
+          <NavTitle>Manage section:</NavTitle>
+          <NavItems>
+            <SectionVerticalKnobs
+              upLabel={`Move\xa0${title.toLowerCase()}\xa0up`}
+              downLabel={`Move\xa0${title.toLowerCase()}\xa0down`}
+            />
+            <WarningButton onClick={() => {}}>
+              o&nbsp;Migrate&nbsp;{title.toLowerCase()}
+              &nbsp;to&nbsp;Column&nbsp;II
+            </WarningButton>
+          </NavItems>
+        </Chin>
+      </>
     )}
     <Footer>
       {setExpanded && (

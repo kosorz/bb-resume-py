@@ -19,6 +19,7 @@ type ExperienceUnitShape = {
 export interface ExperienceUnitEditor extends ExperienceUnitShape {
   isLast: boolean;
   isFirst: boolean;
+  hasSiblings: boolean;
 }
 
 export interface ExperienceUnitViewer extends Omit<ExperienceUnitShape, "id"> {

@@ -459,3 +459,16 @@ class TestExperienceUnits:
     ) -> None:
         experience_unit = get_experience_unit(app.state._db, 2)
         assert experience_unit == None
+
+    async def test_delete_experience_unit_response_on_single_unit(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience unit will not be deleted when its only experience unit assigned to experience
+        res = await client.delete(
+            app.url_path_for(
+                "experience:delete-experience-unit",
+                unit_id=3,
+            ))
+        assert res.status_code == status.HTTP_400_BAD_REQUEST

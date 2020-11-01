@@ -6,6 +6,8 @@ const theme: ThemeShape = {
   text: "#A6A6A6",
   gray: "#cbcbcc",
   red: "#F22300",
+  green: "#389e0d",
+  orange: "#faad14",
   lightRed: "#FCD3CC",
   darkRed: "#8D1602",
   blue: "#4F8FED",

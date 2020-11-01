@@ -15,8 +15,12 @@ type ResumeBubbleShape = {
   updateInfo: (data: InfoShape) => void;
   updateSkills: (data: SkillsShape) => void;
   updateSkillsGroup: (data: SkillsGroupShape) => void;
+  addSkillsGroup: (data: SkillsGroupShape) => void;
+  removeSkillsGroup: (id: number) => void;
   updateExperience: (data: ExperienceShape) => void;
   updateExperienceUnit: (data: ExperienceUnitShape) => void;
+  addExperienceUnit: (data: ExperienceUnitShape) => void;
+  removeExperienceUnit: (id: number) => void;
 };
 
 export default ResumeBubbleShape;

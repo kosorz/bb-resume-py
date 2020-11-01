@@ -409,3 +409,16 @@ class TestSkillsGroups:
     ) -> None:
         skills_group = get_skills_group(app.state._db, 2)
         assert skills_group == None
+
+    async def test_delete_skills_group_response_on_single_group(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills group will not be deleted when its only skill group assigned to skills
+        res = await client.delete(
+            app.url_path_for(
+                "skills:delete-skills-group",
+                group_id=3,
+            ))
+        assert res.status_code == status.HTTP_400_BAD_REQUEST

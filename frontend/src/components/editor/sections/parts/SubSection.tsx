@@ -1,41 +1,59 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
-import { ThemeShape } from "../../../../typings/theme.typing";
+import VerticalKnobs from "./VerticalKnobs";
+import NavItems from "./NavItems";
+import DangerButton from "../../../page/DangerButton";
 
 const Wrapper = styled.section`
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
   margin-left: ${({ theme }) => theme.spaceSmall + "px"};
 
-  margin-bottom: ${({
-    theme,
-    isLast,
-  }: {
-    isLast: boolean;
-    theme: ThemeShape;
-  }) => (!isLast ? theme.spaceBig + "px" : "")};
-  padding-bottom: ${({
-    theme,
-    isLast,
-  }: {
-    isLast: boolean;
-    theme: ThemeShape;
-  }) => (!isLast ? theme.spaceSmall + "px" : "")};
-  border-bottom: ${({
-    theme,
-    isLast,
-  }: {
-    isLast: boolean;
-    theme: ThemeShape;
-  }) => (!isLast ? "1px dashed" + theme.gray : "")};
+  margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
+  padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};
+  border-bottom: ${({ theme }) => "1px dashed" + theme.gray};
+`;
+
+const SubSectionNav = styled(NavItems)`
+  margin-top: ${({ theme }) => theme.spaceSmall + "px"};
 `;
 
 const SubSection = ({
   children,
   isLast,
+  isFirst,
+  title,
+  renderDelete,
+  deleteFn,
 }: {
   children: ReactNode | ReactNode[];
   isLast: boolean;
-}) => <Wrapper isLast={isLast}>{children}</Wrapper>;
+  isFirst: boolean;
+  title: string;
+  renderDelete: boolean;
+  deleteFn: Function;
+}) => {
+  const handleClick = () => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete this ${title}? This operation is irreversible.`
+      )
+    ) {
+      deleteFn();
+    }
+  };
+
+  return (
+    <Wrapper>
+      {children}
+      <SubSectionNav>
+        <VerticalKnobs renderUp={!isFirst} renderDown={!isLast} />
+        {renderDelete && (
+          <DangerButton onClick={handleClick}>x Delete</DangerButton>
+        )}
+      </SubSectionNav>
+    </Wrapper>
+  );
+};
 
 export default SubSection;

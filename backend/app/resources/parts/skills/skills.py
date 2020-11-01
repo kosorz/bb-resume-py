@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from .schemas import Skills, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, SkillsFull
@@ -86,6 +86,9 @@ def delete_skill_group(
     current_user_skills_groups: List[SkillsGroup] = Depends(
         get_current_user_skills_groups),
 ):
+    if len(current_user_skills_groups) <= 1:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Bad request")
     find_item_with_key_value(current_user_skills_groups, "id", group_id)
     return delete_existing_resource(db, group_id, SkillsGroup,
                                     crud.delete_skills_group)

@@ -6,7 +6,6 @@ import Input from "./parts/Input";
 import Area from "./parts/Area";
 import SubSection from "./parts/SubSection";
 import Form from "./parts/Form";
-import VerticalKnobs from "./parts/VerticalKnobs";
 import Values from "./parts/Values";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
@@ -14,9 +13,16 @@ import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { skillsGroupValidationSchema } from "../validationSchemas";
+import axios from "../../../util/axios";
 
 const SkillsGroup = observer(
-  ({ id, isLast, isFirst, ...skillsGroupEditorData }: SkillsGroupEditor) => {
+  ({
+    id,
+    isLast,
+    isFirst,
+    hasSiblings,
+    ...skillsGroupEditorData
+  }: SkillsGroupEditor) => {
     const resumeBubble = useContext(ResumeBubble);
     const formik = useFormik({
       initialValues: skillsGroupEditorData,
@@ -32,8 +38,19 @@ const SkillsGroup = observer(
     });
     useFormikAutoSave(formik);
 
+    const deleteFn = () =>
+      axios.delete(`/parts/skills_group/${id}`).then((res) => {
+        resumeBubble.removeSkillsGroup(res.data);
+      });
+
     return (
-      <SubSection isLast={isLast}>
+      <SubSection
+        renderDelete={hasSiblings}
+        title={"group"}
+        isLast={isLast}
+        isFirst={isFirst}
+        deleteFn={deleteFn}
+      >
         <Form>
           <Values>
             <legend>Group details</legend>
@@ -44,7 +61,6 @@ const SkillsGroup = observer(
             />
           </Values>
         </Form>
-        <VerticalKnobs renderDown={!isLast} renderUp={!isFirst} />
       </SubSection>
     );
   }
