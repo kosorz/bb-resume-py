@@ -5,6 +5,7 @@ import VerticalKnobs from "./VerticalKnobs";
 import NavItems from "./NavItems";
 import SuccessButton from "../../../page/SuccessButton";
 import WarningButton from "../../../page/WarningButton";
+import media from "../../../../styled/media";
 
 const Wrapper = styled.section`
   margin-bottom: ${({ theme }) => theme.space + "px"};
@@ -13,6 +14,11 @@ const Wrapper = styled.section`
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   background-color: ${({ theme }) => theme.white};
   border: ${({ theme }) => "1px solid" + theme.gray};
+
+  ${media.phone`
+    //@ts-ignore
+    padding: ${({ theme }) => theme.spaceSmall + "px"}
+  `};
 `;
 
 const Title = styled.h2``;
@@ -20,6 +26,12 @@ const Title = styled.h2``;
 const Purpose = styled.p`
   text-align: justify;
   font-style: italic;
+`;
+
+const AddWrapper = styled.div`
+  ${media.phone`
+    display: flex;
+  `};
 `;
 
 const Footer = styled.div`
@@ -68,9 +80,11 @@ const Section = ({
     {expanded && movable && (
       <>
         {subtitle && addFn && (
-          <SuccessButton onClick={() => addFn()}>
-            + Add new {subtitle}
-          </SuccessButton>
+          <AddWrapper>
+            <SuccessButton onClick={() => addFn()}>
+              + Add new {subtitle}
+            </SuccessButton>
+          </AddWrapper>
         )}
         <Chin>
           <NavTitle>Manage section:</NavTitle>

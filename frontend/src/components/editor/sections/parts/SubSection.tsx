@@ -5,6 +5,8 @@ import VerticalKnobs from "./VerticalKnobs";
 import NavItems from "./NavItems";
 import DangerButton from "../../../page/DangerButton";
 
+import media from "../../../../styled/media";
+
 const Wrapper = styled.section`
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
   margin-left: ${({ theme }) => theme.spaceSmall + "px"};
@@ -12,6 +14,11 @@ const Wrapper = styled.section`
   margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
   padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};
   border-bottom: ${({ theme }) => "1px dashed" + theme.gray};
+
+  ${media.phone`
+    //@ts-ignore
+    margin-left: 0
+  `};
 `;
 
 const SubSectionNav = styled(NavItems)`
