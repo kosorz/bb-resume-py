@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from .schemas import Experience, ExperienceUpdate, ExperienceFull, ExperienceUnit, ExperienceUnitUpdate
 from ...resumes.schemas import ResumeFull
 from ....util.deps import get_owns_resume, get_current_user_experience, get_current_user_experience_units, db
-from ....util.fns import update_existing_resource, find_item_with_key_value
+from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
 from ....db import crud
 
 router = APIRouter()
@@ -76,3 +76,19 @@ def update_experience_unit(
     return update_existing_resource(db, unit_id, experience_unit,
                                     ExperienceUnit, crud.get_experience_unit,
                                     crud.update_experience_unit)
+
+
+@router.delete(
+    "/experience_unit/{unit_id}",
+    response_model=int,
+    name="experience:delete-experience-unit",
+)
+def delete_experience_unit(
+    unit_id: int,
+    db: Session = Depends(db),
+    current_user_experience_units: List[ExperienceUnit] = Depends(
+        get_current_user_experience_units),
+):
+    find_item_with_key_value(current_user_experience_units, "id", unit_id)
+    return delete_existing_resource(db, unit_id, ExperienceUnit,
+                                    crud.delete_experience_unit)

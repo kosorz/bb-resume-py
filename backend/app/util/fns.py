@@ -19,6 +19,16 @@ def update_existing_resource(
     return updated_data
 
 
+def delete_existing_resource(
+    db: Session,
+    resource_id: int,
+    model,
+    delete_fn: Callable,
+):
+    delete_fn(db, resource_id)
+    return resource_id
+
+
 def find_item_with_key_value(list: Iterable,
                              key: str,
                              value: int,

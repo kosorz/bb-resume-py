@@ -17,56 +17,62 @@ import { ExperienceUnitEditor } from "../../../typings/ExperienceUnit.typing";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { experienceUnitValidationSchema } from "../validationSchemas";
 
-const ExperienceUnit = observer((props: ExperienceUnitEditor) => {
-  const resumeBubble = useContext(ResumeBubble);
-  const { id, isLast, isFirst, ...experienceUnitEditorData } = props;
+const ExperienceUnit = observer(
+  ({
+    id,
+    isLast,
+    isFirst,
+    ...experienceUnitEditorData
+  }: ExperienceUnitEditor) => {
+    const resumeBubble = useContext(ResumeBubble);
 
-  const formik = useFormik({
-    initialValues: experienceUnitEditorData,
-    onSubmit: (values) => {
-      saveChangedValues(
-        values,
-        experienceUnitEditorData,
-        `/parts/experience_unit/${id}`,
-        resumeBubble.updateExperienceUnit
-      );
-    },
-    validationSchema: experienceUnitValidationSchema,
-  });
-  useFormikAutoSave(formik);
+    const formik = useFormik({
+      initialValues: experienceUnitEditorData,
+      onSubmit: (values) => {
+        saveChangedValues(
+          values,
+          experienceUnitEditorData,
+          `/parts/experience_unit/${id}`,
+          resumeBubble.updateExperienceUnit
+        );
+      },
+      validationSchema: experienceUnitValidationSchema,
+    });
+    useFormikAutoSave(formik);
 
-  return (
-    <SubSection isLast={isLast}>
-      <Form>
-        <Values>
-          <legend>Experience details</legend>
-          <Input {...getFieldProps(formik, "title")} placeholder="Title" />
-          <Input
-            {...getFieldProps(formik, "company_name")}
-            placeholder="Company Name"
-          />
-          <Input
-            {...getFieldProps(formik, "location")}
-            placeholder="Location"
-          />
-          <Input {...getFieldProps(formik, "link")} placeholder="Link" />
-          <Area
-            {...getFieldProps(formik, "description")}
-            placeholder="Description"
-          />
-        </Values>
-        <Settings>
-          <legend>Settings</legend>
-          <Checkbox {...getFieldProps(formik, "company_name_enabled")} />
-          <Checkbox {...getFieldProps(formik, "description_enabled")} />
-          <Checkbox {...getFieldProps(formik, "location_enabled")} />
-          <Checkbox {...getFieldProps(formik, "period_enabled")} />
-          <Checkbox {...getFieldProps(formik, "link_enabled")} />
-        </Settings>
-      </Form>
-      <VerticalKnobs renderUp={!isFirst} renderDown={!isLast} />
-    </SubSection>
-  );
-});
+    return (
+      <SubSection isLast={isLast}>
+        <Form>
+          <Values>
+            <legend>Experience details</legend>
+            <Input {...getFieldProps(formik, "title")} placeholder="Title" />
+            <Input
+              {...getFieldProps(formik, "company_name")}
+              placeholder="Company Name"
+            />
+            <Input
+              {...getFieldProps(formik, "location")}
+              placeholder="Location"
+            />
+            <Input {...getFieldProps(formik, "link")} placeholder="Link" />
+            <Area
+              {...getFieldProps(formik, "description")}
+              placeholder="Description"
+            />
+          </Values>
+          <Settings>
+            <legend>Settings</legend>
+            <Checkbox {...getFieldProps(formik, "company_name_enabled")} />
+            <Checkbox {...getFieldProps(formik, "description_enabled")} />
+            <Checkbox {...getFieldProps(formik, "location_enabled")} />
+            <Checkbox {...getFieldProps(formik, "period_enabled")} />
+            <Checkbox {...getFieldProps(formik, "link_enabled")} />
+          </Settings>
+        </Form>
+        <VerticalKnobs renderUp={!isFirst} renderDown={!isLast} />
+      </SubSection>
+    );
+  }
+);
 
 export default ExperienceUnit;

@@ -226,6 +226,19 @@ class TestSkillsGroupsRoutes:
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
+    async def test_delete_skills_group_endpoint_existence(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if delete skills group endpoint is available
+        res = await client.delete(
+            app.url_path_for(
+                "skills:delete-skills-group",
+                group_id=1,
+            ))
+        assert res.status_code != status.HTTP_404_NOT_FOUND
+
 
 class TestSkillsGroups:
     async def test_create_skills_group_authorization_check(
@@ -252,6 +265,19 @@ class TestSkillsGroups:
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
             app.url_path_for("skills:update-skills-group", group_id=2), )
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    async def test_delete_skills_group_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.delete(
+            app.url_path_for("skills:delete-skills-group", group_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_create_skills_group_response(
@@ -294,7 +320,7 @@ class TestSkillsGroups:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if skills group will be updated when correct data submitted and user owns resume
+        # Checks if skills group will be updated when correct data submitted and user owns skills group
         res = await client.patch(
             app.url_path_for(
                 "skills:update-skills-group",
@@ -326,7 +352,7 @@ class TestSkillsGroups:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if skills group will not be created when user doesn't own the resume
+        # Checks if skills group will not be created when user doesn't own skills
         res = await client.post(
             app.url_path_for(
                 "skills:create-skills-group",
@@ -339,7 +365,7 @@ class TestSkillsGroups:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if skills group will not be updated when user doesn't own the resume
+        # Checks if skills group will not be updated when user doesn't own the skills group
         res = await client.patch(
             app.url_path_for(
                 "skills:update-skills-group",
@@ -348,3 +374,38 @@ class TestSkillsGroups:
             json={},
         )
         assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_delete_skills_group_access(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills group will not be deleted when user doesn't own the skills group
+        res = await client.delete(
+            app.url_path_for(
+                "skills:delete-skills-group",
+                group_id=1,
+            ))
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_delete_skills_group_response(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills group will be deleted when user owns the skills group
+        res = await client.delete(
+            app.url_path_for(
+                "skills:delete-skills-group",
+                group_id=2,
+            ))
+        assert res.status_code == status.HTTP_200_OK
+        assert res.json() == 2
+
+    async def test_resume_skills_group_delete(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        skills_group = get_skills_group(app.state._db, 2)
+        assert skills_group == None

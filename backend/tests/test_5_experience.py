@@ -226,6 +226,19 @@ class TestExperienceUnitsRoutes:
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
+    async def test_delete_experience_unit_endpoint_existence(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if delete experience unit endpoint is available
+        res = await client.delete(
+            app.url_path_for(
+                "experience:delete-experience-unit",
+                unit_id=1,
+            ))
+        assert res.status_code != status.HTTP_404_NOT_FOUND
+
 
 class TestExperienceUnits:
     async def test_create_experience_unit_authorization_check(
@@ -253,6 +266,19 @@ class TestExperienceUnits:
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
             app.url_path_for("experience:update-experience-unit", unit_id=2), )
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    async def test_delete_experience_unit_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.delete(
+            app.url_path_for("experience:delete-experience-unit", unit_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_create_experience_unit_response(
@@ -334,7 +360,7 @@ class TestExperienceUnits:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if experience unit will be updated when correct data submitted and user owns resume
+        # Checks if experience unit will be updated when correct data submitted and user owns experience unit
         update_data = {
             "title": "updated_title",
             "company_name": "updated_company_name",
@@ -354,7 +380,6 @@ class TestExperienceUnits:
             ),
             json=update_data,
         )
-        print(res.json())
         assert compare_while_excluding(
             res.json(),
             update_data,
@@ -362,7 +387,7 @@ class TestExperienceUnits:
         )
         assert res.status_code == status.HTTP_200_OK
 
-    async def test_resume_experience_unit_update_and_its_soft_deletion(
+    async def test_resume_experience_unit_update(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -377,7 +402,7 @@ class TestExperienceUnits:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if experience unit will not be created when user doesn't own the resume
+        # Checks if experience unit will not be created when user doesn't own the experience
         res = await client.post(
             app.url_path_for(
                 "experience:create-experience-unit",
@@ -390,7 +415,7 @@ class TestExperienceUnits:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if experience unit will not be updated when user doesn't own the resume
+        # Checks if experience unit will not be updated when user doesn't own the experience unit
         res = await client.patch(
             app.url_path_for(
                 "experience:update-experience-unit",
@@ -399,3 +424,38 @@ class TestExperienceUnits:
             json={},
         )
         assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_delete_experience_unit_access(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience unit will not be deleted when user doesn't own the experience unit
+        res = await client.delete(
+            app.url_path_for(
+                "experience:delete-experience-unit",
+                unit_id=1,
+            ))
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_delete_experience_unit_response(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience unit will be deleted when user owns the experience unit
+        res = await client.delete(
+            app.url_path_for(
+                "experience:delete-experience-unit",
+                unit_id=2,
+            ))
+        assert res.status_code == status.HTTP_200_OK
+        assert res.json() == 2
+
+    async def test_resume_experience_unit_delete(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        experience_unit = get_experience_unit(app.state._db, 2)
+        assert experience_unit == None

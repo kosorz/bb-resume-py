@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from .schemas import Skills, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, SkillsFull
 from ...resumes.schemas import ResumeFull
 from ....util.deps import get_owns_resume, get_current_user_skills, get_current_user_skills_groups, db
-from ....util.fns import update_existing_resource, find_item_with_key_value
+from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
 from ....db import crud
 
 router = APIRouter()
@@ -73,3 +73,19 @@ def update_skill_group(group_id: int,
     return update_existing_resource(db, group_id, skills_group, SkillsGroup,
                                     crud.get_skills_group,
                                     crud.update_skills_group)
+
+
+@router.delete(
+    "/skills_group/{group_id}",
+    response_model=int,
+    name="skills:delete-skills-group",
+)
+def delete_skill_group(
+    group_id: int,
+    db: Session = Depends(db),
+    current_user_skills_groups: List[SkillsGroup] = Depends(
+        get_current_user_skills_groups),
+):
+    find_item_with_key_value(current_user_skills_groups, "id", group_id)
+    return delete_existing_resource(db, group_id, SkillsGroup,
+                                    crud.delete_skills_group)

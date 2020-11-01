@@ -15,38 +15,39 @@ import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { skillsGroupValidationSchema } from "../validationSchemas";
 
-const SkillsGroup = observer((props: SkillsGroupEditor) => {
-  const resumeBubble = useContext(ResumeBubble);
-  const { id, isLast, isFirst, ...skillsGroupEditorData } = props;
-  const formik = useFormik({
-    initialValues: skillsGroupEditorData,
-    onSubmit: (values) => {
-      saveChangedValues(
-        values,
-        skillsGroupEditorData,
-        `/parts/skills_group/${id}`,
-        resumeBubble.updateSkillsGroup
-      );
-    },
-    validationSchema: skillsGroupValidationSchema,
-  });
-  useFormikAutoSave(formik);
+const SkillsGroup = observer(
+  ({ id, isLast, isFirst, ...skillsGroupEditorData }: SkillsGroupEditor) => {
+    const resumeBubble = useContext(ResumeBubble);
+    const formik = useFormik({
+      initialValues: skillsGroupEditorData,
+      onSubmit: (values) => {
+        saveChangedValues(
+          values,
+          skillsGroupEditorData,
+          `/parts/skills_group/${id}`,
+          resumeBubble.updateSkillsGroup
+        );
+      },
+      validationSchema: skillsGroupValidationSchema,
+    });
+    useFormikAutoSave(formik);
 
-  return (
-    <SubSection isLast={isLast}>
-      <Form>
-        <Values>
-          <legend>Group details</legend>
-          <Input {...getFieldProps(formik, "title")} placeholder="Name" />
-          <Area
-            {...getFieldProps(formik, "values")}
-            placeholder="Communication,problem solving,stress handling"
-          />
-        </Values>
-      </Form>
-      <VerticalKnobs renderDown={!isLast} renderUp={!isFirst} />
-    </SubSection>
-  );
-});
+    return (
+      <SubSection isLast={isLast}>
+        <Form>
+          <Values>
+            <legend>Group details</legend>
+            <Input {...getFieldProps(formik, "title")} placeholder="Name" />
+            <Area
+              {...getFieldProps(formik, "values")}
+              placeholder="Communication,problem solving,stress handling"
+            />
+          </Values>
+        </Form>
+        <VerticalKnobs renderDown={!isLast} renderUp={!isFirst} />
+      </SubSection>
+    );
+  }
+);
 
 export default SkillsGroup;

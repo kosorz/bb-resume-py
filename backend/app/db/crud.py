@@ -30,6 +30,12 @@ def finalize_update(db: Session, old_resource, updated_resource):
     return old_resource
 
 
+def finalize_delete(db: Session, resource_to_delete, resource_id: int):
+    db.delete(resource_to_delete)
+    db.commit()
+    return resource_id
+
+
 # Users
 def get_user_by_username(db: Session, username: str):
     return db.query(
@@ -113,6 +119,10 @@ def update_skills_group(db: Session, skills_group: SkillsGroup):
                            skills_group)
 
 
+def delete_skills_group(db: Session, group_id: int):
+    return finalize_delete(db, get_skills_group(db, group_id), group_id)
+
+
 # Experiences
 def get_experience(db: Session, experience_id: int):
     return db.query(models.Experience).filter(
@@ -150,3 +160,8 @@ def get_experience_unit(db: Session, unit_id: int):
 def update_experience_unit(db: Session, experience_unit: ExperienceUnit):
     return finalize_update(db, get_experience_unit(db, experience_unit.id),
                            experience_unit)
+
+
+def delete_experience_unit(db: Session, experience_id: int):
+    return finalize_delete(db, get_experience_unit(db, experience_id),
+                           experience_id)
