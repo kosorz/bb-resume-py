@@ -1,10 +1,11 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 
+import FieldSet from "./Fieldset";
+
 import media from "../../../../styled/media";
 
-const Wrapper = styled.fieldset`
-  border: ${({ theme }) => "1px solid" + theme.gray};
+const Wrapper = styled(FieldSet)`
   flex-basis: 220px;
   flex-shrink: 0;
 

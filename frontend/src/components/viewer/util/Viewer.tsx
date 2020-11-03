@@ -16,7 +16,7 @@ loadFonts();
 
 const DocumentWrapper = styled.div`
   color: #f8f9fa;
-  border: ${({ theme }) => "1px solid" + theme.gray};
+  /* border: ${({ theme }) => "1px solid" + theme.main}; */
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
 `;
 
@@ -24,6 +24,10 @@ const PageWrapper = styled.div`
   position: sticky;
   top: ${({ theme }) => theme.space + "px"};
   overflow: hidden;
+
+  span {
+    display: none;
+  }
 `;
 
 const PDFViewer = (props: {
@@ -133,7 +137,7 @@ const NavigatorWrapper = styled.div`
   color: ${({ theme }) => theme.black};
 `;
 
-const PageIndicator = styled.span`
+const PageIndicator = styled.div`
   margin: 0px 12px;
 `;
 

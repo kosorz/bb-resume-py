@@ -12,6 +12,8 @@ const Wrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
   padding: ${({ theme }) => theme.space + "px"};
+  margin: auto;
+  max-width: 1400px;
 
   ${media.phone`
     //@ts-ignore

@@ -13,7 +13,7 @@ const Wrapper = styled.section`
   padding-top: 0;
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   background-color: ${({ theme }) => theme.white};
-  border: ${({ theme }) => "1px solid" + theme.gray};
+  /* border: ${({ theme }) => "1px solid" + theme.main}; */
 
   ${media.phone`
     //@ts-ignore
@@ -21,11 +21,13 @@ const Wrapper = styled.section`
   `};
 `;
 
-const Title = styled.h2``;
+const Title = styled.h2`
+  color: ${({ theme }) => theme.dark};
+`;
 
 const Purpose = styled.p`
   text-align: justify;
-  font-style: italic;
+  font-size: ${({ theme }) => theme.smallFont};
 `;
 
 const AddWrapper = styled.div`
@@ -37,16 +39,17 @@ const AddWrapper = styled.div`
 const Footer = styled.div`
   padding-top: ${({ theme }) => theme.space + "px"};
   margin-top: ${({ theme }) => theme.space + "px"};
-  border-top: ${({ theme }) => "3px solid" + theme.gray};
+  border-top: ${({ theme }) => "3px solid" + theme.dark};
 `;
 
 const Chin = styled(Footer)`
   flex-direction: column;
-  border-top: ${({ theme }) => "2px solid" + theme.gray};
+  border-top: ${({ theme }) => "2px solid" + theme.dark};
 `;
 
 const NavTitle = styled.h4`
   flex: 100%;
+  color: ${({ theme }) => theme.dark};
 `;
 
 const SectionVerticalKnobs = styled(VerticalKnobs)`
@@ -62,6 +65,7 @@ const Section = ({
   subtitle,
   purpose,
   addFn,
+  icon,
   movable = true,
 }: {
   children: ReactNode | ReactNode[];
@@ -70,11 +74,13 @@ const Section = ({
   addFn?: Function;
   subtitle?: string;
   movable?: boolean;
+  icon?: ReactNode;
   expanded?: boolean;
   setExpanded?: Function;
 }) => (
   <Wrapper>
     <Title>{title}</Title>
+    {icon && icon}
     <Purpose>{purpose}</Purpose>
     {children}
     {expanded && movable && (
@@ -87,7 +93,7 @@ const Section = ({
           </AddWrapper>
         )}
         <Chin>
-          <NavTitle>Manage section:</NavTitle>
+          <NavTitle>Manage:</NavTitle>
           <NavItems>
             <SectionVerticalKnobs
               upLabel={`Move\xa0${title.toLowerCase()}\xa0up`}

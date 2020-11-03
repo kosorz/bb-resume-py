@@ -1,11 +1,12 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.fieldset`
+import FieldSet from "./Fieldset";
+
+const Wrapper = styled(FieldSet)`
   display: flex;
   flex-wrap: wrap;
   flex-grow: 1;
-  border: ${({ theme }) => "1px solid" + theme.gray};
 
   label,
   input {

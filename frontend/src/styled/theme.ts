@@ -1,17 +1,18 @@
 import { ThemeShape } from "../typings/theme.typing";
 
 const theme: ThemeShape = {
-  black: "#3E3E3E",
   white: "#FFF",
-  text: "#A6A6A6",
-  gray: "#cbcbcc",
   red: "#F22300",
+
   green: "#389e0d",
   orange: "#faad14",
-  lightRed: "#FCD3CC",
-  darkRed: "#8D1602",
-  blue: "#4F8FED",
-  smallFont: "14px",
+
+  decoration: "#e8e8e8",
+  main: "#bbbfca",
+  dark: "#495464",
+
+  font: "14px",
+  smallFont: "13px",
   spaceSmall: 10,
   space: 20,
   spaceBig: 30,

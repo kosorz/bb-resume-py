@@ -13,7 +13,7 @@ const Wrapper = styled.section`
 
   margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
   padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};
-  border-bottom: ${({ theme }) => "1px dashed" + theme.gray};
+  border-bottom: ${({ theme }) => "1px dashed" + theme.main};
 
   ${media.phone`
     //@ts-ignore

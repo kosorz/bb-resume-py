@@ -28,7 +28,7 @@ const VerticalKnobs = ({
   renderDown?: boolean;
 }) => (
   <Wrapper className={className}>
-    {renderUp && <Button onClick={() => {}}>{upLabel}&nbsp;&#8743;</Button>}
+    {renderUp && <Button onClick={() => {}}>&#8743;&nbsp;{upLabel}</Button>}
     {renderDown && <Button onClick={() => {}}>&#8744;&nbsp;{downLabel}</Button>}
   </Wrapper>
 );

@@ -1,20 +1,27 @@
 body {
   margin: 0;
-  font-family: "Courier Prime", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f8f9fa;
+  background-color: #f4f4f2;
   font-size: 15px;
 }
 
 input,
 button,
-textarea {
-  font-family: "Courier Prime", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+textarea,
+label,
+legend {
+  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
-  border: 1px solid #cbcbcc;
+}
+
+input,
+button,
+textarea {
+  border: 1px solid #e8e8e8;
 }
 
 h1 {

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import SubSectionHeader from "./SubSectionHeader";
 
 const Wrapper = styled(SubSectionHeader)`
-  border-bottom: ${({ theme }) => "1px dashed" + theme.gray};
+  border-bottom: ${({ theme }) => "1px dashed" + theme.main};
   margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
 `;
 

@@ -1,7 +1,9 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.fieldset`
+import FieldSet from "./Fieldset";
+
+const Wrapper = styled(FieldSet)`
   flex: 100%;
   display: flex;
   flex-wrap: wrap;

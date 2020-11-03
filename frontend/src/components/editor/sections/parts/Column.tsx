@@ -6,7 +6,9 @@ const Wrapper = styled.article`
   flex-direction: column;
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+  color: ${({ theme }) => theme.dark};
+`;
 
 const Column = ({
   title,
