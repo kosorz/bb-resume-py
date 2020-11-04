@@ -66,6 +66,7 @@ def create_main_tables_seed_data() -> None:
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
         sa.Column("unlisted", sa.Boolean, default=False),
+        sa.Column("order", postgresql.ARRAY(sa.Integer), default=[]),
         sa.Column(
             "resume_id",
             sa.Integer,
@@ -129,7 +130,7 @@ def create_main_tables_seed_data() -> None:
     }])
     op.bulk_insert(resumes, [{"title": "seed_title", "owner_id": 1}])
     op.bulk_insert(infos, [{"name": "seed_user", "resume_id": 1}])
-    op.bulk_insert(skills, [{"resume_id": 1}])
+    op.bulk_insert(skills, [{"resume_id": 1, "order": [1]}])
     op.bulk_insert(skills_groups, [{"skills_id": 1}])
     op.bulk_insert(experiences, [{"resume_id": 1}])
     op.bulk_insert(experience_units, [{"experience_id": 1}])

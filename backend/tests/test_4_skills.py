@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from app.util.deps import get_current_user
 from app.util.fns import compare_while_excluding
-from app.db.crud import get_resume, get_skills_group
+from app.db.crud import get_resume_skills, get_skills_group
 
 pytestmark = pytest.mark.asyncio
 
@@ -81,8 +81,7 @@ class TestSkills:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        resume = get_resume(app.state._db, 2)
-        assert not resume.skills
+        assert not get_resume_skills(app.state._db, 2)
 
     async def test_create_skills_response(
         self,
@@ -97,6 +96,7 @@ class TestSkills:
             "id": 2,
             "unlisted": False,
             "resume_id": 2,
+            "order": [2]
         }
         assert res.status_code == status.HTTP_200_OK
 
@@ -105,9 +105,11 @@ class TestSkills:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if skills were created
-        resume = get_resume(app.state._db, 2)
-        assert resume.skills
+        # Checks if skills, skills_group and order on skills were created
+        skills = get_resume_skills(app.state._db, 2)
+        assert skills
+        assert skills.order == [2]
+        assert get_skills_group(app.state._db, 2)
 
     async def test_update_skills_validation(
         self,
@@ -146,6 +148,7 @@ class TestSkills:
         assert res.json() == {
             "title": "updated_title",
             "id": 2,
+            "order": [2],
             "unlisted": True,
             "resume_id": 2
         }
@@ -156,8 +159,7 @@ class TestSkills:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        resume = get_resume(app.state._db, 2)
-        assert resume.skills.unlisted
+        assert get_resume_skills(app.state._db, 2).unlisted
 
     async def test_create_skills_rejection_if_already_created(
         self,
@@ -291,6 +293,14 @@ class TestSkillsGroups:
         assert res.json() == {"title": "", "id": 3, "values": []}
         assert res.status_code == status.HTTP_200_OK
 
+    async def test_create_skills_group_outcome(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills order has newly created group id
+        assert get_resume_skills(app.state._db, 2).order == [2, 3]
+
     @pytest.mark.parametrize("body", (
         {
             "values": False
@@ -402,13 +412,13 @@ class TestSkillsGroups:
         assert res.status_code == status.HTTP_200_OK
         assert res.json() == 2
 
-    async def test_resume_skills_group_delete(
+    async def test_resume_skills_group_delete_outcome(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        skills_group = get_skills_group(app.state._db, 2)
-        assert skills_group == None
+        assert get_skills_group(app.state._db, 2) == None
+        assert get_resume_skills(app.state._db, 2).order == [3]
 
     async def test_delete_skills_group_response_on_single_group(
         self,

@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from .schemas import Skills, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, SkillsFull
+from ..schemas import OrderUpdate
 from ...resumes.schemas import ResumeFull
 from ....util.deps import get_owns_resume, get_current_user_skills, get_current_user_skills_groups, db
 from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
@@ -26,9 +27,11 @@ def create_skills(
                              value=resume_id,
                              error=False,
                              throw_on_present=True)
-    db_skills = crud.create_resume_skills(db, resume_id)
-    crud.create_skills_group(db, db_skills.id)
-    return db_skills
+    skills = crud.create_resume_skills(db, resume_id)
+    group = crud.create_skills_group(db, skills.id)
+    return update_existing_resource(db, skills.id,
+                                    OrderUpdate(order=[group.id]), Skills,
+                                    crud.get_skills, crud.update_skills)
 
 
 @router.patch(
@@ -55,8 +58,12 @@ def create_skill_group(
     skills_id: int,
     db: Session = Depends(db),
     current_user_skills: List[SkillsFull] = Depends(get_current_user_skills)):
-    find_item_with_key_value(current_user_skills, "id", skills_id)
-    return crud.create_skills_group(db, skills_id)
+    skills = find_item_with_key_value(current_user_skills, "id", skills_id)
+    group = crud.create_skills_group(db, skills_id)
+    update_existing_resource(db, skills_id,
+                             OrderUpdate(order=[*skills.order, group.id]),
+                             Skills, crud.get_skills, crud.update_skills)
+    return group
 
 
 @router.patch(
@@ -85,10 +92,19 @@ def delete_skill_group(
     db: Session = Depends(db),
     current_user_skills_groups: List[SkillsGroup] = Depends(
         get_current_user_skills_groups),
+    current_user_skills: List[SkillsFull] = Depends(get_current_user_skills),
 ):
     if len(current_user_skills_groups) <= 1:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Bad request")
-    find_item_with_key_value(current_user_skills_groups, "id", group_id)
+    group = find_item_with_key_value(current_user_skills_groups, "id",
+                                     group_id)
+    skills = find_item_with_key_value(current_user_skills, "id",
+                                      group.skills_id)
+    update_existing_resource(
+        db, skills.id,
+        OrderUpdate(
+            order=[*filter(lambda g_id: g_id != group_id, skills.order)]),
+        Skills, crud.get_skills, crud.update_skills)
     return delete_existing_resource(db, group_id, SkillsGroup,
                                     crud.delete_skills_group)

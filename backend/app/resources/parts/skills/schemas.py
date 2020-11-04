@@ -17,6 +17,7 @@ class Skills(SkillsBase):
     title: str
     unlisted: bool
     resume_id: int
+    order: List[int] = []
 
     class Config:
         orm_mode = True

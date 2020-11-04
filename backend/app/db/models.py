@@ -60,6 +60,7 @@ class Skills(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
     unlisted = Column(Boolean, default=False)
+    order = Column(ARRAY(Integer), default=[])
 
     groups = relationship("SkillsGroup", back_populates="skills")
     resume_id = Column(Integer, ForeignKey("resumes.id"))
