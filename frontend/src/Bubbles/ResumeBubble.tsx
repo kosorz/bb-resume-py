@@ -43,13 +43,14 @@ let initialState: ResumeBubbleShape = {
   updateInfo: () => {},
   updateSkills: () => {},
   updateSkillsGroup: () => {},
+  updateSkillsOrder: () => {},
   addSkillsGroup: () => {},
   removeSkillsGroup: () => {},
   updateExperience: () => {},
   updateExperienceUnit: () => {},
+  updateExperienceOrder: () => {},
   addExperienceUnit: () => {},
   removeExperienceUnit: () => {},
-  updateSkillsOrder: () => {},
 };
 
 export const ResumeBubble = createContext(initialState);
@@ -81,6 +82,12 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.setUpdateTime();
       }
     },
+    updateSkillsOrder: (order) => {
+      if (store.resume.skills) {
+        store.resume.skills.order = order;
+        store.setUpdateTime();
+      }
+    },
     addSkillsGroup: (data) => {
       if (store.resume.skills) {
         store.resume.skills.groups = store.resume.skills.groups.concat(data);
@@ -93,12 +100,9 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.resume.skills.groups = store.resume.skills.groups.filter(
           (gr) => gr.id !== id
         );
-        store.setUpdateTime();
-      }
-    },
-    updateSkillsOrder: (order) => {
-      if (store.resume.skills) {
-        store.resume.skills.order = order;
+        store.resume.skills.order = store.resume.skills.order.filter(
+          (g_id) => g_id !== id
+        );
         store.setUpdateTime();
       }
     },
@@ -114,10 +118,19 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.setUpdateTime();
       }
     },
+    updateExperienceOrder: (order) => {
+      if (store.resume.experience) {
+        store.resume.experience.order = order;
+        store.setUpdateTime();
+      }
+    },
     addExperienceUnit: (data) => {
       if (store.resume.experience) {
         store.resume.experience.units = store.resume.experience.units.concat(
           data
+        );
+        store.resume.experience.order = store.resume.experience.order.concat(
+          data.id
         );
         store.setUpdateTime();
       }
@@ -126,6 +139,9 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
       if (store.resume.experience) {
         store.resume.experience.units = store.resume.experience.units.filter(
           (u) => u.id !== id
+        );
+        store.resume.experience.order = store.resume.experience.order.filter(
+          (u_id) => u_id !== id
         );
         store.setUpdateTime();
       }

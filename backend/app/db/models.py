@@ -84,6 +84,7 @@ class Experience(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, default="")
     unlisted = Column(Boolean, default=False)
+    order = Column(ARRAY(Integer), default=[])
 
     units = relationship("ExperienceUnit", back_populates="experience")
     resume_id = Column(Integer, ForeignKey("resumes.id"))

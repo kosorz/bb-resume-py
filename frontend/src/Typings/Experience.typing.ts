@@ -6,6 +6,7 @@ type ExperienceShape = {
   title: string;
   unlisted: true;
   units: ExperienceUnitShape[];
+  order: number[];
 };
 
 export interface ExperienceViewer

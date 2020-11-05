@@ -46,10 +46,18 @@ const ExperienceUnit = observer(
         resumeBubble.removeExperienceUnit(res.data);
       });
 
+    const changeOrder = (dir: string) => {
+      axios
+        .post(`/parts/experience_unit/${id}/move/${dir}`)
+        .then((res) => resumeBubble.updateExperienceOrder(res.data));
+    };
+
     return (
       <SubSection
         renderDelete={hasSiblings}
         title={"experience"}
+        onUp={() => changeOrder("up")}
+        onDown={() => changeOrder("down")}
         isLast={isLast}
         isFirst={isFirst}
         deleteFn={deleteFn}

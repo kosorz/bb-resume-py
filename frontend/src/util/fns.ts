@@ -6,7 +6,8 @@ import axios from "./axios";
 import InfoShape from "../typings/Info.typing";
 import ExperienceShape from "../typings/Experience.typing";
 import SkillsShape from "../typings/Skills.typing";
-import { SkillsGroupShape } from "../typings/SkillsGroup.typing";
+import SkillsGroupShape from "../typings/SkillsGroup.typing";
+import ExperienceUnitShape from "../typings/ExperienceUnit.typing";
 
 export function getFieldProps(
   formik: FormikProps<any>,
@@ -51,10 +52,20 @@ export function saveChangedValues(
       .catch((err) => console.log(err));
 }
 
-export function sortToOrder(
+export function sortSkillsGroups(
   order: number[],
   items: SkillsGroupShape[]
 ): SkillsGroupShape[] {
+  const result = toJS(items).sort(
+    (a, b) => order.indexOf(a.id) - order.indexOf(b.id)
+  );
+  return result;
+}
+
+export function sortExperienceUnits(
+  order: number[],
+  items: ExperienceUnitShape[]
+): ExperienceUnitShape[] {
   const result = toJS(items).sort(
     (a, b) => order.indexOf(a.id) - order.indexOf(b.id)
   );

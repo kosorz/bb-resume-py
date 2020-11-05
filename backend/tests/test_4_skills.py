@@ -247,7 +247,7 @@ class TestSkillsGroupsRoutes:
         client: AsyncClient,
     ) -> None:
         # Checks if move skills group endpoint is available
-        res = await client.delete(
+        res = await client.post(
             app.url_path_for("skills:move-skills-group",
                              group_id=1,
                              direction='up'))

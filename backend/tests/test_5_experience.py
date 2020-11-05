@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from app.util.deps import get_current_user
 from app.util.fns import compare_while_excluding
-from app.db.crud import get_resume, get_experience_unit
+from app.db.crud import get_resume_experience, get_experience_unit
 
 pytestmark = pytest.mark.asyncio
 
@@ -81,8 +81,7 @@ class TestExperience:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        resume = get_resume(app.state._db, 2)
-        assert not resume.experience
+        assert not get_resume_experience(app.state._db, 2)
 
     async def test_create_experience_response(
         self,
@@ -97,6 +96,7 @@ class TestExperience:
             "id": 2,
             "unlisted": False,
             "resume_id": 2,
+            "order": [2]
         }
         assert res.status_code == status.HTTP_200_OK
 
@@ -105,9 +105,11 @@ class TestExperience:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if experience were created
-        resume = get_resume(app.state._db, 2)
-        assert resume.experience
+        # Checks if experience, experience_unit and order on experience were created
+        experience = get_resume_experience(app.state._db, 2)
+        assert experience
+        assert experience.order == [2]
+        assert get_experience_unit(app.state._db, 2)
 
     async def test_update_experience_validation(
         self,
@@ -146,6 +148,7 @@ class TestExperience:
         assert res.json() == {
             "title": "updated_title",
             "id": 2,
+            "order": [2],
             "unlisted": True,
             "resume_id": 2
         }
@@ -156,8 +159,7 @@ class TestExperience:
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        resume = get_resume(app.state._db, 2)
-        assert resume.experience.unlisted
+        assert get_resume_experience(app.state._db, 2).unlisted
 
     async def test_create_experience_rejection_if_already_created(
         self,
@@ -239,6 +241,18 @@ class TestExperienceUnitsRoutes:
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
+    async def test_move_experience_unit_endpoint_existence(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if move experience unit endpoint is available
+        res = await client.post(
+            app.url_path_for("experience:move-experience-unit",
+                             unit_id=1,
+                             direction="up"))
+        assert res.status_code != status.HTTP_404_NOT_FOUND
+
 
 class TestExperienceUnits:
     async def test_create_experience_unit_authorization_check(
@@ -281,6 +295,21 @@ class TestExperienceUnits:
             app.url_path_for("experience:delete-experience-unit", unit_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
+    async def test_move_experience_unit_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.post(
+            app.url_path_for("experience:move-experience-unit",
+                             unit_id=2,
+                             direction="up"), )
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
     async def test_create_experience_unit_response(
         self,
         app: FastAPI,
@@ -309,6 +338,72 @@ class TestExperienceUnits:
             {"date_start", "date_end"},
         )
         assert res.status_code == status.HTTP_200_OK
+
+    async def test_create_experience_unit_outcome(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience order has newly created unit id
+        assert get_resume_experience(app.state._db, 2).order == [2, 3]
+
+    async def test_move_up_experience_unit_response(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience unit will be moved up
+        res = await client.post(
+            app.url_path_for(
+                "experience:move-experience-unit",
+                unit_id=3,
+                direction="up",
+            ), )
+        assert res.json() == [3, 2]
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_move_up_experience_unit_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience unit will not be moved up
+        res = await client.post(
+            app.url_path_for(
+                "experience:move-experience-unit",
+                unit_id=3,
+                direction="up",
+            ), )
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
+
+    async def test_move_down_experience_unit_response(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience unit will be moved down
+        res = await client.post(
+            app.url_path_for(
+                "experience:move-experience-unit",
+                unit_id=3,
+                direction="down",
+            ), )
+        assert res.json() == [2, 3]
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_move_dow_experience_unit_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if experience unit will not be moved down
+        res = await client.post(
+            app.url_path_for(
+                "experience:move-experience-unit",
+                unit_id=3,
+                direction="down",
+            ), )
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.parametrize("body", (
         {
@@ -452,13 +547,13 @@ class TestExperienceUnits:
         assert res.status_code == status.HTTP_200_OK
         assert res.json() == 2
 
-    async def test_resume_experience_unit_delete(
+    async def test_resume_experience_unit_delete_outcom(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        experience_unit = get_experience_unit(app.state._db, 2)
-        assert experience_unit == None
+        assert get_experience_unit(app.state._db, 2) == None
+        assert get_resume_experience(app.state._db, 2).order == [3]
 
     async def test_delete_experience_unit_response_on_single_unit(
         self,

@@ -7,7 +7,11 @@ import ExperienceUnit from "./ExperienceUnit";
 import Section from "./parts/Section";
 import Form from "./parts/Form";
 
-import { getFieldProps, saveChangedValues } from "../../../util/fns";
+import {
+  getFieldProps,
+  saveChangedValues,
+  sortExperienceUnits,
+} from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { experienceValidationSchema } from "../validationSchemas";
@@ -20,6 +24,7 @@ const Experience = observer(() => {
     id,
     units,
     unlisted,
+    order,
     ...experienceEditorData
   } = resumeBubble.resume.experience!;
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -65,13 +70,13 @@ const Experience = observer(() => {
               />
             </SectionHeader>
           </Form>
-          {units.map((gr, i, arr) => (
+          {sortExperienceUnits(order, units).map((u, i, arr) => (
             <ExperienceUnit
               hasSiblings={arr.length > 1}
-              key={`experience_unit_${i}`}
+              key={`experience_unit_${u.id}_editor`}
               isLast={arr.length - 1 === i}
               isFirst={i === 0}
-              {...gr}
+              {...u}
             />
           ))}
         </>

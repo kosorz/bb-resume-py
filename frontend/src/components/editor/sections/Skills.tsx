@@ -14,7 +14,7 @@ import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import {
   getFieldProps,
   saveChangedValues,
-  sortToOrder,
+  sortSkillsGroups,
 } from "../../../util/fns";
 import axios from "../../../util/axios";
 
@@ -70,7 +70,7 @@ const Skills = observer(() => {
               />
             </SectionHeader>
           </Form>
-          {sortToOrder(order, groups).map((gr, i, arr) => (
+          {sortSkillsGroups(order, groups).map((gr, i, arr) => (
             <SkillsGroup
               hasSiblings={arr.length > 1}
               key={`skills_group_${gr.id}_editor`}
