@@ -6,6 +6,7 @@ type SkillsShape = {
   id: number;
   unlisted: boolean;
   groups: SkillsGroupShape[];
+  order: number[];
 };
 
 export interface SkillsViewer extends Omit<SkillsShape, "unlisted" | "id"> {

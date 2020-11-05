@@ -43,10 +43,18 @@ const SkillsGroup = observer(
         resumeBubble.removeSkillsGroup(res.data);
       });
 
+    const changeOrder = (dir: string) => {
+      axios
+        .post(`/parts/skills_group/${id}/move/${dir}`)
+        .then((res) => resumeBubble.updateSkillsOrder(res.data));
+    };
+
     return (
       <SubSection
         renderDelete={hasSiblings}
         title={"group"}
+        onUp={() => changeOrder("up")}
+        onDown={() => changeOrder("down")}
         isLast={isLast}
         isFirst={isFirst}
         deleteFn={deleteFn}

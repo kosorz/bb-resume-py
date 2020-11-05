@@ -28,7 +28,7 @@ const SkillsGroup = ({ theme, title, values }: SkillsGroupViewer) => {
       <View style={styles.values}>
         {values.length ? (
           values.map((v, i) => (
-            <Text key={`skill-group-${i}_values`} style={styles.value}>
+            <Text key={`skill-group-${i}-values`} style={styles.value}>
               {v}
             </Text>
           ))

@@ -241,6 +241,18 @@ class TestSkillsGroupsRoutes:
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
+    async def test_move_skills_group_endpoint_existence(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if move skills group endpoint is available
+        res = await client.delete(
+            app.url_path_for("skills:move-skills-group",
+                             group_id=1,
+                             direction='up'))
+        assert res.status_code != status.HTTP_404_NOT_FOUND
+
 
 class TestSkillsGroups:
     async def test_create_skills_group_authorization_check(
@@ -282,6 +294,21 @@ class TestSkillsGroups:
             app.url_path_for("skills:delete-skills-group", group_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
+    async def test_move_skills_group_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.post(
+            app.url_path_for("skills:move-skills-group",
+                             group_id=2,
+                             direction="up"), )
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
     async def test_create_skills_group_response(
         self,
         app: FastAPI,
@@ -300,6 +327,64 @@ class TestSkillsGroups:
     ) -> None:
         # Checks if skills order has newly created group id
         assert get_resume_skills(app.state._db, 2).order == [2, 3]
+
+    async def test_move_up_skills_group_response(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills group will be moved up
+        res = await client.post(
+            app.url_path_for(
+                "skills:move-skills-group",
+                group_id=3,
+                direction="up",
+            ), )
+        assert res.json() == [3, 2]
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_move_up_skills_group_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills group will not be moved up
+        res = await client.post(
+            app.url_path_for(
+                "skills:move-skills-group",
+                group_id=3,
+                direction="up",
+            ), )
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
+
+    async def test_move_down_skills_group_response(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills group will be moved down
+        res = await client.post(
+            app.url_path_for(
+                "skills:move-skills-group",
+                group_id=3,
+                direction="down",
+            ), )
+        assert res.json() == [2, 3]
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_move_down_skills_group_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if skills group will not be moved down
+        res = await client.post(
+            app.url_path_for(
+                "skills:move-skills-group",
+                group_id=3,
+                direction="down",
+            ), )
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.parametrize("body", (
         {

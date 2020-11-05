@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, SyntheticEvent } from "react";
 import styled from "styled-components";
 
 import VerticalKnobs from "./VerticalKnobs";
@@ -32,6 +32,8 @@ const SubSection = ({
   title,
   renderDelete,
   deleteFn,
+  onUp,
+  onDown,
 }: {
   children: ReactNode | ReactNode[];
   isLast: boolean;
@@ -39,6 +41,8 @@ const SubSection = ({
   title: string;
   renderDelete: boolean;
   deleteFn: Function;
+  onUp?: (event: SyntheticEvent<Element, Event>) => void;
+  onDown?: (event: SyntheticEvent<Element, Event>) => void;
 }) => {
   const handleClick = () => {
     if (
@@ -54,7 +58,12 @@ const SubSection = ({
     <Wrapper>
       {children}
       <SubSectionNav>
-        <VerticalKnobs renderUp={!isFirst} renderDown={!isLast} />
+        <VerticalKnobs
+          onUp={onUp}
+          onDown={onDown}
+          renderUp={!isFirst}
+          renderDown={!isLast}
+        />
         {renderDelete && (
           <DangerButton onClick={handleClick}>x Delete</DangerButton>
         )}

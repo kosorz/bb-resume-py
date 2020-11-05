@@ -1,4 +1,4 @@
-from typing import Callable, Iterable, Dict
+from typing import Callable, Iterable, Dict, List
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -27,6 +27,25 @@ def delete_existing_resource(
 ):
     delete_fn(db, resource_id)
     return resource_id
+
+
+def move(direction: str, order: List, to_be_moved: int):
+    exception = HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                              detail="Bad request")
+    ind = order.index(to_be_moved)
+    new_order = [*order]
+    if direction == 'down':
+        if (ind == len(order) - 1):
+            raise exception
+        new_order[ind], new_order[ind + 1] = new_order[ind + 1], new_order[ind]
+        return new_order
+    elif direction == 'up':
+        if (ind == 0):
+            raise exception
+        new_order[ind], new_order[ind - 1] = new_order[ind - 1], new_order[ind]
+        return new_order
+    else:
+        raise exception
 
 
 def find_item_with_key_value(list: Iterable,

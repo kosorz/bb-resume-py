@@ -1,10 +1,12 @@
 import { FieldInputProps, FieldMetaProps, FormikProps } from "formik";
 import { diff } from "deep-diff";
+import { toJS } from "mobx";
 
 import axios from "./axios";
 import InfoShape from "../typings/Info.typing";
 import ExperienceShape from "../typings/Experience.typing";
 import SkillsShape from "../typings/Skills.typing";
+import { SkillsGroupShape } from "../typings/SkillsGroup.typing";
 
 export function getFieldProps(
   formik: FormikProps<any>,
@@ -47,4 +49,14 @@ export function saveChangedValues(
         updateFn(res.data);
       })
       .catch((err) => console.log(err));
+}
+
+export function sortToOrder(
+  order: number[],
+  items: SkillsGroupShape[]
+): SkillsGroupShape[] {
+  const result = toJS(items).sort(
+    (a, b) => order.indexOf(a.id) - order.indexOf(b.id)
+  );
+  return result;
 }

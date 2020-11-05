@@ -6,7 +6,7 @@ from .schemas import Skills, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, Skill
 from ..schemas import OrderUpdate
 from ...resumes.schemas import ResumeFull
 from ....util.deps import get_owns_resume, get_current_user_skills, get_current_user_skills_groups, db
-from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
+from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move
 from ....db import crud
 
 router = APIRouter()
@@ -80,6 +80,29 @@ def update_skill_group(group_id: int,
     return update_existing_resource(db, group_id, skills_group, SkillsGroup,
                                     crud.get_skills_group,
                                     crud.update_skills_group)
+
+
+@router.post(
+    "/skills_group/{group_id}/move/{direction}",
+    response_model=List,
+    name="skills:move-skills-group",
+)
+def move_skill_group(
+    group_id: int,
+    direction: str,
+    db: Session = Depends(db),
+    current_user_skills: List[SkillsFull] = Depends(get_current_user_skills),
+    current_user_skills_groups: List[SkillsGroup] = Depends(
+        get_current_user_skills_groups),
+):
+    group = find_item_with_key_value(current_user_skills_groups, "id",
+                                     group_id)
+    skills = find_item_with_key_value(current_user_skills, "id",
+                                      group.skills_id)
+    return update_existing_resource(
+        db, skills.id,
+        OrderUpdate(order=move(direction, skills.order, group_id)), Skills,
+        crud.get_skills, crud.update_skills).order
 
 
 @router.delete(

@@ -1,6 +1,6 @@
 import ResumeThemeShape from "./ResumeTheme.typing";
 
-type SkillsGroupShape = {
+export type SkillsGroupShape = {
   title: string;
   id: number;
   values: string[];

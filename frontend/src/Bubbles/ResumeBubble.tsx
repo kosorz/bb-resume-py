@@ -49,6 +49,7 @@ let initialState: ResumeBubbleShape = {
   updateExperienceUnit: () => {},
   addExperienceUnit: () => {},
   removeExperienceUnit: () => {},
+  updateSkillsOrder: () => {},
 };
 
 export const ResumeBubble = createContext(initialState);
@@ -77,12 +78,13 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.resume.skills.groups = store.resume.skills.groups.map((gr) =>
           gr.id === data.id ? data : gr
         );
+        store.setUpdateTime();
       }
-      store.setUpdateTime();
     },
     addSkillsGroup: (data) => {
       if (store.resume.skills) {
         store.resume.skills.groups = store.resume.skills.groups.concat(data);
+        store.resume.skills.order = store.resume.skills.order.concat(data.id);
         store.setUpdateTime();
       }
     },
@@ -91,8 +93,14 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.resume.skills.groups = store.resume.skills.groups.filter(
           (gr) => gr.id !== id
         );
+        store.setUpdateTime();
       }
-      store.setUpdateTime();
+    },
+    updateSkillsOrder: (order) => {
+      if (store.resume.skills) {
+        store.resume.skills.order = order;
+        store.setUpdateTime();
+      }
     },
     updateExperience: (data) => {
       store.resume.experience = { ...store.resume.experience, ...data };

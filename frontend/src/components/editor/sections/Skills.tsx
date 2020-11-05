@@ -11,7 +11,11 @@ import SectionHeader from "./parts/SectionHeader";
 import { skillsValidationSchema } from "../validationSchemas";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import { getFieldProps, saveChangedValues } from "../../../util/fns";
+import {
+  getFieldProps,
+  saveChangedValues,
+  sortToOrder,
+} from "../../../util/fns";
 import axios from "../../../util/axios";
 
 const Skills = observer(() => {
@@ -20,6 +24,7 @@ const Skills = observer(() => {
     id,
     groups,
     unlisted,
+    order,
     ...skillsEditorData
   } = resumeBubble.resume.skills!;
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -65,10 +70,10 @@ const Skills = observer(() => {
               />
             </SectionHeader>
           </Form>
-          {groups.map((gr, i, arr) => (
+          {sortToOrder(order, groups).map((gr, i, arr) => (
             <SkillsGroup
               hasSiblings={arr.length > 1}
-              key={`skills_group_${i}`}
+              key={`skills_group_${gr.id}_editor`}
               isLast={arr.length - 1 === i}
               isFirst={i === 0}
               {...gr}
