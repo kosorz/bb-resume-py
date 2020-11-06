@@ -37,6 +37,8 @@ let initialState: ResumeBubbleShape = {
     skills: undefined,
     experience: undefined,
     info: undefined,
+    leftColumn: ["experience"],
+    rightColumn: ["skills"],
   },
   setUpdateTime: () => {},
   setResume: () => {},
@@ -63,7 +65,7 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     },
     setResume: async () => {
       const res = await axios.get("/resumes/1");
-      store.resume = res.data;
+      store.resume = { ...store.resume, ...res.data };
       store.setUpdateTime();
     },
     updateInfo: (data) => {

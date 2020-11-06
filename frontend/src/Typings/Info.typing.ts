@@ -1,5 +1,4 @@
 import ResumeThemeShape from "./ResumeTheme.typing";
-import { ReactNode } from "react";
 
 type InfoShape = {
   name: string;

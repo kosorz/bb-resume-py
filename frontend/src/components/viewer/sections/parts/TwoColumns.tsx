@@ -1,13 +1,17 @@
 import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
-import { TwoColumnViewer } from "../../../../typings/TwoColumn.typing";
+import ResumeThemeShape from "../../../../typings/ResumeTheme.typing";
 
 const TwoColumns = ({
   leftChildren,
   rightChildren,
   theme,
-}: TwoColumnViewer) => {
+}: {
+  theme: ResumeThemeShape;
+  leftChildren: (ReactElement | undefined)[];
+  rightChildren: (ReactElement | undefined)[];
+}) => {
   const styles = StyleSheet.create({
     twoColumn: {
       marginHorizontal: theme.paper.space,

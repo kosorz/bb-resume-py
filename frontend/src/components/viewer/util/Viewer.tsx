@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useContext, ReactElement } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  ReactElement,
+  MouseEvent,
+} from "react";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { pdf } from "@react-pdf/renderer";
@@ -8,7 +14,6 @@ import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import Resume from "../Resume";
 
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import Navigator from "../../../typings/PageNavigator.typing";
 import loadFonts from "./fonts/fonts-loader";
 import media from "../../../styled/media";
 
@@ -146,7 +151,12 @@ const PageNavigator = ({
   numPages,
   onPreviousPage,
   onNextPage,
-}: Navigator) => {
+}: {
+  currentPage: number;
+  numPages: number;
+  onPreviousPage: (event: MouseEvent) => void;
+  onNextPage: (event: MouseEvent) => void;
+}) => {
   return numPages ? (
     <NavigatorWrapper>
       {currentPage !== 1 && <div onClick={onPreviousPage}>{"<"}</div>}
@@ -175,6 +185,7 @@ const Wrapper = styled.section`
 
 const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
   const resumeBubble = useContext(ResumeBubble);
+  const { theme, updatedAt, resume } = resumeBubble;
 
   return (
     <Wrapper>
@@ -184,9 +195,9 @@ const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
         document={{
           ...Resume,
           props: {
-            updatedAt: resumeBubble.updatedAt,
-            data: resumeBubble.resume,
-            theme: resumeBubble.theme,
+            updatedAt: updatedAt,
+            data: resume,
+            theme: theme,
           },
         }}
       />

@@ -1,9 +1,16 @@
 import React from "react";
 import { Text, StyleSheet } from "@react-pdf/renderer";
+import ResumeThemeShape from "../../../../typings/ResumeTheme.typing";
 
-import { SectionHeadlineViewer } from "../../../../typings/SectionHeadline.typing";
-
-const SectionHeadline = ({ text, fallback, theme }: SectionHeadlineViewer) => {
+const SectionHeadline = ({
+  text,
+  fallback,
+  theme,
+}: {
+  theme: ResumeThemeShape;
+  text: string;
+  fallback: string;
+}) => {
   const styles = StyleSheet.create({
     text: {
       fontSize: theme.fontSize.large,

@@ -16,7 +16,8 @@ import { infoValidationSchema } from "../validationSchemas";
 
 const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
-  const { resume_id, ...infoEditorData } = resumeBubble.resume.info!;
+  const { resume, updateInfo } = resumeBubble;
+  const { resume_id, ...infoEditorData } = resume.info!;
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -26,7 +27,7 @@ const Info = observer(() => {
         values,
         infoEditorData,
         `/parts/${resume_id}/info`,
-        resumeBubble.updateInfo
+        updateInfo
       ),
     validationSchema: infoValidationSchema,
   });

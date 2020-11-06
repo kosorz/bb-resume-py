@@ -20,13 +20,14 @@ import axios from "../../../util/axios";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
+  const { updateExperience, resume, addExperienceUnit } = resumeBubble;
   const {
     id,
     units,
     unlisted,
     order,
     ...experienceEditorData
-  } = resumeBubble.resume.experience!;
+  } = resume.experience!;
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -36,7 +37,7 @@ const Experience = observer(() => {
         values,
         experienceEditorData,
         `/parts/experience/${id}`,
-        resumeBubble.updateExperience
+        updateExperience
       );
     },
     validationSchema: experienceValidationSchema,
@@ -46,7 +47,7 @@ const Experience = observer(() => {
   const addFn = () => {
     axios
       .post(`/parts/${id}/experience_unit`)
-      .then((res) => resumeBubble.addExperienceUnit(res.data));
+      .then((res) => addExperienceUnit(res.data));
   };
 
   return (

@@ -24,6 +24,12 @@ const SkillsGroup = observer(
     ...skillsGroupEditorData
   }: SkillsGroupEditor) => {
     const resumeBubble = useContext(ResumeBubble);
+    const {
+      updateSkillsGroup,
+      removeSkillsGroup,
+      updateSkillsOrder,
+    } = resumeBubble;
+
     const formik = useFormik({
       initialValues: skillsGroupEditorData,
       onSubmit: (values) => {
@@ -31,7 +37,7 @@ const SkillsGroup = observer(
           values,
           skillsGroupEditorData,
           `/parts/skills_group/${id}`,
-          resumeBubble.updateSkillsGroup
+          updateSkillsGroup
         );
       },
       validationSchema: skillsGroupValidationSchema,
@@ -40,13 +46,13 @@ const SkillsGroup = observer(
 
     const deleteFn = () =>
       axios.delete(`/parts/skills_group/${id}`).then((res) => {
-        resumeBubble.removeSkillsGroup(res.data);
+        removeSkillsGroup(res.data);
       });
 
     const changeOrder = (dir: string) => {
       axios
         .post(`/parts/skills_group/${id}/move/${dir}`)
-        .then((res) => resumeBubble.updateSkillsOrder(res.data));
+        .then((res) => updateSkillsOrder(res.data));
     };
 
     return (

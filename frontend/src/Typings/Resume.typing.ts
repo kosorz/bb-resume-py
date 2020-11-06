@@ -8,6 +8,8 @@ type ResumeShape = {
   id: number;
   owner_id: number;
   deleted: boolean;
+  leftColumn: string[];
+  rightColumn: string[];
   skills?: SkillsShape;
   experience?: ExperienceShape;
   info?: InfoShape;

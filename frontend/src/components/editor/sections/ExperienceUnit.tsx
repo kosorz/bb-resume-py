@@ -26,6 +26,11 @@ const ExperienceUnit = observer(
     ...experienceUnitEditorData
   }: ExperienceUnitEditor) => {
     const resumeBubble = useContext(ResumeBubble);
+    const {
+      updateExperienceUnit,
+      removeExperienceUnit,
+      updateExperienceOrder,
+    } = resumeBubble;
 
     const formik = useFormik({
       initialValues: experienceUnitEditorData,
@@ -34,7 +39,7 @@ const ExperienceUnit = observer(
           values,
           experienceUnitEditorData,
           `/parts/experience_unit/${id}`,
-          resumeBubble.updateExperienceUnit
+          updateExperienceUnit
         );
       },
       validationSchema: experienceUnitValidationSchema,
@@ -43,13 +48,13 @@ const ExperienceUnit = observer(
 
     const deleteFn = () =>
       axios.delete(`/parts/experience_unit/${id}`).then((res) => {
-        resumeBubble.removeExperienceUnit(res.data);
+        removeExperienceUnit(res.data);
       });
 
     const changeOrder = (dir: string) => {
       axios
         .post(`/parts/experience_unit/${id}/move/${dir}`)
-        .then((res) => resumeBubble.updateExperienceOrder(res.data));
+        .then((res) => updateExperienceOrder(res.data));
     };
 
     return (

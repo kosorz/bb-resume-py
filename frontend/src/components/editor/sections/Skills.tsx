@@ -20,13 +20,8 @@ import axios from "../../../util/axios";
 
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
-  const {
-    id,
-    groups,
-    unlisted,
-    order,
-    ...skillsEditorData
-  } = resumeBubble.resume.skills!;
+  const { resume, updateSkills, addSkillsGroup } = resumeBubble;
+  const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
   const [expanded, setExpanded] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -36,7 +31,7 @@ const Skills = observer(() => {
         values,
         skillsEditorData,
         `/parts/skills/${id}`,
-        resumeBubble.updateSkills
+        updateSkills
       );
     },
     validationSchema: skillsValidationSchema,
@@ -46,7 +41,7 @@ const Skills = observer(() => {
   const addFn = () => {
     axios
       .post(`/parts/${id}/skills_group`)
-      .then((res) => resumeBubble.addSkillsGroup(res.data));
+      .then((res) => addSkillsGroup(res.data));
   };
 
   return (

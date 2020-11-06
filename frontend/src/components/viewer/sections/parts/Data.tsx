@@ -1,9 +1,15 @@
 import React from "react";
 import { Text } from "@react-pdf/renderer";
 
-import { DataViewer } from "../../../../typings/Data.typing";
-
-const Data = ({ value, style, type }: DataViewer) => {
+const Data = ({
+  value,
+  style,
+  type,
+}: {
+  value: string;
+  type: "phone" | "link" | "email" | "location" | "date";
+  style?: Object;
+}) => {
   const getEmoji = (type: string) => {
     switch (type) {
       case "link":
