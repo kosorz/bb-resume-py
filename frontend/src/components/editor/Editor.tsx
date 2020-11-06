@@ -29,7 +29,8 @@ const Wrapper = styled.section`
 const Editor = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, setResume } = resumeBubble;
-  const { skills, experience, info, leftColumn, rightColumn } = resume;
+  const { skills, experience, info, meta } = resume;
+  const { left, right } = meta.columns;
 
   useEffect(() => {
     setResume();
@@ -47,14 +48,14 @@ const Editor = observer(() => {
   return (
     <Wrapper>
       {info && <Info />}
-      {leftColumn.length > 0 && (
+      {left.length > 0 && (
         <Column title={"Column I"}>
-          {leftColumn.map((member) => sections[member])}
+          {left.map((member) => sections[member])}
         </Column>
       )}
-      {rightColumn.length > 0 && (
+      {right.length > 0 && (
         <Column title={"Column II"}>
-          {rightColumn.map((member) => sections[member])}
+          {right.map((member) => sections[member])}
         </Column>
       )}
     </Wrapper>

@@ -5,31 +5,29 @@ import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
   updatedAt: new Date().getTime(),
-  theme: {
-    colors: {
-      main: "#000",
-      secondary: "#686868",
-    },
-    fontSize: {
-      big: 42,
-      large: 22,
-      medium: 17,
-      main: 13,
-      small: 11,
-    },
-    fontFamily: {
-      light: "Roboto-Light",
-      normal: "Roboto-Regular",
-      medium: "Roboto-Medium",
-      bold: "Roboto-Bold",
-      black: "Roboto-Black",
-    },
-    paper: {
-      size: "A4",
-      space: 40,
-    },
-  },
   resume: {
+    meta: {
+      colors: {
+        main: "#000",
+        secondary: "#686868",
+      },
+      fontSize: {
+        big: 42,
+        large: 22,
+        medium: 17,
+        main: 13,
+        small: 11,
+      },
+      fontFamily: "Roboto",
+      paper: {
+        size: "A4",
+        space: 40,
+      },
+      columns: {
+        left: [],
+        right: [],
+      },
+    },
     title: "",
     id: 0,
     owner_id: 0,
@@ -37,8 +35,6 @@ let initialState: ResumeBubbleShape = {
     skills: undefined,
     experience: undefined,
     info: undefined,
-    leftColumn: ["experience"],
-    rightColumn: ["skills"],
   },
   setUpdateTime: () => {},
   setResume: () => {},
@@ -64,8 +60,9 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
       store.updatedAt = new Date().getTime();
     },
     setResume: async () => {
-      const res = await axios.get("/resumes/1");
-      store.resume = { ...store.resume, ...res.data };
+      axios.get("/resumes/1").then((res) => {
+        store.resume = res.data;
+      });
       store.setUpdateTime();
     },
     updateInfo: (data) => {

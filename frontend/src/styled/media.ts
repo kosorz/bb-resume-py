@@ -3,7 +3,7 @@ import { css } from "styled-components";
 import CombinedQueriesShape, {
   SizesShape,
   QueriesShape,
-} from "../typings/media.typing";
+} from "../typings/Media.typing";
 
 const sizes: SizesShape = {
   tablet: 992,

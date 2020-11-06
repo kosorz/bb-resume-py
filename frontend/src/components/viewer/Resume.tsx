@@ -9,43 +9,43 @@ import Column from "../viewer/sections/parts/Column";
 
 import { ResumeViewer } from "../../typings/Resume.typing";
 
-const Resume = ({ data, theme }: ResumeViewer) => {
+const Resume = ({ data }: ResumeViewer) => {
+  const { skills, experience, info, meta } = data;
+  const { fontFamily, fontSize, paper, columns } = meta;
+  const { left, right } = columns;
+
   const styles = StyleSheet.create({
     page: {
       backgroundColor: "#fff",
-      fontFamily: theme.fontFamily.bold,
-      fontSize: theme.fontSize.small,
-      paddingVertical: theme.paper.space / 2,
+      fontFamily: fontFamily + "-Bold",
+      fontSize: fontSize.small,
+      paddingVertical: paper.space / 2,
     },
   });
-
-  const { skills, experience, info, leftColumn, rightColumn } = data;
 
   const sections: { [key: string]: ReactElement | undefined } = {
     skills:
       skills && !skills.unlisted ? (
-        <Skills {...skills} theme={theme} />
+        <Skills meta={meta} {...skills} />
       ) : undefined,
     experience:
       experience && !experience.unlisted ? (
-        <Experience theme={theme} {...experience} />
+        <Experience meta={meta} {...experience} />
       ) : undefined,
   };
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {info && <Info {...info} theme={theme} />}
-        {rightColumn.length > 0 ? (
+        {info && <Info meta={meta} {...info} />}
+        {right.length > 0 ? (
           <TwoColumns
-            leftChildren={leftColumn.map((member) => sections[member])}
-            rightChildren={rightColumn.map((member) => sections[member])}
-            theme={theme}
+            meta={meta}
+            leftChildren={left.map((member) => sections[member])}
+            rightChildren={right.map((member) => sections[member])}
           />
         ) : (
-          <Column theme={theme}>
-            {leftColumn.map((member) => sections[member])}
-          </Column>
+          <Column meta={meta}>{left.map((member) => sections[member])}</Column>
         )}
       </Page>
     </Document>

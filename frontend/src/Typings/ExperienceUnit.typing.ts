@@ -1,4 +1,4 @@
-import ResumeThemeShape from "./ResumeTheme.typing";
+import MetaShape from "./Meta.typing";
 
 type ExperienceUnitShape = {
   id: number;
@@ -23,7 +23,7 @@ export interface ExperienceUnitEditor extends ExperienceUnitShape {
 }
 
 export interface ExperienceUnitViewer extends Omit<ExperienceUnitShape, "id"> {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
 }
 
 export default ExperienceUnitShape;

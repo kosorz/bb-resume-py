@@ -81,6 +81,5 @@ export function buildEditor(
   if (condition) {
     return createElement(editor, { key });
   }
-
   return undefined;
 }

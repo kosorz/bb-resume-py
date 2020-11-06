@@ -185,7 +185,7 @@ const Wrapper = styled.section`
 
 const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { theme, updatedAt, resume } = resumeBubble;
+  const { updatedAt, resume } = resumeBubble;
 
   return (
     <Wrapper>
@@ -197,7 +197,6 @@ const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
           props: {
             updatedAt: updatedAt,
             data: resume,
-            theme: theme,
           },
         }}
       />

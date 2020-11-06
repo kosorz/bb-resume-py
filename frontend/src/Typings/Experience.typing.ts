@@ -1,5 +1,5 @@
 import ExperienceUnitShape from "./ExperienceUnit.typing";
-import ResumeThemeShape from "./ResumeTheme.typing";
+import MetaShape from "./Meta.typing";
 
 type ExperienceShape = {
   id: number;
@@ -11,7 +11,7 @@ type ExperienceShape = {
 
 export interface ExperienceViewer
   extends Omit<ExperienceShape, "unlisted" | "id"> {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
 }
 
 export default ExperienceShape;

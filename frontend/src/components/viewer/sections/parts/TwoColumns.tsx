@@ -1,31 +1,33 @@
 import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
-import ResumeThemeShape from "../../../../typings/ResumeTheme.typing";
+import MetaShape from "../../../../typings/Meta.typing";
 
 const TwoColumns = ({
   leftChildren,
   rightChildren,
-  theme,
+  meta,
 }: {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
   leftChildren: (ReactElement | undefined)[];
   rightChildren: (ReactElement | undefined)[];
 }) => {
+  const { paper, fontSize, fontFamily } = meta;
+
   const styles = StyleSheet.create({
     twoColumn: {
-      marginHorizontal: theme.paper.space,
-      fontSize: theme.fontSize.main,
-      fontFamily: theme.fontFamily.normal,
+      marginHorizontal: paper.space,
+      fontSize: fontSize.main,
+      fontFamily: fontFamily + "-Regular",
       display: "flex",
       flexDirection: "row",
     },
     leftColumn: {
-      width: 595 - 200 - 2 * theme.paper.space,
+      width: 595 - 200 - 2 * paper.space,
     },
     rightColumn: {
       width: 200,
-      paddingLeft: theme.paper.space / 2,
+      paddingLeft: paper.space / 2,
     },
   });
 

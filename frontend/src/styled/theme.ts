@@ -1,4 +1,4 @@
-import { ThemeShape } from "../typings/theme.typing";
+import { ThemeShape } from "../typings/Theme.typing";
 
 const theme: ThemeShape = {
   white: "#FFF",

@@ -4,12 +4,10 @@ import SkillsShape from "./Skills.typing";
 import SkillsGroupShape from "./SkillsGroup.typing";
 import ExperienceShape from "./Experience.typing";
 import ExperienceUnitShape from "./ExperienceUnit.typing";
-import ResumeThemeShape from "./ResumeTheme.typing";
 
 type ResumeBubbleShape = {
   updatedAt: number;
   resume: ResumeShape;
-  theme: ResumeThemeShape;
   setUpdateTime: () => void;
   setResume: () => void;
   updateInfo: (data: InfoShape) => void;
