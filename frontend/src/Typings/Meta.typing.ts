@@ -1,4 +1,4 @@
-type ResumeThemeShape = {
+type ResumeMetaShape = {
   colors: {
     main: string;
     secondary: string;
@@ -21,6 +21,8 @@ type ResumeThemeShape = {
     size: "A4";
     space: 40 | 50 | 60;
   };
+  leftColumn: string[];
+  rightColumn: string[];
 };
 
-export default ResumeThemeShape;
+export default ResumeMetaShape;

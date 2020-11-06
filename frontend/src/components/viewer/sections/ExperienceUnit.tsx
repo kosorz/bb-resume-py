@@ -8,7 +8,7 @@ import Data from "./parts/Data";
 import { ExperienceUnitViewer } from "../../../typings/ExperienceUnit.typing";
 
 const ExperienceUnit = ({
-  theme,
+  meta,
   title,
   company_name,
   description,
@@ -22,31 +22,33 @@ const ExperienceUnit = ({
   period_enabled,
   link_enabled,
 }: ExperienceUnitViewer) => {
+  const { paper, fontFamily, fontSize } = meta;
+
   const styles = StyleSheet.create({
     experienceUnit: {
-      marginBottom: theme.paper.space / 4,
+      marginBottom: paper.space / 4,
     },
     companyName: {
-      fontFamily: theme.fontFamily.black,
-      marginBottom: theme.paper.space / 20,
+      fontFamily: fontFamily.black,
+      marginBottom: paper.space / 20,
     },
     timeAndGeo: {
       display: "flex",
       flexDirection: "row",
-      fontSize: theme.fontSize.small,
+      fontSize: fontSize.small,
     },
     info: {
-      fontSize: theme.fontSize.small,
+      fontSize: fontSize.small,
     },
     description: {
-      fontSize: theme.fontSize.small,
-      marginTop: theme.paper.space / 10,
+      fontSize: fontSize.small,
+      marginTop: paper.space / 10,
     },
   });
 
   return (
     <View style={styles.experienceUnit} wrap={false}>
-      <SubSectionHeadline text={title} fallback={"Title"} theme={theme} />
+      <SubSectionHeadline text={title} fallback={"Title"} meta={meta} />
       {company_name_enabled && (
         <Text style={styles.companyName}>{company_name || "COMPANY NAME"}</Text>
       )}

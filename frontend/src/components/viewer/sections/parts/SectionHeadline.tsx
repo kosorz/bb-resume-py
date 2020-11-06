@@ -1,22 +1,25 @@
 import React from "react";
 import { Text, StyleSheet } from "@react-pdf/renderer";
-import ResumeThemeShape from "../../../../typings/ResumeTheme.typing";
+
+import MetaShape from "../../../../typings/Meta.typing";
 
 const SectionHeadline = ({
   text,
   fallback,
-  theme,
+  meta,
 }: {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
   text: string;
   fallback: string;
 }) => {
+  const { fontSize, fontFamily, paper } = meta;
+
   const styles = StyleSheet.create({
     text: {
-      fontSize: theme.fontSize.large,
-      fontFamily: theme.fontFamily.bold,
+      fontSize: fontSize.large,
+      fontFamily: fontFamily.bold,
       borderBottom: 2,
-      marginBottom: theme.paper.space / 4,
+      marginBottom: paper.space / 4,
     },
   });
 

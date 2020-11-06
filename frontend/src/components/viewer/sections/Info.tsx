@@ -16,33 +16,35 @@ const Info = ({
   email_enabled,
   location_enabled,
   role_enabled,
-  theme,
+  meta,
 }: InfoViewer) => {
+  const { paper, colors, fontSize } = meta;
+
   const styles = StyleSheet.create({
     info: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
-      marginHorizontal: theme.paper.space,
-      marginBottom: theme.paper.space / 3,
+      marginHorizontal: paper.space,
+      marginBottom: paper.space / 3,
       alignItems: "center",
-      color: theme.colors.secondary,
+      color: colors.secondary,
     },
     rest: {
       flex: 70,
     },
     name: {
-      color: theme.colors.main,
-      fontSize: theme.fontSize.big,
+      color: colors.main,
+      fontSize: fontSize.big,
     },
     role: {
-      fontSize: theme.fontSize.large,
+      fontSize: fontSize.large,
     },
     contactInfo: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
-      fontSize: theme.fontSize.small,
+      fontSize: fontSize.small,
       marginTop: 5,
     },
     contact: {

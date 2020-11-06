@@ -4,10 +4,12 @@ import { View, StyleSheet, Text } from "@react-pdf/renderer";
 import { SkillsGroupViewer } from "../../../typings/SkillsGroup.typing";
 import SubSectionHeadline from "./parts/SubSectionHeadline";
 
-const SkillsGroup = ({ theme, title, values }: SkillsGroupViewer) => {
+const SkillsGroup = ({ meta, title, values }: SkillsGroupViewer) => {
+  const { paper, fontSize } = meta;
+
   const styles = StyleSheet.create({
     skillsGroup: {
-      marginBottom: theme.paper.space / 4,
+      marginBottom: paper.space / 4,
     },
     values: {
       display: "flex",
@@ -16,15 +18,15 @@ const SkillsGroup = ({ theme, title, values }: SkillsGroupViewer) => {
     },
     value: {
       borderBottom: 1,
-      marginTop: theme.paper.space / 10,
-      marginRight: theme.paper.space / 10,
-      fontSize: theme.fontSize.small,
+      marginTop: paper.space / 10,
+      marginRight: paper.space / 10,
+      fontSize: fontSize.small,
     },
   });
 
   return (
     <View style={styles.skillsGroup} wrap={false}>
-      <SubSectionHeadline text={title} fallback={"Title"} theme={theme} />
+      <SubSectionHeadline text={title} fallback={"Title"} meta={meta} />
       <View style={styles.values}>
         {values.length ? (
           values.map((v, i) => (

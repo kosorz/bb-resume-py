@@ -1,4 +1,4 @@
-import ResumeThemeShape from "./ResumeTheme.typing";
+import MetaShape from "./Meta.typing";
 
 type InfoShape = {
   name: string;
@@ -16,7 +16,7 @@ type InfoShape = {
 };
 
 export interface InfoViewer extends InfoShape {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
 }
 
 export default InfoShape;

@@ -1,23 +1,24 @@
 import React, { ReactNode } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
-import ResumeThemeShape from "../../../../typings/ResumeTheme.typing";
+import MetaShape from "../../../../typings/Meta.typing";
 
 const TwoColumns = ({
   children,
-  theme,
+  meta,
 }: {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
   children: ReactNode | ReactNode[];
 }) => {
+  const { paper, fontSize, fontFamily } = meta;
+
   const styles = StyleSheet.create({
     column: {
-      marginHorizontal: theme.paper.space,
-      fontSize: theme.fontSize.main,
-      fontFamily: theme.fontFamily.normal,
+      marginHorizontal: paper.space,
+      fontSize: fontSize.main,
+      fontFamily: fontFamily.normal,
     },
   });
-
   return <View style={styles.column}>{children}</View>;
 };
 

@@ -1,4 +1,4 @@
-import ResumeThemeShape from "./ResumeTheme.typing";
+import MetaShape from "./Meta.typing";
 
 export type SkillsGroupShape = {
   title: string;
@@ -13,7 +13,7 @@ export interface SkillsGroupEditor extends SkillsGroupShape {
 }
 
 export interface SkillsGroupViewer extends Omit<SkillsGroupShape, "id"> {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
 }
 
 export default SkillsGroupShape;

@@ -29,7 +29,8 @@ const Wrapper = styled.section`
 const Editor = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, setResume } = resumeBubble;
-  const { skills, experience, info, leftColumn, rightColumn } = resume;
+  const { skills, experience, info, meta } = resume;
+  const { leftColumn, rightColumn } = meta;
 
   useEffect(() => {
     setResume();

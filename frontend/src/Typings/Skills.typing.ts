@@ -1,5 +1,5 @@
 import SkillsGroupShape from "./SkillsGroup.typing";
-import ResumeThemeShape from "./ResumeTheme.typing";
+import MetaShape from "./Meta.typing";
 
 type SkillsShape = {
   title: string;
@@ -10,7 +10,7 @@ type SkillsShape = {
 };
 
 export interface SkillsViewer extends Omit<SkillsShape, "unlisted" | "id"> {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
 }
 
 export default SkillsShape;

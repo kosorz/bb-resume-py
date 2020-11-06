@@ -7,22 +7,18 @@ import SkillsGroup from "../../viewer/sections/SkillsGroup";
 import { SkillsViewer } from "../../../typings/Skills.typing";
 import { sortSkillsGroups } from "../../../util/fns";
 
-const Skills = ({ title, groups, order, theme }: SkillsViewer) => {
+const Skills = ({ title, groups, order, meta }: SkillsViewer) => {
   const values = sortSkillsGroups(order, groups);
 
   return (
     <View wrap={true}>
       <View wrap={false}>
-        <SectionHeadline text={title} theme={theme} fallback={"skills"} />
-        <SkillsGroup theme={theme} {...values[0]} />
+        <SectionHeadline text={title} meta={meta} fallback={"skills"} />
+        <SkillsGroup meta={meta} {...values[0]} />
       </View>
       <View>
         {values.slice(1).map((g) => (
-          <SkillsGroup
-            key={`skill-group-${g.id}-viewer`}
-            theme={theme}
-            {...g}
-          />
+          <SkillsGroup key={`skill-group-${g.id}-viewer`} meta={meta} {...g} />
         ))}
       </View>
     </View>

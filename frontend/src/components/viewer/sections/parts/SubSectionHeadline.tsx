@@ -1,22 +1,24 @@
 import React from "react";
 import { Text, StyleSheet } from "@react-pdf/renderer";
 
-import ResumeThemeShape from "../../../../typings/ResumeTheme.typing";
+import MetaShape from "../../../../typings/Meta.typing";
 
 const SubSectionHeadline = ({
   text,
   fallback,
-  theme,
+  meta,
 }: {
-  theme: ResumeThemeShape;
+  meta: MetaShape;
   text: string;
   fallback: string;
 }) => {
+  const { fontFamily, fontSize, paper } = meta;
+
   const styles = StyleSheet.create({
     text: {
-      fontFamily: theme.fontFamily.medium,
-      fontSize: theme.fontSize.medium,
-      marginBottom: theme.paper.space / 15,
+      fontFamily: fontFamily.medium,
+      fontSize: fontSize.medium,
+      marginBottom: paper.space / 15,
     },
   });
 
