@@ -139,7 +139,7 @@ class TestInfos:
             json={
                 "phone": "updated_string",
                 "link": "https://heeeeeeeey.com/",
-                "email": "updated_string",
+                "email": "kosorz.artur@gmail.com",
                 "location": "updated_string",
                 "role": "updated_string",
                 "phone_enabled": False,
@@ -155,7 +155,7 @@ class TestInfos:
             "resume_id": 2,
             "phone": "updated_string",
             "link": "https://heeeeeeeey.com/",
-            "email": "updated_string",
+            "email": "kosorz.artur@gmail.com",
             "location": "updated_string",
             "role": "updated_string",
             "phone_enabled": False,
@@ -176,7 +176,7 @@ class TestInfos:
         assert info.link == "https://heeeeeeeey.com/"
         assert info.role == "updated_string"
         assert info.phone == "updated_string"
-        assert info.email == "updated_string"
+        assert info.email == "kosorz.artur@gmail.com"
         assert info.location == "updated_string"
         assert info.phone_enabled == False
         assert info.link_enabled == False

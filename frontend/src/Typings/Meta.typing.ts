@@ -7,7 +7,7 @@ type ResumeMetaShape = {
     small: 10 | 11;
     main: 13 | 14;
     medium: 16 | 17;
-    large: 20 | 21 | 22 | 23 | 24;
+    large: 24 | 22 | 20;
     big: 34 | 38 | 42;
   };
   fontFamily: "Roboto";

@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, attributes
 from sqlalchemy import update
 
 from . import models
@@ -23,6 +23,8 @@ def finalize_create(db: Session, resource):
 
 def finalize_update(db: Session, old_resource, updated_resource):
     for key, value in updated_resource:
+        if key == "meta":
+            attributes.flag_modified(old_resource, "meta")
         setattr(old_resource, key, value)
 
     db.commit()
@@ -64,8 +66,32 @@ def update_resume(db: Session, resume: Resume):
 
 
 def create_user_resume(db: Session, resume: ResumeCreate, user_id: int):
-    return finalize_create(db, models.Resume(**resume.dict(),
-                                             owner_id=user_id))
+    return finalize_create(
+        db,
+        models.Resume(**resume.dict(),
+                      owner_id=user_id,
+                      meta={
+                          "colors": {
+                              "main": "#000",
+                              "secondary": "#686868"
+                          },
+                          "fontSize": {
+                              "small": 11,
+                              "main": 13,
+                              "medium": 16,
+                              "large": 22,
+                              "big": 38
+                          },
+                          "paper": {
+                              "size": "A4",
+                              "space": 50
+                          },
+                          "fontFamily": "Roboto",
+                          "columns": {
+                              "left": [],
+                              "right": [],
+                          }
+                      }))
 
 
 # Infos

@@ -103,7 +103,7 @@ def move_experience_unit(
         get_current_user_experience_units)):
     unit = find_item_with_key_value(current_user_experience_units, "id",
                                     unit_id)
-    experience = find_item_with_key_value(current_user_experience, 'id',
+    experience = find_item_with_key_value(current_user_experience, "id",
                                           unit.experience_id)
 
     return update_existing_resource(

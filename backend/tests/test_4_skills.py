@@ -250,7 +250,7 @@ class TestSkillsGroupsRoutes:
         res = await client.post(
             app.url_path_for("skills:move-skills-group",
                              group_id=1,
-                             direction='up'))
+                             direction="up"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
 

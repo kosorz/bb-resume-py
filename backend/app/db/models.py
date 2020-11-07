@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
-from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -23,6 +23,7 @@ class Resume(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     deleted = Column(Boolean, default=False)
+    meta = Column(JSONB)
 
     owner = relationship("User", back_populates="resumes")
     owner_id = Column(Integer, ForeignKey("users.id"))

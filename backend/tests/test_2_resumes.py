@@ -1,4 +1,5 @@
 import pytest
+from typing import Dict
 from starlette import status
 from httpx import AsyncClient
 from fastapi import FastAPI
@@ -27,7 +28,6 @@ class TestResumesRoutes:
         # Checks if get users me endpoint is available
         res = await client.get(
             app.url_path_for("resumes:get-resume", resume_id=1))
-        print(res)
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
     async def test_update_resume_endpoint_existence(
@@ -107,6 +107,28 @@ class TestResumes:
         assert res.json() == {
             "title": "string",
             "id": 2,
+            "meta": {
+                "colors": {
+                    "main": "#000",
+                    "secondary": "#686868"
+                },
+                "fontFamily": "Roboto",
+                "fontSize": {
+                    "big": 38,
+                    "large": 22,
+                    "main": 13,
+                    "medium": 16,
+                    "small": 11
+                },
+                "paper": {
+                    "size": "A4",
+                    "space": 50
+                },
+                "columns": {
+                    "left": [],
+                    "right": [],
+                }
+            },
             "owner_id": 2,
             "deleted": False
         }
@@ -127,6 +149,28 @@ class TestResumes:
             "deleted": False,
             "skills": None,
             "experience": None,
+            "meta": {
+                "colors": {
+                    "main": "#000",
+                    "secondary": "#686868"
+                },
+                "fontFamily": "Roboto",
+                "fontSize": {
+                    "big": 38,
+                    "large": 22,
+                    "main": 13,
+                    "medium": 16,
+                    "small": 11
+                },
+                "paper": {
+                    "size": "A4",
+                    "space": 50
+                },
+                "columns": {
+                    "left": [],
+                    "right": [],
+                }
+            },
             "info": {
                 "name": "string",
                 "id": 2,
@@ -145,7 +189,7 @@ class TestResumes:
         }
         assert res.status_code == status.HTTP_200_OK
 
-    async def test_update_resume_validation(
+    async def test_update_resume_not_existing_key(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -161,43 +205,213 @@ class TestResumes:
         assert res.json() == {
             "title": "string",
             "id": 2,
+            "meta": {
+                "colors": {
+                    "main": "#000",
+                    "secondary": "#686868"
+                },
+                "fontFamily": "Roboto",
+                "fontSize": {
+                    "big": 38,
+                    "large": 22,
+                    "main": 13,
+                    "medium": 16,
+                    "small": 11
+                },
+                "paper": {
+                    "size": "A4",
+                    "space": 50
+                },
+                "columns": {
+                    "left": [],
+                    "right": [],
+                }
+            },
             "owner_id": 2,
             "deleted": False
         }
         assert res.status_code == status.HTTP_200_OK
 
+    @pytest.mark.parametrize("body", ({
+        "deleted": "not boolean value"
+    }, {
+        "meta": {
+            "colors": {
+                "main": "not a hex"
+            }
+        },
+    }, {
+        "meta": {
+            "colors": {
+                "secondary": "not a hex"
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "small": 9
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "small": 12
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "main": 12
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "main": 15
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "medium": 15
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "medium": 18
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "large": 19
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "large": 25
+            }
+        },
+    }, {
+        "meta": {
+            "fontSize": {
+                "big": 30
+            }
+        },
+    }, {
+        "meta": {
+            "fontFamily": "not roboto"
+        },
+    }, {
+        "meta": {
+            "paper": {
+                "size": "not A4",
+                "space": 30
+            }
+        },
+    }))
+    async def test_update_resume_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+        body: Dict,
+    ) -> None:
         # Checks if request will be rejected when invalid data submitted
         res = await client.patch(
             app.url_path_for(
                 "resumes:update-resume",
                 resume_id=2,
             ),
-            json={"deleted": "not boolean value"},
+            json=body,
         )
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
+    @pytest.mark.parametrize("body", (
+        {
+            "deleted": True
+        },
+        {
+            "title": "updated_string"
+        },
+        {
+            "meta": {
+                "colors": {
+                    "main": "#fff"
+                }
+            },
+        },
+        {
+            "meta": {
+                "colors": {
+                    "secondary": "#fff"
+                }
+            },
+        },
+        {
+            "meta": {
+                "fontSize": {
+                    "small": 10
+                }
+            },
+        },
+        {
+            "meta": {
+                "fontSize": {
+                    "main": 13
+                }
+            },
+        },
+        {
+            "meta": {
+                "fontSize": {
+                    "medium": 16
+                }
+            },
+        },
+        {
+            "meta": {
+                "fontSize": {
+                    "large": 20
+                }
+            },
+        },
+        {
+            "meta": {
+                "fontSize": {
+                    "big": 42
+                }
+            },
+        },
+        {
+            "meta": {
+                "fontFamily": "Roboto"
+            },
+        },
+        {
+            "meta": {
+                "paper": {
+                    "size": "A4",
+                    "space": 40
+                }
+            },
+        },
+    ))
     async def test_update_resume_response(
         self,
         app: FastAPI,
         client: AsyncClient,
+        body: Dict,
     ) -> None:
-        # Checks if resume will be updated when correct data submitted and user owns resume
+        # Checks if request will be rejected when invalid data submitted
         res = await client.patch(
             app.url_path_for(
                 "resumes:update-resume",
                 resume_id=2,
             ),
-            json={
-                "deleted": True,
-                "title": "updated_string"
-            },
+            json=body,
         )
-        assert res.json() == {
-            "title": "updated_string",
-            "id": 2,
-            "owner_id": 2,
-            "deleted": True
-        }
         assert res.status_code == status.HTTP_200_OK
 
     async def test_update_resume_outcome(
@@ -206,9 +420,19 @@ class TestResumes:
         client: AsyncClient,
     ) -> None:
         # Checks if resume will be updated when correct data submitted and user owns resume
-        info = get_resume(app.state._db, 2)
-        assert info.title == "updated_string"
-        assert info.deleted == True
+        resume = get_resume(app.state._db, 2)
+        assert resume.title == "updated_string"
+        assert resume.deleted == True
+        assert resume.meta["colors"]["main"] == "#fff"
+        assert resume.meta["colors"]["secondary"] == "#fff"
+        assert resume.meta["fontSize"]["small"] == 10
+        assert resume.meta["fontSize"]["main"] == 13
+        assert resume.meta["fontSize"]["medium"] == 16
+        assert resume.meta["fontSize"]["large"] == 20
+        assert resume.meta["fontSize"]["big"] == 42
+        assert resume.meta["fontFamily"] == "Roboto"
+        assert resume.meta["paper"]["size"] == "A4"
+        assert resume.meta["paper"]["space"] == 40
 
     async def test_update_resume_access(
         self,
