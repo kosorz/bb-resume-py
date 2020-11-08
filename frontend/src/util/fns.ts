@@ -1,4 +1,3 @@
-import { createElement, FunctionComponent } from "react";
 import { FieldInputProps, FieldMetaProps, FormikProps } from "formik";
 import { diff } from "deep-diff";
 import { toJS } from "mobx";
@@ -71,15 +70,4 @@ export function sortExperienceUnits(
     (a, b) => order.indexOf(a.id) - order.indexOf(b.id)
   );
   return result;
-}
-
-export function buildEditor(
-  editor: FunctionComponent,
-  condition: boolean | undefined,
-  key?: string
-) {
-  if (condition) {
-    return createElement(editor, { key });
-  }
-  return undefined;
 }

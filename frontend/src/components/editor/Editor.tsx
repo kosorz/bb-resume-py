@@ -7,7 +7,6 @@ import Info from "./sections/Info";
 import Skills from "./sections/Skills";
 import Column from "./sections/parts/Column";
 
-import { buildEditor } from "../../util/fns";
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
 import media from "../../styled/media";
 
@@ -36,13 +35,24 @@ const Editor = observer(() => {
     setResume();
   }, [setResume]);
 
+  const getPosition = (section: string) => {
+    return {
+      isFirst: left[0] === section || right[0] === section,
+      isLast:
+        left[left.length - 1] === section ||
+        right[right.length - 1] === section,
+    };
+  };
+
   const sections: { [key: string]: ReactElement | undefined } = {
-    skills: buildEditor(Skills, skills && !skills.unlisted, "skills-editor"),
-    experience: buildEditor(
-      Experience,
-      experience && !experience.unlisted,
-      "experience-editor"
-    ),
+    skills:
+      skills && !skills.unlisted ? (
+        <Skills {...getPosition("skills")} />
+      ) : undefined,
+    experience:
+      experience && !experience.unlisted ? (
+        <Experience {...getPosition("experience")} />
+      ) : undefined,
   };
 
   return (

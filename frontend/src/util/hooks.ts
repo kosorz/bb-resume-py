@@ -27,7 +27,7 @@ export const useIsMount = () => {
 
 export const useFormikAutoSave = (
   formik: FormikValues,
-  debounceTime: number = 1500
+  debounceTime: number = 750
 ) => {
   const debouncedValues = useDebounce(formik.values, debounceTime);
   const isMount = useIsMount();

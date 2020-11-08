@@ -63,6 +63,8 @@ const Section = ({
   expanded,
   setExpanded,
   subtitle,
+  isFirst,
+  isLast,
   purpose,
   addFn,
   icon,
@@ -71,6 +73,8 @@ const Section = ({
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
+  isFirst: boolean;
+  isLast: boolean;
   addFn?: Function;
   subtitle?: string;
   movable?: boolean;
@@ -95,10 +99,14 @@ const Section = ({
         <Chin>
           <NavTitle>Manage:</NavTitle>
           <NavItems>
-            <SectionVerticalKnobs
-              upLabel={`Move\xa0${title.toLowerCase()}\xa0up`}
-              downLabel={`Move\xa0${title.toLowerCase()}\xa0down`}
-            />
+            {(!isFirst || !isLast) && (
+              <SectionVerticalKnobs
+                upLabel={`Move\xa0${title.toLowerCase()}\xa0up`}
+                downLabel={`Move\xa0${title.toLowerCase()}\xa0down`}
+                renderUp={!isFirst}
+                renderDown={!isLast}
+              />
+            )}
             <WarningButton onClick={() => {}}>
               o&nbsp;Migrate&nbsp;{title.toLowerCase()}
               &nbsp;to&nbsp;Column&nbsp;II

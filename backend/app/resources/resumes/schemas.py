@@ -28,8 +28,8 @@ class Paper(BaseModel):
 
 
 class Columns(BaseModel):
-    left: List[str]
-    right: List[str]
+    left: List[str] = []
+    right: List[str] = []
 
 
 class Meta(BaseModel):
