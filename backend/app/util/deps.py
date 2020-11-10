@@ -99,13 +99,13 @@ def get_requested_resume(resume_id: str, db: Session = Depends(db)):
     return requested_resume
 
 
-def get_owns_resume(db: Session = Depends(db),
-                    requested_resume: Resume = Depends(get_requested_resume),
-                    current_user: User = Depends(get_current_active_user)):
+def get_owned_resume(db: Session = Depends(db),
+                     requested_resume: Resume = Depends(get_requested_resume),
+                     current_user: User = Depends(get_current_active_user)):
     if not requested_resume.owner_id == current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Forbidden",
         )
 
-    return True
+    return requested_resume

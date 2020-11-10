@@ -34,14 +34,30 @@ class SplitContent(BaseModel):
     unlisted: List[str] = []
 
 
+class SplitContentUpdate(BaseModel):
+    leftOrder: Optional[List[str]]
+    rightOrder: Optional[List[str]]
+    unlisted: Optional[List[str]]
+
+
 class FullContent(BaseModel):
     order: List[str] = []
     unlisted: List[str] = []
 
 
+class FullContentUpdate(BaseModel):
+    order: Optional[List[str]]
+    unlisted: Optional[List[str]]
+
+
 class Content(BaseModel):
     split: SplitContent
     full: FullContent
+
+
+class ContentUpdate(BaseModel):
+    split: SplitContentUpdate
+    full: FullContentUpdate
 
 
 class Meta(BaseModel):
@@ -118,6 +134,10 @@ class MetaUpdate(BaseModel):
         return v
 
 
+class ServerMetaUpdate(MetaUpdate):
+    content: Optional[ContentUpdate]
+
+
 class ResumeBase(BaseModel):
     title: str
 
@@ -149,3 +169,7 @@ class ResumeUpdate(BaseModel):
     deleted: Optional[bool]
     title: Optional[str]
     meta: Optional[MetaUpdate]
+
+
+class ServerResumeUpdate(ResumeUpdate):
+    meta: Optional[ServerMetaUpdate]

@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from app.util.deps import get_current_user
 from app.util.fns import compare_while_excluding
-from app.db.crud import get_resume_experience, get_experience_unit
+from app.db.crud import get_resume_experience, get_experience_unit, get_resume
 
 pytestmark = pytest.mark.asyncio
 
@@ -100,10 +100,15 @@ class TestExperience:
         client: AsyncClient,
     ) -> None:
         # Checks if experience, experience_unit and order on experience were created
-        experience = get_resume_experience(app.state._db, 2)
-        assert experience
-        assert experience.order == [2]
-        assert get_experience_unit(app.state._db, 2)
+        resume = get_resume(app.state._db, 2)
+        assert resume.experience
+        assert resume.experience.order == [2]
+        assert resume.meta['content']['full']['unlisted'] == [
+            'skills', 'experience'
+        ]
+        assert resume.meta['content']['split']['unlisted'] == [
+            'skills', 'experience'
+        ]
 
     async def test_update_experience_validation(
         self,

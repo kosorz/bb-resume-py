@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 
 from .schemas import Skills, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, SkillsFull
 from ..schemas import OrderUpdate
+from ...resumes.fns import update_unlisted_after_section_creation
 from ...resumes.schemas import ResumeFull
-from ....util.deps import get_owns_resume, get_current_user_skills, get_current_user_skills_groups, db
+from ....util.deps import get_owned_resume, get_current_user_skills, get_current_user_skills_groups, db
 from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move
 from ....db import crud
 
@@ -21,7 +22,7 @@ def create_skills(
     resume_id: int,
     db: Session = Depends(db),
     current_user_skills: List[SkillsFull] = Depends(get_current_user_skills),
-    owns_resume: ResumeFull = Depends(get_owns_resume)):
+    owned_resume: ResumeFull = Depends(get_owned_resume)):
     find_item_with_key_value(list=current_user_skills,
                              key="resume_id",
                              value=resume_id,
@@ -29,6 +30,8 @@ def create_skills(
                              throw_on_present=True)
     skills = crud.create_resume_skills(db, resume_id)
     group = crud.create_skills_group(db, skills.id)
+    update_unlisted_after_section_creation(db, owned_resume, 'unlisted',
+                                           'skills')
     return update_existing_resource(db, skills.id,
                                     OrderUpdate(order=[group.id]), Skills,
                                     crud.get_skills, crud.update_skills)

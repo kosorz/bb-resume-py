@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from app.util.deps import get_current_user
 from app.util.fns import compare_while_excluding
-from app.db.crud import get_resume_skills, get_skills_group
+from app.db.crud import get_resume_skills, get_skills_group, get_resume
 
 pytestmark = pytest.mark.asyncio
 
@@ -100,10 +100,11 @@ class TestSkills:
         client: AsyncClient,
     ) -> None:
         # Checks if skills, skills_group and order on skills were created
-        skills = get_resume_skills(app.state._db, 2)
-        assert skills
-        assert skills.order == [2]
-        assert get_skills_group(app.state._db, 2)
+        resume = get_resume(app.state._db, 2)
+        assert resume.skills
+        assert resume.skills.order == [2]
+        assert resume.meta['content']['full']['unlisted'] == ['skills']
+        assert resume.meta['content']['split']['unlisted'] == ['skills']
 
     async def test_update_skills_validation(
         self,

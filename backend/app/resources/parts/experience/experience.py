@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 
 from .schemas import Experience, ExperienceUpdate, ExperienceFull, ExperienceUnit, ExperienceUnitUpdate
 from ..schemas import OrderUpdate
-from ...resumes.schemas import ResumeFull
-from ....util.deps import get_owns_resume, get_current_user_experience, get_current_user_experience_units, db
+from ...resumes.fns import update_unlisted_after_section_creation
+from ...resumes.schemas import ResumeFull, ServerResumeUpdate, Resume
+from ....util.deps import get_owned_resume, get_current_user_experience, get_current_user_experience_units, db
 from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move
 from ....db import crud
 
@@ -21,7 +22,7 @@ def create_experience(resume_id: int,
                       db: Session = Depends(db),
                       current_user_experience: List[ExperienceFull] = Depends(
                           get_current_user_experience),
-                      owns_resume: ResumeFull = Depends(get_owns_resume)):
+                      owned_resume: ResumeFull = Depends(get_owned_resume)):
     find_item_with_key_value(list=current_user_experience,
                              key="resume_id",
                              value=resume_id,
@@ -29,6 +30,8 @@ def create_experience(resume_id: int,
                              throw_on_present=True)
     experience = crud.create_resume_experience(db, resume_id)
     unit = crud.create_experience_unit(db, experience.id)
+    update_unlisted_after_section_creation(db, owned_resume, 'unlisted',
+                                           'experience')
     return update_existing_resource(db, experience.id,
                                     OrderUpdate(order=[unit.id]), Experience,
                                     crud.get_experience,
