@@ -35,9 +35,7 @@ const Info = observer(() => {
 
   return (
     <Section
-      movable={false}
-      isFirst={true}
-      isLast={true}
+      identifier={"info"}
       expanded={expanded}
       setExpanded={setExpanded}
       title={"Basic information"}

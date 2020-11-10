@@ -1,6 +1,8 @@
 import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
+import EmptyState from "./EmptyState";
+
 import MetaShape from "../../../../typings/Meta.typing";
 
 const TwoColumns = ({
@@ -31,21 +33,40 @@ const TwoColumns = ({
     },
   });
 
-  const renderWithKeys = (chs: (ReactElement | undefined)[], side: string) => {
+  const renderWithKeys = (
+    chs: (ReactElement | undefined)[],
+    column: string
+  ) => {
     return chs.map((ch, i) => {
       if (!ch) return null;
 
-      return <View key={`${side}-child-${i}`}>{ch}</View>;
+      return <View key={`${column}-child-${i}`}>{ch}</View>;
     });
   };
 
   return (
     <View style={styles.twoColumn}>
       <View style={styles.leftColumn}>
-        {renderWithKeys(leftChildren, "left")}
+        {leftChildren.length > 0 ? (
+          renderWithKeys(leftChildren, "left")
+        ) : (
+          <EmptyState
+            meta={meta}
+            title={"Empty"}
+            text={"Use editor to list sections in Column I"}
+          />
+        )}
       </View>
       <View style={styles.rightColumn}>
-        {renderWithKeys(rightChildren, "right")}
+        {rightChildren.length > 0 ? (
+          renderWithKeys(rightChildren, "right")
+        ) : (
+          <EmptyState
+            meta={meta}
+            title={"Empty"}
+            text={"Use editor to list sections in Column II"}
+          />
+        )}
       </View>
     </View>
   );

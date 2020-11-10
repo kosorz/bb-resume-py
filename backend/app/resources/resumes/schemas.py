@@ -25,11 +25,23 @@ class FontSize(BaseModel):
 class Paper(BaseModel):
     size: str
     space: int
+    layout: str
 
 
-class Columns(BaseModel):
-    left: List[str] = []
-    right: List[str] = []
+class SplitContent(BaseModel):
+    leftOrder: List[str] = []
+    rightOrder: List[str] = []
+    unlisted: List[str] = []
+
+
+class FullContent(BaseModel):
+    order: List[str] = []
+    unlisted: List[str] = []
+
+
+class Content(BaseModel):
+    split: SplitContent
+    full: FullContent
 
 
 class Meta(BaseModel):
@@ -37,7 +49,7 @@ class Meta(BaseModel):
     fontSize: FontSize
     paper: Paper
     fontFamily: str
-    columns: Columns
+    content: Content
 
 
 class ColorsUpdate(BaseModel):
@@ -64,6 +76,7 @@ class FontSizeUpdate(BaseModel):
 class PaperUpdate(BaseModel):
     size: Optional[str]
     space: Optional[int]
+    layout: Optional[str]
 
     @validator("size")
     def must_be_size(cls, v):
@@ -76,6 +89,14 @@ class PaperUpdate(BaseModel):
     @validator("space")
     def must_be_space(cls, v):
         if v not in [40, 50, 60]:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Unprocessable Entity")
+        return v
+
+    @validator("layout")
+    def must_be_layout(cls, v):
+        if v not in ['full', 'split']:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="Unprocessable Entity")

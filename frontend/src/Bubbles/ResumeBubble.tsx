@@ -4,7 +4,7 @@ import axios from "../util/axios";
 import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
-  updatedAt: new Date().getTime(),
+  updatedAt: undefined,
   resume: {
     meta: {
       colors: {
@@ -22,10 +22,18 @@ let initialState: ResumeBubbleShape = {
       paper: {
         size: "A4",
         space: 40,
+        layout: "full",
       },
-      columns: {
-        left: [],
-        right: [],
+      content: {
+        split: {
+          leftOrder: [],
+          rightOrder: [],
+          unlisted: [],
+        },
+        full: {
+          unlisted: [],
+          order: [],
+        },
       },
     },
     title: "",

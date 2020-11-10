@@ -112,21 +112,29 @@ class TestResumes:
                     "main": "#000",
                     "secondary": "#686868"
                 },
-                "fontFamily": "Roboto",
                 "fontSize": {
-                    "big": 38,
-                    "large": 22,
+                    "small": 11,
                     "main": 13,
                     "medium": 16,
-                    "small": 11
+                    "large": 22,
+                    "big": 38
                 },
                 "paper": {
                     "size": "A4",
-                    "space": 50
+                    "space": 50,
+                    "layout": "split"
                 },
-                "columns": {
-                    "left": [],
-                    "right": [],
+                "fontFamily": "Roboto",
+                "content": {
+                    "split": {
+                        "leftOrder": [],
+                        "rightOrder": [],
+                        "unlisted": [],
+                    },
+                    "full": {
+                        "order": [],
+                        "unlisted": [],
+                    }
                 }
             },
             "owner_id": 2,
@@ -154,21 +162,29 @@ class TestResumes:
                     "main": "#000",
                     "secondary": "#686868"
                 },
-                "fontFamily": "Roboto",
                 "fontSize": {
-                    "big": 38,
-                    "large": 22,
+                    "small": 11,
                     "main": 13,
                     "medium": 16,
-                    "small": 11
+                    "large": 22,
+                    "big": 38
                 },
                 "paper": {
                     "size": "A4",
-                    "space": 50
+                    "space": 50,
+                    "layout": "split"
                 },
-                "columns": {
-                    "left": [],
-                    "right": [],
+                "fontFamily": "Roboto",
+                "content": {
+                    "split": {
+                        "leftOrder": [],
+                        "rightOrder": [],
+                        "unlisted": [],
+                    },
+                    "full": {
+                        "order": [],
+                        "unlisted": [],
+                    }
                 }
             },
             "info": {
@@ -210,21 +226,29 @@ class TestResumes:
                     "main": "#000",
                     "secondary": "#686868"
                 },
-                "fontFamily": "Roboto",
                 "fontSize": {
-                    "big": 38,
-                    "large": 22,
+                    "small": 11,
                     "main": 13,
                     "medium": 16,
-                    "small": 11
+                    "large": 22,
+                    "big": 38
                 },
                 "paper": {
                     "size": "A4",
-                    "space": 50
+                    "space": 50,
+                    "layout": "split"
                 },
-                "columns": {
-                    "left": [],
-                    "right": [],
+                "fontFamily": "Roboto",
+                "content": {
+                    "split": {
+                        "leftOrder": [],
+                        "rightOrder": [],
+                        "unlisted": [],
+                    },
+                    "full": {
+                        "order": [],
+                        "unlisted": [],
+                    }
                 }
             },
             "owner_id": 2,
@@ -308,7 +332,18 @@ class TestResumes:
         "meta": {
             "paper": {
                 "size": "not A4",
+            }
+        },
+    }, {
+        "meta": {
+            "paper": {
                 "space": 30
+            }
+        },
+    }, {
+        "meta": {
+            "paper": {
+                "layout": "not_full_not_split",
             }
         },
     }))
@@ -393,7 +428,20 @@ class TestResumes:
             "meta": {
                 "paper": {
                     "size": "A4",
+                }
+            },
+        },
+        {
+            "meta": {
+                "paper": {
                     "space": 40
+                }
+            },
+        },
+        {
+            "meta": {
+                "paper": {
+                    "layout": "full",
                 }
             },
         },
@@ -433,6 +481,7 @@ class TestResumes:
         assert resume.meta["fontFamily"] == "Roboto"
         assert resume.meta["paper"]["size"] == "A4"
         assert resume.meta["paper"]["space"] == 40
+        assert resume.meta["paper"]["layout"] == 'full'
 
     async def test_update_resume_access(
         self,

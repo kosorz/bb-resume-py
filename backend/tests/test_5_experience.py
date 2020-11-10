@@ -41,12 +41,7 @@ class TestExperienceRoutes:
 
 @pytest.fixture
 def relisted_experience():
-    return {
-        "title": "updated_title",
-        "id": 2,
-        "unlisted": False,
-        "resume_id": 2
-    }
+    return {"title": "updated_title", "id": 2, "resume_id": 2}
 
 
 class TestExperience:
@@ -94,7 +89,6 @@ class TestExperience:
         assert res.json() == {
             "title": "",
             "id": 2,
-            "unlisted": False,
             "resume_id": 2,
             "order": [2]
         }
@@ -122,10 +116,7 @@ class TestExperience:
                 "experience:update-experience",
                 experience_id=2,
             ),
-            json={
-                "unlisted": "this_is_not_boolean",
-                "title": []
-            },
+            json={"title": []},
         )
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
@@ -140,26 +131,15 @@ class TestExperience:
                 "experience:update-experience",
                 experience_id=2,
             ),
-            json={
-                "unlisted": True,
-                "title": "updated_title"
-            },
+            json={"title": "updated_title"},
         )
         assert res.json() == {
             "title": "updated_title",
             "id": 2,
             "order": [2],
-            "unlisted": True,
             "resume_id": 2
         }
         assert res.status_code == status.HTTP_200_OK
-
-    async def test_resume_experience_existence_and_its_unlisted_property(
-        self,
-        app: FastAPI,
-        client: AsyncClient,
-    ) -> None:
-        assert get_resume_experience(app.state._db, 2).unlisted
 
     async def test_create_experience_rejection_if_already_created(
         self,

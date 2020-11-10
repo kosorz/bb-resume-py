@@ -41,12 +41,7 @@ class TestSkillsRoutes:
 
 @pytest.fixture
 def relisted_skills():
-    return {
-        "title": "updated_title",
-        "id": 2,
-        "unlisted": False,
-        "resume_id": 2
-    }
+    return {"title": "updated_title", "id": 2, "resume_id": 2}
 
 
 class TestSkills:
@@ -94,7 +89,6 @@ class TestSkills:
         assert res.json() == {
             "title": "",
             "id": 2,
-            "unlisted": False,
             "resume_id": 2,
             "order": [2]
         }
@@ -122,10 +116,7 @@ class TestSkills:
                 "skills:update-skills",
                 skills_id=2,
             ),
-            json={
-                "unlisted": "this_is_not_boolean",
-                "title": []
-            },
+            json={"title": []},
         )
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
@@ -140,26 +131,15 @@ class TestSkills:
                 "skills:update-skills",
                 skills_id=2,
             ),
-            json={
-                "unlisted": True,
-                "title": "updated_title"
-            },
+            json={"title": "updated_title"},
         )
         assert res.json() == {
             "title": "updated_title",
             "id": 2,
             "order": [2],
-            "unlisted": True,
             "resume_id": 2
         }
         assert res.status_code == status.HTTP_200_OK
-
-    async def test_resume_skills_existence_and_its_unlisted_property(
-        self,
-        app: FastAPI,
-        client: AsyncClient,
-    ) -> None:
-        assert get_resume_skills(app.state._db, 2).unlisted
 
     async def test_create_skills_rejection_if_already_created(
         self,

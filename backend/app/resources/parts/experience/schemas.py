@@ -8,14 +8,12 @@ class ExperienceBase(BaseModel):
 
 
 class ExperienceUpdate(BaseModel):
-    unlisted: Optional[bool]
     title: Optional[str]
 
 
 class Experience(ExperienceBase):
     id: int
     title: str
-    unlisted: bool
     resume_id: int
     order: List[int] = []
 

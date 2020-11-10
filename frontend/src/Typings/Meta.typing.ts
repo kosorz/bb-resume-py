@@ -10,14 +10,22 @@ type ResumeMetaShape = {
     large: 24 | 22 | 20;
     big: 34 | 38 | 42;
   };
-  fontFamily: "Roboto";
+  fontFamily: string;
   paper: {
     size: "A4";
     space: 40 | 50 | 60;
+    layout: "split" | "full";
   };
-  columns: {
-    left: string[];
-    right: string[];
+  content: {
+    split: {
+      unlisted: string[];
+      leftOrder: string[];
+      rightOrder: string[];
+    };
+    full: {
+      unlisted: string[];
+      order: string[];
+    };
   };
 };
 

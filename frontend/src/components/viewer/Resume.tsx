@@ -5,14 +5,16 @@ import Info from "./sections/Info";
 import Skills from "./sections/Skills";
 import Experience from "./sections/Experience";
 import TwoColumns from "./sections/parts/TwoColumns";
-import Column from "../viewer/sections/parts/Column";
+import Column from "./sections/parts/Column";
 
 import { ResumeViewer } from "../../typings/Resume.typing";
 
 const Resume = ({ data }: ResumeViewer) => {
   const { skills, experience, info, meta } = data;
-  const { fontFamily, fontSize, paper, columns } = meta;
-  const { left, right } = columns;
+  const { fontSize, paper, content, fontFamily } = meta;
+  const { split, full } = content;
+  const { leftOrder, rightOrder } = split;
+  const { layout } = paper;
 
   const styles = StyleSheet.create({
     page: {
@@ -24,28 +26,30 @@ const Resume = ({ data }: ResumeViewer) => {
   });
 
   const sections: { [key: string]: ReactElement | undefined } = {
-    skills:
-      skills && !skills.unlisted ? (
-        <Skills meta={meta} {...skills} />
-      ) : undefined,
-    experience:
-      experience && !experience.unlisted ? (
-        <Experience meta={meta} {...experience} />
-      ) : undefined,
+    skills: skills ? (
+      <Skills meta={meta} key={"skills-viewer"} {...skills} />
+    ) : undefined,
+    experience: experience ? (
+      <Experience meta={meta} key={"experience-viewer"} {...experience} />
+    ) : undefined,
   };
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {info && <Info meta={meta} {...info} />}
-        {right.length > 0 ? (
+        {layout === "split" && (
           <TwoColumns
             meta={meta}
-            leftChildren={left.map((member) => sections[member])}
-            rightChildren={right.map((member) => sections[member])}
+            leftChildren={leftOrder.map((member) => sections[member])}
+            rightChildren={rightOrder.map((member) => sections[member])}
           />
-        ) : (
-          <Column meta={meta}>{left.map((member) => sections[member])}</Column>
+        )}
+        {layout === "full" && (
+          <Column
+            meta={meta}
+            children={full.order.map((member) => sections[member])}
+          />
         )}
       </Page>
     </Document>

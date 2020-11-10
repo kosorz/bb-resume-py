@@ -8,14 +8,12 @@ class SkillsBase(BaseModel):
 
 
 class SkillsUpdate(BaseModel):
-    unlisted: Optional[bool]
     title: Optional[str]
 
 
 class Skills(SkillsBase):
     id: int
     title: str
-    unlisted: bool
     resume_id: int
     order: List[int] = []
 

@@ -29,44 +29,51 @@ const Editor = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, setResume } = resumeBubble;
   const { skills, experience, info, meta } = resume;
-  const { left, right } = meta.columns;
+  const { content } = meta;
+  const { full, split } = content;
+  const { layout } = meta.paper;
 
   useEffect(() => {
     setResume();
   }, [setResume]);
 
-  const getPosition = (section: string) => {
-    return {
-      isFirst: left[0] === section || right[0] === section,
-      isLast:
-        left[left.length - 1] === section ||
-        right[right.length - 1] === section,
-    };
+  const sections: { [key: string]: ReactElement | undefined } = {
+    skills: skills ? <Skills key={"skills-editor"} /> : undefined,
+    experience: experience ? (
+      <Experience key={"experience-editor"} />
+    ) : undefined,
   };
 
-  const sections: { [key: string]: ReactElement | undefined } = {
-    skills:
-      skills && !skills.unlisted ? (
-        <Skills {...getPosition("skills")} />
-      ) : undefined,
-    experience:
-      experience && !experience.unlisted ? (
-        <Experience {...getPosition("experience")} />
-      ) : undefined,
-  };
+  const displaySections = (order: string[]) =>
+    order.length > 0
+      ? order.map((member) => sections[member])
+      : "Nothing listed";
 
   return (
     <Wrapper>
       {info && <Info />}
-      {left.length > 0 && (
-        <Column title={"Column I"}>
-          {left.map((member) => sections[member])}
-        </Column>
+      {layout === "split" && (
+        <>
+          <Column title={"Resume Column I"}>
+            {displaySections(split.leftOrder)}
+          </Column>
+          <Column title={"Resume Column II"}>
+            {displaySections(split.rightOrder)}
+          </Column>
+          {split.unlisted.length > 0 && (
+            <Column title={"Unlisted"}>
+              {displaySections(split.unlisted)}
+            </Column>
+          )}
+        </>
       )}
-      {right.length > 0 && (
-        <Column title={"Column II"}>
-          {right.map((member) => sections[member])}
-        </Column>
+      {layout === "full" && (
+        <>
+          <Column title={"Resume"}>{displaySections(full.order)}</Column>
+          {full.unlisted.length > 0 && (
+            <Column title={"Unlisted"}>{displaySections(full.unlisted)}</Column>
+          )}
+        </>
       )}
     </Wrapper>
   );

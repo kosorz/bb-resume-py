@@ -189,17 +189,13 @@ const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
 
   return (
     <Wrapper>
-      <PDFViewer
-        onRenderError={() => console.log("error")}
-        onUrlChange={onUrlChange}
-        document={{
-          ...Resume,
-          props: {
-            updatedAt: updatedAt,
-            data: resume,
-          },
-        }}
-      />
+      {updatedAt && (
+        <PDFViewer
+          onRenderError={() => console.log("error")}
+          onUrlChange={onUrlChange}
+          document={{ ...Resume, props: { data: resume } }}
+        />
+      )}
     </Wrapper>
   );
 });

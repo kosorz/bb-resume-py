@@ -66,7 +66,6 @@ def create_main_tables_seed_data() -> None:
         "skills",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
-        sa.Column("unlisted", sa.Boolean, default=False),
         sa.Column("order", postgresql.ARRAY(sa.Integer), default=[]),
         sa.Column(
             "resume_id",
@@ -93,7 +92,6 @@ def create_main_tables_seed_data() -> None:
         "experiences",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String, default=""),
-        sa.Column("unlisted", sa.Boolean, default=False),
         sa.Column("order", postgresql.ARRAY(sa.Integer), default=[]),
         sa.Column(
             "resume_id",

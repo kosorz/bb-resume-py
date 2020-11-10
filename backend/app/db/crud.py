@@ -84,12 +84,20 @@ def create_user_resume(db: Session, resume: ResumeCreate, user_id: int):
                           },
                           "paper": {
                               "size": "A4",
-                              "space": 50
+                              "space": 50,
+                              "layout": "split"
                           },
                           "fontFamily": "Roboto",
-                          "columns": {
-                              "left": [],
-                              "right": [],
+                          "content": {
+                              "split": {
+                                  "leftOrder": [],
+                                  "rightOrder": [],
+                                  "unlisted": [],
+                              },
+                              "full": {
+                                  "order": [],
+                                  "unlisted": [],
+                              }
                           }
                       }))
 

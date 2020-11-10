@@ -1,10 +1,14 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext, useState, useEffect } from "react";
 import styled from "styled-components";
+
 import Button from "../../../page/Button";
 import VerticalKnobs from "./VerticalKnobs";
 import NavItems from "./NavItems";
 import SuccessButton from "../../../page/SuccessButton";
+import DangerButton from "../../../page/DangerButton";
 import WarningButton from "../../../page/WarningButton";
+
+import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
 
 const Wrapper = styled.section`
@@ -61,68 +65,165 @@ const Section = ({
   children,
   title,
   expanded,
+  identifier,
   setExpanded,
   subtitle,
-  isFirst,
-  isLast,
   purpose,
   addFn,
-  icon,
-  movable = true,
 }: {
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
-  isFirst: boolean;
-  isLast: boolean;
+  identifier: string;
   addFn?: Function;
   subtitle?: string;
-  movable?: boolean;
-  icon?: ReactNode;
   expanded?: boolean;
   setExpanded?: Function;
-}) => (
-  <Wrapper>
-    <Title>{title}</Title>
-    {icon && icon}
-    <Purpose>{purpose}</Purpose>
-    {children}
-    {expanded && movable && (
-      <>
-        {subtitle && addFn && (
-          <AddWrapper>
-            <SuccessButton onClick={() => addFn()}>
-              + Add new {subtitle}
-            </SuccessButton>
-          </AddWrapper>
-        )}
-        <Chin>
-          <NavTitle>Manage:</NavTitle>
-          <NavItems>
-            {(!isFirst || !isLast) && (
-              <SectionVerticalKnobs
-                upLabel={`Move\xa0${title.toLowerCase()}\xa0up`}
-                downLabel={`Move\xa0${title.toLowerCase()}\xa0down`}
-                renderUp={!isFirst}
-                renderDown={!isLast}
-              />
-            )}
-            <WarningButton onClick={() => {}}>
-              o&nbsp;Migrate&nbsp;{title.toLowerCase()}
-              &nbsp;to&nbsp;Column&nbsp;II
-            </WarningButton>
-          </NavItems>
-        </Chin>
-      </>
-    )}
-    <Footer>
-      {setExpanded && (
-        <Button onClick={() => setExpanded(!expanded)}>
-          {expanded ? "<<<\xa0Close" : "Edit\xa0>>>"}
-        </Button>
+}) => {
+  const [positionData, setPositionData] = useState<{
+    isFirst: boolean;
+    isLast: boolean;
+    movable: boolean;
+    migratable: boolean;
+    column: string;
+  }>({
+    isFirst: false,
+    isLast: false,
+    movable: false,
+    migratable: identifier !== "info",
+    column: "",
+  });
+  const resumeBubble = useContext(ResumeBubble);
+  const { content, paper } = resumeBubble.resume.meta;
+  const { split, full } = content;
+  const { layout } = paper;
+
+  useEffect(() => {
+    const data =
+      layout === "split"
+        ? {
+            isFirst:
+              split.leftOrder[0] === identifier ||
+              split.rightOrder[0] === identifier,
+            isLast:
+              split.leftOrder[split.leftOrder.length - 1] === identifier ||
+              split.rightOrder[split.rightOrder.length - 1] === identifier,
+            movable:
+              !split.unlisted.includes(identifier) && identifier !== "info",
+            column: split.leftOrder.includes(identifier)
+              ? "splitListedLeft"
+              : split.rightOrder.includes(identifier)
+              ? "splitListedRight"
+              : "splitUnlisted",
+          }
+        : {
+            isFirst: full.order[0] === identifier,
+            isLast: full.order[full.order.length - 1] === identifier,
+            movable:
+              !full.unlisted.includes(identifier) && identifier !== "info",
+            column: full.order.includes(identifier)
+              ? "fullListed"
+              : "fullUnlisted",
+          };
+    setPositionData((prevState) => {
+      return { ...prevState, ...data };
+    });
+  }, [
+    layout,
+    identifier,
+    split.rightOrder,
+    split.leftOrder,
+    split.unlisted,
+    full.order,
+    full.unlisted,
+  ]);
+
+  const { isFirst, isLast, movable, migratable, column } = positionData;
+  const manageable = movable || migratable;
+
+  const renderMigration = () => {
+    const renderDeleteButton = () => (
+      <DangerButton onClick={() => {}}>Delete</DangerButton>
+    );
+    const renderUnlistButton = () => (
+      <WarningButton onClick={() => {}}>Unlist</WarningButton>
+    );
+
+    if (column === "splitListedLeft" || column === "splitListedRight") {
+      return (
+        <>
+          <Button onClick={() => {}}>
+            Migrate&nbsp;to&nbsp;Column&nbsp;
+            {column === "splitListedLeft" ? "II" : "I"}
+          </Button>
+          {renderUnlistButton()}
+        </>
+      );
+    }
+
+    if (column === "splitUnlisted") {
+      return (
+        <>
+          <Button onClick={() => {}}>List&nbsp;in&nbsp;Column&nbsp;I</Button>
+          <Button onClick={() => {}}>List&nbsp;in&nbsp;Column&nbsp;II</Button>
+          {renderDeleteButton()}
+        </>
+      );
+    }
+
+    if (column === "fullListed") return renderUnlistButton();
+
+    if (column === "fullUnlisted") {
+      return (
+        <>
+          <Button onClick={() => {}}>List&nbsp;in&nbsp;Resume</Button>
+          {renderDeleteButton()}
+        </>
+      );
+    }
+  };
+
+  return (
+    <Wrapper>
+      <Title>{title}</Title>
+      <Purpose>{purpose}</Purpose>
+      {expanded && (
+        <>
+          {children}
+          {subtitle && addFn && (
+            <AddWrapper>
+              <SuccessButton onClick={() => addFn()}>
+                + Add new {subtitle}
+              </SuccessButton>
+            </AddWrapper>
+          )}
+          {manageable && (
+            <Chin>
+              <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
+              <NavItems>
+                {(!isFirst || !isLast) && movable && (
+                  <SectionVerticalKnobs
+                    upLabel={`Move\xa0up`}
+                    downLabel={`Move\xa0down`}
+                    renderUp={!isFirst}
+                    renderDown={!isLast}
+                  />
+                )}
+                {migratable && renderMigration()}
+              </NavItems>
+            </Chin>
+          )}
+        </>
       )}
-    </Footer>
-  </Wrapper>
-);
+      <Footer>
+        {setExpanded && (
+          <Button onClick={() => setExpanded(!expanded)}>
+            {expanded ? "<<<\xa0Close" : "Edit\xa0>>>"}
+          </Button>
+        )}
+      </Footer>
+    </Wrapper>
+  );
+};
 
 export default Section;
