@@ -10,8 +10,9 @@ import WarningButton from "../../../page/WarningButton";
 
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
+import axios from "../../../../util/axios";
 
-const Wrapper = styled.section`
+export const Wrapper = styled.section`
   margin-bottom: ${({ theme }) => theme.space + "px"};
   padding: ${({ theme }) => theme.space + "px"};
   padding-top: 0;
@@ -44,6 +45,9 @@ const Footer = styled.div`
   padding-top: ${({ theme }) => theme.space + "px"};
   margin-top: ${({ theme }) => theme.space + "px"};
   border-top: ${({ theme }) => "3px solid" + theme.dark};
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const Chin = styled(Footer)`
@@ -59,6 +63,10 @@ const NavTitle = styled.h4`
 const SectionVerticalKnobs = styled(VerticalKnobs)`
   flex-wrap: wrap;
   justify-content: flex-start;
+
+  ${media.phone`
+    order: -1;  
+  `};
 `;
 
 const Section = ({
@@ -84,17 +92,19 @@ const Section = ({
     isFirst: boolean;
     isLast: boolean;
     movable: boolean;
-    migratable: boolean;
+    manageable: boolean;
     column: string;
   }>({
     isFirst: false,
     isLast: false,
     movable: false,
-    migratable: identifier !== "info",
+    manageable: identifier !== "info",
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
-  const { content, paper } = resumeBubble.resume.meta;
+  const { resume, updateContent } = resumeBubble;
+  const { id, meta } = resume;
+  const { content, paper } = meta;
   const { split, full } = content;
   const { layout } = paper;
 
@@ -138,22 +148,47 @@ const Section = ({
     full.unlisted,
   ]);
 
-  const { isFirst, isLast, movable, migratable, column } = positionData;
-  const manageable = movable || migratable;
+  const { isFirst, isLast, movable, manageable, column } = positionData;
 
-  const renderMigration = () => {
+  const urlBase = `/resumes/${id}/section/${identifier}`;
+
+  const unlist = () => {
+    axios.post(`${urlBase}/unlist`).then((res) => {
+      updateContent(res.data);
+    });
+  };
+
+  const list = (order: string) => {
+    axios.post(`${urlBase}/list/${order}`).then((res) => {
+      updateContent(res.data);
+    });
+  };
+
+  const move = (dir: string) => {
+    axios.post(`${urlBase}/move/${dir}`).then((res) => {
+      updateContent(res.data);
+    });
+  };
+
+  const migrate = () => {
+    axios.post(`${urlBase}/migrate`).then((res) => {
+      updateContent(res.data);
+    });
+  };
+
+  const management = () => {
     const renderDeleteButton = () => (
       <DangerButton onClick={() => {}}>Delete</DangerButton>
     );
     const renderUnlistButton = () => (
-      <WarningButton onClick={() => {}}>Unlist</WarningButton>
+      <WarningButton onClick={() => unlist()}>Unlist</WarningButton>
     );
 
     if (column === "splitListedLeft" || column === "splitListedRight") {
       return (
         <>
-          <Button onClick={() => {}}>
-            Migrate&nbsp;to&nbsp;Column&nbsp;
+          <Button onClick={() => migrate()}>
+            List&nbsp;in&nbsp;Column&nbsp;
             {column === "splitListedLeft" ? "II" : "I"}
           </Button>
           {renderUnlistButton()}
@@ -164,8 +199,12 @@ const Section = ({
     if (column === "splitUnlisted") {
       return (
         <>
-          <Button onClick={() => {}}>List&nbsp;in&nbsp;Column&nbsp;I</Button>
-          <Button onClick={() => {}}>List&nbsp;in&nbsp;Column&nbsp;II</Button>
+          <Button onClick={() => list("leftOrder")}>
+            List&nbsp;in&nbsp;Column&nbsp;I
+          </Button>
+          <Button onClick={() => list("rightOrder")}>
+            List&nbsp;in&nbsp;Column&nbsp;II
+          </Button>
           {renderDeleteButton()}
         </>
       );
@@ -176,7 +215,9 @@ const Section = ({
     if (column === "fullUnlisted") {
       return (
         <>
-          <Button onClick={() => {}}>List&nbsp;in&nbsp;Resume</Button>
+          <Button onClick={() => list("order")}>
+            List&nbsp;in&nbsp;Resume
+          </Button>
           {renderDeleteButton()}
         </>
       );
@@ -200,17 +241,7 @@ const Section = ({
           {manageable && (
             <Chin>
               <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
-              <NavItems>
-                {(!isFirst || !isLast) && movable && (
-                  <SectionVerticalKnobs
-                    upLabel={`Move\xa0up`}
-                    downLabel={`Move\xa0down`}
-                    renderUp={!isFirst}
-                    renderDown={!isLast}
-                  />
-                )}
-                {migratable && renderMigration()}
-              </NavItems>
+              <NavItems>{management()}</NavItems>
             </Chin>
           )}
         </>
@@ -220,6 +251,16 @@ const Section = ({
           <Button onClick={() => setExpanded(!expanded)}>
             {expanded ? "<<<\xa0Close" : "Edit\xa0>>>"}
           </Button>
+        )}
+        {(!isFirst || !isLast) && movable && (
+          <SectionVerticalKnobs
+            upLabel={`Move\xa0up`}
+            downLabel={`Move\xa0down`}
+            onUp={() => move("up")}
+            onDown={() => move("down")}
+            renderUp={!isFirst}
+            renderDown={!isLast}
+          />
         )}
       </Footer>
     </Wrapper>

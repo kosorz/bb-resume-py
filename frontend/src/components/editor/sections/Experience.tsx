@@ -21,6 +21,7 @@ import axios from "../../../util/axios";
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { updateExperience, resume, addExperienceUnit } = resumeBubble;
+  const { full, split } = resume.meta.content;
   const {
     id,
     units,
@@ -52,6 +53,11 @@ const Experience = observer(() => {
 
   return (
     <Section
+      key={`section-${full.order.indexOf(
+        "experience"
+      )}-${split.leftOrder.indexOf("experience")}-${split.rightOrder.indexOf(
+        "experience"
+      )}`}
       identifier={"experience"}
       expanded={expanded}
       subtitle={"experience"}

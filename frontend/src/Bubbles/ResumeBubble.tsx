@@ -57,6 +57,7 @@ let initialState: ResumeBubbleShape = {
   updateExperienceOrder: () => {},
   addExperienceUnit: () => {},
   removeExperienceUnit: () => {},
+  updateContent: () => {},
 };
 
 export const ResumeBubble = createContext(initialState);
@@ -150,6 +151,12 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.resume.experience.order = store.resume.experience.order.filter(
           (u_id) => u_id !== id
         );
+        store.setUpdateTime();
+      }
+    },
+    updateContent: (content) => {
+      if (store.resume.meta) {
+        store.resume.meta.content = content;
         store.setUpdateTime();
       }
     },

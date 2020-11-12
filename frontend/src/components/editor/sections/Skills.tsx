@@ -21,6 +21,7 @@ import axios from "../../../util/axios";
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
   const { resume, updateSkills, addSkillsGroup } = resumeBubble;
+  const { full, split } = resume.meta.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
   const [expanded, setExpanded] = useState<boolean>(false);
 
@@ -46,6 +47,9 @@ const Skills = observer(() => {
 
   return (
     <Section
+      key={`section-${full.order.indexOf("skills")}-${split.leftOrder.indexOf(
+        "skills"
+      )}-${split.rightOrder.indexOf("skills")}`}
       identifier={"skills"}
       expanded={expanded}
       setExpanded={setExpanded}

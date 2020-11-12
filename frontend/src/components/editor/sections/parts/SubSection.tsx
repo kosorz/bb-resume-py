@@ -16,13 +16,20 @@ const Wrapper = styled.section`
   border-bottom: ${({ theme }) => "1px dashed" + theme.main};
 
   ${media.phone`
-    //@ts-ignore
     margin-left: 0
   `};
 `;
 
 const SubSectionNav = styled(NavItems)`
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
+  display: flex;
+  justify-content: space-between;
+`;
+
+const SubSectionVerticalKnobs = styled(VerticalKnobs)`
+  ${media.phone`
+    order: -1;
+  `};
 `;
 
 const SubSection = ({
@@ -58,15 +65,15 @@ const SubSection = ({
     <Wrapper>
       {children}
       <SubSectionNav>
-        <VerticalKnobs
+        {renderDelete && (
+          <DangerButton onClick={handleClick}>x Delete</DangerButton>
+        )}
+        <SubSectionVerticalKnobs
           onUp={onUp}
           onDown={onDown}
           renderUp={!isFirst}
           renderDown={!isLast}
         />
-        {renderDelete && (
-          <DangerButton onClick={handleClick}>x Delete</DangerButton>
-        )}
       </SubSectionNav>
     </Wrapper>
   );

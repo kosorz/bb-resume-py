@@ -4,6 +4,7 @@ import SkillsShape from "./Skills.typing";
 import SkillsGroupShape from "./SkillsGroup.typing";
 import ExperienceShape from "./Experience.typing";
 import ExperienceUnitShape from "./ExperienceUnit.typing";
+import { MetaContent } from "./Meta.typing";
 
 type ResumeBubbleShape = {
   updatedAt?: number;
@@ -21,6 +22,7 @@ type ResumeBubbleShape = {
   updateExperienceOrder: (order: number[]) => void;
   addExperienceUnit: (data: ExperienceUnitShape) => void;
   removeExperienceUnit: (id: number) => void;
+  updateContent: (data: MetaContent) => void;
 };
 
 export default ResumeBubbleShape;

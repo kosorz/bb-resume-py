@@ -6,6 +6,7 @@ import Experience from "./sections/Experience";
 import Info from "./sections/Info";
 import Skills from "./sections/Skills";
 import Column from "./sections/parts/Column";
+import { Wrapper as FakeSection } from "./sections/parts/Section";
 
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
 import media from "../../styled/media";
@@ -23,6 +24,10 @@ const Wrapper = styled.section`
   /* ${media.tablet`
     display: none;
   `} */
+`;
+
+const Placeholder = styled(FakeSection)`
+  padding-top: ${({ theme }) => theme.space + "px"};
 `;
 
 const Editor = observer(() => {
@@ -44,10 +49,15 @@ const Editor = observer(() => {
     ) : undefined,
   };
 
-  const displaySections = (order: string[]) =>
-    order.length > 0
-      ? order.map((member) => sections[member])
-      : "Nothing listed";
+  const displaySections = (
+    order: string[],
+    placeholder: string = "Nothing listed..."
+  ) =>
+    order.length > 0 ? (
+      order.map((member) => sections[member])
+    ) : (
+      <Placeholder>{placeholder}</Placeholder>
+    );
 
   return (
     <Wrapper>
@@ -60,19 +70,17 @@ const Editor = observer(() => {
           <Column title={"Resume Column II"}>
             {displaySections(split.rightOrder)}
           </Column>
-          {split.unlisted.length > 0 && (
-            <Column title={"Unlisted"}>
-              {displaySections(split.unlisted)}
-            </Column>
-          )}
+          <Column title={"Unlisted"}>
+            {displaySections(split.unlisted, "No unlisted sections...")}
+          </Column>
         </>
       )}
       {layout === "full" && (
         <>
           <Column title={"Resume"}>{displaySections(full.order)}</Column>
-          {full.unlisted.length > 0 && (
-            <Column title={"Unlisted"}>{displaySections(full.unlisted)}</Column>
-          )}
+          <Column title={"Unlisted"}>
+            {displaySections(full.unlisted, "No unlisted sections...")}
+          </Column>
         </>
       )}
     </Wrapper>

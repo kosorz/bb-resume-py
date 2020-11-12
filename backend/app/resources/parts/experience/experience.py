@@ -4,34 +4,37 @@ from sqlalchemy.orm import Session
 
 from .schemas import Experience, ExperienceUpdate, ExperienceFull, ExperienceUnit, ExperienceUnitUpdate
 from ..schemas import OrderUpdate
-from ...resumes.fns import update_unlisted_after_section_creation
+from ...resumes.fns import adjust_section_position
 from ...resumes.schemas import ResumeFull, ServerResumeUpdate, Resume
 from ....util.deps import get_owned_resume, get_current_user_experience, get_current_user_experience_units, db
-from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move
+from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move, checkCreateSectionTarget
 from ....db import crud
 
 router = APIRouter()
 
 
 @router.post(
-    "/{resume_id}/experience",
+    "/{resume_id}/experience/{target}",
     response_model=Experience,
     name="experience:create-experience",
 )
-def create_experience(resume_id: int,
-                      db: Session = Depends(db),
-                      current_user_experience: List[ExperienceFull] = Depends(
-                          get_current_user_experience),
-                      owned_resume: ResumeFull = Depends(get_owned_resume)):
+def create_experience(
+        resume_id: int,
+        target: str,
+        db: Session = Depends(db),
+        current_user_experience: List[ExperienceFull] = Depends(
+            get_current_user_experience),
+        owned_resume: ResumeFull = Depends(get_owned_resume),
+):
     find_item_with_key_value(list=current_user_experience,
                              key="resume_id",
                              value=resume_id,
                              error=False,
                              throw_on_present=True)
+    checkCreateSectionTarget(target)
     experience = crud.create_resume_experience(db, resume_id)
     unit = crud.create_experience_unit(db, experience.id)
-    update_unlisted_after_section_creation(db, owned_resume, 'unlisted',
-                                           'experience')
+    adjust_section_position(db, owned_resume, 'experience', target, True)
     return update_existing_resource(db, experience.id,
                                     OrderUpdate(order=[unit.id]), Experience,
                                     crud.get_experience,

@@ -22,6 +22,7 @@ class TestExperienceRoutes:
             app.url_path_for(
                 "experience:create-experience",
                 resume_id=1,
+                target='leftOrder',
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
@@ -55,7 +56,9 @@ class TestExperience:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("experience:create-experience", resume_id=2))
+            app.url_path_for("experience:create-experience",
+                             resume_id=2,
+                             target='leftOrder'))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_update_experience_authorization_check(
@@ -85,7 +88,9 @@ class TestExperience:
     ) -> None:
         # Checks if experience will be created
         res = await client.post(
-            app.url_path_for("experience:create-experience", resume_id=2), )
+            app.url_path_for("experience:create-experience",
+                             resume_id=2,
+                             target='leftOrder'), )
         assert res.json() == {
             "title": "",
             "id": 2,
@@ -103,12 +108,10 @@ class TestExperience:
         resume = get_resume(app.state._db, 2)
         assert resume.experience
         assert resume.experience.order == [2]
-        assert resume.meta['content']['full']['unlisted'] == [
-            'skills', 'experience'
-        ]
-        assert resume.meta['content']['split']['unlisted'] == [
-            'skills', 'experience'
-        ]
+        assert resume.meta['content']['full']['order'] == ['skills']
+        assert resume.meta['content']['full']['unlisted'] == ['experience']
+        assert resume.meta['content']['split']['unlisted'] == ['skills']
+        assert resume.meta['content']['split']['leftOrder'] == ['experience']
 
     async def test_update_experience_validation(
         self,
@@ -154,7 +157,11 @@ class TestExperience:
     ) -> None:
         # Checks if request will be rejected if user already has experience
         res = await client.post(
-            app.url_path_for("experience:create-experience", resume_id=2))
+            app.url_path_for(
+                "experience:create-experience",
+                resume_id=2,
+                target="leftOrder",
+            ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     async def test_create_experience_access(
@@ -167,6 +174,7 @@ class TestExperience:
             app.url_path_for(
                 "experience:create-experience",
                 resume_id=1,
+                target="leftOrder",
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
 

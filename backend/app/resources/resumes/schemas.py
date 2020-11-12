@@ -56,8 +56,8 @@ class Content(BaseModel):
 
 
 class ContentUpdate(BaseModel):
-    split: SplitContentUpdate
-    full: FullContentUpdate
+    split: Optional[SplitContentUpdate]
+    full: Optional[FullContentUpdate]
 
 
 class Meta(BaseModel):

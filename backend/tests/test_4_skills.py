@@ -22,6 +22,7 @@ class TestSkillsRoutes:
             app.url_path_for(
                 "skills:create-skills",
                 resume_id=1,
+                target='order',
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
@@ -55,7 +56,11 @@ class TestSkills:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("skills:create-skills", resume_id=2), )
+            app.url_path_for(
+                "skills:create-skills",
+                resume_id=2,
+                target="order",
+            ), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_update_skills_authorization_check(
@@ -85,7 +90,11 @@ class TestSkills:
     ) -> None:
         # Checks if skills will be created
         res = await client.post(
-            app.url_path_for("skills:create-skills", resume_id=2), )
+            app.url_path_for(
+                "skills:create-skills",
+                resume_id=2,
+                target='order',
+            ), )
         assert res.json() == {
             "title": "",
             "id": 2,
@@ -103,7 +112,7 @@ class TestSkills:
         resume = get_resume(app.state._db, 2)
         assert resume.skills
         assert resume.skills.order == [2]
-        assert resume.meta['content']['full']['unlisted'] == ['skills']
+        assert resume.meta['content']['full']['order'] == ['skills']
         assert resume.meta['content']['split']['unlisted'] == ['skills']
 
     async def test_update_skills_validation(
@@ -150,7 +159,11 @@ class TestSkills:
     ) -> None:
         # Checks if skills will be recreated
         res = await client.post(
-            app.url_path_for("skills:create-skills", resume_id=2), )
+            app.url_path_for(
+                "skills:create-skills",
+                resume_id=2,
+                target="leftOrder",
+            ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     async def test_create_skills_access(
@@ -163,6 +176,7 @@ class TestSkills:
             app.url_path_for(
                 "skills:create-skills",
                 resume_id=1,
+                target="order",
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
 
