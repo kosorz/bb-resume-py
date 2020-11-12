@@ -44,7 +44,7 @@ const AddWrapper = styled.div`
 const Footer = styled.div`
   padding-top: ${({ theme }) => theme.space + "px"};
   margin-top: ${({ theme }) => theme.space + "px"};
-  border-top: ${({ theme }) => "3px solid" + theme.dark};
+  border-top: 3px solid;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -52,7 +52,7 @@ const Footer = styled.div`
 
 const Chin = styled(Footer)`
   flex-direction: column;
-  border-top: ${({ theme }) => "2px solid" + theme.dark};
+  border-top: 2px solid;
 `;
 
 const NavTitle = styled.h4`
@@ -228,7 +228,7 @@ const Section = ({
 
   return (
     <Wrapper>
-      <Title>{title}</Title>
+      <Title style={{ color: meta.colors.main }}>{title}</Title>
       <Purpose>{purpose}</Purpose>
       {isActive && (
         <>
@@ -241,14 +241,14 @@ const Section = ({
             </AddWrapper>
           )}
           {manageable && (
-            <Chin>
+            <Chin style={{ borderColor: meta.colors.main }}>
               <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
               <NavItems>{management()}</NavItems>
             </Chin>
           )}
         </>
       )}
-      <Footer>
+      <Footer style={{ borderColor: meta.colors.main }}>
         <Button onClick={() => setActiveSection(isActive ? "" : identifier)}>
           {isActive ? "<<<\xa0Close" : "Edit\xa0>>>"}
         </Button>

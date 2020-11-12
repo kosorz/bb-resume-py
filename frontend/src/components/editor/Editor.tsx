@@ -56,7 +56,9 @@ const Editor = observer(() => {
     order.length > 0 ? (
       order.map((member) => sections[member])
     ) : (
-      <Placeholder>{placeholder}</Placeholder>
+      <Placeholder style={{ color: meta.colors.main }}>
+        {placeholder}
+      </Placeholder>
     );
 
   return (
@@ -77,7 +79,9 @@ const Editor = observer(() => {
       )}
       {layout === "full" && (
         <>
-          <Column title={"Resume"}>{displaySections(full.order)}</Column>
+          <Column title={"Resume Content"}>
+            {displaySections(full.order)}
+          </Column>
           <Column title={"Unlisted"}>
             {displaySections(full.unlisted, "No unlisted sections...")}
           </Column>

@@ -6,9 +6,7 @@ const Wrapper = styled.section`
   flex-direction: column;
 `;
 
-const Title = styled.h1`
-  color: ${({ theme }) => theme.dark};
-`;
+const Title = styled.h1``;
 
 const Column = ({
   title,
