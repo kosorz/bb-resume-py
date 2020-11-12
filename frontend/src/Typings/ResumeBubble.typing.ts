@@ -9,8 +9,10 @@ import { MetaContent } from "./Meta.typing";
 type ResumeBubbleShape = {
   updatedAt?: number;
   resume: ResumeShape;
+  activeSection: "skills" | "experience" | "info" | "";
   setUpdateTime: () => void;
   setResume: () => void;
+  setActiveSection: (section: "skills" | "experience" | "info" | "") => void;
   updateInfo: (data: InfoShape) => void;
   updateSkills: (data: SkillsShape) => void;
   updateSkillsGroup: (data: SkillsGroupShape) => void;

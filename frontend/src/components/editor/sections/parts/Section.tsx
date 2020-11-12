@@ -72,9 +72,7 @@ const SectionVerticalKnobs = styled(VerticalKnobs)`
 const Section = ({
   children,
   title,
-  expanded,
   identifier,
-  setExpanded,
   subtitle,
   purpose,
   addFn,
@@ -82,11 +80,9 @@ const Section = ({
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
-  identifier: string;
+  identifier: "skills" | "experience" | "info" | "";
   addFn?: Function;
   subtitle?: string;
-  expanded?: boolean;
-  setExpanded?: Function;
 }) => {
   const [positionData, setPositionData] = useState<{
     isFirst: boolean;
@@ -102,11 +98,17 @@ const Section = ({
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
-  const { resume, updateContent } = resumeBubble;
+  const {
+    resume,
+    updateContent,
+    activeSection,
+    setActiveSection,
+  } = resumeBubble;
   const { id, meta } = resume;
   const { content, paper } = meta;
   const { split, full } = content;
   const { layout } = paper;
+  const isActive = activeSection === identifier;
 
   useEffect(() => {
     const data =
@@ -228,7 +230,7 @@ const Section = ({
     <Wrapper>
       <Title>{title}</Title>
       <Purpose>{purpose}</Purpose>
-      {expanded && (
+      {isActive && (
         <>
           {children}
           {subtitle && addFn && (
@@ -247,11 +249,9 @@ const Section = ({
         </>
       )}
       <Footer>
-        {setExpanded && (
-          <Button onClick={() => setExpanded(!expanded)}>
-            {expanded ? "<<<\xa0Close" : "Edit\xa0>>>"}
-          </Button>
-        )}
+        <Button onClick={() => setActiveSection(isActive ? "" : identifier)}>
+          {isActive ? "<<<\xa0Close" : "Edit\xa0>>>"}
+        </Button>
         {(!isFirst || !isLast) && movable && (
           <SectionVerticalKnobs
             upLabel={`Move\xa0up`}

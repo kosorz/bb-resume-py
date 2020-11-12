@@ -9,10 +9,12 @@ const TwoColumns = ({
   leftChildren,
   rightChildren,
   meta,
+  emptyStateActive,
 }: {
   meta: MetaShape;
   leftChildren: (ReactElement | undefined)[];
   rightChildren: (ReactElement | undefined)[];
+  emptyStateActive: boolean;
 }) => {
   const { paper, fontSize, fontFamily } = meta;
 
@@ -51,6 +53,7 @@ const TwoColumns = ({
           renderWithKeys(leftChildren, "left")
         ) : (
           <EmptyState
+            isActive={emptyStateActive}
             meta={meta}
             title={"Empty"}
             text={"Use editor to list sections in Column I"}
@@ -62,6 +65,7 @@ const TwoColumns = ({
           renderWithKeys(rightChildren, "right")
         ) : (
           <EmptyState
+            isActive={emptyStateActive}
             meta={meta}
             title={"Empty"}
             text={"Use editor to list sections in Column II"}

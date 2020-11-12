@@ -17,6 +17,7 @@ const Info = ({
   location_enabled,
   role_enabled,
   meta,
+  isActive,
 }: InfoViewer) => {
   const { paper, colors, fontSize } = meta;
 
@@ -29,6 +30,7 @@ const Info = ({
       marginBottom: paper.space / 3,
       alignItems: "center",
       color: colors.secondary,
+      opacity: isActive ? 1 : 0.2,
     },
     rest: {
       flex: 70,

@@ -185,7 +185,7 @@ const Wrapper = styled.section`
 
 const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { updatedAt, resume } = resumeBubble;
+  const { updatedAt, resume, activeSection } = resumeBubble;
 
   return (
     <Wrapper>
@@ -193,7 +193,7 @@ const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
         <PDFViewer
           onRenderError={() => console.log("error")}
           onUrlChange={onUrlChange}
-          document={{ ...Resume, props: { data: resume } }}
+          document={{ ...Resume, props: { activeSection, data: resume } }}
         />
       )}
     </Wrapper>

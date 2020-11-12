@@ -16,7 +16,7 @@ type ResumeShape = {
 
 export interface ResumeViewer {
   data: ResumeShape;
-  lastEdit: number;
+  activeSection: string;
 }
 
 export default ResumeShape;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -20,7 +20,12 @@ import axios from "../../../util/axios";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
-  const { updateExperience, resume, addExperienceUnit } = resumeBubble;
+  const {
+    updateExperience,
+    resume,
+    addExperienceUnit,
+    activeSection,
+  } = resumeBubble;
   const { full, split } = resume.meta.content;
   const {
     id,
@@ -29,7 +34,6 @@ const Experience = observer(() => {
     order,
     ...experienceEditorData
   } = resume.experience!;
-  const [expanded, setExpanded] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: experienceEditorData,
@@ -57,38 +61,32 @@ const Experience = observer(() => {
         "experience"
       )}-${split.leftOrder.indexOf("experience")}-${split.rightOrder.indexOf(
         "experience"
-      )}`}
+      )}-${activeSection}`}
       identifier={"experience"}
-      expanded={expanded}
       subtitle={"experience"}
-      setExpanded={setExpanded}
       title={"Experience"}
       addFn={addFn}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
     >
-      {expanded && (
-        <>
-          <Form>
-            <SectionHeader>
-              <Input
-                {...getFieldProps(formik, "title")}
-                placeholder="Alternative experience title"
-              />
-            </SectionHeader>
-          </Form>
-          {sortExperienceUnits(order, units).map((u, i, arr) => (
-            <ExperienceUnit
-              hasSiblings={arr.length > 1}
-              key={`experience_unit_${u.id}_editor`}
-              isLast={arr.length - 1 === i}
-              isFirst={i === 0}
-              {...u}
-            />
-          ))}
-        </>
-      )}
+      <Form>
+        <SectionHeader>
+          <Input
+            {...getFieldProps(formik, "title")}
+            placeholder="Alternative experience title"
+          />
+        </SectionHeader>
+      </Form>
+      {sortExperienceUnits(order, units).map((u, i, arr) => (
+        <ExperienceUnit
+          hasSiblings={arr.length > 1}
+          key={`experience_unit_${u.id}_editor`}
+          isLast={arr.length - 1 === i}
+          isFirst={i === 0}
+          {...u}
+        />
+      ))}
     </Section>
   );
 });

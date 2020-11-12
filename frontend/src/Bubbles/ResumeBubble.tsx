@@ -5,6 +5,7 @@ import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
   updatedAt: undefined,
+  activeSection: "",
   resume: {
     meta: {
       colors: {
@@ -45,6 +46,7 @@ let initialState: ResumeBubbleShape = {
     info: undefined,
   },
   setUpdateTime: () => {},
+  setActiveSection: () => {},
   setResume: () => {},
   updateInfo: () => {},
   updateSkills: () => {},
@@ -67,6 +69,10 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     ...initialState,
     setUpdateTime: () => {
       store.updatedAt = new Date().getTime();
+    },
+    setActiveSection: (section) => {
+      store.activeSection = section;
+      store.setUpdateTime();
     },
     setResume: async () => {
       axios.get("/resumes/1").then((res) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -20,10 +20,9 @@ import axios from "../../../util/axios";
 
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
-  const { resume, updateSkills, addSkillsGroup } = resumeBubble;
+  const { resume, updateSkills, addSkillsGroup, activeSection } = resumeBubble;
   const { full, split } = resume.meta.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
-  const [expanded, setExpanded] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: skillsEditorData,
@@ -49,10 +48,8 @@ const Skills = observer(() => {
     <Section
       key={`section-${full.order.indexOf("skills")}-${split.leftOrder.indexOf(
         "skills"
-      )}-${split.rightOrder.indexOf("skills")}`}
+      )}-${split.rightOrder.indexOf("skills")}-${activeSection}`}
       identifier={"skills"}
-      expanded={expanded}
-      setExpanded={setExpanded}
       title={"Skills"}
       subtitle={"skills group"}
       addFn={addFn}
@@ -60,27 +57,23 @@ const Skills = observer(() => {
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
     >
-      {expanded && (
-        <>
-          <Form>
-            <SectionHeader>
-              <Input
-                {...getFieldProps(formik, "title")}
-                placeholder="Alternative skills title"
-              />
-            </SectionHeader>
-          </Form>
-          {sortSkillsGroups(order, groups).map((gr, i, arr) => (
-            <SkillsGroup
-              hasSiblings={arr.length > 1}
-              key={`skills_group_${gr.id}_editor`}
-              isLast={arr.length - 1 === i}
-              isFirst={i === 0}
-              {...gr}
-            />
-          ))}
-        </>
-      )}
+      <Form>
+        <SectionHeader>
+          <Input
+            {...getFieldProps(formik, "title")}
+            placeholder="Alternative skills title"
+          />
+        </SectionHeader>
+      </Form>
+      {sortSkillsGroups(order, groups).map((gr, i, arr) => (
+        <SkillsGroup
+          hasSiblings={arr.length > 1}
+          key={`skills_group_${gr.id}_editor`}
+          isLast={arr.length - 1 === i}
+          isFirst={i === 0}
+          {...gr}
+        />
+      ))}
     </Section>
   );
 });
