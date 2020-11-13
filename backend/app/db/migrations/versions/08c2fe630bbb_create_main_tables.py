@@ -10,6 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 import datetime
 
+from app.util.consts import meta
+
 # revision identifiers, used by Alembic
 revision = "08c2fe630bbb"
 down_revision = None
@@ -31,7 +33,7 @@ def create_main_tables_seed_data() -> None:
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String),
         sa.Column("deleted", sa.Boolean, default=False),
-        sa.Column("meta", postgresql.JSONB, default=False),
+        sa.Column("meta", postgresql.JSONB, default=meta),
         sa.Column(
             "owner_id",
             sa.Integer,

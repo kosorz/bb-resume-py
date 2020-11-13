@@ -43,7 +43,11 @@ def delete_existing_resource(
 def move(direction: str, order: List, to_be_moved: int):
     exception = HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                               detail="Bad request")
+    if to_be_moved not in order:
+        raise exception
+
     ind = order.index(to_be_moved)
+
     new_order = [*order]
     if direction == "down":
         if (ind == len(order) - 1):

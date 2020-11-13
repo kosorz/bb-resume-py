@@ -83,7 +83,7 @@ async def unlist_resume_section(
 @router.post(
     "/{resume_id}/section/{section}/list/{column}",
     response_model=Content,
-    name="resumes:unlist-resume-section",
+    name="resumes:list-resume-section",
 )
 async def list_resume_section(
     resume_id: int,

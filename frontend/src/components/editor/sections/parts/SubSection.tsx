@@ -1,4 +1,4 @@
-import React, { ReactNode, SyntheticEvent } from "react";
+import React, { ReactNode, SyntheticEvent, useContext } from "react";
 import styled from "styled-components";
 
 import VerticalKnobs from "./VerticalKnobs";
@@ -6,6 +6,7 @@ import NavItems from "./NavItems";
 import DangerButton from "../../../page/DangerButton";
 
 import media from "../../../../styled/media";
+import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
@@ -13,7 +14,7 @@ const Wrapper = styled.section`
 
   margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
   padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};
-  border-bottom: ${({ theme }) => "1px dashed" + theme.main};
+  border-bottom: 1px dashed;
 
   ${media.phone`
     margin-left: 0
@@ -51,7 +52,8 @@ const SubSection = ({
   onUp?: (event: SyntheticEvent<Element, Event>) => void;
   onDown?: (event: SyntheticEvent<Element, Event>) => void;
 }) => {
-  const handleClick = () => {
+  const resumeBubble = useContext(ResumeBubble);
+  const handleDelete = () => {
     if (
       window.confirm(
         `Are you sure you want to delete this ${title}? This operation is irreversible.`
@@ -62,11 +64,11 @@ const SubSection = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper style={{ borderColor: resumeBubble.resume.meta.colors.main }}>
       {children}
       <SubSectionNav>
         {renderDelete && (
-          <DangerButton onClick={handleClick}>x Delete</DangerButton>
+          <DangerButton onClick={handleDelete}>x Delete</DangerButton>
         )}
         <SubSectionVerticalKnobs
           onUp={onUp}

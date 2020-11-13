@@ -1,10 +1,10 @@
 body {
   margin: 0;
-  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f4f4f2;
+  background-color: #eff2f5;
   font-size: 15px;
 }
 
@@ -13,8 +13,8 @@ button,
 textarea,
 label,
 legend {
-  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   font-size: 14px;
 }
 

@@ -6,6 +6,7 @@ import Experience from "./sections/Experience";
 import Info from "./sections/Info";
 import Skills from "./sections/Skills";
 import Column from "./sections/parts/Column";
+import Meta from "./sections/Meta";
 import { Wrapper as FakeSection } from "./sections/parts/Section";
 
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
@@ -63,6 +64,7 @@ const Editor = observer(() => {
 
   return (
     <Wrapper>
+      <Meta />
       {info && <Info />}
       {layout === "split" && (
         <>

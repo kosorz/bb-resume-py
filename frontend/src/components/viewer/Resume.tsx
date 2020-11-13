@@ -26,18 +26,21 @@ const Resume = ({ data, activeSection }: ResumeViewer) => {
     },
   });
 
-  const openSectionUnlisted =
+  const unlistedSectionOpen =
     layout === "split"
       ? split.unlisted.includes(activeSection)
       : full.unlisted.includes(activeSection);
 
-  const getActivity = (name: "skills" | "info" | "experience") =>
-    !activeSection || openSectionUnlisted || activeSection === name;
+  const checkIfActive = (name: "skills" | "info" | "experience") =>
+    !activeSection ||
+    unlistedSectionOpen ||
+    activeSection === name ||
+    activeSection === "meta";
 
   const sections: { [key: string]: ReactElement | undefined } = {
     skills: skills ? (
       <Skills
-        isActive={getActivity("skills")}
+        isActive={checkIfActive("skills")}
         meta={meta}
         key={"skills-viewer"}
         {...skills}
@@ -45,7 +48,7 @@ const Resume = ({ data, activeSection }: ResumeViewer) => {
     ) : undefined,
     experience: experience ? (
       <Experience
-        isActive={getActivity("experience")}
+        isActive={checkIfActive("experience")}
         meta={meta}
         key={"experience-viewer"}
         {...experience}
@@ -53,7 +56,8 @@ const Resume = ({ data, activeSection }: ResumeViewer) => {
     ) : undefined,
   };
 
-  const emptyStateActive = !activeSection || openSectionUnlisted;
+  const emptyStateActive =
+    !activeSection || unlistedSectionOpen || activeSection === "meta";
   const commonProps = {
     emptyStateActive,
     meta,
@@ -62,7 +66,9 @@ const Resume = ({ data, activeSection }: ResumeViewer) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {info && <Info isActive={getActivity("info")} meta={meta} {...info} />}
+        {info && (
+          <Info isActive={checkIfActive("info")} meta={meta} {...info} />
+        )}
         {layout === "split" && (
           <TwoColumns
             {...commonProps}

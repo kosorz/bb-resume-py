@@ -8,6 +8,7 @@ from ..resources.parts.info.schemas import Info
 from ..resources.parts.experience.schemas import Experience, ExperienceUnit
 from ..resources.parts.skills.schemas import Skills, SkillsGroup
 from ..core.config import pwd_context
+from ..util.consts import meta
 
 
 def get_password_hash(password):
@@ -67,39 +68,7 @@ def update_resume(db: Session, resume: Resume):
 
 def create_user_resume(db: Session, resume: ResumeCreate, user_id: int):
     return finalize_create(
-        db,
-        models.Resume(**resume.dict(),
-                      owner_id=user_id,
-                      meta={
-                          "colors": {
-                              "main": "#000",
-                              "secondary": "#686868"
-                          },
-                          "fontSize": {
-                              "small": 11,
-                              "main": 13,
-                              "medium": 16,
-                              "large": 22,
-                              "big": 38
-                          },
-                          "paper": {
-                              "size": "A4",
-                              "space": 50,
-                              "layout": "split"
-                          },
-                          "fontFamily": "Roboto",
-                          "content": {
-                              "split": {
-                                  "leftOrder": [],
-                                  "rightOrder": [],
-                                  "unlisted": [],
-                              },
-                              "full": {
-                                  "order": [],
-                                  "unlisted": [],
-                              }
-                          }
-                      }))
+        db, models.Resume(**resume.dict(), owner_id=user_id, meta=meta))
 
 
 # Infos

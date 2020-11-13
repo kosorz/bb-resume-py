@@ -80,7 +80,7 @@ const Section = ({
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
-  identifier: "skills" | "experience" | "info" | "";
+  identifier: "skills" | "experience" | "info" | "meta" | "";
   addFn?: Function;
   subtitle?: string;
 }) => {
@@ -94,7 +94,7 @@ const Section = ({
     isFirst: false,
     isLast: false,
     movable: false,
-    manageable: identifier !== "info",
+    manageable: !["info", "meta"].includes(identifier),
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
@@ -111,6 +111,7 @@ const Section = ({
   const isActive = activeSection === identifier;
 
   useEffect(() => {
+    const staticSectionOpen = ["info", "meta"].includes(identifier);
     const data =
       layout === "split"
         ? {
@@ -120,8 +121,7 @@ const Section = ({
             isLast:
               split.leftOrder[split.leftOrder.length - 1] === identifier ||
               split.rightOrder[split.rightOrder.length - 1] === identifier,
-            movable:
-              !split.unlisted.includes(identifier) && identifier !== "info",
+            movable: !split.unlisted.includes(identifier) && !staticSectionOpen,
             column: split.leftOrder.includes(identifier)
               ? "splitListedLeft"
               : split.rightOrder.includes(identifier)
@@ -131,8 +131,7 @@ const Section = ({
         : {
             isFirst: full.order[0] === identifier,
             isLast: full.order[full.order.length - 1] === identifier,
-            movable:
-              !full.unlisted.includes(identifier) && identifier !== "info",
+            movable: !full.unlisted.includes(identifier) && !staticSectionOpen,
             column: full.order.includes(identifier)
               ? "fullListed"
               : "fullUnlisted",
