@@ -1,6 +1,7 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 from pydantic import BaseModel, HttpUrl
 from datetime import datetime
+from ..schemas import EmptyString
 
 
 class ExperienceBase(BaseModel):
@@ -51,8 +52,7 @@ class ExperienceUnitUpdate(BaseModel):
     location: Optional[str]
     date_start: Optional[datetime]
     date_end: Optional[datetime]
-    link: Optional[HttpUrl]
-    company_name_enabled: Optional[bool]
+    link: Optional[Union[HttpUrl, EmptyString]]
     description_enabled: Optional[bool]
     location_enabled: Optional[bool]
     period_enabled: Optional[bool]

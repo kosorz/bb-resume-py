@@ -64,7 +64,7 @@ const SubSection = ({
   };
 
   return (
-    <Wrapper style={{ borderColor: resumeBubble.resume.meta.colors.main }}>
+    <Wrapper style={{ borderColor: resumeBubble.resume.meta?.colors.main }}>
       {children}
       <SubSectionNav>
         {renderDelete && (

@@ -26,7 +26,7 @@ const Experience = observer(() => {
     addExperienceUnit,
     activeSection,
   } = resumeBubble;
-  const { full, split } = resume.meta.content;
+  const { full, split } = resume.meta!.content;
   const {
     id,
     units,

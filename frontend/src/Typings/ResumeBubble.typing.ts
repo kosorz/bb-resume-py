@@ -4,14 +4,15 @@ import SkillsShape from "./Skills.typing";
 import SkillsGroupShape from "./SkillsGroup.typing";
 import ExperienceShape from "./Experience.typing";
 import ExperienceUnitShape from "./ExperienceUnit.typing";
-import { MetaContent } from "./Meta.typing";
+import { ContentShape } from "./Meta.typing";
 
 type ResumeBubbleShape = {
   updatedAt?: number;
   resume: ResumeShape;
   activeSection: "skills" | "experience" | "info" | "meta" | "";
+  getResume: () => void;
+  setResume: (data: ResumeShape) => void;
   setUpdateTime: () => void;
-  setResume: () => void;
   setActiveSection: (
     section: "skills" | "experience" | "info" | "meta" | ""
   ) => void;
@@ -26,7 +27,7 @@ type ResumeBubbleShape = {
   updateExperienceOrder: (order: number[]) => void;
   addExperienceUnit: (data: ExperienceUnitShape) => void;
   removeExperienceUnit: (id: number) => void;
-  updateContent: (data: MetaContent) => void;
+  updateContent: (data: ContentShape) => void;
 };
 
 export default ResumeBubbleShape;

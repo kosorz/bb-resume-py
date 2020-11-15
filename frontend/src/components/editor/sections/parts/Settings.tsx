@@ -6,12 +6,11 @@ import FieldSet from "./Fieldset";
 import media from "../../../../styled/media";
 
 const Wrapper = styled(FieldSet)`
-  flex-basis: 220px;
-  flex-shrink: 0;
+  flex: 1 1 0px;
 
-  ${media.tablet`
+  ${media.phone`
     flex: 100%;
-  `}
+  `};
 `;
 
 const Settings = ({

@@ -4,8 +4,6 @@ import styled from "styled-components";
 import FieldSet from "./Fieldset";
 
 const Wrapper = styled(FieldSet)`
-  display: flex;
-  flex-wrap: wrap;
   flex-grow: 1;
 
   label,

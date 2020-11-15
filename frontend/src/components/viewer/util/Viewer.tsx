@@ -13,9 +13,10 @@ import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
 import Resume from "../Resume";
 
-import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import MetaShape from "../../../typings/Meta.typing";
 import loadFonts from "./fonts/fonts-loader";
 import media from "../../../styled/media";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 
 loadFonts();
 
@@ -183,21 +184,26 @@ const Wrapper = styled.section`
   `}
 `;
 
-const Viewer = observer(({ onUrlChange }: { onUrlChange: Function }) => {
-  const resumeBubble = useContext(ResumeBubble);
-  const { updatedAt, resume, activeSection } = resumeBubble;
+const Viewer = observer(
+  ({ onUrlChange, meta }: { onUrlChange: Function; meta: MetaShape }) => {
+    const resumeBubble = useContext(ResumeBubble);
+    const { updatedAt, resume, activeSection } = resumeBubble;
 
-  return (
-    <Wrapper>
-      {updatedAt && (
-        <PDFViewer
-          onRenderError={() => console.log("error")}
-          onUrlChange={onUrlChange}
-          document={{ ...Resume, props: { activeSection, data: resume } }}
-        />
-      )}
-    </Wrapper>
-  );
-});
+    return (
+      <Wrapper>
+        {updatedAt && (
+          <PDFViewer
+            onRenderError={() => console.log("error")}
+            onUrlChange={onUrlChange}
+            document={{
+              ...Resume,
+              props: { meta, activeSection, data: resume },
+            }}
+          />
+        )}
+      </Wrapper>
+    );
+  }
+);
 
 export default Viewer;

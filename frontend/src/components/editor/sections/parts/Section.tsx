@@ -105,7 +105,7 @@ const Section = ({
     setActiveSection,
   } = resumeBubble;
   const { id, meta } = resume;
-  const { content, paper } = meta;
+  const { content, paper, colors } = meta!;
   const { split, full } = content;
   const { layout } = paper;
   const isActive = activeSection === identifier;
@@ -227,7 +227,7 @@ const Section = ({
 
   return (
     <Wrapper>
-      <Title style={{ color: meta.colors.main }}>{title}</Title>
+      <Title style={{ color: colors.main }}>{title}</Title>
       <Purpose>{purpose}</Purpose>
       {isActive && (
         <>
@@ -240,14 +240,14 @@ const Section = ({
             </AddWrapper>
           )}
           {manageable && (
-            <Chin style={{ borderColor: meta.colors.main }}>
+            <Chin style={{ borderColor: colors.main }}>
               <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
               <NavItems>{management()}</NavItems>
             </Chin>
           )}
         </>
       )}
-      <Footer style={{ borderColor: meta.colors.main }}>
+      <Footer style={{ borderColor: colors.main }}>
         <Button onClick={() => setActiveSection(isActive ? "" : identifier)}>
           {isActive ? "<<<\xa0Close" : "Edit\xa0>>>"}
         </Button>

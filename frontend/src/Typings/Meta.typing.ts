@@ -1,9 +1,9 @@
-type MetaColors = {
+export type ColorsShape = {
   main: string;
   secondary: string;
 };
 
-type MetaFontSize = {
+export type FontSizeShape = {
   small: 10 | 11;
   main: 13 | 14;
   medium: 16 | 17;
@@ -11,13 +11,13 @@ type MetaFontSize = {
   big: 34 | 38 | 42;
 };
 
-type MetaPaper = {
+export type PaperShape = {
   size: "A4";
   space: 40 | 50 | 60;
   layout: "split" | "full";
 };
 
-export type MetaContent = {
+export type ContentShape = {
   split: {
     unlisted: string[];
     leftOrder: string[];
@@ -29,12 +29,12 @@ export type MetaContent = {
   };
 };
 
-type ResumeMetaShape = {
-  colors: MetaColors;
-  fontSize: MetaFontSize;
+export type MetaShape = {
+  colors: ColorsShape;
+  fontSize: FontSizeShape;
   fontFamily: string;
-  paper: MetaPaper;
-  content: MetaContent;
+  paper: PaperShape;
+  content: ContentShape;
 };
 
-export default ResumeMetaShape;
+export default MetaShape;

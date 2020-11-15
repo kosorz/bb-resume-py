@@ -29,7 +29,6 @@ const Info = ({
       marginHorizontal: paper.space,
       marginBottom: paper.space / 3,
       alignItems: "center",
-      color: colors.secondary,
       opacity: isActive ? 1 : 0.2,
     },
     rest: {

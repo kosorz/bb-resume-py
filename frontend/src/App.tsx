@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 
 import ResumeBubble from "./bubbles/ResumeBubble";
 import Editor from "./components/editor/Editor";
@@ -7,6 +8,7 @@ import Viewer from "./components/viewer/util/Viewer";
 import Download from "./components/page/Download";
 import media from "./styled/media";
 import theme from "./styled/theme";
+import { ResumeBubble as Bubble } from "./bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
   display: flex;
@@ -21,22 +23,37 @@ const Wrapper = styled.section`
   `};
 `;
 
-function App() {
+const BBResume = observer(() => {
+  const resumeBubble = useContext(Bubble);
+  const { resume, getResume } = resumeBubble;
+  const { meta } = resume;
   const [downloadUrl, setDownloadUrl] = useState<string>("");
+
+  useEffect(() => {
+    getResume();
+  }, [getResume]);
+
+  return (
+    <Wrapper>
+      {meta && <Editor meta={meta} />}
+      {meta && <Viewer onUrlChange={setDownloadUrl} meta={meta} />}
+
+      {downloadUrl && (
+        <Download
+          fileName={"your-resume.pdf"}
+          label={"Download free"}
+          url={downloadUrl}
+        />
+      )}
+    </Wrapper>
+  );
+});
+
+function App() {
   return (
     <ResumeBubble>
       <ThemeProvider theme={theme}>
-        <Wrapper>
-          <Editor />
-          <Viewer onUrlChange={setDownloadUrl} />
-          {downloadUrl && (
-            <Download
-              fileName={"your-resume.pdf"}
-              label={"Download free"}
-              url={downloadUrl}
-            />
-          )}
-        </Wrapper>
+        <BBResume />
       </ThemeProvider>
     </ResumeBubble>
   );

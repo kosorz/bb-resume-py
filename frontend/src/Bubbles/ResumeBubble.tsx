@@ -2,51 +2,24 @@ import React, { createContext, ReactNode } from "react";
 import { useLocalObservable } from "mobx-react-lite";
 import axios from "../util/axios";
 import ResumeBubbleShape from "../typings/ResumeBubble.typing";
+import ResumeShape from "../typings/Resume.typing";
 
 let initialState: ResumeBubbleShape = {
   updatedAt: undefined,
   activeSection: "",
   resume: {
-    meta: {
-      colors: {
-        main: "#000",
-        secondary: "#686868",
-      },
-      fontSize: {
-        big: 42,
-        large: 22,
-        medium: 17,
-        main: 13,
-        small: 11,
-      },
-      fontFamily: "Roboto",
-      paper: {
-        size: "A4",
-        space: 40,
-        layout: "full",
-      },
-      content: {
-        split: {
-          leftOrder: [],
-          rightOrder: [],
-          unlisted: [],
-        },
-        full: {
-          unlisted: [],
-          order: [],
-        },
-      },
-    },
     title: "",
     id: 0,
     owner_id: 0,
     deleted: false,
+    meta: undefined,
     skills: undefined,
     experience: undefined,
     info: undefined,
   },
   setUpdateTime: () => {},
   setActiveSection: () => {},
+  getResume: () => {},
   setResume: () => {},
   updateInfo: () => {},
   updateSkills: () => {},
@@ -74,11 +47,14 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
       store.activeSection = section;
       store.setUpdateTime();
     },
-    setResume: async () => {
+    getResume: () => {
       axios.get("/resumes/1").then((res) => {
         store.resume = res.data;
       });
       store.setUpdateTime();
+    },
+    setResume: (data: ResumeShape) => {
+      store.resume = { ...store.resume, ...data };
     },
     updateInfo: (data) => {
       store.resume.info = data;

@@ -7,7 +7,7 @@ const Wrapper = styled.form`
   display: flex;
   flex-wrap: nowrap;
 
-  ${media.tablet`
+  ${media.phone`
     flex-wrap: wrap;
   `}
 `;

@@ -21,7 +21,7 @@ import axios from "../../../util/axios";
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
   const { resume, updateSkills, addSkillsGroup, activeSection } = resumeBubble;
-  const { full, split } = resume.meta.content;
+  const { full, split } = resume.meta!.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
 
   const formik = useFormik({

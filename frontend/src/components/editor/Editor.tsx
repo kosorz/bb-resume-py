@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, ReactElement } from "react";
+import React, { useContext, ReactElement } from "react";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
@@ -10,6 +10,7 @@ import Meta from "./sections/Meta";
 import { Wrapper as FakeSection } from "./sections/parts/Section";
 
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
+import { ResumeEditor } from "../../typings/Resume.typing";
 import media from "../../styled/media";
 
 const Wrapper = styled.section`
@@ -31,17 +32,13 @@ const Placeholder = styled(FakeSection)`
   padding-top: ${({ theme }) => theme.space + "px"};
 `;
 
-const Editor = observer(() => {
+const Editor = observer(({ meta }: ResumeEditor) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { resume, setResume } = resumeBubble;
-  const { skills, experience, info, meta } = resume;
+  const { resume } = resumeBubble;
+  const { skills, experience, info } = resume;
   const { content } = meta;
   const { full, split } = content;
   const { layout } = meta.paper;
-
-  useEffect(() => {
-    setResume();
-  }, [setResume]);
 
   const sections: { [key: string]: ReactElement | undefined } = {
     skills: skills ? <Skills key={"skills-editor"} /> : undefined,
@@ -81,9 +78,7 @@ const Editor = observer(() => {
       )}
       {layout === "full" && (
         <>
-          <Column title={"Resume Content"}>
-            {displaySections(full.order)}
-          </Column>
+          <Column title={"Resume"}>{displaySections(full.order)}</Column>
           <Column title={"Unlisted"}>
             {displaySections(full.unlisted, "No unlisted sections...")}
           </Column>

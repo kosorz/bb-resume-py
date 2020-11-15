@@ -1,6 +1,7 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 from pydantic import BaseModel, HttpUrl, constr
 from datetime import datetime
+from ..schemas import EmptyString
 
 Email = constr(regex="(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
@@ -30,8 +31,8 @@ class Info(InfoBase):
 class InfoUpdate(BaseModel):
     name: Optional[str]
     phone: Optional[str]
-    link: Optional[HttpUrl]
-    email: Optional[Email]
+    link: Optional[Union[HttpUrl, EmptyString]]
+    email: Optional[Union[Email, EmptyString]]
     location: Optional[str]
     role: Optional[str]
     phone_enabled: Optional[bool]

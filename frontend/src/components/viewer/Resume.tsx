@@ -9,9 +9,9 @@ import Column from "./sections/parts/Column";
 
 import { ResumeViewer } from "../../typings/Resume.typing";
 
-const Resume = ({ data, activeSection }: ResumeViewer) => {
-  const { skills, experience, info, meta } = data;
-  const { fontSize, paper, content, fontFamily } = meta;
+const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
+  const { skills, experience, info } = data;
+  const { fontSize, paper, content, fontFamily, colors } = meta;
   const { split, full } = content;
   const { leftOrder, rightOrder } = split;
   const { order } = full;
@@ -23,6 +23,7 @@ const Resume = ({ data, activeSection }: ResumeViewer) => {
       fontFamily: fontFamily + "-Bold",
       fontSize: fontSize.small,
       paddingVertical: paper.space / 2,
+      color: colors.secondary,
     },
   });
 
@@ -58,6 +59,7 @@ const Resume = ({ data, activeSection }: ResumeViewer) => {
 
   const emptyStateActive =
     !activeSection || unlistedSectionOpen || activeSection === "meta";
+
   const commonProps = {
     emptyStateActive,
     meta,

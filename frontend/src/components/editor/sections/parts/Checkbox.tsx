@@ -3,15 +3,14 @@ import { FieldInputProps, FieldMetaProps } from "formik";
 
 import FormikField from "./Field";
 
-const Checkbox = (props: FieldInputProps<any> & FieldMetaProps<any>) => {
-  const {
-    initialTouched,
-    initialError,
-    initialValue,
-    touched,
-    error,
-    ...rest
-  } = props;
+const Checkbox = ({
+  initialTouched,
+  initialError,
+  initialValue,
+  touched,
+  error,
+  ...rest
+}: FieldInputProps<any> & FieldMetaProps<any>) => {
   return (
     <>
       <FormikField
@@ -20,7 +19,7 @@ const Checkbox = (props: FieldInputProps<any> & FieldMetaProps<any>) => {
         touched={touched}
         error={error}
       >
-        <input type="checkbox" {...rest} checked={!!props.value} />
+        <input type="checkbox" {...rest} checked={!!rest.value} />
       </FormikField>
     </>
   );

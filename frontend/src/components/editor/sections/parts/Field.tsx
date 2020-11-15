@@ -3,21 +3,38 @@ import { FieldInputProps, FieldMetaProps } from "formik";
 
 import FormikError from "./Error";
 import FormikLabel from "./Label";
+import styled from "styled-components";
 
-const FormikField = (
-  props: {
-    children: ReactElement | ReactElement[];
-    inputFirst?: boolean;
-  } & Pick<FieldInputProps<any>, "name"> &
-    Pick<FieldMetaProps<any>, "touched" | "error">
-) => {
-  const { name, touched, error, children, inputFirst } = props;
+const InputFirstHolder = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 100%;
+`;
 
+const FormikField = ({
+  name,
+  touched,
+  error,
+  children,
+  inputFirst,
+}: {
+  children: ReactElement | ReactElement[];
+  inputFirst?: boolean;
+} & Pick<FieldInputProps<any>, "name"> &
+  Pick<FieldMetaProps<any>, "touched" | "error">) => {
   return (
     <>
-      {inputFirst && children}
-      <FormikLabel name={name} />
-      {!inputFirst && children}
+      {inputFirst ? (
+        <InputFirstHolder>
+          {children}&nbsp;
+          <FormikLabel name={name} />
+        </InputFirstHolder>
+      ) : (
+        <>
+          <FormikLabel name={name} />
+          {children}
+        </>
+      )}
       <FormikError touched={touched} error={error} />
     </>
   );
