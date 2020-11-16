@@ -20,7 +20,7 @@ import { useFormikAutoSave } from "../../../util/hooks";
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { activeSection, resume, setResume } = resumeBubble;
-  const { colors, paper, fontSize } = resume.meta!;
+  const { colors, paper, fontSize, content, ...rest } = resume.meta!;
   const { id } = resume;
 
   const url = `/resumes/${id}`;
@@ -46,6 +46,13 @@ const Meta = observer(() => {
   });
   useFormikAutoSave(fontSizeFormik);
 
+  const restFormik = useFormik({
+    initialValues: rest,
+    onSubmit: (values) =>
+      saveChangedValues(values, rest, url, setResume, ["meta"]),
+  });
+  useFormikAutoSave(restFormik);
+
   return (
     <Section
       key={`meta-${activeSection}`}
@@ -58,53 +65,74 @@ const Meta = observer(() => {
       <Form>
         <Settings>
           <legend>Colors</legend>
-          <ColorPicker {...getManualFieldProps(colorsFormik, "main")} />
-          <ColorPicker {...getManualFieldProps(colorsFormik, "secondary")} />
+          <ColorPicker
+            displayName={"Accents"}
+            {...getManualFieldProps(colorsFormik, "main")}
+          />
+          <ColorPicker
+            displayName={"Text"}
+            {...getManualFieldProps(colorsFormik, "secondary")}
+          />
         </Settings>
         <Settings>
           <legend>Page</legend>
-          <Range
-            min={40}
-            max={60}
-            step={10}
-            {...getFieldProps(paperFormik, "space")}
-          />
-          <Select {...getFieldProps(paperFormik, "layout")}>
+          <Select
+            displayName={"Arrangement"}
+            {...getFieldProps(paperFormik, "layout")}
+          >
             <option value={"full"} label={"Single column"} />
             <option value={"split"} label={"Two columns"} />
           </Select>
+          <Select
+            displayName={"Font"}
+            {...getFieldProps(restFormik, "fontFamily")}
+          >
+            <option value={"Rubik"} label={"Rubik"} />
+            <option value={"Roboto"} label={"Roboto"} />
+            <option value={"Exo"} label={"Exo"} />
+            <option value={"Chivo"} label={"Chivo"} />
+            <option value={"Montserrat"} label={"Montserrat"} />
+            <option value={"Oswald"} label={"Oswald"} />
+            <option value={"Lato"} label={"Lato"} />
+            <option value={"Bitter"} label={"Bitter"} />
+          </Select>
+          <Range
+            displayName={"Spacing"}
+            min={40}
+            max={60}
+            step={5}
+            {...getFieldProps(paperFormik, "space")}
+          />
         </Settings>
         <Settings>
           <legend>Font size</legend>
           <Range
-            min={10}
-            max={11}
+            displayName={"Your name"}
+            min={34}
+            max={42}
             step={1}
-            {...getFieldProps(fontSizeFormik, "small")}
+            {...getFieldProps(fontSizeFormik, "big")}
           />
           <Range
-            min={13}
-            max={14}
+            displayName={"Headlines"}
+            min={20}
+            max={24}
             step={1}
-            {...getFieldProps(fontSizeFormik, "main")}
+            {...getFieldProps(fontSizeFormik, "large")}
           />
           <Range
-            min={16}
+            displayName={"Titles"}
+            min={15}
             max={17}
             step={1}
             {...getFieldProps(fontSizeFormik, "medium")}
           />
           <Range
-            min={20}
-            max={24}
-            step={2}
-            {...getFieldProps(fontSizeFormik, "large")}
-          />
-          <Range
-            min={34}
-            max={42}
-            step={4}
-            {...getFieldProps(fontSizeFormik, "big")}
+            displayName={"Content"}
+            min={10}
+            max={12}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "small")}
           />
         </Settings>
       </Form>

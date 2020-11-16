@@ -4,16 +4,16 @@ export type ColorsShape = {
 };
 
 export type FontSizeShape = {
-  small: 10 | 11;
+  small: 10 | 11 | 12;
   main: 13 | 14;
-  medium: 16 | 17;
-  large: 24 | 22 | 20;
-  big: 34 | 38 | 42;
+  medium: 15 | 16 | 17;
+  large: 20 | 21 | 22 | 23 | 24;
+  big: 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42;
 };
 
 export type PaperShape = {
   size: "A4";
-  space: 40 | 50 | 60;
+  space: 40 | 45 | 50 | 55 | 60;
   layout: "split" | "full";
 };
 
@@ -32,7 +32,7 @@ export type ContentShape = {
 export type MetaShape = {
   colors: ColorsShape;
   fontSize: FontSizeShape;
-  fontFamily: string;
+  fontFamily: "Roboto" | "Rubik" | "Exo";
   paper: PaperShape;
   content: ContentShape;
 };

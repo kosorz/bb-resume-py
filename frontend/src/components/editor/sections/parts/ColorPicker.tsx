@@ -7,17 +7,21 @@ import styled from "styled-components";
 
 const PickerWrapper = styled.div`
   flex: 100%;
+  margin: ${({ theme }) => theme.spaceSmall / 2 + "px"} 0;
 `;
 
 const FormikColorPicker = ({
   setValue,
+  displayName,
   initialTouched,
   initialError,
   initialValue,
   touched,
   error,
   ...rest
-}: FieldInputProps<any> & FieldHelperProps<any> & FieldMetaProps<any>) => {
+}: { displayName?: string } & FieldInputProps<any> &
+  FieldHelperProps<any> &
+  FieldMetaProps<any>) => {
   const colors: { [key: string]: string[] } = {
     main: [
       "#34568B",
@@ -43,7 +47,11 @@ const FormikColorPicker = ({
 
   return (
     <>
-      <FormikField name={rest.name} touched={touched} error={error}>
+      <FormikField
+        name={displayName || rest.name}
+        touched={touched}
+        error={error}
+      >
         <PickerWrapper>
           <Picker
             color={rest.value}

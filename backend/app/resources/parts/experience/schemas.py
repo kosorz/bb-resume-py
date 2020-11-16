@@ -54,6 +54,7 @@ class ExperienceUnitUpdate(BaseModel):
     date_end: Optional[datetime]
     link: Optional[Union[HttpUrl, EmptyString]]
     description_enabled: Optional[bool]
+    company_name_enabled: Optional[bool]
     location_enabled: Optional[bool]
     period_enabled: Optional[bool]
     link_enabled: Optional[bool]

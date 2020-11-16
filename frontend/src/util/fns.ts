@@ -13,7 +13,11 @@ import ExperienceShape from "../typings/Experience.typing";
 import SkillsShape from "../typings/Skills.typing";
 import SkillsGroupShape from "../typings/SkillsGroup.typing";
 import ExperienceUnitShape from "../typings/ExperienceUnit.typing";
-import { ColorsShape, PaperShape, FontSizeShape } from "../typings/Meta.typing";
+import MetaShape, {
+  ColorsShape,
+  PaperShape,
+  FontSizeShape,
+} from "../typings/Meta.typing";
 
 export function getFieldProps(
   formik: FormikProps<any>,
@@ -55,14 +59,16 @@ export function saveChangedValues(
     | Partial<SkillsShape>
     | Partial<ColorsShape>
     | Partial<PaperShape>
-    | Partial<FontSizeShape>,
+    | Partial<FontSizeShape>
+    | Pick<MetaShape, "fontFamily">,
   initialValues:
     | Partial<InfoShape>
     | Partial<ExperienceShape>
     | Partial<SkillsShape>
     | Partial<ColorsShape>
     | Partial<PaperShape>
-    | Partial<FontSizeShape>,
+    | Partial<FontSizeShape>
+    | Pick<MetaShape, "fontFamily">,
   url: string,
   updateFn: Function,
   objectWrapperStructure?: string[]

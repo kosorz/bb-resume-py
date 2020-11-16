@@ -1,7 +1,7 @@
 meta = {
     "colors": {
-        "main": "#000",
-        "secondary": "#686868"
+        "main": "#34568B",
+        "secondary": "#000000"
     },
     "fontSize": {
         "small": 11,

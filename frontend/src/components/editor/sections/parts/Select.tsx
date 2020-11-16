@@ -8,27 +8,30 @@ const Select = styled.select`
   width: 100%;
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
+  margin: ${({ theme }) => theme.spaceSmall / 2 + "px"} 0;
 `;
 
-const FormikSelect = (
-  props: {
-    children: ReactNode | ReactNode[];
-  } & FieldInputProps<any> &
-    FieldMetaProps<any>
-) => {
-  const {
-    initialTouched,
-    initialError,
-    initialValue,
-    touched,
-    error,
-    children,
-    ...rest
-  } = props;
-
+const FormikSelect = ({
+  displayName,
+  initialTouched,
+  initialError,
+  initialValue,
+  touched,
+  error,
+  children,
+  ...rest
+}: {
+  displayName?: string;
+  children: ReactNode | ReactNode[];
+} & FieldInputProps<any> &
+  FieldMetaProps<any>) => {
   return (
     <>
-      <FormikField name={rest.name} touched={touched} error={error}>
+      <FormikField
+        name={displayName || rest.name}
+        touched={touched}
+        error={error}
+      >
         <Select {...rest}>{children}</Select>
       </FormikField>
     </>

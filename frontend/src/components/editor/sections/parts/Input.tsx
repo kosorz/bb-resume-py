@@ -8,20 +8,26 @@ const Input = styled.input`
   width: 100%;
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
-  margin-bottom: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  margin: ${({ theme }) => theme.spaceSmall / 2 + "px"} 0;
 `;
 
 const FormikInput = ({
+  displayName,
   initialTouched,
   initialError,
   initialValue,
   touched,
   error,
   ...rest
-}: { placeholder?: string } & FieldInputProps<any> & FieldMetaProps<any>) => {
+}: { placeholder?: string; displayName?: string } & FieldInputProps<any> &
+  FieldMetaProps<any>) => {
   return (
     <>
-      <FormikField name={rest.name} touched={touched} error={error}>
+      <FormikField
+        name={displayName || rest.name}
+        touched={touched}
+        error={error}
+      >
         <Input {...rest} />
       </FormikField>
     </>

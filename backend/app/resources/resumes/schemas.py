@@ -1,17 +1,15 @@
 from typing import List, Optional
-from pydantic import BaseModel, validator, constr, conint
+from pydantic import BaseModel, validator, conint
 from datetime import datetime
 from fastapi import HTTPException, status
 from ..parts.skills.schemas import SkillsFull
 from ..parts.experience.schemas import ExperienceFull
 from ..parts.info.schemas import Info
 
-Color = constr(regex="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-
 
 class Colors(BaseModel):
-    main: Color
-    secondary: Color
+    main: str
+    secondary: str
 
 
 class FontSize(BaseModel):
@@ -69,24 +67,50 @@ class Meta(BaseModel):
 
 
 class ColorsUpdate(BaseModel):
-    main: Optional[Color]
-    secondary: Optional[Color]
+    main: Optional[str]
+    secondary: Optional[str]
 
-
-class FontSizeUpdate(BaseModel):
-    small: Optional[conint(ge=10, le=11)]
-    main: Optional[conint(ge=13, le=14)]
-    medium: Optional[conint(ge=16, le=17)]
-    large: Optional[conint(ge=20, le=24)]
-    big: Optional[int]
-
-    @validator("big")
-    def must_be_big(cls, v):
-        if v not in [34, 38, 42]:
+    @validator("main")
+    def must_be_main_color(cls, v):
+        if v.upper() not in [
+                "#34568B",
+                "#FF6F61",
+                "#6B5B95",
+                "#88B04B",
+                "#F7CAC9",
+                "#92A8D1",
+                "#955251",
+                "#B565A7",
+        ]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="Unprocessable Entity")
         return v
+
+    @validator("secondary")
+    def must_be_secondary_color(cls, v):
+        if v.upper() not in [
+                "#000000",
+                "#141414",
+                "#1f1f1f",
+                "#262626",
+                "#434343",
+                "#595959",
+                "#8c8c8c",
+                "#bfbfbf",
+        ]:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Unprocessable Entity")
+        return v
+
+
+class FontSizeUpdate(BaseModel):
+    small: Optional[conint(ge=10, le=12)]
+    main: Optional[conint(ge=13, le=14)]
+    medium: Optional[conint(ge=15, le=17)]
+    large: Optional[conint(ge=20, le=24)]
+    big: Optional[conint(ge=34, le=42)]
 
 
 class PaperUpdate(BaseModel):
@@ -104,7 +128,7 @@ class PaperUpdate(BaseModel):
 
     @validator("space")
     def must_be_space(cls, v):
-        if v not in [40, 50, 60]:
+        if v not in [40, 45, 50, 55, 60]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="Unprocessable Entity")
@@ -127,7 +151,10 @@ class MetaUpdate(BaseModel):
 
     @validator("fontFamily")
     def must_be_family(cls, v):
-        if v not in ["Roboto"]:
+        if v not in [
+                "Roboto", "Rubik", "Exo", "Chivo", "Montserrat", "Oswald",
+                "Lato", "Bitter"
+        ]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="Unprocessable Entity")

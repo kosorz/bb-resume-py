@@ -109,8 +109,8 @@ class TestResumes:
             "id": 2,
             "meta": {
                 "colors": {
-                    "main": "#000",
-                    "secondary": "#686868"
+                    "main": "#34568B",
+                    "secondary": "#000000"
                 },
                 "fontSize": {
                     "small": 11,
@@ -159,8 +159,8 @@ class TestResumes:
             "experience": None,
             "meta": {
                 "colors": {
-                    "main": "#000",
-                    "secondary": "#686868"
+                    "main": "#34568B",
+                    "secondary": "#000000"
                 },
                 "fontSize": {
                     "small": 11,
@@ -223,8 +223,8 @@ class TestResumes:
             "id": 2,
             "meta": {
                 "colors": {
-                    "main": "#000",
-                    "secondary": "#686868"
+                    "main": "#34568B",
+                    "secondary": "#000000"
                 },
                 "fontSize": {
                     "small": 11,
@@ -279,7 +279,7 @@ class TestResumes:
     }, {
         "meta": {
             "fontSize": {
-                "small": 12
+                "small": 13
             }
         },
     }, {
@@ -297,7 +297,7 @@ class TestResumes:
     }, {
         "meta": {
             "fontSize": {
-                "medium": 15
+                "medium": 14
             }
         },
     }, {
@@ -373,14 +373,14 @@ class TestResumes:
         {
             "meta": {
                 "colors": {
-                    "main": "#fff"
+                    "main": "#34568B"
                 }
             },
         },
         {
             "meta": {
                 "colors": {
-                    "secondary": "#fff"
+                    "secondary": "#141414"
                 }
             },
         },
@@ -394,7 +394,7 @@ class TestResumes:
         {
             "meta": {
                 "fontSize": {
-                    "main": 13
+                    "main": 14
                 }
             },
         },
@@ -471,10 +471,10 @@ class TestResumes:
         resume = get_resume(app.state._db, 2)
         assert resume.title == "updated_string"
         assert resume.deleted == True
-        assert resume.meta["colors"]["main"] == "#fff"
-        assert resume.meta["colors"]["secondary"] == "#fff"
+        assert resume.meta["colors"]["main"] == "#34568B"
+        assert resume.meta["colors"]["secondary"] == "#141414"
         assert resume.meta["fontSize"]["small"] == 10
-        assert resume.meta["fontSize"]["main"] == 13
+        assert resume.meta["fontSize"]["main"] == 14
         assert resume.meta["fontSize"]["medium"] == 16
         assert resume.meta["fontSize"]["large"] == 20
         assert resume.meta["fontSize"]["big"] == 42
