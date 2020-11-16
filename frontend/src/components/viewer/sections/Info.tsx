@@ -35,10 +35,10 @@ const Info = ({
       flex: 70,
     },
     name: {
-      color: colors.main,
       fontSize: fontSize.big,
     },
     role: {
+      color: colors.main,
       fontSize: fontSize.large,
     },
     contactInfo: {

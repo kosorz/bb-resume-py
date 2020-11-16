@@ -22,7 +22,7 @@ const ExperienceUnit = ({
   period_enabled,
   link_enabled,
 }: ExperienceUnitViewer) => {
-  const { paper, fontFamily, fontSize } = meta;
+  const { paper, fontFamily, fontSize, colors } = meta;
 
   const styles = StyleSheet.create({
     experienceUnit: {
@@ -31,6 +31,7 @@ const ExperienceUnit = ({
     companyName: {
       fontFamily: fontFamily + "-Black",
       marginBottom: paper.space / 20,
+      color: colors.main,
     },
     timeAndGeo: {
       display: "flex",

@@ -25,8 +25,6 @@ const SectionHeadline = ({
       fontFamily: fontFamily + "-Bold",
       paddingRight: paper.layout === "split" ? 0 : paper.space / 4,
       borderBottom: 2,
-      color: meta.colors.main,
-      borderColor: meta.colors.main,
       marginBottom: paper.space / 4,
     },
   });
