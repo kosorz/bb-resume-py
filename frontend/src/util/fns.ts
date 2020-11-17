@@ -60,7 +60,7 @@ export function saveChangedValues(
     | Partial<ColorsShape>
     | Partial<PaperShape>
     | Partial<FontSizeShape>
-    | Pick<MetaShape, "fontFamily">,
+    | Pick<MetaShape, "fontFamily" | "background">,
   initialValues:
     | Partial<InfoShape>
     | Partial<ExperienceShape>
@@ -68,7 +68,7 @@ export function saveChangedValues(
     | Partial<ColorsShape>
     | Partial<PaperShape>
     | Partial<FontSizeShape>
-    | Pick<MetaShape, "fontFamily">,
+    | Pick<MetaShape, "fontFamily" | "background">,
   url: string,
   updateFn: Function,
   objectWrapperStructure?: string[]

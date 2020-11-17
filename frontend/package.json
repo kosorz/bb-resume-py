@@ -27,6 +27,7 @@
     "pdfjs-dist": "^2.5.207",
     "react": "^16.14.0",
     "react-color": "^2.19.3",
+    "react-contenteditable": "^3.3.5",
     "react-dom": "^16.14.0",
     "react-pdf": "^5.0.0",
     "react-scripts": "3.4.3",

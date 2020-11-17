@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 import media from "../../../../styled/media";
@@ -12,7 +12,7 @@ const Wrapper = styled.form`
   `}
 `;
 
-const Form = ({ children }: { children: ReactElement | ReactElement[] }) => (
+const Form = ({ children }: { children: ReactNode | ReactNode[] }) => (
   <Wrapper>{children}</Wrapper>
 );
 

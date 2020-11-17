@@ -63,6 +63,7 @@ class Meta(BaseModel):
     fontSize: FontSize
     paper: Paper
     fontFamily: str
+    background: str
     content: Content
 
 
@@ -72,15 +73,15 @@ class ColorsUpdate(BaseModel):
 
     @validator("main")
     def must_be_main_color(cls, v):
-        if v.upper() not in [
-                "#34568B",
-                "#FF6F61",
-                "#6B5B95",
-                "#88B04B",
-                "#F7CAC9",
-                "#92A8D1",
+        if v not in [
+                "#34568b",
+                "#ff6f61",
+                "#6b5b95",
+                "#88b04b",
+                "#f7cac9",
+                "#92a8d1",
                 "#955251",
-                "#B565A7",
+                "#b565a7",
         ]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -89,7 +90,7 @@ class ColorsUpdate(BaseModel):
 
     @validator("secondary")
     def must_be_secondary_color(cls, v):
-        if v.upper() not in [
+        if v not in [
                 "#000000",
                 "#141414",
                 "#1f1f1f",
@@ -148,12 +149,24 @@ class MetaUpdate(BaseModel):
     paper: Optional[PaperUpdate]
     fontSize: Optional[FontSizeUpdate]
     fontFamily: Optional[str]
+    background: Optional[str]
 
     @validator("fontFamily")
     def must_be_family(cls, v):
         if v not in [
                 "Roboto", "Rubik", "Exo", "Chivo", "Montserrat", "Oswald",
                 "Lato", "Bitter"
+        ]:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Unprocessable Entity")
+        return v
+
+    @validator("background")
+    def must_be_background(cls, v):
+        if v not in [
+                "X-parts", "Wood", "Triangles", "Waves", "Net", "Hectagons",
+                "Crossings", ''
         ]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

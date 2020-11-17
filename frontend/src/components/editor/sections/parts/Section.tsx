@@ -1,12 +1,13 @@
 import React, { ReactNode, useContext, useState, useEffect } from "react";
 import styled from "styled-components";
+import { FieldInputProps, FieldMetaProps } from "formik";
 
-import Button from "../../../page/Button";
 import VerticalKnobs from "./VerticalKnobs";
+import Management from "./Management";
 import NavItems from "./NavItems";
+import SectionEditableTitle from "./SectionEditableTitle";
+import Button from "../../../page/Button";
 import SuccessButton from "../../../page/SuccessButton";
-import DangerButton from "../../../page/DangerButton";
-import WarningButton from "../../../page/WarningButton";
 
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
@@ -27,12 +28,13 @@ export const Wrapper = styled.section`
 `;
 
 const Title = styled.h2`
-  color: ${({ theme }) => theme.dark};
+  display: inline-block;
 `;
 
 const Purpose = styled.p`
   text-align: justify;
   font-size: ${({ theme }) => theme.smallFont};
+  margin-top: 0;
 `;
 
 const AddWrapper = styled.div`
@@ -76,6 +78,7 @@ const Section = ({
   subtitle,
   purpose,
   addFn,
+  editableTitle,
 }: {
   children: ReactNode | ReactNode[];
   title: string;
@@ -83,6 +86,7 @@ const Section = ({
   identifier: "skills" | "experience" | "info" | "meta" | "";
   addFn?: Function;
   subtitle?: string;
+  editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
 }) => {
   const [positionData, setPositionData] = useState<{
     isFirst: boolean;
@@ -153,81 +157,19 @@ const Section = ({
 
   const urlBase = `/resumes/${id}/section/${identifier}`;
 
-  const unlist = () => {
-    axios.post(`${urlBase}/unlist`).then((res) => {
-      updateContent(res.data);
-    });
-  };
-
-  const list = (order: string) => {
-    axios.post(`${urlBase}/list/${order}`).then((res) => {
-      updateContent(res.data);
-    });
-  };
-
   const move = (dir: string) => {
     axios.post(`${urlBase}/move/${dir}`).then((res) => {
       updateContent(res.data);
     });
   };
 
-  const migrate = () => {
-    axios.post(`${urlBase}/migrate`).then((res) => {
-      updateContent(res.data);
-    });
-  };
-
-  const management = () => {
-    const renderDeleteButton = () => (
-      <DangerButton onClick={() => {}}>Delete</DangerButton>
-    );
-    const renderUnlistButton = () => (
-      <WarningButton onClick={() => unlist()}>Unlist</WarningButton>
-    );
-
-    if (column === "splitListedLeft" || column === "splitListedRight") {
-      return (
-        <>
-          <Button onClick={() => migrate()}>
-            List&nbsp;in&nbsp;Column&nbsp;
-            {column === "splitListedLeft" ? "II" : "I"}
-          </Button>
-          {renderUnlistButton()}
-        </>
-      );
-    }
-
-    if (column === "splitUnlisted") {
-      return (
-        <>
-          <Button onClick={() => list("leftOrder")}>
-            List&nbsp;in&nbsp;Column&nbsp;I
-          </Button>
-          <Button onClick={() => list("rightOrder")}>
-            List&nbsp;in&nbsp;Column&nbsp;II
-          </Button>
-          {renderDeleteButton()}
-        </>
-      );
-    }
-
-    if (column === "fullListed") return renderUnlistButton();
-
-    if (column === "fullUnlisted") {
-      return (
-        <>
-          <Button onClick={() => list("order")}>
-            List&nbsp;in&nbsp;Resume
-          </Button>
-          {renderDeleteButton()}
-        </>
-      );
-    }
-  };
-
   return (
     <Wrapper>
-      <Title style={{ color: colors.main }}>{title}</Title>
+      {editableTitle ? (
+        <SectionEditableTitle values={editableTitle} title={title} />
+      ) : (
+        <Title style={{ color: colors.main }}>{title}</Title>
+      )}
       <Purpose>{purpose}</Purpose>
       {isActive && (
         <>
@@ -242,7 +184,13 @@ const Section = ({
           {manageable && (
             <Chin style={{ borderColor: colors.main }}>
               <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
-              <NavItems>{management()}</NavItems>
+              <NavItems>
+                <Management
+                  urlBase={urlBase}
+                  updateFn={updateContent}
+                  column={column}
+                />
+              </NavItems>
             </Chin>
           )}
         </>

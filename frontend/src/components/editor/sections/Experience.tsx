@@ -2,10 +2,8 @@ import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
-import Input from "./parts/Input";
 import ExperienceUnit from "./ExperienceUnit";
 import Section from "./parts/Section";
-import Form from "./parts/Form";
 
 import {
   getFieldProps,
@@ -15,7 +13,6 @@ import {
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { experienceValidationSchema } from "../validationSchemas";
-import SectionHeader from "./parts/SectionHeader";
 import axios from "../../../util/axios";
 
 const Experience = observer(() => {
@@ -63,6 +60,7 @@ const Experience = observer(() => {
         "experience"
       )}-${activeSection}`}
       identifier={"experience"}
+      editableTitle={getFieldProps(formik, "title")}
       subtitle={"experience"}
       title={"Experience"}
       addFn={addFn}
@@ -70,14 +68,6 @@ const Experience = observer(() => {
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
     >
-      <Form>
-        <SectionHeader>
-          <Input
-            {...getFieldProps(formik, "title")}
-            placeholder="Alternative experience title"
-          />
-        </SectionHeader>
-      </Form>
       {sortExperienceUnits(order, units).map((u, i, arr) => (
         <ExperienceUnit
           hasSiblings={arr.length > 1}

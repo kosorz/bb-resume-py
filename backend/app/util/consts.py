@@ -1,6 +1,6 @@
 meta = {
     "colors": {
-        "main": "#34568B",
+        "main": "#34568b",
         "secondary": "#000000"
     },
     "fontSize": {
@@ -16,6 +16,7 @@ meta = {
         "layout": "split"
     },
     "fontFamily": "Roboto",
+    "background": "X-parts",
     "content": {
         "split": {
             "leftOrder": [],

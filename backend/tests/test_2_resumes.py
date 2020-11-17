@@ -109,7 +109,7 @@ class TestResumes:
             "id": 2,
             "meta": {
                 "colors": {
-                    "main": "#34568B",
+                    "main": "#34568b",
                     "secondary": "#000000"
                 },
                 "fontSize": {
@@ -125,6 +125,7 @@ class TestResumes:
                     "layout": "split"
                 },
                 "fontFamily": "Roboto",
+                "background": "X-parts",
                 "content": {
                     "split": {
                         "leftOrder": [],
@@ -159,7 +160,7 @@ class TestResumes:
             "experience": None,
             "meta": {
                 "colors": {
-                    "main": "#34568B",
+                    "main": "#34568b",
                     "secondary": "#000000"
                 },
                 "fontSize": {
@@ -175,6 +176,7 @@ class TestResumes:
                     "layout": "split"
                 },
                 "fontFamily": "Roboto",
+                "background": "X-parts",
                 "content": {
                     "split": {
                         "leftOrder": [],
@@ -223,7 +225,7 @@ class TestResumes:
             "id": 2,
             "meta": {
                 "colors": {
-                    "main": "#34568B",
+                    "main": "#34568b",
                     "secondary": "#000000"
                 },
                 "fontSize": {
@@ -239,6 +241,7 @@ class TestResumes:
                     "layout": "split"
                 },
                 "fontFamily": "Roboto",
+                "background": "X-parts",
                 "content": {
                     "split": {
                         "leftOrder": [],
@@ -330,6 +333,10 @@ class TestResumes:
         },
     }, {
         "meta": {
+            "background": "not background"
+        },
+    }, {
+        "meta": {
             "paper": {
                 "size": "not A4",
             }
@@ -373,7 +380,7 @@ class TestResumes:
         {
             "meta": {
                 "colors": {
-                    "main": "#34568B"
+                    "main": "#34568b"
                 }
             },
         },
@@ -426,6 +433,11 @@ class TestResumes:
         },
         {
             "meta": {
+                "background": "X-parts",
+            },
+        },
+        {
+            "meta": {
                 "paper": {
                     "size": "A4",
                 }
@@ -471,7 +483,7 @@ class TestResumes:
         resume = get_resume(app.state._db, 2)
         assert resume.title == "updated_string"
         assert resume.deleted == True
-        assert resume.meta["colors"]["main"] == "#34568B"
+        assert resume.meta["colors"]["main"] == "#34568b"
         assert resume.meta["colors"]["secondary"] == "#141414"
         assert resume.meta["fontSize"]["small"] == 10
         assert resume.meta["fontSize"]["main"] == 14
@@ -479,6 +491,7 @@ class TestResumes:
         assert resume.meta["fontSize"]["large"] == 20
         assert resume.meta["fontSize"]["big"] == 42
         assert resume.meta["fontFamily"] == "Roboto"
+        assert resume.meta["background"] == "X-parts"
         assert resume.meta["paper"]["size"] == "A4"
         assert resume.meta["paper"]["space"] == 40
         assert resume.meta["paper"]["layout"] == 'full'

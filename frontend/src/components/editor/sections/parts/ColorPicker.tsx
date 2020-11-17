@@ -24,14 +24,14 @@ const FormikColorPicker = ({
   FieldMetaProps<any>) => {
   const colors: { [key: string]: string[] } = {
     main: [
-      "#34568B",
-      "#FF6F61",
-      "#6B5B95",
-      "#88B04B",
-      "#F7CAC9",
-      "#92A8D1",
+      "#34568b",
+      "#ff6f61",
+      "#6b5b95",
+      "#88b04b",
+      "#f7cac9",
+      "#92a8d1",
       "#955251",
-      "#B565A7",
+      "#b565a7",
     ],
     secondary: [
       "#000000",

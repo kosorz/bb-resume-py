@@ -2,11 +2,8 @@ import React from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
-import Input from "./parts/Input";
 import SkillsGroup from "./SkillsGroup";
 import Section from "./parts/Section";
-import Form from "./parts/Form";
-import SectionHeader from "./parts/SectionHeader";
 
 import { skillsValidationSchema } from "../validationSchemas";
 import { useFormikAutoSave } from "../../../util/hooks";
@@ -51,20 +48,13 @@ const Skills = observer(() => {
       )}-${split.rightOrder.indexOf("skills")}-${activeSection}`}
       identifier={"skills"}
       title={"Skills"}
+      editableTitle={getFieldProps(formik, "title")}
       subtitle={"skills group"}
       addFn={addFn}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
     >
-      <Form>
-        <SectionHeader>
-          <Input
-            {...getFieldProps(formik, "title")}
-            placeholder="Alternative skills title"
-          />
-        </SectionHeader>
-      </Form>
       {sortSkillsGroups(order, groups).map((gr, i, arr) => (
         <SkillsGroup
           hasSiblings={arr.length > 1}

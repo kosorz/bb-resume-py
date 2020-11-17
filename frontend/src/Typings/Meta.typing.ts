@@ -33,6 +33,15 @@ export type MetaShape = {
   colors: ColorsShape;
   fontSize: FontSizeShape;
   fontFamily: "Roboto" | "Rubik" | "Exo";
+  background:
+    | ""
+    | "Crossing"
+    | "Hectagons"
+    | "Net"
+    | "Waves"
+    | "Triangles"
+    | "Wood"
+    | "X-parts";
   paper: PaperShape;
   content: ContentShape;
 };

@@ -11,7 +11,7 @@ const Skills = ({ title, groups, order, meta, isActive }: SkillsViewer) => {
   const values = sortSkillsGroups(order, groups);
 
   const styles = StyleSheet.create({
-    skills: { opacity: isActive ? 1 : 0.2 },
+    skills: { opacity: isActive ? 1 : 0.4 },
   });
 
   return (

@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { StyleSheet, Document, Page } from "@react-pdf/renderer";
+import { StyleSheet, Document, Page, Image } from "@react-pdf/renderer";
 
 import Info from "./sections/Info";
 import Skills from "./sections/Skills";
@@ -11,21 +11,11 @@ import { ResumeViewer } from "../../typings/Resume.typing";
 
 const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
   const { skills, experience, info } = data;
-  const { fontSize, paper, content, fontFamily, colors } = meta;
+  const { fontSize, paper, content, fontFamily, colors, background } = meta;
   const { split, full } = content;
   const { leftOrder, rightOrder } = split;
   const { order } = full;
   const { layout } = paper;
-
-  const styles = StyleSheet.create({
-    page: {
-      backgroundColor: "#fff",
-      fontFamily: fontFamily + "-Bold",
-      fontSize: fontSize.small,
-      paddingVertical: paper.space / 2,
-      color: colors.secondary,
-    },
-  });
 
   const unlistedSectionOpen =
     layout === "split"
@@ -37,6 +27,27 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
     unlistedSectionOpen ||
     activeSection === name ||
     activeSection === "meta";
+
+  const styles = StyleSheet.create({
+    page: {
+      backgroundColor: "#fff",
+      fontFamily: fontFamily + "-Bold",
+      fontSize: fontSize.small,
+      paddingVertical: paper.space / 2,
+      color: colors.secondary,
+      opacity:
+        unlistedSectionOpen || !activeSection || activeSection === "meta"
+          ? 1
+          : 0.4,
+    },
+    pageBackground: {
+      position: "absolute",
+      minWidth: "100%",
+      minHeight: "100%",
+      height: "100%",
+      width: "100%",
+    },
+  });
 
   const sections: { [key: string]: ReactElement | undefined } = {
     skills: skills ? (
@@ -68,6 +79,11 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        <Image
+          fixed
+          style={styles.pageBackground}
+          source={`/backgrounds/${background}.png`}
+        />
         {info && (
           <Info isActive={checkIfActive("info")} meta={meta} {...info} />
         )}

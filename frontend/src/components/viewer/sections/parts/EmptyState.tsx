@@ -22,7 +22,7 @@ const EmptyState = ({
       marginTop: paper.space,
       marginHorizontal: "auto",
       color: colors.secondary,
-      opacity: isActive ? 1 : 0.2,
+      opacity: isActive ? 1 : 0.4,
     },
     placeholderTitle: {
       color: colors.main,

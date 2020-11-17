@@ -44,14 +44,14 @@ const Meta = observer(() => {
     onSubmit: (values) =>
       saveChangedValues(values, fontSize, url, setResume, ["meta", "fontSize"]),
   });
-  useFormikAutoSave(fontSizeFormik);
+  useFormikAutoSave(fontSizeFormik, 0);
 
   const restFormik = useFormik({
     initialValues: rest,
     onSubmit: (values) =>
       saveChangedValues(values, rest, url, setResume, ["meta"]),
   });
-  useFormikAutoSave(restFormik);
+  useFormikAutoSave(restFormik, 0);
 
   return (
     <Section
@@ -95,6 +95,19 @@ const Meta = observer(() => {
             <option value={"Oswald"} label={"Oswald"} />
             <option value={"Lato"} label={"Lato"} />
             <option value={"Bitter"} label={"Bitter"} />
+          </Select>
+          <Select
+            displayName={"Background"}
+            {...getFieldProps(restFormik, "background")}
+          >
+            <option value={""} label={"None"} />
+            <option value={"Crossings"} label={"Crossings"} />
+            <option value={"Hectagons"} label={"Hectagons"} />
+            <option value={"Net"} label={"Net"} />
+            <option value={"Waves"} label={"Waves"} />
+            <option value={"Triangles"} label={"Triangles"} />
+            <option value={"Wood"} label={"Wood"} />
+            <option value={"X-parts"} label={"X-parts"} />
           </Select>
           <Range
             displayName={"Spacing"}

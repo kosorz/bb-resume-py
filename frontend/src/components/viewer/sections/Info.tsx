@@ -29,7 +29,7 @@ const Info = ({
       marginHorizontal: paper.space,
       marginBottom: paper.space / 3,
       alignItems: "center",
-      opacity: isActive ? 1 : 0.2,
+      opacity: isActive ? 1 : 0.4,
     },
     rest: {
       flex: 70,

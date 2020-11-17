@@ -18,7 +18,7 @@ const Experience = ({
 
   const styles = StyleSheet.create({
     experience: {
-      opacity: isActive ? 1 : 0.2,
+      opacity: isActive ? 1 : 0.4,
     },
   });
 
