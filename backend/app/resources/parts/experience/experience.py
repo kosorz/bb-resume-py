@@ -7,7 +7,7 @@ from ..schemas import OrderUpdate
 from ...resumes.fns import adjust_section_position
 from ...resumes.schemas import ResumeFull, ServerResumeUpdate, Resume
 from ....util.deps import get_owned_resume, get_current_user_experience, get_current_user_experience_units, db
-from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move, checkCreateSectionTarget
+from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move, check_create_section_target
 from ....db import crud
 
 router = APIRouter()
@@ -31,7 +31,7 @@ def create_experience(
                              value=resume_id,
                              error=False,
                              throw_on_present=True)
-    checkCreateSectionTarget(target)
+    check_create_section_target(target)
     experience = crud.create_resume_experience(db, resume_id)
     unit = crud.create_experience_unit(db, experience.id)
     adjust_section_position(db, owned_resume, 'experience', target, True)

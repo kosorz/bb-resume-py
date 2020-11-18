@@ -20,12 +20,6 @@ import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 
 loadFonts();
 
-const DocumentWrapper = styled.div`
-  color: #f8f9fa;
-  /* border: ${({ theme }) => "1px solid" + theme.main}; */
-  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-`;
-
 const PageWrapper = styled.div`
   position: sticky;
   top: ${({ theme }) => theme.space + "px"};
@@ -36,8 +30,12 @@ const PageWrapper = styled.div`
   }
 `;
 
+const DocumentWrapper = styled.div`
+  color: #f8f9fa;
+  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+`;
+
 const PDFViewer = (props: {
-  onUrlChange: Function;
   onRenderError: Function;
   document: ReactElement;
 }) => {
@@ -69,10 +67,6 @@ const PDFViewer = (props: {
           .toBlob()
           .then((blob) => {
             const url = URL.createObjectURL(blob);
-
-            if (props.onUrlChange) {
-              props.onUrlChange(url);
-            }
 
             setState((prevState) => ({
               ...prevState,
@@ -131,6 +125,13 @@ const PDFViewer = (props: {
           onPreviousPage={onPreviousPage}
         />
       )}
+      {state.document && (
+        <Download
+          fileName={"your-resume.pdf"}
+          label={"Download free"}
+          url={state.document}
+        />
+      )}
     </PageWrapper>
   );
 };
@@ -167,6 +168,33 @@ const PageNavigator = ({
   ) : null;
 };
 
+const DownloadWrapper = styled.div`
+  flex: 100%;
+`;
+
+const Download = ({
+  url,
+  fileName,
+  label,
+}: {
+  url: string;
+  fileName: string;
+  label: string;
+}) => {
+  return (
+    <DownloadWrapper>
+      <a
+        download={fileName}
+        href={url}
+        target={"_blank"}
+        rel="noopener noreferrer"
+      >
+        {label}
+      </a>
+    </DownloadWrapper>
+  );
+};
+
 const Wrapper = styled.section`
   width: 100%;
   flex: 35%;
@@ -184,26 +212,23 @@ const Wrapper = styled.section`
   `}
 `;
 
-const Viewer = observer(
-  ({ onUrlChange, meta }: { onUrlChange: Function; meta: MetaShape }) => {
-    const resumeBubble = useContext(ResumeBubble);
-    const { updatedAt, resume, activeSection } = resumeBubble;
+const Viewer = observer(({ meta }: { meta: MetaShape }) => {
+  const resumeBubble = useContext(ResumeBubble);
+  const { updatedAt, resume, activeSection } = resumeBubble;
 
-    return (
-      <Wrapper>
-        {updatedAt && (
-          <PDFViewer
-            onRenderError={() => console.log("error")}
-            onUrlChange={onUrlChange}
-            document={{
-              ...Resume,
-              props: { meta, activeSection, data: resume },
-            }}
-          />
-        )}
-      </Wrapper>
-    );
-  }
-);
+  return (
+    <Wrapper>
+      {updatedAt && (
+        <PDFViewer
+          onRenderError={() => console.log("error")}
+          document={{
+            ...Resume,
+            props: { meta, activeSection, data: resume },
+          }}
+        />
+      )}
+    </Wrapper>
+  );
+});
 
 export default Viewer;

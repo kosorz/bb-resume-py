@@ -7,7 +7,7 @@ from ..schemas import OrderUpdate
 from ...resumes.fns import adjust_section_position
 from ...resumes.schemas import ResumeFull
 from ....util.deps import get_owned_resume, get_current_user_skills, get_current_user_skills_groups, db
-from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move, checkCreateSectionTarget
+from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move, check_create_section_target
 from ....db import crud
 
 router = APIRouter()
@@ -29,7 +29,7 @@ def create_skills(
                              value=resume_id,
                              error=False,
                              throw_on_present=True)
-    checkCreateSectionTarget(target)
+    check_create_section_target(target)
     skills = crud.create_resume_skills(db, resume_id)
     group = crud.create_skills_group(db, skills.id)
     adjust_section_position(db, owned_resume, 'skills', target, True)

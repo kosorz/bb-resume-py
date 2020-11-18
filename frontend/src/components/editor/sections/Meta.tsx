@@ -30,7 +30,7 @@ const Meta = observer(() => {
     onSubmit: (values) =>
       saveChangedValues(values, colors, url, setResume, ["meta", "colors"]),
   });
-  useFormikAutoSave(colorsFormik);
+  useFormikAutoSave(colorsFormik, 0);
 
   const paperFormik = useFormik({
     initialValues: paper,

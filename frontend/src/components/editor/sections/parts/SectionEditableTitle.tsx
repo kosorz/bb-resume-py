@@ -9,8 +9,12 @@ import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 
 const EditableTitle = styled(Editable)`
   outline: 0;
-  width: 100%;
+  min-width: 150px;
   word-break: break-all;
+
+  &:focus {
+    border-bottom: 1px solid;
+  }
 
   &:empty:not(:focus):before {
     content: attr(data-ph);
@@ -33,7 +37,7 @@ const SectionEditableTitle = observer(
     return (
       <Form>
         <EditableTitle
-          style={{ color: colors.main }}
+          style={{ color: colors.main, borderColor: colors.main }}
           onChange={(e) => {
             values.onChange({
               ...e,

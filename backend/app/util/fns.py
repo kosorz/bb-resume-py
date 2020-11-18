@@ -63,7 +63,7 @@ def move(direction: str, order: List, to_be_moved: int):
         raise exception
 
 
-def checkCreateSectionTarget(target):
+def check_create_section_target(target):
     if target not in ['order', 'leftOrder', 'rightOrder']:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Bad request")
