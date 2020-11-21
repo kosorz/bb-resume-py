@@ -1,9 +1,48 @@
+from typing import List
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
+from botocore.exceptions import ClientError
+import logging
 
 from .schemas import ServerResumeUpdate, Resume, ResumeFull
 from ...db.crud import get_resume, update_resume
-from ...util.fns import update_existing_resource, move
+from ...util.fns import update_existing_resource
+
+
+def remove_object_from_bucket(s3, bucket: str, key: str):
+    try:
+        s3.delete_object(Bucket=bucket, Key=key)
+    except ClientError as e:
+        logging.error(e)
+
+
+def move(direction: str, order: List, to_be_moved: int):
+    exception = HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                              detail="Bad request")
+    if to_be_moved not in order:
+        raise exception
+
+    ind = order.index(to_be_moved)
+
+    new_order = [*order]
+    if direction == "down":
+        if (ind == len(order) - 1):
+            raise exception
+        new_order[ind], new_order[ind + 1] = new_order[ind + 1], new_order[ind]
+        return new_order
+    elif direction == "up":
+        if (ind == 0):
+            raise exception
+        new_order[ind], new_order[ind - 1] = new_order[ind - 1], new_order[ind]
+        return new_order
+    else:
+        raise exception
+
+
+def check_create_section_target(target):
+    if target not in ['order', 'leftOrder', 'rightOrder']:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Bad request")
 
 
 def adjust_section_position(

@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, FastAPI
 from sqlalchemy.orm import Session
 
 from .fns import adjust_section_position
@@ -31,12 +31,11 @@ def create_resume(resume: ResumeCreate,
     name="resumes:update-resume",
 )
 async def update_resume(
-        resume_id: int,
         resume: ResumeUpdate,
         db: Session = Depends(db),
         owned_resume: ResumeFull = Depends(get_owned_resume),
 ):
-    return update_existing_resource(db, resume_id, resume, Resume,
+    return update_existing_resource(db, owned_resume.id, resume, Resume,
                                     crud.get_resume, crud.update_resume)
 
 
@@ -46,7 +45,6 @@ async def update_resume(
     name="resumes:move-resume-section",
 )
 async def move_resume_section(
-    resume_id: int,
     section: str,
     direction: str,
     db: Session = Depends(db),
@@ -60,7 +58,6 @@ async def move_resume_section(
     name="resumes:migrate-resume-section",
 )
 async def migrate_resume_section(
-    resume_id: int,
     section: str,
     db: Session = Depends(db),
     owned_resume: ResumeFull = Depends(get_owned_resume)):
@@ -73,7 +70,6 @@ async def migrate_resume_section(
     name="resumes:unlist-resume-section",
 )
 async def unlist_resume_section(
-    resume_id: int,
     section: str,
     db: Session = Depends(db),
     owned_resume: ResumeFull = Depends(get_owned_resume)):
@@ -86,7 +82,6 @@ async def unlist_resume_section(
     name="resumes:list-resume-section",
 )
 async def list_resume_section(
-    resume_id: int,
     section: str,
     column: str,
     db: Session = Depends(db),
@@ -100,7 +95,6 @@ async def list_resume_section(
     name="resumes:get-resume",
 )
 def get_resume(
-        resume_id: int,
         db: Session = Depends(db),
         owned_resume: ResumeFull = Depends(get_owned_resume),
 ):

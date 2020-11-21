@@ -18,11 +18,13 @@ class Info(InfoBase):
     email: str
     location: str
     role: str
+    photo: str
     phone_enabled: bool
     link_enabled: bool
     email_enabled: bool
     location_enabled: bool
     role_enabled: bool
+    photo_enabled: bool
 
     class Config:
         orm_mode = True
@@ -40,3 +42,8 @@ class InfoUpdate(BaseModel):
     email_enabled: Optional[bool]
     location_enabled: Optional[bool]
     role_enabled: Optional[bool]
+    photo_enabled: Optional[bool]
+
+
+class ServerInfoUpdate(InfoUpdate):
+    photo: Optional[str]

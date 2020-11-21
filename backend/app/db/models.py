@@ -45,11 +45,13 @@ class Info(Base):
     email = Column(String, default="")
     location = Column(String, default="")
     role = Column(String, default="")
+    photo = Column(String, default="")
     phone_enabled = Column(Boolean, default=True)
     link_enabled = Column(Boolean, default=True)
     email_enabled = Column(Boolean, default=True)
     location_enabled = Column(Boolean, default=True)
     role_enabled = Column(Boolean, default=True)
+    photo_enabled = Column(Boolean, default=True)
 
     resume_id = Column(Integer, ForeignKey("resumes.id"))
     resume = relationship("Resume", back_populates="info")

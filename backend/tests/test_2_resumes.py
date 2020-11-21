@@ -197,6 +197,8 @@ class TestResumes:
                 "link": "",
                 "email": "",
                 "location": "",
+                "photo": "",
+                "photo_enabled": True,
                 "role": "",
                 "phone_enabled": True,
                 "link_enabled": True,
@@ -494,7 +496,7 @@ class TestResumes:
         assert resume.meta["background"] == "X-parts"
         assert resume.meta["paper"]["size"] == "A4"
         assert resume.meta["paper"]["space"] == 40
-        assert resume.meta["paper"]["layout"] == 'full'
+        assert resume.meta["paper"]["layout"] == "full"
 
     async def test_update_resume_access(
         self,

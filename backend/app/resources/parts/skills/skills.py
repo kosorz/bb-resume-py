@@ -4,10 +4,10 @@ from sqlalchemy.orm import Session
 
 from .schemas import Skills, SkillsUpdate, SkillsGroup, SkillsGroupUpdate, SkillsFull
 from ..schemas import OrderUpdate
-from ...resumes.fns import adjust_section_position
+from ...resumes.fns import adjust_section_position, move, check_create_section_target
 from ...resumes.schemas import ResumeFull
 from ....util.deps import get_owned_resume, get_current_user_skills, get_current_user_skills_groups, db
-from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource, move, check_create_section_target
+from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
 from ....db import crud
 
 router = APIRouter()

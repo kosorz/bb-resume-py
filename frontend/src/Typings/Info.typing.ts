@@ -6,9 +6,11 @@ type InfoShape = {
   phone: string;
   link: string;
   email: string;
+  photo: string;
   location: string;
   role: string;
   phone_enabled: boolean;
+  photo_enabled: boolean;
   link_enabled: boolean;
   email_enabled: boolean;
   location_enabled: boolean;

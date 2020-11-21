@@ -18,6 +18,10 @@ def db(request: Request):
     return request.app.state._db
 
 
+def s3(request: Request):
+    return request.app.state._s3
+
+
 # Current user
 def get_current_user(token: str = Depends(oauth2_scheme),
                      db: Session = Depends(db)):

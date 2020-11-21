@@ -8,6 +8,7 @@ import Section from "./parts/Section";
 import Form from "./parts/Form";
 import Settings from "./parts/Settings";
 import Values from "./parts/Values";
+import InfoPhoto from "./parts/InfoPhoto";
 
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
@@ -44,26 +45,28 @@ const Info = observer(() => {
       <Form>
         <Values>
           <legend>About you</legend>
+          <InfoPhoto />
           <Input {...getFieldProps(formik, "name")} placeholder="Name" />
           <Input {...getFieldProps(formik, "role")} placeholder="Role" />
-          <Input
-            {...getFieldProps(formik, "location")}
-            placeholder="Location"
-          />
         </Values>
         <Values>
           <legend>Contact</legend>
           <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
           <Input {...getFieldProps(formik, "email")} placeholder="Email" />
           <Input {...getFieldProps(formik, "link")} placeholder="Link" />
+          <Input
+            {...getFieldProps(formik, "location")}
+            placeholder="Location"
+          />
         </Values>
         <Settings>
           <legend>Settings</legend>
-          <Checkbox {...getFieldProps(formik, "phone_enabled")} />
-          <Checkbox {...getFieldProps(formik, "link_enabled")} />
-          <Checkbox {...getFieldProps(formik, "email_enabled")} />
-          <Checkbox {...getFieldProps(formik, "location_enabled")} />
+          <Checkbox {...getFieldProps(formik, "photo_enabled")} />
           <Checkbox {...getFieldProps(formik, "role_enabled")} />
+          <Checkbox {...getFieldProps(formik, "location_enabled")} />
+          <Checkbox {...getFieldProps(formik, "phone_enabled")} />
+          <Checkbox {...getFieldProps(formik, "email_enabled")} />
+          <Checkbox {...getFieldProps(formik, "link_enabled")} />
         </Settings>
       </Form>
     </Section>

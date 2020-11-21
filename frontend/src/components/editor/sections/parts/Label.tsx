@@ -5,9 +5,14 @@ import { capitalize } from "../../../../util/fns";
 
 const Label = styled.label``;
 
-const FormikLabel = ({ name }: Pick<FieldInputProps<any>, "name">) => {
+const FormikLabel = ({
+  name,
+  className,
+}: Pick<FieldInputProps<any>, "name"> & {
+  className?: string;
+}) => {
   return (
-    <Label>
+    <Label className={className}>
       {capitalize(name.replace(/_/g, "\xa0").replace(/enabled/g, "visible"))}
     </Label>
   );

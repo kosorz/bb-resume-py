@@ -17,6 +17,7 @@ type ResumeBubbleShape = {
     section: "skills" | "experience" | "info" | "meta" | ""
   ) => void;
   updateInfo: (data: InfoShape) => void;
+  updateInfoPhoto: (photoId: string) => void;
   updateSkills: (data: SkillsShape) => void;
   updateSkillsGroup: (data: SkillsGroupShape) => void;
   updateSkillsOrder: (order: number[]) => void;

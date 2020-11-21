@@ -9,6 +9,7 @@ const Info = ({
   phone,
   link,
   email,
+  photo,
   location,
   role,
   phone_enabled,
@@ -16,6 +17,7 @@ const Info = ({
   email_enabled,
   location_enabled,
   role_enabled,
+  photo_enabled,
   meta,
   isActive,
 }: InfoViewer) => {
@@ -57,7 +59,7 @@ const Info = ({
     },
     image: {
       width: "100px",
-      height: "100px",
+      height: "auto",
       borderRadius: 5,
       alignSelf: "flex-end",
     },
@@ -88,7 +90,12 @@ const Info = ({
         </View>
       </View>
       <View style={styles.imageFrame}>
-        {true && <Image style={styles.image} source="/ogorkowa.jpg" />}
+        {photo_enabled && (
+          <Image
+            style={styles.image}
+            source={`${process.env.REACT_APP_OBJECT_STORAGE_URL}${process.env.REACT_APP_RESUME_PHOTO_STORAGE_PATH}${photo}`}
+          />
+        )}
       </View>
     </View>
   );

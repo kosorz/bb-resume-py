@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode } from "react";
 import { useLocalObservable } from "mobx-react-lite";
+
 import axios from "../util/axios";
 import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 import ResumeShape from "../typings/Resume.typing";
@@ -22,6 +23,7 @@ let initialState: ResumeBubbleShape = {
   getResume: () => {},
   setResume: () => {},
   updateInfo: () => {},
+  updateInfoPhoto: () => {},
   updateSkills: () => {},
   updateSkillsGroup: () => {},
   updateSkillsOrder: () => {},
@@ -59,6 +61,12 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     updateInfo: (data) => {
       store.resume.info = data;
       store.setUpdateTime();
+    },
+    updateInfoPhoto: (photoId) => {
+      if (store.resume.info) {
+        store.resume.info.photo = photoId;
+        store.setUpdateTime();
+      }
     },
     updateSkills: (data) => {
       store.resume.skills = { ...store.resume.skills, ...data };

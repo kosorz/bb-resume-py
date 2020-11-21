@@ -40,35 +40,6 @@ def delete_existing_resource(
     return resource_id
 
 
-def move(direction: str, order: List, to_be_moved: int):
-    exception = HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                              detail="Bad request")
-    if to_be_moved not in order:
-        raise exception
-
-    ind = order.index(to_be_moved)
-
-    new_order = [*order]
-    if direction == "down":
-        if (ind == len(order) - 1):
-            raise exception
-        new_order[ind], new_order[ind + 1] = new_order[ind + 1], new_order[ind]
-        return new_order
-    elif direction == "up":
-        if (ind == 0):
-            raise exception
-        new_order[ind], new_order[ind - 1] = new_order[ind - 1], new_order[ind]
-        return new_order
-    else:
-        raise exception
-
-
-def check_create_section_target(target):
-    if target not in ['order', 'leftOrder', 'rightOrder']:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="Bad request")
-
-
 def find_item_with_key_value(list: Iterable,
                              key: str,
                              value: int,

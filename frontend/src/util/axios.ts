@@ -1,7 +1,7 @@
 import axiosBase from "axios";
 
 const axios = axiosBase.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL + `/`,
+  baseURL: process.env.REACT_APP_BACKEND_URL,
   headers: {
     Authorization:
       "Bearer " +
