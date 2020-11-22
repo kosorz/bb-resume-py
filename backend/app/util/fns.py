@@ -33,7 +33,6 @@ def update_existing_resource(
 def delete_existing_resource(
     db: Session,
     resource_id: int,
-    model,
     delete_fn: Callable,
 ):
     delete_fn(db, resource_id)

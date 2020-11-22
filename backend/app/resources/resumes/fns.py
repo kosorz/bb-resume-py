@@ -63,6 +63,26 @@ def adjust_section_position(
 
     content_update = None
 
+    if (action == 'remove'):
+        if section not in full_content[
+                'unlisted'] or section not in split_content['unlisted']:
+            raise exception
+
+        content_update = {
+            "full": {
+                "unlisted": [
+                    *filter(lambda sec: sec != section,
+                            full_content["unlisted"])
+                ],
+            },
+            "split": {
+                "unlisted": [
+                    *filter(lambda sec: sec != section,
+                            split_content["unlisted"])
+                ],
+            }
+        }
+
     if (action in ['up', 'down']):
         content_update = {
             "full": {

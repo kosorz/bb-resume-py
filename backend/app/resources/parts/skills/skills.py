@@ -133,5 +133,4 @@ def delete_skill_group(
         OrderUpdate(
             order=[*filter(lambda g_id: g_id != group_id, skills.order)]),
         Skills, crud.get_skills, crud.update_skills)
-    return delete_existing_resource(db, group_id, SkillsGroup,
-                                    crud.delete_skills_group)
+    return delete_existing_resource(db, group_id, crud.delete_skills_group)

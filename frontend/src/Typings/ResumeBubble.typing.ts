@@ -11,10 +11,14 @@ type ResumeBubbleShape = {
   resume: ResumeShape;
   activeSection: "skills" | "experience" | "info" | "meta" | "";
   getResume: () => void;
-  setResume: (data: ResumeShape) => void;
+  setResume: (data: Partial<ResumeShape>) => void;
   setUpdateTime: () => void;
   setActiveSection: (
     section: "skills" | "experience" | "info" | "meta" | ""
+  ) => void;
+  deleteSectionUpdate: (
+    content: ContentShape,
+    identifier: "skills" | "experience" | "info" | "meta" | ""
   ) => void;
   updateInfo: (data: InfoShape) => void;
   updateInfoPhoto: (photoId: string) => void;

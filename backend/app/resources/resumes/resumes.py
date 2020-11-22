@@ -1,12 +1,13 @@
 from typing import List
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 
 from .fns import adjust_section_position
 from ..resumes.schemas import Resume, ResumeCreate, ResumeUpdate, ResumeFull, Content
 from ..users.schemas import User
+from ..parts.experience.schemas import Experience
 from ...util.deps import get_current_active_user, get_owned_resume, db
-from ...util.fns import update_existing_resource, find_item_with_key_value
+from ...util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
 from ...db import crud
 
 router = APIRouter()
@@ -99,3 +100,31 @@ def get_resume(
         owned_resume: ResumeFull = Depends(get_owned_resume),
 ):
     return owned_resume
+
+
+@router.delete(
+    "/{resume_id}/section/{section}",
+    response_model=Content,
+    name="resumes:delete-section",
+)
+def delete_resume_section(
+        section: str,
+        db: Session = Depends(db),
+        owned_resume: ResumeFull = Depends(get_owned_resume),
+):
+    delete_methods = {
+        "experience": crud.delete_experience,
+        "skills": crud.delete_skills
+    }
+    if section not in list(
+            delete_methods.keys()) or not getattr(owned_resume, section):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Bad request")
+
+    order = adjust_section_position(db, owned_resume, section, "remove")
+    delete_existing_resource(
+        db,
+        owned_resume.id,
+        delete_methods[section],
+    )
+    return order

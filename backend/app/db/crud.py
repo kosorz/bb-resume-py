@@ -122,6 +122,10 @@ def update_skills_group(db: Session, skills_group: SkillsGroup):
                            skills_group)
 
 
+def delete_skills(db: Session, skills_id: int):
+    return finalize_delete(db, get_resume_skills(db, skills_id), skills_id)
+
+
 def delete_skills_group(db: Session, group_id: int):
     return finalize_delete(db, get_skills_group(db, group_id), group_id)
 
@@ -165,6 +169,10 @@ def update_experience_unit(db: Session, experience_unit: ExperienceUnit):
                            experience_unit)
 
 
-def delete_experience_unit(db: Session, experience_id: int):
-    return finalize_delete(db, get_experience_unit(db, experience_id),
+def delete_experience(db: Session, experience_id: int):
+    return finalize_delete(db, get_resume_experience(db, experience_id),
                            experience_id)
+
+
+def delete_experience_unit(db: Session, unit_id: int):
+    return finalize_delete(db, get_experience_unit(db, unit_id), unit_id)

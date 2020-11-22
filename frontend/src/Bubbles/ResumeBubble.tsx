@@ -3,7 +3,6 @@ import { useLocalObservable } from "mobx-react-lite";
 
 import axios from "../util/axios";
 import ResumeBubbleShape from "../typings/ResumeBubble.typing";
-import ResumeShape from "../typings/Resume.typing";
 
 let initialState: ResumeBubbleShape = {
   updatedAt: undefined,
@@ -34,6 +33,7 @@ let initialState: ResumeBubbleShape = {
   updateExperienceOrder: () => {},
   addExperienceUnit: () => {},
   removeExperienceUnit: () => {},
+  deleteSectionUpdate: () => {},
   updateContent: () => {},
 };
 
@@ -55,8 +55,13 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
       });
       store.setUpdateTime();
     },
-    setResume: (data: ResumeShape) => {
+    setResume: (data) => {
       store.resume = { ...store.resume, ...data };
+    },
+    deleteSectionUpdate: (content, identifier) => {
+      store.setActiveSection("");
+      store.setResume({ [identifier]: undefined });
+      store.updateContent(content);
     },
     updateInfo: (data) => {
       store.resume.info = data;

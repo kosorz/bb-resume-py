@@ -24,7 +24,7 @@ DATABASE_URL = config(
     f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
 )
 
-MINIO_URL = config("MINIO_URL", default=f"http://192.168.55.105:9001")
+MINIO_URL = config("MINIO_URL", default=f"http://host.docker.internal:9001")
 MINIO_ACCESS_KEY = config("MINIO_ACCESS_KEY", cast=str, default=f"admin")
 MINIO_SECRET_KEY = config("MINIO_SECRET_KEY", cast=str, default=f"password")
 

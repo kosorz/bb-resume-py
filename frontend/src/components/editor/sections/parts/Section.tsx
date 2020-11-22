@@ -89,12 +89,14 @@ const Section = ({
   editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
 }) => {
   const [positionData, setPositionData] = useState<{
+    deletable: boolean;
     isFirst: boolean;
     isLast: boolean;
     movable: boolean;
     manageable: boolean;
     column: string;
   }>({
+    deletable: false,
     isFirst: false,
     isLast: false,
     movable: false,
@@ -116,9 +118,12 @@ const Section = ({
 
   useEffect(() => {
     const staticSectionOpen = ["info", "meta"].includes(identifier);
+    const deletable =
+      split.unlisted.includes(identifier) && full.unlisted.includes(identifier);
     const data =
       layout === "split"
         ? {
+            deletable,
             isFirst:
               split.leftOrder[0] === identifier ||
               split.rightOrder[0] === identifier,
@@ -133,6 +138,7 @@ const Section = ({
               : "splitUnlisted",
           }
         : {
+            deletable,
             isFirst: full.order[0] === identifier,
             isLast: full.order[full.order.length - 1] === identifier,
             movable: !full.unlisted.includes(identifier) && !staticSectionOpen,
@@ -153,7 +159,14 @@ const Section = ({
     full.unlisted,
   ]);
 
-  const { isFirst, isLast, movable, manageable, column } = positionData;
+  const {
+    isFirst,
+    isLast,
+    movable,
+    manageable,
+    column,
+    deletable,
+  } = positionData;
 
   const urlBase = `/resumes/${id}/section/${identifier}`;
 
@@ -186,9 +199,11 @@ const Section = ({
               <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
               <NavItems>
                 <Management
+                  title={title}
                   urlBase={urlBase}
-                  updateFn={updateContent}
+                  identifier={identifier}
                   column={column}
+                  deletable={deletable}
                 />
               </NavItems>
             </Chin>

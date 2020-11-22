@@ -143,5 +143,4 @@ def delete_experience_unit(
         OrderUpdate(
             order=[*filter(lambda u_id: u_id != unit_id, experience.order)]),
         Experience, crud.get_experience, crud.update_experience)
-    return delete_existing_resource(db, unit_id, ExperienceUnit,
-                                    crud.delete_experience_unit)
+    return delete_existing_resource(db, unit_id, crud.delete_experience_unit)

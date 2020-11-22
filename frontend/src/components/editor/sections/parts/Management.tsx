@@ -1,38 +1,59 @@
-import React from "react";
+import React, { useContext } from "react";
+
 import DangerButton from "../../../page/DangerButton";
 import WarningButton from "../../../page/WarningButton";
 import Button from "../../../page/Button";
 import axios from "../../../../util/axios";
+import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 
 const Management = ({
+  title,
   column,
   urlBase,
-  updateFn,
+  identifier,
+  deletable,
 }: {
+  title: string;
   column: string;
   urlBase: string;
-  updateFn: Function;
+  identifier: "skills" | "experience" | "meta" | "info" | "";
+  deletable: boolean;
 }) => {
+  const resumeBubble = useContext(ResumeBubble);
+  const { updateContent, deleteSectionUpdate } = resumeBubble;
+
   const list = (order: string) => {
     axios.post(`${urlBase}/list/${order}`).then((res) => {
-      updateFn(res.data);
+      updateContent(res.data);
     });
   };
 
   const migrate = () => {
     axios.post(`${urlBase}/migrate`).then((res) => {
-      updateFn(res.data);
+      updateContent(res.data);
     });
   };
 
   const unlist = () => {
     axios.post(`${urlBase}/unlist`).then((res) => {
-      updateFn(res.data);
+      updateContent(res.data);
     });
   };
 
+  const deleteSection = () => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete ${title}? This operation is irreversible.`
+      )
+    ) {
+      axios.delete(`${urlBase}`).then((res) => {
+        deleteSectionUpdate(res.data, identifier);
+      });
+    }
+  };
+
   const renderDeleteButton = () => (
-    <DangerButton onClick={() => {}}>Delete</DangerButton>
+    <DangerButton onClick={() => deleteSection()}>Delete</DangerButton>
   );
   const renderUnlistButton = () => (
     <WarningButton onClick={() => unlist()}>Unlist</WarningButton>
@@ -59,7 +80,7 @@ const Management = ({
         <Button onClick={() => list("rightOrder")}>
           List&nbsp;in&nbsp;Column&nbsp;II
         </Button>
-        {renderDeleteButton()}
+        {deletable && renderDeleteButton()}
       </>
     );
   }
@@ -70,7 +91,7 @@ const Management = ({
     return (
       <>
         <Button onClick={() => list("order")}>List&nbsp;in&nbsp;Resume</Button>
-        {renderDeleteButton()}
+        {deletable && renderDeleteButton()}
       </>
     );
   }

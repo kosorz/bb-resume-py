@@ -28,11 +28,18 @@ class Resume(Base):
     owner = relationship("User", back_populates="resumes")
     owner_id = Column(Integer, ForeignKey("users.id"))
 
-    info = relationship("Info", uselist=False, back_populates="resume")
-    skills = relationship("Skills", uselist=False, back_populates="resume")
+    info = relationship("Info",
+                        uselist=False,
+                        back_populates="resume",
+                        cascade="all, delete-orphan")
+    skills = relationship("Skills",
+                          uselist=False,
+                          back_populates="resume",
+                          cascade="all, delete-orphan")
     experience = relationship("Experience",
                               uselist=False,
-                              back_populates="resume")
+                              back_populates="resume",
+                              cascade="all, delete-orphan")
 
 
 class Info(Base):
@@ -64,7 +71,9 @@ class Skills(Base):
     title = Column(String, default="")
     order = Column(ARRAY(Integer), default=[])
 
-    groups = relationship("SkillsGroup", back_populates="skills")
+    groups = relationship("SkillsGroup",
+                          back_populates="skills",
+                          cascade="all, delete")
     resume_id = Column(Integer, ForeignKey("resumes.id"))
     resume = relationship("Resume", back_populates="skills")
 
@@ -87,7 +96,9 @@ class Experience(Base):
     title = Column(String, default="")
     order = Column(ARRAY(Integer), default=[])
 
-    units = relationship("ExperienceUnit", back_populates="experience")
+    units = relationship("ExperienceUnit",
+                         back_populates="experience",
+                         cascade="all, delete")
     resume_id = Column(Integer, ForeignKey("resumes.id"))
     resume = relationship("Resume", back_populates="experience")
 
