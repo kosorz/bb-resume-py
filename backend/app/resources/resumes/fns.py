@@ -9,9 +9,9 @@ from ...db.crud import get_resume, update_resume
 from ...util.fns import update_existing_resource
 
 
-def remove_object_from_bucket(s3, bucket: str, key: str):
+def remove_object_from_bucket(object_storage, bucket: str, key: str):
     try:
-        s3.delete_object(Bucket=bucket, Key=key)
+        object_storage.delete_object(Bucket=bucket, Key=key)
     except ClientError as e:
         logging.error(e)
 

@@ -18,8 +18,8 @@ def db(request: Request):
     return request.app.state._db
 
 
-def s3(request: Request):
-    return request.app.state._s3
+def object_storage(request: Request):
+    return request.app.state._object_storage
 
 
 # Current user

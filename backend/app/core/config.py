@@ -1,3 +1,5 @@
+import socket
+
 from databases import DatabaseURL
 from starlette.config import Config
 from starlette.datastructures import Secret
@@ -24,9 +26,15 @@ DATABASE_URL = config(
     f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
 )
 
-MINIO_URL = config("MINIO_URL", default=f"http://host.docker.internal:9001")
-MINIO_ACCESS_KEY = config("MINIO_ACCESS_KEY", cast=str, default=f"admin")
-MINIO_SECRET_KEY = config("MINIO_SECRET_KEY", cast=str, default=f"password")
+OBJECT_STORAGE_PORT = config("OBJECT_STORAGE_PORT", default=f"9001")
+OBJECT_STORAGE_URL = config("OBJECT_STORAGE_URL",
+                            default=f"http://host.docker.internal:")
+OBJECT_STORAGE_ACCESS_KEY = config("OBJECT_STORAGE_ACCESS_KEY",
+                                   cast=str,
+                                   default=f"admin")
+OBJECT_STORAGE_SECRET_KEY = config("OBJECT_STORAGE_SECRET_KEY",
+                                   cast=str,
+                                   default=f"password")
 
 SECRET_KEY = config("SECRET_KEY", cast=str)
 ALGORITHM = "HS256"

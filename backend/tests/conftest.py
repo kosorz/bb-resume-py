@@ -24,29 +24,57 @@ def docker() -> pydocker.APIClient:
 
 
 @pytest.fixture(scope="session", autouse=True)
-def postgres_container(docker: pydocker.APIClient) -> None:
+def testing_postgres(docker: pydocker.APIClient) -> None:
     warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-    image = "postgres:12.1-alpine"
-    docker.pull(image)
-    container = docker.create_container(
-        image=image,
+    postgres_image = "postgres:12.1-alpine"
+    docker.pull(postgres_image)
+    db_container = docker.create_container(
+        image=postgres_image,
         name=f"test-postgres-{uuid.uuid4()}",
         detach=True,
     )
-
-    docker.start(container=container["Id"])
+    docker.start(container=db_container["Id"])
 
     config = alembic.config.Config("alembic.ini")
+    os.environ["DB_SUFFIX"] = "_test"
 
     try:
-        os.environ["DB_SUFFIX"] = "_test"
         alembic.command.upgrade(config, "head")
-        yield container
+        yield db_container
         alembic.command.downgrade(config, "base")
     finally:
-        docker.kill(container["Id"])
-        docker.remove_container(container["Id"])
+        docker.kill(db_container["Id"])
+        docker.remove_container(db_container["Id"])
+
+
+@pytest.fixture(scope="session", autouse=True)
+def testing_minio(docker: pydocker.APIClient) -> None:
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+    minio_image = "minio/minio:RELEASE.2020-08-18T19-41-00Z"
+    docker.pull(minio_image)
+    minio_container = docker.create_container(
+        detach=True,
+        image=minio_image,
+        name=f"test-minio-{uuid.uuid4()}",
+        environment={
+            "MINIO_ACCESS_KEY": "admin",
+            "MINIO_SECRET_KEY": "password"
+        },
+        ports=[9000],
+        command="minio server /data/dir",
+        volumes="data",
+        host_config=docker.create_host_config(port_bindings={9000: 9002}),
+    )
+    docker.start(container=minio_container["Id"])
+    os.environ["OBJECT_STORAGE_PORT"] = "9002"
+
+    try:
+        yield minio_container
+    finally:
+        docker.kill(minio_container["Id"])
+        docker.remove_container(minio_container["Id"])
 
 
 @pytest.fixture
@@ -59,6 +87,10 @@ def app() -> FastAPI:
 @pytest.fixture
 def db(app: FastAPI):
     return app.state._db
+
+
+def object_storage(app: FastAPI):
+    return app.state._object_storage
 
 
 @pytest.fixture
