@@ -19,11 +19,37 @@ class TestInfosRoutes:
         # Checks if update info endpoint is available
         res = await client.patch(
             app.url_path_for(
-                "info:update-info",
+                "info:update",
                 resume_id=1,
             ),
             json={},
         )
+        assert res.status_code != status.HTTP_404_NOT_FOUND
+
+    async def test_update_photo_endpoint_existence(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if update photo endpoint is available
+        res = await client.patch(
+            app.url_path_for(
+                "info:update-photo",
+                resume_id=1,
+            ))
+        assert res.status_code != status.HTTP_404_NOT_FOUND
+
+    async def test_delete_photo_endpoint_existence(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if delete photo endpoint is available
+        res = await client.delete(
+            app.url_path_for(
+                "info:delete-photo",
+                resume_id=1,
+            ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
 
@@ -39,10 +65,52 @@ class TestInfos:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
-            app.url_path_for("info:update-info", resume_id=2),
+            app.url_path_for("info:update", resume_id=2),
             json=info_update,
         )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    async def test_update_photo_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.patch(
+            app.url_path_for("info:update-photo", resume_id=2))
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    async def test_delete_photo_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.delete(
+            app.url_path_for("info:delete-photo", resume_id=2))
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+    async def test_update_photo_validation(
+        self,
+        app: FastAPI,
+        base_client: AsyncClient,
+        txt_file,
+    ) -> None:
+        # Checks if photo will be updated when correct data submitted and user owns resume
+        res = await base_client.patch(
+            app.url_path_for(
+                "info:update-photo",
+                resume_id=2,
+            ),
+            files={"f": txt_file},
+        )
+        assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     async def test_update_resume_info_validation(
         self,
@@ -52,7 +120,7 @@ class TestInfos:
         # Checks if info will not be updated when no key matches the resume stored
         res = await client.patch(
             app.url_path_for(
-                "info:update-info",
+                "info:update",
                 resume_id=2,
             ),
             json={"not_existing_key": "nothing"},
@@ -120,7 +188,7 @@ class TestInfos:
         # Checks if request will be rejected when invalid data submitted
         res = await client.patch(
             app.url_path_for(
-                "info:update-info",
+                "info:update",
                 resume_id=2,
             ),
             json=body,
@@ -135,7 +203,7 @@ class TestInfos:
         # Checks if resume will be updated when correct data submitted and user owns resume
         res = await client.patch(
             app.url_path_for(
-                "info:update-info",
+                "info:update",
                 resume_id=2,
             ),
             json={
@@ -190,6 +258,82 @@ class TestInfos:
         assert info.location_enabled == False
         assert info.role_enabled == False
 
+    async def test_update_photo_with_jpeg(
+        self,
+        app: FastAPI,
+        base_client: AsyncClient,
+        jpeg_file,
+    ) -> None:
+        # Checks if photo will be updated when correct data submitted and user owns resume
+        res = await base_client.patch(
+            app.url_path_for(
+                "info:update-photo",
+                resume_id=2,
+            ),
+            files={"f": jpeg_file},
+        )
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_update_photo_with_png(
+        self,
+        app: FastAPI,
+        base_client: AsyncClient,
+        png_file,
+    ) -> None:
+        # Checks if photo will be updated when correct data submitted and user owns resume
+        res = await base_client.patch(
+            app.url_path_for(
+                "info:update-photo",
+                resume_id=2,
+            ),
+            files={"f": png_file},
+        )
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_update_photo_outcome(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks outcome of photo update
+        info = get_resume_info(app.state._db, 2)
+        assert info.photo
+
+    async def test_delete_photo(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if photo will be deleted when correct data submitted and user owns resume
+        res = await client.delete(
+            app.url_path_for(
+                "info:delete-photo",
+                resume_id=2,
+            ))
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_re_delete_photo(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if request will be rejected when theres no photo
+        res = await client.delete(
+            app.url_path_for(
+                "info:delete-photo",
+                resume_id=2,
+            ))
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
+
+    async def test_delete_photo_outcome(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks outcome of photo delete
+        info = get_resume_info(app.state._db, 2)
+        assert not info.photo
+
     async def test_update_resume_info_access(
         self,
         app: FastAPI,
@@ -198,9 +342,38 @@ class TestInfos:
         # Checks if info will not be updated when user doesn't own the resume
         res = await client.patch(
             app.url_path_for(
-                "info:update-info",
+                "info:update",
                 resume_id=1,
             ),
             json={"title": "updated_string"},
         )
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_update_photo_access(
+        self,
+        app: FastAPI,
+        base_client: AsyncClient,
+        jpeg_file,
+    ) -> None:
+        # Checks if photo will not be updated when user doesn't own the resume
+        res = await base_client.patch(
+            app.url_path_for(
+                "info:update-photo",
+                resume_id=1,
+            ),
+            files={"f": jpeg_file},
+        )
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_delete_photo_access(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if photo will not be deleted when user doesn't own the resume
+        res = await client.delete(
+            app.url_path_for(
+                "info:delete-photo",
+                resume_id=1,
+            ))
         assert res.status_code == status.HTTP_403_FORBIDDEN

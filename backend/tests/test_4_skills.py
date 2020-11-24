@@ -20,7 +20,7 @@ class TestSkillsRoutes:
         # Checks if create skills endpoint is available
         res = await client.post(
             app.url_path_for(
-                "skills:create-skills",
+                "skills:create",
                 resume_id=1,
                 target='order',
             ))
@@ -34,7 +34,7 @@ class TestSkillsRoutes:
         # Checks if update skills endpoint is available
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills",
+                "skills:update",
                 skills_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -57,7 +57,7 @@ class TestSkills:
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
             app.url_path_for(
-                "skills:create-skills",
+                "skills:create",
                 resume_id=2,
                 target="order",
             ), )
@@ -73,7 +73,7 @@ class TestSkills:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
-            app.url_path_for("skills:update-skills", skills_id=2), )
+            app.url_path_for("skills:update", skills_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_resume_skills_does_not_exist(
@@ -91,7 +91,7 @@ class TestSkills:
         # Checks if skills will be created
         res = await client.post(
             app.url_path_for(
-                "skills:create-skills",
+                "skills:create",
                 resume_id=2,
                 target='order',
             ), )
@@ -123,7 +123,7 @@ class TestSkills:
         # Check if request with invalid body is rejected
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills",
+                "skills:update",
                 skills_id=2,
             ),
             json={"title": []},
@@ -138,7 +138,7 @@ class TestSkills:
         # Checks if skills will be updated when correct data submitted and user owns resume
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills",
+                "skills:update",
                 skills_id=2,
             ),
             json={"title": "updated_title"},
@@ -160,7 +160,7 @@ class TestSkills:
         # Checks if skills will be recreated
         res = await client.post(
             app.url_path_for(
-                "skills:create-skills",
+                "skills:create",
                 resume_id=2,
                 target="leftOrder",
             ))
@@ -174,7 +174,7 @@ class TestSkills:
         # Checks if skills will not be created when user doesn't own the resume
         res = await client.post(
             app.url_path_for(
-                "skills:create-skills",
+                "skills:create",
                 resume_id=1,
                 target="order",
             ))
@@ -188,7 +188,7 @@ class TestSkills:
         # Checks if skills will not be updated when user doesn't own the resume
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills",
+                "skills:update",
                 skills_id=1,
             ),
             json={},
@@ -205,7 +205,7 @@ class TestSkillsGroupsRoutes:
         # Checks if create skills group endpoint is available
         res = await client.patch(
             app.url_path_for(
-                "skills:create-skills-group",
+                "skills:create-group",
                 skills_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -218,7 +218,7 @@ class TestSkillsGroupsRoutes:
         # Checks if update skills group endpoint is available
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills-group",
+                "skills:update-group",
                 group_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -231,7 +231,7 @@ class TestSkillsGroupsRoutes:
         # Checks if delete skills group endpoint is available
         res = await client.delete(
             app.url_path_for(
-                "skills:delete-skills-group",
+                "skills:delete-group",
                 group_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -243,9 +243,7 @@ class TestSkillsGroupsRoutes:
     ) -> None:
         # Checks if move skills group endpoint is available
         res = await client.post(
-            app.url_path_for("skills:move-skills-group",
-                             group_id=1,
-                             direction="up"))
+            app.url_path_for("skills:move-group", group_id=1, direction="up"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
 
@@ -260,7 +258,7 @@ class TestSkillsGroups:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("skills:create-skills-group", skills_id=2), )
+            app.url_path_for("skills:create-group", skills_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_update_skills_group_authorization_check(
@@ -273,7 +271,7 @@ class TestSkillsGroups:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
-            app.url_path_for("skills:update-skills-group", group_id=2), )
+            app.url_path_for("skills:update-group", group_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_delete_skills_group_authorization_check(
@@ -286,7 +284,7 @@ class TestSkillsGroups:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.delete(
-            app.url_path_for("skills:delete-skills-group", group_id=2), )
+            app.url_path_for("skills:delete-group", group_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_move_skills_group_authorization_check(
@@ -299,8 +297,7 @@ class TestSkillsGroups:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("skills:move-skills-group",
-                             group_id=2,
+            app.url_path_for("skills:move-group", group_id=2,
                              direction="up"), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -311,7 +308,7 @@ class TestSkillsGroups:
     ) -> None:
         # Checks if skills group will be created
         res = await client.post(
-            app.url_path_for("skills:create-skills-group", skills_id=2), )
+            app.url_path_for("skills:create-group", skills_id=2), )
         assert res.json() == {"title": "", "id": 3, "values": []}
         assert res.status_code == status.HTTP_200_OK
 
@@ -331,7 +328,7 @@ class TestSkillsGroups:
         # Checks if skills group will be moved up
         res = await client.post(
             app.url_path_for(
-                "skills:move-skills-group",
+                "skills:move-group",
                 group_id=3,
                 direction="up",
             ), )
@@ -346,7 +343,7 @@ class TestSkillsGroups:
         # Checks if skills group will not be moved up
         res = await client.post(
             app.url_path_for(
-                "skills:move-skills-group",
+                "skills:move-group",
                 group_id=3,
                 direction="up",
             ), )
@@ -360,7 +357,7 @@ class TestSkillsGroups:
         # Checks if skills group will be moved down
         res = await client.post(
             app.url_path_for(
-                "skills:move-skills-group",
+                "skills:move-group",
                 group_id=3,
                 direction="down",
             ), )
@@ -375,7 +372,7 @@ class TestSkillsGroups:
         # Checks if skills group will not be moved down
         res = await client.post(
             app.url_path_for(
-                "skills:move-skills-group",
+                "skills:move-group",
                 group_id=3,
                 direction="down",
             ), )
@@ -398,7 +395,7 @@ class TestSkillsGroups:
         # Checks if request will be rejected when invalid data submitted
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills-group",
+                "skills:update-group",
                 group_id=2,
             ),
             json=body,
@@ -413,7 +410,7 @@ class TestSkillsGroups:
         # Checks if skills group will be updated when correct data submitted and user owns skills group
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills-group",
+                "skills:update-group",
                 group_id=2,
             ),
             json={
@@ -445,7 +442,7 @@ class TestSkillsGroups:
         # Checks if skills group will not be created when user doesn't own skills
         res = await client.post(
             app.url_path_for(
-                "skills:create-skills-group",
+                "skills:create-group",
                 skills_id=1,
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
@@ -458,7 +455,7 @@ class TestSkillsGroups:
         # Checks if skills group will not be updated when user doesn't own the skills group
         res = await client.patch(
             app.url_path_for(
-                "skills:update-skills-group",
+                "skills:update-group",
                 group_id=1,
             ),
             json={},
@@ -473,7 +470,7 @@ class TestSkillsGroups:
         # Checks if skills group will not be deleted when user doesn't own the skills group
         res = await client.delete(
             app.url_path_for(
-                "skills:delete-skills-group",
+                "skills:delete-group",
                 group_id=1,
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
@@ -486,7 +483,7 @@ class TestSkillsGroups:
         # Checks if skills group will be deleted when user owns the skills group
         res = await client.delete(
             app.url_path_for(
-                "skills:delete-skills-group",
+                "skills:delete-group",
                 group_id=2,
             ))
         assert res.status_code == status.HTTP_200_OK
@@ -508,7 +505,7 @@ class TestSkillsGroups:
         # Checks if skills group will not be deleted when its only skill group assigned to skills
         res = await client.delete(
             app.url_path_for(
-                "skills:delete-skills-group",
+                "skills:delete-group",
                 group_id=3,
             ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST

@@ -16,7 +16,7 @@ router = APIRouter()
 @router.post(
     "/{resume_id}/skills/{target}",
     response_model=Skills,
-    name="skills:create-skills",
+    name="skills:create",
 )
 def create_skills(
     resume_id: int,
@@ -41,7 +41,7 @@ def create_skills(
 @router.patch(
     "/skills/{skills_id}",
     response_model=Skills,
-    name="skills:update-skills",
+    name="skills:update",
 )
 def update_skills(
     skills_id: int,
@@ -56,7 +56,7 @@ def update_skills(
 @router.post(
     "/{skills_id}/skills_group",
     response_model=SkillsGroup,
-    name="skills:create-skills-group",
+    name="skills:create-group",
 )
 def create_skill_group(
     skills_id: int,
@@ -73,7 +73,7 @@ def create_skill_group(
 @router.patch(
     "/skills_group/{group_id}",
     response_model=SkillsGroup,
-    name="skills:update-skills-group",
+    name="skills:update-group",
 )
 def update_skill_group(group_id: int,
                        skills_group: SkillsGroupUpdate,
@@ -89,7 +89,7 @@ def update_skill_group(group_id: int,
 @router.post(
     "/skills_group/{group_id}/move/{direction}",
     response_model=List,
-    name="skills:move-skills-group",
+    name="skills:move-group",
 )
 def move_skill_group(
     group_id: int,
@@ -112,7 +112,7 @@ def move_skill_group(
 @router.delete(
     "/skills_group/{group_id}",
     response_model=int,
-    name="skills:delete-skills-group",
+    name="skills:delete-group",
 )
 def delete_skill_group(
     group_id: int,

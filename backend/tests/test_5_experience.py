@@ -20,7 +20,7 @@ class TestExperienceRoutes:
         # Checks if create experience endpoint is available
         res = await client.post(
             app.url_path_for(
-                "experience:create-experience",
+                "experience:create",
                 resume_id=1,
                 target='leftOrder',
             ))
@@ -34,7 +34,7 @@ class TestExperienceRoutes:
         # Checks if update experience endpoint is available
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience",
+                "experience:update",
                 experience_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -56,7 +56,7 @@ class TestExperience:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("experience:create-experience",
+            app.url_path_for("experience:create",
                              resume_id=2,
                              target='leftOrder'))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
@@ -71,7 +71,7 @@ class TestExperience:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
-            app.url_path_for("experience:update-experience", experience_id=2))
+            app.url_path_for("experience:update", experience_id=2))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_resume_experience_does_not_exist(
@@ -88,7 +88,7 @@ class TestExperience:
     ) -> None:
         # Checks if experience will be created
         res = await client.post(
-            app.url_path_for("experience:create-experience",
+            app.url_path_for("experience:create",
                              resume_id=2,
                              target='leftOrder'), )
         assert res.json() == {
@@ -121,7 +121,7 @@ class TestExperience:
         # Check if request with invalid body is rejected
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience",
+                "experience:update",
                 experience_id=2,
             ),
             json={"title": []},
@@ -136,7 +136,7 @@ class TestExperience:
         # Checks if experience will be updated when correct data submitted and user owns resume
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience",
+                "experience:update",
                 experience_id=2,
             ),
             json={"title": "updated_title"},
@@ -158,7 +158,7 @@ class TestExperience:
         # Checks if request will be rejected if user already has experience
         res = await client.post(
             app.url_path_for(
-                "experience:create-experience",
+                "experience:create",
                 resume_id=2,
                 target="leftOrder",
             ))
@@ -172,7 +172,7 @@ class TestExperience:
         # Checks if experience will not be created when user doesn't own the resume
         res = await client.post(
             app.url_path_for(
-                "experience:create-experience",
+                "experience:create",
                 resume_id=1,
                 target="leftOrder",
             ))
@@ -186,7 +186,7 @@ class TestExperience:
         # Checks if experience will not be updated when user doesn't own the resume
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience",
+                "experience:update",
                 experience_id=1,
             ),
             json={},
@@ -203,7 +203,7 @@ class TestExperienceUnitsRoutes:
         # Checks if create experience unit endpoint is available
         res = await client.patch(
             app.url_path_for(
-                "experience:create-experience-unit",
+                "experience:create-unit",
                 experience_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -216,7 +216,7 @@ class TestExperienceUnitsRoutes:
         # Checks if update experience unit endpoint is available
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience-unit",
+                "experience:update-unit",
                 unit_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -229,7 +229,7 @@ class TestExperienceUnitsRoutes:
         # Checks if delete experience unit endpoint is available
         res = await client.delete(
             app.url_path_for(
-                "experience:delete-experience-unit",
+                "experience:delete-unit",
                 unit_id=1,
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
@@ -241,8 +241,7 @@ class TestExperienceUnitsRoutes:
     ) -> None:
         # Checks if move experience unit endpoint is available
         res = await client.post(
-            app.url_path_for("experience:move-experience-unit",
-                             unit_id=1,
+            app.url_path_for("experience:move-unit", unit_id=1,
                              direction="up"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
@@ -258,8 +257,7 @@ class TestExperienceUnits:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("experience:create-experience-unit",
-                             experience_id=2))
+            app.url_path_for("experience:create-unit", experience_id=2))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_update_experience_unit_authorization_check(
@@ -272,7 +270,7 @@ class TestExperienceUnits:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
-            app.url_path_for("experience:update-experience-unit", unit_id=2), )
+            app.url_path_for("experience:update-unit", unit_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_delete_experience_unit_authorization_check(
@@ -285,7 +283,7 @@ class TestExperienceUnits:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.delete(
-            app.url_path_for("experience:delete-experience-unit", unit_id=2), )
+            app.url_path_for("experience:delete-unit", unit_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_move_experience_unit_authorization_check(
@@ -298,8 +296,7 @@ class TestExperienceUnits:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("experience:move-experience-unit",
-                             unit_id=2,
+            app.url_path_for("experience:move-unit", unit_id=2,
                              direction="up"), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -310,8 +307,7 @@ class TestExperienceUnits:
     ) -> None:
         # Checks if experience unit will be created
         res = await client.post(
-            app.url_path_for("experience:create-experience-unit",
-                             experience_id=2))
+            app.url_path_for("experience:create-unit", experience_id=2))
         proper_response = {
             "title": "",
             "id": 3,
@@ -348,7 +344,7 @@ class TestExperienceUnits:
         # Checks if experience unit will be moved up
         res = await client.post(
             app.url_path_for(
-                "experience:move-experience-unit",
+                "experience:move-unit",
                 unit_id=3,
                 direction="up",
             ), )
@@ -363,7 +359,7 @@ class TestExperienceUnits:
         # Checks if experience unit will not be moved up
         res = await client.post(
             app.url_path_for(
-                "experience:move-experience-unit",
+                "experience:move-unit",
                 unit_id=3,
                 direction="up",
             ), )
@@ -377,7 +373,7 @@ class TestExperienceUnits:
         # Checks if experience unit will be moved down
         res = await client.post(
             app.url_path_for(
-                "experience:move-experience-unit",
+                "experience:move-unit",
                 unit_id=3,
                 direction="down",
             ), )
@@ -392,7 +388,7 @@ class TestExperienceUnits:
         # Checks if experience unit will not be moved down
         res = await client.post(
             app.url_path_for(
-                "experience:move-experience-unit",
+                "experience:move-unit",
                 unit_id=3,
                 direction="down",
             ), )
@@ -436,7 +432,7 @@ class TestExperienceUnits:
         # Checks if request will be rejected when invalid data submitted
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience-unit",
+                "experience:update-unit",
                 unit_id=2,
             ),
             json=body,
@@ -463,7 +459,7 @@ class TestExperienceUnits:
         }
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience-unit",
+                "experience:update-unit",
                 unit_id=2,
             ),
             json=update_data,
@@ -493,7 +489,7 @@ class TestExperienceUnits:
         # Checks if experience unit will not be created when user doesn't own the experience
         res = await client.post(
             app.url_path_for(
-                "experience:create-experience-unit",
+                "experience:create-unit",
                 experience_id=1,
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
@@ -506,7 +502,7 @@ class TestExperienceUnits:
         # Checks if experience unit will not be updated when user doesn't own the experience unit
         res = await client.patch(
             app.url_path_for(
-                "experience:update-experience-unit",
+                "experience:update-unit",
                 unit_id=1,
             ),
             json={},
@@ -521,7 +517,7 @@ class TestExperienceUnits:
         # Checks if experience unit will not be deleted when user doesn't own the experience unit
         res = await client.delete(
             app.url_path_for(
-                "experience:delete-experience-unit",
+                "experience:delete-unit",
                 unit_id=1,
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
@@ -534,13 +530,13 @@ class TestExperienceUnits:
         # Checks if experience unit will be deleted when user owns the experience unit
         res = await client.delete(
             app.url_path_for(
-                "experience:delete-experience-unit",
+                "experience:delete-unit",
                 unit_id=2,
             ))
         assert res.status_code == status.HTTP_200_OK
         assert res.json() == 2
 
-    async def test_resume_experience_unit_delete_outcom(
+    async def test_resume_experience_unit_delete_outcome(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -556,7 +552,7 @@ class TestExperienceUnits:
         # Checks if experience unit will not be deleted when its only experience unit assigned to experience
         res = await client.delete(
             app.url_path_for(
-                "experience:delete-experience-unit",
+                "experience:delete-unit",
                 unit_id=3,
             ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST

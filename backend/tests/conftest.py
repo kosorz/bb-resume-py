@@ -1,9 +1,9 @@
 import warnings
 import uuid
 import os
-
 import pytest
 import docker as pydocker
+from pathlib import Path
 from asgi_lifespan import LifespanManager
 
 from fastapi import FastAPI
@@ -85,12 +85,42 @@ def app() -> FastAPI:
 
 
 @pytest.fixture
+async def app_with_test_overrides(app: FastAPI) -> FastAPI:
+    async def override_get_current_user():
+        user = get_user_by_username(
+            app.state._db,
+            username="string",
+        )
+        return user
+
+    app.dependency_overrides[get_current_user] = override_get_current_user
+
+    yield app
+
+
+@pytest.fixture
+async def base_client(app_with_test_overrides: FastAPI) -> AsyncClient:
+
+    async with LifespanManager(app_with_test_overrides):
+        async with AsyncClient(app=app_with_test_overrides,
+                               base_url="http://testserver") as client:
+            yield client
+
+
+@pytest.fixture
+async def client(app_with_test_overrides: FastAPI) -> AsyncClient:
+
+    async with LifespanManager(app_with_test_overrides):
+        async with AsyncClient(app=app_with_test_overrides,
+                               base_url="http://testserver",
+                               headers={"Content-Type":
+                                        "application/json"}) as client:
+            yield client
+
+
+@pytest.fixture
 def db(app: FastAPI):
     return app.state._db
-
-
-def object_storage(app: FastAPI):
-    return app.state._object_storage
 
 
 @pytest.fixture
@@ -103,19 +133,21 @@ def new_user():
 
 
 @pytest.fixture
-async def client(app: FastAPI) -> AsyncClient:
-    async def override_get_current_user():
-        user = get_user_by_username(
-            app.state._db,
-            username="string",
-        )
-        return user
+async def jpeg_file():
+    fpath = Path('/backend/tests/util', 'testfile.jpg')
+    with open(fpath, "rb") as f:
+        yield ("filename", f, "image/jpeg")
 
-    app.dependency_overrides[get_current_user] = override_get_current_user
 
-    async with LifespanManager(app):
-        async with AsyncClient(app=app,
-                               base_url="http://testserver",
-                               headers={"Content-Type":
-                                        "application/json"}) as client:
-            yield client
+@pytest.fixture
+async def png_file():
+    fpath = Path('/backend/tests/util', 'testfile.png')
+    with open(fpath, "rb") as f:
+        yield ("filename", f, "image/png")
+
+
+@pytest.fixture
+async def txt_file():
+    fpath = Path('/backend/tests/util', 'testfile.txt')
+    with open(fpath, "rb") as f:
+        yield ("filename", f, "plain/text")

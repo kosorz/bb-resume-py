@@ -18,7 +18,7 @@ router = APIRouter()
 @router.patch(
     "/{resume_id}/info",
     response_model=Info,
-    name="info:update-info",
+    name="info:update",
 )
 def update_resume_info(
         info: InfoUpdate,
@@ -33,7 +33,7 @@ def update_resume_info(
 @router.patch(
     "/{resume_id}/info-photo",
     response_model=str,
-    name="resumes:update-photo",
+    name="info:update-photo",
 )
 async def update_photo(
         f: UploadFile = File(...),
@@ -64,7 +64,7 @@ async def update_photo(
 @router.delete(
     "/{resume_id}/info-photo",
     response_model=str,
-    name="resumes:update-photo",
+    name="info:delete-photo",
 )
 async def delete_photo(
         db: Session = Depends(db),

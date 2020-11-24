@@ -18,7 +18,7 @@ const Uploader = styled.div`
 
 const OwnerFrame = styled.div`
   width: 100px;
-  height: 100px;
+  height: auto;
   position: relative;
 
   &:hover::before {

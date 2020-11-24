@@ -17,7 +17,7 @@ class TestResumesRoutes:
         client: AsyncClient,
     ) -> None:
         # Checks if get users endpoint is available
-        res = await client.post(app.url_path_for("resumes:create-resume"))
+        res = await client.post(app.url_path_for("resumes:create"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
     async def test_get_resume_endpoint_existence(
@@ -26,8 +26,7 @@ class TestResumesRoutes:
         client: AsyncClient,
     ) -> None:
         # Checks if get users me endpoint is available
-        res = await client.get(
-            app.url_path_for("resumes:get-resume", resume_id=1))
+        res = await client.get(app.url_path_for("resumes:get", resume_id=1))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
     async def test_update_resume_endpoint_existence(
@@ -37,7 +36,7 @@ class TestResumesRoutes:
     ) -> None:
         # Checks if get users me endpoint is available
         res = await client.patch(
-            app.url_path_for("resumes:update-resume", resume_id=1))
+            app.url_path_for("resumes:update", resume_id=1))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
 
@@ -53,7 +52,7 @@ class TestResumes:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("resumes:create-resume"),
+            app.url_path_for("resumes:create"),
             json=new_resume,
         )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
@@ -68,7 +67,7 @@ class TestResumes:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.patch(
-            app.url_path_for("resumes:update-resume", resume_id=1))
+            app.url_path_for("resumes:update", resume_id=1))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_get_resume_authorization_check(
@@ -80,8 +79,7 @@ class TestResumes:
         app.dependency_overrides[get_current_user] = get_current_user
 
         # Checks if request will be rejected if user is not authorized
-        res = await client.get(
-            app.url_path_for("resumes:get-resume", resume_id=1))
+        res = await client.get(app.url_path_for("resumes:get", resume_id=1))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_create_resume_validation(
@@ -90,7 +88,7 @@ class TestResumes:
         client: AsyncClient,
     ) -> None:
         # Checks if create resume endpoint properly validates data
-        res = await client.post(app.url_path_for("resumes:create-resume"))
+        res = await client.post(app.url_path_for("resumes:create"))
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     async def test_create_resume_response(
@@ -101,7 +99,7 @@ class TestResumes:
         new_resume = {"title": "string"}
         # Checks if resume will be created when correct data submitted
         res = await client.post(
-            app.url_path_for("resumes:create-resume"),
+            app.url_path_for("resumes:create"),
             json=new_resume,
         )
         assert res.json() == {
@@ -149,8 +147,7 @@ class TestResumes:
         client: AsyncClient,
     ) -> None:
         # Checks if received resume will be appropriate and will have it's related keys
-        res = await client.get(
-            app.url_path_for("resumes:get-resume", resume_id=2))
+        res = await client.get(app.url_path_for("resumes:get", resume_id=2))
         assert res.json() == {
             "title": "string",
             "id": 2,
@@ -217,7 +214,7 @@ class TestResumes:
         # Checks if resume will not be updated when no key matches the resume stored
         res = await client.patch(
             app.url_path_for(
-                "resumes:update-resume",
+                "resumes:update",
                 resume_id=2,
             ),
             json={"not_existing_key": "nothing"},
@@ -365,7 +362,7 @@ class TestResumes:
         # Checks if request will be rejected when invalid data submitted
         res = await client.patch(
             app.url_path_for(
-                "resumes:update-resume",
+                "resumes:update",
                 resume_id=2,
             ),
             json=body,
@@ -469,7 +466,7 @@ class TestResumes:
         # Checks if request will be rejected when invalid data submitted
         res = await client.patch(
             app.url_path_for(
-                "resumes:update-resume",
+                "resumes:update",
                 resume_id=2,
             ),
             json=body,
@@ -506,7 +503,7 @@ class TestResumes:
         # Checks if resume will not be updated when user doesn't own the resume
         res = await client.patch(
             app.url_path_for(
-                "resumes:update-resume",
+                "resumes:update",
                 resume_id=1,
             ),
             json={
@@ -522,9 +519,8 @@ class TestResumes:
         client: AsyncClient,
     ) -> None:
         # Checks if resume will not be presented when user doesn't own the resume
-        res = await client.get(
-            app.url_path_for(
-                "resumes:get-resume",
-                resume_id=1,
-            ))
+        res = await client.get(app.url_path_for(
+            "resumes:get",
+            resume_id=1,
+        ))
         assert res.status_code == status.HTTP_403_FORBIDDEN

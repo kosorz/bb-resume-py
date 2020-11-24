@@ -16,7 +16,7 @@ router = APIRouter()
 @router.post(
     "/{resume_id}/experience/{target}",
     response_model=Experience,
-    name="experience:create-experience",
+    name="experience:create",
 )
 def create_experience(
         resume_id: int,
@@ -44,7 +44,7 @@ def create_experience(
 @router.patch(
     "/experience/{experience_id}",
     response_model=Experience,
-    name="experience:update-experience",
+    name="experience:update",
 )
 def update_experience(experience_id: int,
                       experience: ExperienceUpdate,
@@ -60,7 +60,7 @@ def update_experience(experience_id: int,
 @router.post(
     "/{experience_id}/experience_unit",
     response_model=ExperienceUnit,
-    name="experience:create-experience-unit",
+    name="experience:create-unit",
 )
 def create_experience_unit(
     experience_id: int,
@@ -80,7 +80,7 @@ def create_experience_unit(
 @router.patch(
     "/experience_unit/{unit_id}",
     response_model=ExperienceUnit,
-    name="experience:update-experience-unit",
+    name="experience:update-unit",
 )
 def update_experience_unit(
     unit_id: int,
@@ -97,7 +97,7 @@ def update_experience_unit(
 @router.post(
     "/experience_unit/{unit_id}/move/{direction}",
     response_model=List,
-    name="experience:move-experience-unit",
+    name="experience:move-unit",
 )
 def move_experience_unit(
     unit_id: int,
@@ -121,7 +121,7 @@ def move_experience_unit(
 @router.delete(
     "/experience_unit/{unit_id}",
     response_model=int,
-    name="experience:delete-experience-unit",
+    name="experience:delete-unit",
 )
 def delete_experience_unit(
     unit_id: int,

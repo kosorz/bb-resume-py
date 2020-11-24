@@ -16,7 +16,7 @@ router = APIRouter()
 @router.post(
     "/",
     response_model=Resume,
-    name="resumes:create-resume",
+    name="resumes:create",
 )
 def create_resume(resume: ResumeCreate,
                   db: Session = Depends(db),
@@ -29,7 +29,7 @@ def create_resume(resume: ResumeCreate,
 @router.patch(
     "/{resume_id}",
     response_model=Resume,
-    name="resumes:update-resume",
+    name="resumes:update",
 )
 async def update_resume(
         resume: ResumeUpdate,
@@ -43,7 +43,7 @@ async def update_resume(
 @router.post(
     "/{resume_id}/section/{section}/move/{direction}",
     response_model=Content,
-    name="resumes:move-resume-section",
+    name="resumes:move-section",
 )
 async def move_resume_section(
     section: str,
@@ -56,7 +56,7 @@ async def move_resume_section(
 @router.post(
     "/{resume_id}/section/{section}/migrate",
     response_model=Content,
-    name="resumes:migrate-resume-section",
+    name="resumes:migrate-section",
 )
 async def migrate_resume_section(
     section: str,
@@ -68,7 +68,7 @@ async def migrate_resume_section(
 @router.post(
     "/{resume_id}/section/{section}/unlist",
     response_model=Content,
-    name="resumes:unlist-resume-section",
+    name="resumes:unlist-section",
 )
 async def unlist_resume_section(
     section: str,
@@ -80,7 +80,7 @@ async def unlist_resume_section(
 @router.post(
     "/{resume_id}/section/{section}/list/{column}",
     response_model=Content,
-    name="resumes:list-resume-section",
+    name="resumes:list-section",
 )
 async def list_resume_section(
     section: str,
@@ -93,7 +93,7 @@ async def list_resume_section(
 @router.get(
     "/{resume_id}",
     response_model=ResumeFull,
-    name="resumes:get-resume",
+    name="resumes:get",
 )
 def get_resume(
         db: Session = Depends(db),
