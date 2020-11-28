@@ -18,7 +18,7 @@ class TestUsersRoutes:
         client: AsyncClient,
     ) -> None:
         # Checks if get users endpoint is available
-        res = await client.get(app.url_path_for("users:get-users"))
+        res = await client.get(app.url_path_for("users:get"))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
     async def test_get_user_me_exist(
@@ -65,7 +65,7 @@ class TestUsers:
         client: AsyncClient,
     ) -> None:
         # Checks if get users endpoint responds correctly
-        res = await client.get(app.url_path_for("users:get-users"))
+        res = await client.get(app.url_path_for("users:get"))
         assert res.json() == [{
             "disabled": False,
             "id": 1,

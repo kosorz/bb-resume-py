@@ -97,6 +97,11 @@ class TestSkills:
             ), )
         assert res.json() == {
             "title": "",
+            'groups': [{
+                'id': 2,
+                'title': '',
+                'values': []
+            }],
             "id": 2,
             "resume_id": 2,
             "order": [2]

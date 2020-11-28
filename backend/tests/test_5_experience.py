@@ -92,9 +92,27 @@ class TestExperience:
                              resume_id=2,
                              target='leftOrder'), )
         assert res.json() == {
-            "title": "",
-            "id": 2,
-            "resume_id": 2,
+            "title":
+            "",
+            "units": [{
+                'company_name': '',
+                'company_name_enabled': True,
+                'date_end': None,
+                'date_start': None,
+                'description': '',
+                'description_enabled': True,
+                'id': 2,
+                'link': '',
+                'link_enabled': True,
+                'location': '',
+                'location_enabled': True,
+                'period_enabled': True,
+                'title': ''
+            }],
+            "id":
+            2,
+            "resume_id":
+            2,
             "order": [2]
         }
         assert res.status_code == status.HTTP_200_OK

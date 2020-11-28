@@ -16,7 +16,7 @@ const Management = ({
   title: string;
   column: string;
   urlBase: string;
-  identifier: "skills" | "experience" | "meta" | "info" | "";
+  identifier: "skills" | "experience" | "meta" | "info" | "catalogue" | "";
   deletable: boolean;
 }) => {
   const resumeBubble = useContext(ResumeBubble);
@@ -63,8 +63,9 @@ const Management = ({
     return (
       <>
         <Button onClick={() => migrate()}>
-          List&nbsp;in&nbsp;Column&nbsp;
-          {column === "splitListedLeft" ? "II" : "I"}
+          List&nbsp;in&nbsp;
+          {column === "splitListedLeft" ? "right" : "left"}
+          &nbsp;column
         </Button>
         {renderUnlistButton()}
       </>
@@ -75,10 +76,10 @@ const Management = ({
     return (
       <>
         <Button onClick={() => list("leftOrder")}>
-          List&nbsp;in&nbsp;Column&nbsp;I
+          List&nbsp;in&nbsp;left&nbsp;column
         </Button>
         <Button onClick={() => list("rightOrder")}>
-          List&nbsp;in&nbsp;Column&nbsp;II
+          List&nbsp;in&nbsp;right&nbsp;column
         </Button>
         {deletable && renderDeleteButton()}
       </>

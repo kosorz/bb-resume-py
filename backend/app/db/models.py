@@ -1,4 +1,3 @@
-import datetime
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import relationship
@@ -111,7 +110,7 @@ class ExperienceUnit(Base):
     company_name = Column(String, default="")
     description = Column(String, default="")
     location = Column(String, default="")
-    date_start = Column(DateTime, default=datetime.datetime.utcnow)
+    date_start = Column(DateTime)
     date_end = Column(DateTime)
     link = Column(String, default="")
     company_name_enabled = Column(Boolean, default=True)

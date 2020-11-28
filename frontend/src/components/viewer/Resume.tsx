@@ -22,11 +22,13 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
       ? split.unlisted.includes(activeSection)
       : full.unlisted.includes(activeSection);
 
+  const noContentSectionOpen = ["catalogue", "meta"].includes(activeSection);
+
   const checkIfActive = (name: "skills" | "info" | "experience") =>
     !activeSection ||
     unlistedSectionOpen ||
     activeSection === name ||
-    activeSection === "meta";
+    noContentSectionOpen;
 
   const styles = StyleSheet.create({
     page: {
@@ -36,9 +38,7 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
       paddingVertical: paper.space / 2,
       color: colors.secondary,
       opacity:
-        unlistedSectionOpen || !activeSection || activeSection === "meta"
-          ? 1
-          : 0.4,
+        unlistedSectionOpen || !activeSection || noContentSectionOpen ? 1 : 0.4,
     },
     pageBackground: {
       position: "absolute",
@@ -69,7 +69,7 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
   };
 
   const emptyStateActive =
-    !activeSection || unlistedSectionOpen || activeSection === "meta";
+    !activeSection || unlistedSectionOpen || noContentSectionOpen;
 
   const commonProps = {
     emptyStateActive,

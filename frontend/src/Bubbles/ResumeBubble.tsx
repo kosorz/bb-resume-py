@@ -34,6 +34,7 @@ let initialState: ResumeBubbleShape = {
   addExperienceUnit: () => {},
   removeExperienceUnit: () => {},
   deleteSectionUpdate: () => {},
+  addSectionUpdate: () => {},
   updateContent: () => {},
 };
 
@@ -59,9 +60,41 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
       store.resume = { ...store.resume, ...data };
     },
     deleteSectionUpdate: (content, identifier) => {
-      store.setActiveSection("");
+      store.setActiveSection("catalogue");
       store.setResume({ [identifier]: undefined });
       store.updateContent(content);
+    },
+    addSectionUpdate: (data, identifier, order) => {
+      store.setResume({ [identifier]: data });
+      store.activeSection = identifier;
+      if (store.resume.meta) {
+        const { content } = store.resume.meta;
+        store.resume.meta.content =
+          order === "order"
+            ? {
+                ...content,
+                full: {
+                  ...content.full,
+                  order: [...content.full.order, identifier],
+                },
+                split: {
+                  ...content.split,
+                  unlisted: [...content.split.unlisted, identifier],
+                },
+              }
+            : {
+                ...content,
+                full: {
+                  ...content.full,
+                  unlisted: [...content.full.unlisted, identifier],
+                },
+                split: {
+                  ...content.split,
+                  [order]: [...content.split[order], identifier],
+                },
+              };
+      }
+      store.setUpdateTime();
     },
     updateInfo: (data) => {
       store.resume.info = data;

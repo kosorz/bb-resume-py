@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.post(
     "/{resume_id}/skills/{target}",
-    response_model=Skills,
+    response_model=SkillsFull,
     name="skills:create",
 )
 def create_skills(
@@ -33,9 +33,9 @@ def create_skills(
     skills = crud.create_resume_skills(db, resume_id)
     group = crud.create_skills_group(db, skills.id)
     adjust_section_position(db, owned_resume, 'skills', target, True)
-    return update_existing_resource(db, skills.id,
-                                    OrderUpdate(order=[group.id]), Skills,
-                                    crud.get_skills, crud.update_skills)
+    update_existing_resource(db, skills.id, OrderUpdate(order=[group.id]),
+                             Skills, crud.get_skills, crud.update_skills)
+    return crud.get_skills(db, skills.id)
 
 
 @router.patch(

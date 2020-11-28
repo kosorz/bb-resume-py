@@ -9,16 +9,21 @@ import { ContentShape } from "./Meta.typing";
 type ResumeBubbleShape = {
   updatedAt?: number;
   resume: ResumeShape;
-  activeSection: "skills" | "experience" | "info" | "meta" | "";
+  activeSection: "skills" | "experience" | "info" | "meta" | "catalogue" | "";
   getResume: () => void;
   setResume: (data: Partial<ResumeShape>) => void;
   setUpdateTime: () => void;
   setActiveSection: (
-    section: "skills" | "experience" | "info" | "meta" | ""
+    section: "skills" | "experience" | "info" | "meta" | "catalogue" | ""
   ) => void;
   deleteSectionUpdate: (
     content: ContentShape,
-    identifier: "skills" | "experience" | "info" | "meta" | ""
+    identifier: "skills" | "experience" | "info" | "meta" | "catalogue" | ""
+  ) => void;
+  addSectionUpdate: (
+    data: SkillsShape | ExperienceShape,
+    identifier: "skills" | "experience" | "info" | "meta" | "catalogue" | "",
+    order: "leftOrder" | "rightOrder" | "order"
   ) => void;
   updateInfo: (data: InfoShape) => void;
   updateInfoPhoto: (photoId: string) => void;

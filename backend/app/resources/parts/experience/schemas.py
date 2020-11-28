@@ -31,7 +31,7 @@ class ExperienceUnit(ExperienceUnitBase):
     company_name: str
     description: str
     location: str
-    date_start: datetime
+    date_start: Optional[datetime]
     date_end: Optional[datetime]
     link: str
     company_name_enabled: bool

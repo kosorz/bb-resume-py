@@ -13,13 +13,18 @@ import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
 import axios from "../../../../util/axios";
 
-export const Wrapper = styled.section`
+const Wrapper = styled.section`
+  display: flex;
+`;
+
+export const Content = styled.section`
   margin-bottom: ${({ theme }) => theme.space + "px"};
   padding: ${({ theme }) => theme.space + "px"};
   padding-top: 0;
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   background-color: ${({ theme }) => theme.white};
   /* border: ${({ theme }) => "1px solid" + theme.main}; */
+  flex: 70%;
 
   ${media.phone`
     //@ts-ignore
@@ -35,6 +40,8 @@ const Purpose = styled.p`
   text-align: justify;
   font-size: ${({ theme }) => theme.smallFont};
   margin-top: 0;
+  flex: 30%;
+  margin-right: ${({ theme }) => theme.space + "px"};
 `;
 
 const AddWrapper = styled.div`
@@ -57,7 +64,7 @@ const Chin = styled(Footer)`
   border-top: 2px solid;
 `;
 
-const NavTitle = styled.h4`
+const NavTitle = styled.h5`
   flex: 100%;
   color: ${({ theme }) => theme.dark};
 `;
@@ -79,14 +86,16 @@ const Section = ({
   purpose,
   addFn,
   editableTitle,
+  className,
 }: {
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
-  identifier: "skills" | "experience" | "info" | "meta" | "";
+  identifier: "skills" | "experience" | "info" | "meta" | "catalogue" | "";
   addFn?: Function;
   subtitle?: string;
   editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
+  className?: string;
 }) => {
   const [positionData, setPositionData] = useState<{
     deletable: boolean;
@@ -100,7 +109,7 @@ const Section = ({
     isFirst: false,
     isLast: false,
     movable: false,
-    manageable: !["info", "meta"].includes(identifier),
+    manageable: !["info", "meta", "catalogue"].includes(identifier),
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
@@ -117,7 +126,9 @@ const Section = ({
   const isActive = activeSection === identifier;
 
   useEffect(() => {
-    const staticSectionOpen = ["info", "meta"].includes(identifier);
+    const staticSectionOpen = ["info", "meta", "catalogue"].includes(
+      identifier
+    );
     const deletable =
       split.unlisted.includes(identifier) && full.unlisted.includes(identifier);
     const data =
@@ -178,53 +189,57 @@ const Section = ({
 
   return (
     <Wrapper>
-      {editableTitle ? (
-        <SectionEditableTitle values={editableTitle} title={title} />
-      ) : (
-        <Title style={{ color: colors.main }}>{title}</Title>
-      )}
       <Purpose>{purpose}</Purpose>
-      {isActive && (
-        <>
-          {children}
-          {subtitle && addFn && (
-            <AddWrapper>
-              <SuccessButton onClick={() => addFn()}>
-                + Add new {subtitle}
-              </SuccessButton>
-            </AddWrapper>
-          )}
-          {manageable && (
-            <Chin style={{ borderColor: colors.main }}>
-              <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
-              <NavItems>
-                <Management
-                  title={title}
-                  urlBase={urlBase}
-                  identifier={identifier}
-                  column={column}
-                  deletable={deletable}
-                />
-              </NavItems>
-            </Chin>
-          )}
-        </>
-      )}
-      <Footer style={{ borderColor: colors.main }}>
-        <Button onClick={() => setActiveSection(isActive ? "" : identifier)}>
-          {isActive ? "<<<\xa0Close" : "Edit\xa0>>>"}
-        </Button>
-        {(!isFirst || !isLast) && movable && (
-          <SectionVerticalKnobs
-            upLabel={`Move\xa0up`}
-            downLabel={`Move\xa0down`}
-            onUp={() => move("up")}
-            onDown={() => move("down")}
-            renderUp={!isFirst}
-            renderDown={!isLast}
-          />
+      <Content>
+        {editableTitle ? (
+          <SectionEditableTitle values={editableTitle} title={title} />
+        ) : (
+          <Title style={{ color: colors.main }}>{title}</Title>
         )}
-      </Footer>
+        {isActive && (
+          <>
+            {children}
+            {subtitle && addFn && (
+              <AddWrapper>
+                <SuccessButton onClick={() => addFn()}>
+                  + Add new {subtitle}
+                </SuccessButton>
+              </AddWrapper>
+            )}
+            {manageable && (
+              <Chin style={{ borderColor: colors.main }}>
+                <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
+                <NavItems>
+                  <Management
+                    title={title}
+                    urlBase={urlBase}
+                    identifier={identifier}
+                    column={column}
+                    deletable={deletable}
+                  />
+                </NavItems>
+              </Chin>
+            )}
+          </>
+        )}
+        <Footer style={{ borderColor: colors.main }}>
+          <Button onClick={() => setActiveSection(isActive ? "" : identifier)}>
+            {isActive
+              ? "<<<\xa0Close"
+              : (identifier === "catalogue" ? "Open" : "Edit") + "\xa0>>>"}
+          </Button>
+          {(!isFirst || !isLast) && movable && (
+            <SectionVerticalKnobs
+              upLabel={`Move\xa0up`}
+              downLabel={`Move\xa0down`}
+              onUp={() => move("up")}
+              onDown={() => move("down")}
+              renderUp={!isFirst}
+              renderDown={!isLast}
+            />
+          )}
+        </Footer>
+      </Content>
     </Wrapper>
   );
 };

@@ -26,7 +26,6 @@ const OwnerFrame = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    font-weight: bold;
     transform: translate(-50%, -50%);
     color: #fff;
     z-index: 1;

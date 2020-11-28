@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.post(
     "/{resume_id}/experience/{target}",
-    response_model=Experience,
+    response_model=ExperienceFull,
     name="experience:create",
 )
 def create_experience(
@@ -35,10 +35,10 @@ def create_experience(
     experience = crud.create_resume_experience(db, resume_id)
     unit = crud.create_experience_unit(db, experience.id)
     adjust_section_position(db, owned_resume, 'experience', target, True)
-    return update_existing_resource(db, experience.id,
-                                    OrderUpdate(order=[unit.id]), Experience,
-                                    crud.get_experience,
-                                    crud.update_experience)
+    update_existing_resource(db, experience.id, OrderUpdate(order=[unit.id]),
+                             Experience, crud.get_experience,
+                             crud.update_experience)
+    return crud.get_experience(db, experience.id)
 
 
 @router.patch(

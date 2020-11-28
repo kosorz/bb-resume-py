@@ -5,9 +5,11 @@ const Data = ({
   value,
   style,
   type,
+  bare,
 }: {
-  value: string;
   type: "phone" | "link" | "email" | "location" | "date";
+  value?: string;
+  bare?: boolean;
   style?: Object;
 }) => {
   const getEmoji = (type: string) => {
@@ -19,20 +21,21 @@ const Data = ({
       case "location":
         return { emoji: " 📍", fallback: "Somewhere" };
       case "date":
-        return { emoji: " 📅 ", fallback: "00/0000" };
+        return { emoji: " 📅 ", fallback: "12/2018" };
       default:
-        return { emoji: " 📞 ", fallback: "+00 0000000" };
+        return { emoji: " 📞 ", fallback: "+12 3456789" };
     }
   };
 
   const config = getEmoji(type);
-
-  return (
-    <Text style={style}>
+  const content = (
+    <>
       {config.emoji}
       {value || config.fallback}
-    </Text>
+    </>
   );
+
+  return bare ? content : <Text style={style}>{content}</Text>;
 };
 
 export default Data;

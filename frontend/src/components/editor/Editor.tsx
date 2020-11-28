@@ -7,7 +7,8 @@ import Info from "./sections/Info";
 import Skills from "./sections/Skills";
 import Column from "./sections/parts/Column";
 import Meta from "./sections/Meta";
-import { Wrapper as FakeSection } from "./sections/parts/Section";
+import Catalogue from "./catalogue/Catalogue";
+import { Content as FakeSection } from "./sections/parts/Section";
 
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
 import { ResumeEditor } from "../../typings/Resume.typing";
@@ -18,7 +19,7 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding-right: ${({ theme }) => theme.space + "px"};
+  padding-right: ${({ theme }) => theme.spaceBig + "px"};
 
   ${media.tablet`
     padding-right: 0;
@@ -59,29 +60,39 @@ const Editor = observer(({ meta }: ResumeEditor) => {
       </Placeholder>
     );
 
+  const availablePicks = Object.keys(sections).filter((s) => !sections[s]);
+
   return (
     <Wrapper>
+      {availablePicks.length > 0 && (
+        <Catalogue availablePicks={availablePicks} />
+      )}
       <Meta />
+      <h1>Resume</h1>
       {info && <Info />}
       {layout === "split" && (
         <>
-          <Column title={"Resume Column I"}>
+          <Column title={"Left column content"}>
             {displaySections(split.leftOrder)}
           </Column>
-          <Column title={"Resume Column II"}>
+          <Column title={"Right column content"}>
             {displaySections(split.rightOrder)}
           </Column>
-          <Column title={"Unlisted"}>
-            {displaySections(split.unlisted, "No unlisted sections...")}
-          </Column>
+          {split.unlisted.length > 0 && (
+            <Column title={"Unlisted content"}>
+              {displaySections(split.unlisted, "No unlisted sections...")}
+            </Column>
+          )}
         </>
       )}
       {layout === "full" && (
         <>
-          <Column title={"Resume"}>{displaySections(full.order)}</Column>
-          <Column title={"Unlisted"}>
-            {displaySections(full.unlisted, "No unlisted sections...")}
-          </Column>
+          <Column title={"Content"}>{displaySections(full.order)}</Column>
+          {full.unlisted.length > 0 && (
+            <Column title={"Unlisted content"}>
+              {displaySections(full.unlisted, "No unlisted sections...")}
+            </Column>
+          )}
         </>
       )}
     </Wrapper>

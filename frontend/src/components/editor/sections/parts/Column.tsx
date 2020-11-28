@@ -6,7 +6,7 @@ const Wrapper = styled.section`
   flex-direction: column;
 `;
 
-const Title = styled.h1``;
+export const Title = styled.h2``;
 
 const Column = ({
   title,

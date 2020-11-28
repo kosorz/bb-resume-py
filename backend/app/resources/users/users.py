@@ -12,7 +12,7 @@ router = APIRouter()
 @router.get(
     "/",
     response_model=List[UserPublic],
-    name="users:get-users",
+    name="users:get",
 )
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(db)):
     users = crud.get_users(db, skip, limit)

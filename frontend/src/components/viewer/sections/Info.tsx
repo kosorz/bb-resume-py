@@ -60,7 +60,7 @@ const Info = ({
     image: {
       width: "100px",
       height: "auto",
-      borderRadius: 5,
+      borderRadius: paper.space / 10,
       alignSelf: "flex-end",
     },
   });
