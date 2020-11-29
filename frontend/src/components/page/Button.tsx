@@ -4,12 +4,11 @@ import styled from "styled-components";
 import media from "../../styled/media";
 
 const GeneralButton = styled.button`
-  background: transparent;
-  cursor: pointer;
+  background: ${({ theme }) => theme.white};
   margin: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  border-color: ${({ theme }) => theme.main};
   border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
   min-height: ${({ theme }) => theme.spaceBig + "px"};
+  cursor: pointer;
 
   ${media.phone`
     flex: 100%;

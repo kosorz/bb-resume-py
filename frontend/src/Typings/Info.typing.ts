@@ -19,7 +19,6 @@ type InfoShape = {
 
 export interface InfoViewer extends InfoShape {
   meta: MetaShape;
-  isActive: boolean;
 }
 
 export default InfoShape;

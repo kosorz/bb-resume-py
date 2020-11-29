@@ -11,7 +11,6 @@ type SkillsShape = {
 
 export interface SkillsViewer extends Omit<SkillsShape, "unlisted" | "id"> {
   meta: MetaShape;
-  isActive: boolean;
 }
 
 export default SkillsShape;

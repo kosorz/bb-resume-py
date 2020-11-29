@@ -67,7 +67,6 @@ const SkillsGroup = observer(
       >
         <Form>
           <Values>
-            <legend>Group details</legend>
             <Input {...getFieldProps(formik, "title")} placeholder="Name" />
             <Area
               {...getFieldProps(formik, "values")}

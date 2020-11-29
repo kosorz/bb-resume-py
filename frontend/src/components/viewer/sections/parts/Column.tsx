@@ -7,11 +7,9 @@ import EmptyState from "./EmptyState";
 const TwoColumns = ({
   children,
   meta,
-  emptyStateActive,
 }: {
   children: (ReactElement | undefined)[];
   meta: MetaShape;
-  emptyStateActive: boolean;
 }) => {
   const { paper, fontSize, fontFamily } = meta;
 
@@ -32,7 +30,6 @@ const TwoColumns = ({
         })
       ) : (
         <EmptyState
-          isActive={emptyStateActive}
           meta={meta}
           title={"Empty"}
           text={"Use editor to list sections in your resume"}

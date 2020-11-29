@@ -12,7 +12,6 @@ type ExperienceShape = {
 export interface ExperienceViewer
   extends Omit<ExperienceShape, "unlisted" | "id"> {
   meta: MetaShape;
-  isActive: boolean;
 }
 
 export default ExperienceShape;

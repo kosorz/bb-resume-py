@@ -35,7 +35,7 @@ const FormikField = ({
           {children}
         </>
       )}
-      <FormikError touched={touched} error={error} />
+      {error && <FormikError touched={touched} error={error} />}
     </>
   );
 };

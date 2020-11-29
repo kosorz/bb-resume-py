@@ -58,7 +58,9 @@ const ExperienceUnit = ({
           <Data
             type={"date"}
             value={
-              DateTime.fromISO(date_start).toFormat("MM/yyyy") +
+              DateTime.fromISO(
+                date_start || DateTime.local().toString()
+              ).toFormat("MM/yyyy") +
               (date_end
                 ? " - " + DateTime.fromISO(date_end).toFormat("MM/yyyy")
                 : "")

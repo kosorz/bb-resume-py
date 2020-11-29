@@ -32,8 +32,12 @@ const VerticalKnobs = ({
   onDown?: (event: SyntheticEvent<Element, Event>) => void;
 }) => (
   <Wrapper className={className}>
-    {renderUp && <Button onClick={onUp}>&#8743;&nbsp;{upLabel}</Button>}
-    {renderDown && <Button onClick={onDown}>&#8744;&nbsp;{downLabel}</Button>}
+    {renderUp && (
+      <Button onClick={onUp}>&#8743;&nbsp;{upLabel}&nbsp;&#8743;</Button>
+    )}
+    {renderDown && (
+      <Button onClick={onDown}>&#8744;&nbsp;{downLabel}&nbsp;&#8744;</Button>
+    )}
   </Wrapper>
 );
 

@@ -7,12 +7,10 @@ const EmptyState = ({
   title,
   text,
   meta,
-  isActive,
 }: {
   title: string;
   meta: MetaShape;
   text: string;
-  isActive: boolean;
 }) => {
   const { colors, fontSize, paper } = meta;
   const styles = StyleSheet.create({
@@ -22,7 +20,6 @@ const EmptyState = ({
       marginTop: paper.space,
       marginHorizontal: "auto",
       color: colors.secondary,
-      opacity: isActive ? 1 : 0.4,
     },
     placeholderTitle: {
       color: colors.main,

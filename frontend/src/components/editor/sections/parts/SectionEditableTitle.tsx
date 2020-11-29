@@ -1,16 +1,18 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef } from "react";
+import { FieldInputProps, FieldMetaProps } from "formik";
 import styled from "styled-components";
 import Editable from "react-contenteditable";
 import { observer } from "mobx-react-lite";
 
 import Form from "./Form";
-import { FieldInputProps, FieldMetaProps } from "formik";
-import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 
 const EditableTitle = styled(Editable)`
+  margin-top: ${({ theme }) => theme.space + "px"};
+  color: ${({ theme }) => theme.main};
   outline: 0;
   min-width: 150px;
   word-break: break-all;
+  text-align: center;
 
   &:focus {
     border-bottom: 1px solid;
@@ -22,6 +24,10 @@ const EditableTitle = styled(Editable)`
   }
 `;
 
+const TitleForm = styled(Form)`
+  flex: 100%;
+`;
+
 const SectionEditableTitle = observer(
   ({
     values,
@@ -30,14 +36,11 @@ const SectionEditableTitle = observer(
     title: string;
     values: FieldInputProps<any> & FieldMetaProps<any>;
   }) => {
-    const resumeBubble = useContext(ResumeBubble);
-    const { colors } = resumeBubble.resume.meta!;
     const titleRef = useRef<HTMLHeadingElement>(null);
 
     return (
-      <Form>
+      <TitleForm>
         <EditableTitle
-          style={{ color: colors.main, borderColor: colors.main }}
           onChange={(e) => {
             values.onChange({
               ...e,
@@ -49,7 +52,7 @@ const SectionEditableTitle = observer(
           html={values.value}
           tagName={"h2"}
         />
-      </Form>
+      </TitleForm>
     );
   }
 );

@@ -17,12 +17,7 @@ import axios from "../../../util/axios";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
-  const {
-    updateExperience,
-    resume,
-    addExperienceUnit,
-    activeSection,
-  } = resumeBubble;
+  const { updateExperience, resume, addExperienceUnit } = resumeBubble;
   const { full, split } = resume.meta!.content;
   const {
     id,
@@ -58,7 +53,7 @@ const Experience = observer(() => {
         "experience"
       )}-${split.leftOrder.indexOf("experience")}-${split.rightOrder.indexOf(
         "experience"
-      )}-${activeSection}`}
+      )}`}
       identifier={"experience"}
       editableTitle={getFieldProps(formik, "title")}
       subtitle={"experience"}

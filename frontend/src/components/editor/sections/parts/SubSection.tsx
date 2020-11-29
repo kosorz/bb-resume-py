@@ -1,4 +1,4 @@
-import React, { ReactNode, SyntheticEvent, useContext } from "react";
+import React, { ReactNode, SyntheticEvent } from "react";
 import styled from "styled-components";
 
 import VerticalKnobs from "./VerticalKnobs";
@@ -6,23 +6,11 @@ import NavItems from "./NavItems";
 import DangerButton from "../../../page/DangerButton";
 
 import media from "../../../../styled/media";
-import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 
-const Wrapper = styled.section`
-  margin-top: ${({ theme }) => theme.spaceSmall + "px"};
-  margin-left: ${({ theme }) => theme.spaceSmall + "px"};
-
-  margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
-  padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};
-  border-bottom: 1px dashed;
-
-  ${media.phone`
-    margin-left: 0
-  `};
-`;
+const Wrapper = styled.section``;
 
 const SubSectionNav = styled(NavItems)`
-  margin-top: ${({ theme }) => theme.spaceSmall + "px"};
+  margin: 0 ${({ theme }) => theme.space + "px"};
   display: flex;
   justify-content: space-between;
 `;
@@ -52,7 +40,6 @@ const SubSection = ({
   onUp?: (event: SyntheticEvent<Element, Event>) => void;
   onDown?: (event: SyntheticEvent<Element, Event>) => void;
 }) => {
-  const resumeBubble = useContext(ResumeBubble);
   const handleDelete = () => {
     if (
       window.confirm(
@@ -64,7 +51,7 @@ const SubSection = ({
   };
 
   return (
-    <Wrapper style={{ borderColor: resumeBubble.resume.meta?.colors.main }}>
+    <Wrapper>
       {children}
       <SubSectionNav>
         {renderDelete && (

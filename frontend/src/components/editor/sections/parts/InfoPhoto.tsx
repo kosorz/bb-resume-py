@@ -27,7 +27,7 @@ const OwnerFrame = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #fff;
+    color: ${({ theme }) => theme.white};
     z-index: 1;
     pointer-events: none;
   }

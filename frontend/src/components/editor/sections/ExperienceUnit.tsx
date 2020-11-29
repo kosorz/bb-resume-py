@@ -69,7 +69,6 @@ const ExperienceUnit = observer(
       >
         <Form>
           <Values>
-            <legend>Experience unit details</legend>
             <Input {...getFieldProps(formik, "title")} placeholder="Title" />
             <Input
               {...getFieldProps(formik, "company_name")}
@@ -86,7 +85,6 @@ const ExperienceUnit = observer(
             />
           </Values>
           <Settings>
-            <legend>Settings</legend>
             <Checkbox {...getFieldProps(formik, "company_name_enabled")} />
             <Checkbox {...getFieldProps(formik, "description_enabled")} />
             <Checkbox {...getFieldProps(formik, "location_enabled")} />

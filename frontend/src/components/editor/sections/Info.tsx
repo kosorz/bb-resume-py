@@ -17,7 +17,7 @@ import { infoValidationSchema } from "../validationSchemas";
 
 const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
-  const { resume, updateInfo, activeSection } = resumeBubble;
+  const { resume, updateInfo } = resumeBubble;
   const { resume_id, ...infoEditorData } = resume.info!;
 
   const formik = useFormik({
@@ -35,22 +35,17 @@ const Info = observer(() => {
 
   return (
     <Section
-      key={`info-${activeSection}`}
       identifier={"info"}
-      title={"Basic information"}
+      title={"Info"}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
     >
       <Form>
         <Values>
-          <legend>About you</legend>
           <InfoPhoto />
           <Input {...getFieldProps(formik, "name")} placeholder="Name" />
           <Input {...getFieldProps(formik, "role")} placeholder="Role" />
-        </Values>
-        <Values>
-          <legend>Contact</legend>
           <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
           <Input {...getFieldProps(formik, "email")} placeholder="Email" />
           <Input {...getFieldProps(formik, "link")} placeholder="Link" />
@@ -60,7 +55,6 @@ const Info = observer(() => {
           />
         </Values>
         <Settings>
-          <legend>Settings</legend>
           <Checkbox {...getFieldProps(formik, "photo_enabled")} />
           <Checkbox {...getFieldProps(formik, "role_enabled")} />
           <Checkbox {...getFieldProps(formik, "location_enabled")} />

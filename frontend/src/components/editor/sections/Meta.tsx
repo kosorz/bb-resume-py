@@ -19,7 +19,7 @@ import { useFormikAutoSave } from "../../../util/hooks";
 
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
-  const { activeSection, resume, setResume } = resumeBubble;
+  const { resume, setResume } = resumeBubble;
   const { colors, paper, fontSize, content, ...rest } = resume.meta!;
   const { id } = resume;
 
@@ -55,7 +55,6 @@ const Meta = observer(() => {
 
   return (
     <Section
-      key={`meta-${activeSection}`}
       identifier={"meta"}
       title={"Appearance"}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
@@ -64,7 +63,6 @@ const Meta = observer(() => {
     >
       <Form>
         <Settings>
-          <legend>Colors</legend>
           <ColorPicker
             displayName={"Accents"}
             {...getManualFieldProps(colorsFormik, "main")}
@@ -73,9 +71,41 @@ const Meta = observer(() => {
             displayName={"Text"}
             {...getManualFieldProps(colorsFormik, "secondary")}
           />
-        </Settings>
-        <Settings>
-          <legend>Page</legend>
+          <Range
+            displayName={"Spacing"}
+            min={40}
+            max={60}
+            step={5}
+            {...getFieldProps(paperFormik, "space")}
+          />
+          <Range
+            displayName={"Your name"}
+            min={34}
+            max={42}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "big")}
+          />
+          <Range
+            displayName={"Headlines"}
+            min={20}
+            max={24}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "large")}
+          />
+          <Range
+            displayName={"Titles"}
+            min={15}
+            max={17}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "medium")}
+          />
+          <Range
+            displayName={"Content"}
+            min={10}
+            max={12}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "small")}
+          />
           <Select
             displayName={"Arrangement"}
             {...getFieldProps(paperFormik, "layout")}
@@ -109,44 +139,6 @@ const Meta = observer(() => {
             <option value={"Wood"} label={"Wood"} />
             <option value={"X-parts"} label={"X-parts"} />
           </Select>
-          <Range
-            displayName={"Spacing"}
-            min={40}
-            max={60}
-            step={5}
-            {...getFieldProps(paperFormik, "space")}
-          />
-        </Settings>
-        <Settings>
-          <legend>Font size</legend>
-          <Range
-            displayName={"Your name"}
-            min={34}
-            max={42}
-            step={1}
-            {...getFieldProps(fontSizeFormik, "big")}
-          />
-          <Range
-            displayName={"Headlines"}
-            min={20}
-            max={24}
-            step={1}
-            {...getFieldProps(fontSizeFormik, "large")}
-          />
-          <Range
-            displayName={"Titles"}
-            min={15}
-            max={17}
-            step={1}
-            {...getFieldProps(fontSizeFormik, "medium")}
-          />
-          <Range
-            displayName={"Content"}
-            min={10}
-            max={12}
-            step={1}
-            {...getFieldProps(fontSizeFormik, "small")}
-          />
         </Settings>
       </Form>
     </Section>

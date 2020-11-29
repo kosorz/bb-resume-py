@@ -17,7 +17,7 @@ import axios from "../../../util/axios";
 
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
-  const { resume, updateSkills, addSkillsGroup, activeSection } = resumeBubble;
+  const { resume, updateSkills, addSkillsGroup } = resumeBubble;
   const { full, split } = resume.meta!.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
 
@@ -45,7 +45,7 @@ const Skills = observer(() => {
     <Section
       key={`section-${full.order.indexOf("skills")}-${split.leftOrder.indexOf(
         "skills"
-      )}-${split.rightOrder.indexOf("skills")}-${activeSection}`}
+      )}-${split.rightOrder.indexOf("skills")}`}
       identifier={"skills"}
       title={"Skills"}
       editableTitle={getFieldProps(formik, "title")}

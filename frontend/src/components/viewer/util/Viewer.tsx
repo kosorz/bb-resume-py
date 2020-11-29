@@ -22,7 +22,7 @@ loadFonts();
 
 const PageWrapper = styled.div`
   position: sticky;
-  top: ${({ theme }) => theme.space + "px"};
+  top: ${({ theme }) => theme.spaceSmall + "px"};
   overflow: hidden;
 
   span {
@@ -33,6 +33,9 @@ const PageWrapper = styled.div`
 const DocumentWrapper = styled.div`
   color: #f8f9fa;
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  box-shadow: ${({ theme }) => theme.cardShadow};
+  transition: ${({ theme }) => theme.cardShadowTransition};
+  margin: ${({ theme }) => theme.spaceSmall + "px"};
 `;
 
 const PDFViewer = (props: {
@@ -197,7 +200,7 @@ const Download = ({
 
 const Wrapper = styled.section`
   width: 100%;
-  flex: 35%;
+  flex: 33%;
   box-sizing: border-box;
   text-align: center;
 
@@ -214,7 +217,7 @@ const Wrapper = styled.section`
 
 const Viewer = observer(({ meta }: { meta: MetaShape }) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { updatedAt, resume, activeSection } = resumeBubble;
+  const { updatedAt, resume } = resumeBubble;
 
   return (
     <Wrapper>
@@ -223,7 +226,7 @@ const Viewer = observer(({ meta }: { meta: MetaShape }) => {
           onRenderError={() => console.log("error")}
           document={{
             ...Resume,
-            props: { meta, activeSection, data: resume },
+            props: { meta, data: resume },
           }}
         />
       )}

@@ -1,12 +1,11 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
+import { Title } from "../../Editor";
 
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
 `;
-
-export const Title = styled.h2``;
 
 const Column = ({
   title,
@@ -16,10 +15,10 @@ const Column = ({
   children: ReactNode | ReactNode[];
 }) => {
   return (
-    <Wrapper>
+    <>
       <Title>{title}</Title>
-      {children}
-    </Wrapper>
+      <Wrapper>{children}</Wrapper>
+    </>
   );
 };
 

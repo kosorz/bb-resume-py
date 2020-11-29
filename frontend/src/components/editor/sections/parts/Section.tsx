@@ -4,47 +4,99 @@ import { FieldInputProps, FieldMetaProps } from "formik";
 
 import VerticalKnobs from "./VerticalKnobs";
 import Management from "./Management";
-import NavItems from "./NavItems";
 import SectionEditableTitle from "./SectionEditableTitle";
-import Button from "../../../page/Button";
 import SuccessButton from "../../../page/SuccessButton";
+import { ReactComponent as ExperienceIcon } from "../icons/Experience.svg";
+import { ReactComponent as GalleryIcon } from "../icons/Hiring.svg";
+import { ReactComponent as MetaIcon } from "../icons/Design.svg";
+import { ReactComponent as InfoIcon } from "../icons/Info.svg";
+import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
 
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
 import axios from "../../../../util/axios";
 
 const Wrapper = styled.section`
+  margin-bottom: ${({ theme }) => 2 * theme.spaceBig + "px"};
+  padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
   display: flex;
-`;
-
-export const Content = styled.section`
-  margin-bottom: ${({ theme }) => theme.space + "px"};
-  padding: ${({ theme }) => theme.space + "px"};
-  padding-top: 0;
-  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  background-color: ${({ theme }) => theme.white};
-  /* border: ${({ theme }) => "1px solid" + theme.main}; */
-  flex: 70%;
+  justify-content: center;
+  align-items: center;
 
   ${media.phone`
-    //@ts-ignore
-    padding: ${({ theme }) => theme.spaceSmall + "px"}
+    flex-wrap: wrap;
+  `};
+`;
+
+const About = styled.article`
+  padding-right: ${({ theme }) => theme.space + "px"};
+  margin-bottom: ${({ theme }) => theme.space + "px"};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+
+  svg {
+    width: 100px;
+    height: auto;
+    display: block;
+  }
+
+  ${media.phone`
+    padding-right: 0;
+
+    svg {
+      width: 75px;
+    }
   `};
 `;
 
 const Title = styled.h2`
-  display: inline-block;
+  margin-top: ${({ theme }) => theme.space + "px"};
+  color: ${({ theme }) => theme.main};
 `;
 
 const Purpose = styled.p`
   text-align: justify;
-  font-size: ${({ theme }) => theme.smallFont};
-  margin-top: 0;
-  flex: 30%;
-  margin-right: ${({ theme }) => theme.space + "px"};
+  color: ${({ theme }) => theme.main};
+  margin: 0;
+
+  ${media.phone`
+    flex: 100%;
+  `};
+`;
+
+const SectionVerticalKnobs = styled(VerticalKnobs)`
+  align-self: center;
+  margin-top: ${({ theme }) => theme.spaceSmall + "px"};
+`;
+
+const Content = styled.section`
+  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  background-color: ${({ theme }) => theme.white};
+  box-shadow: ${({ theme }) => theme.cardShadow};
+  transition: ${({ theme }) => theme.cardShadowTransition};
+  flex-shrink: 0;
+  flex-basis: 400px;
+
+  ${media.tablet`
+    flex-basis: 50%;
+  `};
+
+  ${media.phone`
+    flex: 100%;
+  `};
+`;
+
+const Children = styled.div`
+  padding: ${({ theme }) => theme.spaceSmall + "px"};
+  padding-top: ${({ theme }) => theme.space + "px"};
 `;
 
 const AddWrapper = styled.div`
+  padding: ${({ theme }) => theme.spaceSmall + "px"};
+  padding-top: 0;
+
   ${media.phone`
     display: flex;
   `};
@@ -52,31 +104,21 @@ const AddWrapper = styled.div`
 
 const Footer = styled.div`
   padding-top: ${({ theme }) => theme.space + "px"};
-  margin-top: ${({ theme }) => theme.space + "px"};
-  border-top: 3px solid;
+  padding-bottom: ${({ theme }) => theme.space + "px"};
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  background: ${({ theme }) => theme.gray};
+  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  padding: ${({ theme }) => theme.spaceSmall + "px"};
 `;
 
-const Chin = styled(Footer)`
-  flex-direction: column;
-  border-top: 2px solid;
-`;
-
-const NavTitle = styled.h5`
-  flex: 100%;
-  color: ${({ theme }) => theme.dark};
-`;
-
-const SectionVerticalKnobs = styled(VerticalKnobs)`
-  flex-wrap: wrap;
-  justify-content: flex-start;
-
-  ${media.phone`
-    order: -1;  
-  `};
-`;
+const icons: { [key: string]: ReactNode } = {
+  experience: <ExperienceIcon />,
+  skills: <SkillsIcon />,
+  meta: <MetaIcon />,
+  info: <InfoIcon />,
+  gallery: <GalleryIcon />,
+};
 
 const Section = ({
   children,
@@ -86,16 +128,14 @@ const Section = ({
   purpose,
   addFn,
   editableTitle,
-  className,
 }: {
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
-  identifier: "skills" | "experience" | "info" | "meta" | "catalogue" | "";
+  identifier: "skills" | "experience" | "info" | "meta" | "gallery" | "";
   addFn?: Function;
   subtitle?: string;
   editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
-  className?: string;
 }) => {
   const [positionData, setPositionData] = useState<{
     deletable: boolean;
@@ -109,26 +149,18 @@ const Section = ({
     isFirst: false,
     isLast: false,
     movable: false,
-    manageable: !["info", "meta", "catalogue"].includes(identifier),
+    manageable: !["info", "meta", "gallery"].includes(identifier),
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
-  const {
-    resume,
-    updateContent,
-    activeSection,
-    setActiveSection,
-  } = resumeBubble;
+  const { resume, updateContent } = resumeBubble;
   const { id, meta } = resume;
-  const { content, paper, colors } = meta!;
+  const { content, paper } = meta!;
   const { split, full } = content;
   const { layout } = paper;
-  const isActive = activeSection === identifier;
 
   useEffect(() => {
-    const staticSectionOpen = ["info", "meta", "catalogue"].includes(
-      identifier
-    );
+    const staticSectionOpen = ["info", "meta", "gallery"].includes(identifier);
     const deletable =
       split.unlisted.includes(identifier) && full.unlisted.includes(identifier);
     const data =
@@ -189,56 +221,45 @@ const Section = ({
 
   return (
     <Wrapper>
-      <Purpose>{purpose}</Purpose>
-      <Content>
+      <About>
+        {icons[identifier]}
         {editableTitle ? (
           <SectionEditableTitle values={editableTitle} title={title} />
         ) : (
-          <Title style={{ color: colors.main }}>{title}</Title>
+          <Title>{title}</Title>
         )}
-        {isActive && (
-          <>
-            {children}
-            {subtitle && addFn && (
-              <AddWrapper>
-                <SuccessButton onClick={() => addFn()}>
-                  + Add new {subtitle}
-                </SuccessButton>
-              </AddWrapper>
-            )}
-            {manageable && (
-              <Chin style={{ borderColor: colors.main }}>
-                <NavTitle>Manage {title.toLocaleLowerCase()}:</NavTitle>
-                <NavItems>
-                  <Management
-                    title={title}
-                    urlBase={urlBase}
-                    identifier={identifier}
-                    column={column}
-                    deletable={deletable}
-                  />
-                </NavItems>
-              </Chin>
-            )}
-          </>
+        <Purpose>{purpose}</Purpose>
+        {(!isFirst || !isLast) && movable && (
+          <SectionVerticalKnobs
+            upLabel={`Move\xa0up`}
+            downLabel={`Move\xa0down`}
+            onUp={() => move("up")}
+            onDown={() => move("down")}
+            renderUp={!isFirst}
+            renderDown={!isLast}
+          />
         )}
-        <Footer style={{ borderColor: colors.main }}>
-          <Button onClick={() => setActiveSection(isActive ? "" : identifier)}>
-            {isActive
-              ? "<<<\xa0Close"
-              : (identifier === "catalogue" ? "Open" : "Edit") + "\xa0>>>"}
-          </Button>
-          {(!isFirst || !isLast) && movable && (
-            <SectionVerticalKnobs
-              upLabel={`Move\xa0up`}
-              downLabel={`Move\xa0down`}
-              onUp={() => move("up")}
-              onDown={() => move("down")}
-              renderUp={!isFirst}
-              renderDown={!isLast}
+      </About>
+      <Content>
+        <Children>{children}</Children>
+        {subtitle && addFn && (
+          <AddWrapper>
+            <SuccessButton onClick={() => addFn()}>
+              + Add new {subtitle}
+            </SuccessButton>
+          </AddWrapper>
+        )}
+        {manageable && (
+          <Footer>
+            <Management
+              title={title}
+              urlBase={urlBase}
+              identifier={identifier}
+              column={column}
+              deletable={deletable}
             />
-          )}
-        </Footer>
+          </Footer>
+        )}
       </Content>
     </Wrapper>
   );

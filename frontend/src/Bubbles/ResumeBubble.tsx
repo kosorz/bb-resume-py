@@ -6,7 +6,6 @@ import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
   updatedAt: undefined,
-  activeSection: "",
   resume: {
     title: "",
     id: 0,
@@ -18,7 +17,6 @@ let initialState: ResumeBubbleShape = {
     info: undefined,
   },
   setUpdateTime: () => {},
-  setActiveSection: () => {},
   getResume: () => {},
   setResume: () => {},
   updateInfo: () => {},
@@ -46,10 +44,6 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     setUpdateTime: () => {
       store.updatedAt = new Date().getTime();
     },
-    setActiveSection: (section) => {
-      store.activeSection = section;
-      store.setUpdateTime();
-    },
     getResume: () => {
       axios.get("/resumes/1").then((res) => {
         store.resume = res.data;
@@ -60,13 +54,11 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
       store.resume = { ...store.resume, ...data };
     },
     deleteSectionUpdate: (content, identifier) => {
-      store.setActiveSection("catalogue");
       store.setResume({ [identifier]: undefined });
       store.updateContent(content);
     },
     addSectionUpdate: (data, identifier, order) => {
       store.setResume({ [identifier]: data });
-      store.activeSection = identifier;
       if (store.resume.meta) {
         const { content } = store.resume.meta;
         store.resume.meta.content =

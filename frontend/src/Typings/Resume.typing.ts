@@ -16,7 +16,6 @@ type ResumeShape = {
 
 export interface ResumeViewer {
   data: ResumeShape;
-  activeSection: string;
   meta: MetaShape;
 }
 

@@ -9,26 +9,13 @@ import Column from "./sections/parts/Column";
 
 import { ResumeViewer } from "../../typings/Resume.typing";
 
-const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
+const Resume = ({ data, meta }: ResumeViewer) => {
   const { skills, experience, info } = data;
   const { fontSize, paper, content, fontFamily, colors, background } = meta;
   const { split, full } = content;
   const { leftOrder, rightOrder } = split;
   const { order } = full;
   const { layout } = paper;
-
-  const unlistedSectionOpen =
-    layout === "split"
-      ? split.unlisted.includes(activeSection)
-      : full.unlisted.includes(activeSection);
-
-  const noContentSectionOpen = ["catalogue", "meta"].includes(activeSection);
-
-  const checkIfActive = (name: "skills" | "info" | "experience") =>
-    !activeSection ||
-    unlistedSectionOpen ||
-    activeSection === name ||
-    noContentSectionOpen;
 
   const styles = StyleSheet.create({
     page: {
@@ -37,8 +24,6 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
       fontSize: fontSize.small,
       paddingVertical: paper.space / 2,
       color: colors.secondary,
-      opacity:
-        unlistedSectionOpen || !activeSection || noContentSectionOpen ? 1 : 0.4,
     },
     pageBackground: {
       position: "absolute",
@@ -51,29 +36,11 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
 
   const sections: { [key: string]: ReactElement | undefined } = {
     skills: skills ? (
-      <Skills
-        isActive={checkIfActive("skills")}
-        meta={meta}
-        key={"skills-viewer"}
-        {...skills}
-      />
+      <Skills meta={meta} key={"skills-viewer"} {...skills} />
     ) : undefined,
     experience: experience ? (
-      <Experience
-        isActive={checkIfActive("experience")}
-        meta={meta}
-        key={"experience-viewer"}
-        {...experience}
-      />
+      <Experience meta={meta} key={"experience-viewer"} {...experience} />
     ) : undefined,
-  };
-
-  const emptyStateActive =
-    !activeSection || unlistedSectionOpen || noContentSectionOpen;
-
-  const commonProps = {
-    emptyStateActive,
-    meta,
   };
 
   return (
@@ -84,19 +51,17 @@ const Resume = ({ data, activeSection, meta }: ResumeViewer) => {
           style={styles.pageBackground}
           source={`/backgrounds/${background}.png`}
         />
-        {info && (
-          <Info isActive={checkIfActive("info")} meta={meta} {...info} />
-        )}
+        {info && <Info meta={meta} {...info} />}
         {layout === "split" && (
           <TwoColumns
-            {...commonProps}
+            meta={meta}
             leftChildren={leftOrder.map((member) => sections[member])}
             rightChildren={rightOrder.map((member) => sections[member])}
           />
         )}
         {layout === "full" && (
           <Column
-            {...commonProps}
+            meta={meta}
             children={order.map((member) => sections[member])}
           />
         )}

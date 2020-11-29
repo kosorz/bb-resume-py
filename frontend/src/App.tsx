@@ -5,21 +5,15 @@ import ResumeBubble from "./bubbles/ResumeBubble";
 import Editor from "./components/editor/Editor";
 import styled, { ThemeProvider } from "styled-components";
 import Viewer from "./components/viewer/util/Viewer";
-import media from "./styled/media";
 import theme from "./styled/theme";
 import { ResumeBubble as Bubble } from "./bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
-  padding: ${({ theme }) => theme.space + "px"};
+  padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
   margin: auto;
   max-width: 1600px;
-
-  ${media.phone`
-    //@ts-ignore
-    padding: ${({ theme }) => theme.spaceSmall + "px"}
-  `};
 `;
 
 const BBResume = observer(() => {

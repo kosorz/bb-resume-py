@@ -14,8 +14,8 @@ const AddWrapper = styled.div`
 `;
 
 const Wrapper = styled.section`
-  flex-basis: 350px;
-  padding: ${({ theme }) => theme.spaceSmall + "px"};
+  padding: ${({ theme }) => theme.space + "px"};
+  flex: 100%;
 
   &:hover ${AddWrapper} {
     opacity: 1;
