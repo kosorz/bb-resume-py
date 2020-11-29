@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -16,6 +16,7 @@ import {
 import axios from "../../../util/axios";
 
 const Skills = observer(() => {
+  const [openedGroup, setOpenedGroup] = useState();
   const resumeBubble = React.useContext(ResumeBubble);
   const { resume, updateSkills, addSkillsGroup } = resumeBubble;
   const { full, split } = resume.meta!.content;
@@ -57,6 +58,9 @@ const Skills = observer(() => {
     >
       {sortSkillsGroups(order, groups).map((gr, i, arr) => (
         <SkillsGroup
+          i={i + 1}
+          opened={gr.id === openedGroup}
+          setOpened={setOpenedGroup}
           hasSiblings={arr.length > 1}
           key={`skills_group_${gr.id}_editor`}
           isLast={arr.length - 1 === i}

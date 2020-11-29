@@ -1,27 +1,45 @@
 import React, { ReactNode, SyntheticEvent } from "react";
 import styled from "styled-components";
+import { Collapse } from "react-collapse";
 
 import VerticalKnobs from "./VerticalKnobs";
-import NavItems from "./NavItems";
-import DangerButton from "../../../page/DangerButton";
+import Trash from "../../../page/Trash";
+import Close from "../../../page/Close";
+import Pencil from "../../../page/Pencil";
 
-import media from "../../../../styled/media";
+const Wrapper = styled.section`
+  overflow-anchor: none;
+`;
 
-const Wrapper = styled.section``;
-
-const SubSectionNav = styled(NavItems)`
-  margin: 0 ${({ theme }) => theme.space + "px"};
+const Row = styled.article`
+  border-bottom: 1px solid ${({ theme }) => theme.gray};
+  border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
+  padding: ${({ theme }) => theme.spaceSmall + "px"};
+  box-sizing: border-box;
   display: flex;
+  flex: 100%;
+  align-items: center;
   justify-content: space-between;
 `;
 
-const SubSectionVerticalKnobs = styled(VerticalKnobs)`
-  ${media.phone`
-    order: -1;
-  `};
+const Title = styled.h4`
+  color: ${({ theme }) => theme.main};
+  margin: 0;
+`;
+
+const Controls = styled.div`
+  display: flex;
+
+  svg {
+    padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+    border-radius: 50%;
+  }
 `;
 
 const SubSection = ({
+  id,
+  opened,
+  setOpened,
   children,
   isLast,
   isFirst,
@@ -31,11 +49,14 @@ const SubSection = ({
   onUp,
   onDown,
 }: {
-  children: ReactNode | ReactNode[];
+  id: number;
+  children: ReactNode;
   isLast: boolean;
   isFirst: boolean;
   title: string;
   renderDelete: boolean;
+  opened: boolean;
+  setOpened: Function;
   deleteFn: Function;
   onUp?: (event: SyntheticEvent<Element, Event>) => void;
   onDown?: (event: SyntheticEvent<Element, Event>) => void;
@@ -52,18 +73,24 @@ const SubSection = ({
 
   return (
     <Wrapper>
-      {children}
-      <SubSectionNav>
-        {renderDelete && (
-          <DangerButton onClick={handleDelete}>x Delete</DangerButton>
-        )}
-        <SubSectionVerticalKnobs
-          onUp={onUp}
-          onDown={onDown}
-          renderUp={!isFirst}
-          renderDown={!isLast}
-        />
-      </SubSectionNav>
+      <Row>
+        <Title>{title}</Title>
+        <Controls>
+          <VerticalKnobs
+            onUp={onUp}
+            onDown={onDown}
+            renderUp={!isFirst}
+            renderDown={!isLast}
+          />
+          {opened ? (
+            <Close onClick={() => setOpened(undefined)} />
+          ) : (
+            <Pencil onClick={() => setOpened(id)} />
+          )}
+          {renderDelete && <Trash onClick={handleDelete} />}
+        </Controls>
+      </Row>
+      <Collapse isOpened={opened}>{children}</Collapse>
     </Wrapper>
   );
 };

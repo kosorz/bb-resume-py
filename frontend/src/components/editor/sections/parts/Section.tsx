@@ -66,9 +66,16 @@ const Purpose = styled.p`
   `};
 `;
 
-const SectionVerticalKnobs = styled(VerticalKnobs)`
+const SectionNavigation = styled.nav`
+  display: flex;
   align-self: center;
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
+
+  svg {
+    padding: ${({ theme }) => theme.spaceSmall + "px"};
+    border-radius: 50%;
+    width: 50px;
+  }
 `;
 
 const Content = styled.section`
@@ -91,15 +98,6 @@ const Content = styled.section`
 const Children = styled.article`
   padding: ${({ theme }) => theme.spaceSmall + "px"};
   padding-top: ${({ theme }) => theme.space + "px"};
-`;
-
-const AddWrapper = styled.div`
-  padding: ${({ theme }) => theme.spaceSmall + "px"};
-  padding-top: 0;
-
-  ${media.phone`
-    display: flex;
-  `};
 `;
 
 const Footer = styled.div`
@@ -229,28 +227,16 @@ const Section = ({
           <Title>{title}</Title>
         )}
         <Purpose>{purpose}</Purpose>
-        {(!isFirst || !isLast) && movable && (
-          <SectionVerticalKnobs
-            upLabel={`Move\xa0up`}
-            downLabel={`Move\xa0down`}
-            onUp={() => move("up")}
-            onDown={() => move("down")}
-            renderUp={!isFirst}
-            renderDown={!isLast}
-          />
-        )}
-      </About>
-      <Content>
-        <Children>{children}</Children>
-        {subtitle && addFn && (
-          <AddWrapper>
-            <SuccessButton onClick={() => addFn()}>
-              + Add new {subtitle}
-            </SuccessButton>
-          </AddWrapper>
-        )}
-        {manageable && (
-          <Footer>
+        <SectionNavigation>
+          {(!isFirst || !isLast) && movable && (
+            <VerticalKnobs
+              onUp={() => move("up")}
+              onDown={() => move("down")}
+              renderUp={!isFirst}
+              renderDown={!isLast}
+            />
+          )}
+          {manageable && (
             <Management
               title={title}
               urlBase={urlBase}
@@ -258,8 +244,18 @@ const Section = ({
               column={column}
               deletable={deletable}
             />
-          </Footer>
-        )}
+          )}
+        </SectionNavigation>
+      </About>
+      <Content>
+        <Children>{children}</Children>
+        <Footer>
+          {subtitle && addFn && (
+            <SuccessButton onClick={() => addFn()}>
+              Add {subtitle}
+            </SuccessButton>
+          )}
+        </Footer>
       </Content>
     </Wrapper>
   );

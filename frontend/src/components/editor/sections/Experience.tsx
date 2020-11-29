@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -16,6 +16,7 @@ import { experienceValidationSchema } from "../validationSchemas";
 import axios from "../../../util/axios";
 
 const Experience = observer(() => {
+  const [openedUnit, setOpenedUnit] = useState();
   const resumeBubble = useContext(ResumeBubble);
   const { updateExperience, resume, addExperienceUnit } = resumeBubble;
   const { full, split } = resume.meta!.content;
@@ -65,6 +66,9 @@ const Experience = observer(() => {
     >
       {sortExperienceUnits(order, units).map((u, i, arr) => (
         <ExperienceUnit
+          i={i + 1}
+          opened={u.id === openedUnit}
+          setOpened={setOpenedUnit}
           hasSiblings={arr.length > 1}
           key={`experience_unit_${u.id}_editor`}
           isLast={arr.length - 1 === i}

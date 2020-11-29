@@ -17,10 +17,13 @@ import axios from "../../../util/axios";
 
 const SkillsGroup = observer(
   ({
+    i,
     id,
     isLast,
     isFirst,
     hasSiblings,
+    opened,
+    setOpened,
     ...skillsGroupEditorData
   }: SkillsGroupEditor) => {
     const resumeBubble = useContext(ResumeBubble);
@@ -46,7 +49,8 @@ const SkillsGroup = observer(
 
     const deleteFn = () =>
       axios.delete(`/parts/skills_group/${id}`).then((res) => {
-        removeSkillsGroup(res.data);
+        opened && setOpened(undefined);
+        setTimeout(() => removeSkillsGroup(res.data), 500);
       });
 
     const changeOrder = (dir: string) => {
@@ -57,8 +61,11 @@ const SkillsGroup = observer(
 
     return (
       <SubSection
+        id={id}
+        opened={opened}
+        setOpened={setOpened}
         renderDelete={hasSiblings}
-        title={"group"}
+        title={skillsGroupEditorData.title || `Skills ${i}`}
         onUp={() => changeOrder("up")}
         onDown={() => changeOrder("down")}
         isLast={isLast}

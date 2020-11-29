@@ -10,6 +10,10 @@ export interface SkillsGroupEditor extends SkillsGroupShape {
   isLast: boolean;
   isFirst: boolean;
   hasSiblings: boolean;
+  opened: boolean;
+  setOpened: Function;
+
+  i: number;
 }
 
 export interface SkillsGroupViewer extends Omit<SkillsGroupShape, "id"> {

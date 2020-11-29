@@ -19,10 +19,13 @@ import axios from "../../../util/axios";
 
 const ExperienceUnit = observer(
   ({
+    i,
     id,
     isLast,
     isFirst,
     hasSiblings,
+    opened,
+    setOpened,
     ...experienceUnitEditorData
   }: ExperienceUnitEditor) => {
     const resumeBubble = useContext(ResumeBubble);
@@ -48,7 +51,8 @@ const ExperienceUnit = observer(
 
     const deleteFn = () =>
       axios.delete(`/parts/experience_unit/${id}`).then((res) => {
-        removeExperienceUnit(res.data);
+        opened && setOpened(undefined);
+        setTimeout(() => removeExperienceUnit(res.data), 500);
       });
 
     const changeOrder = (dir: string) => {
@@ -59,8 +63,11 @@ const ExperienceUnit = observer(
 
     return (
       <SubSection
+        id={id}
+        opened={opened}
+        setOpened={setOpened}
         renderDelete={hasSiblings}
-        title={"experience"}
+        title={experienceUnitEditorData.title || `Experience ${i}`}
         onUp={() => changeOrder("up")}
         onDown={() => changeOrder("down")}
         isLast={isLast}

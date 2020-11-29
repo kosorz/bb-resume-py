@@ -20,6 +20,9 @@ export interface ExperienceUnitEditor extends ExperienceUnitShape {
   isLast: boolean;
   isFirst: boolean;
   hasSiblings: boolean;
+  opened: boolean;
+  setOpened: Function;
+  i: number;
 }
 
 export interface ExperienceUnitViewer extends Omit<ExperienceUnitShape, "id"> {

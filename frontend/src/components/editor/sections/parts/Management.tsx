@@ -1,10 +1,28 @@
 import React, { useContext } from "react";
+import styled from "styled-components";
 
-import DangerButton from "../../../page/DangerButton";
-import WarningButton from "../../../page/WarningButton";
-import Button from "../../../page/Button";
+import Trash from "../../../page/Trash";
+import Right from "../../../page/Right";
+import Left from "../../../page/Left";
+import Hide from "../../../page/Hide";
+import Show from "../../../page/Show";
+
 import axios from "../../../../util/axios";
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
+
+const AddRight = styled(Right)`
+  &:hover {
+    fill: ${({ theme }) => theme.green};
+    background: ${({ theme }) => theme.lightGreen};
+  }
+`;
+
+const AddLeft = styled(Left)`
+  &:hover {
+    fill: ${({ theme }) => theme.green};
+    background: ${({ theme }) => theme.lightGreen};
+  }
+`;
 
 const Management = ({
   title,
@@ -52,22 +70,18 @@ const Management = ({
     }
   };
 
-  const renderDeleteButton = () => (
-    <DangerButton onClick={() => deleteSection()}>Delete</DangerButton>
-  );
-  const renderUnlistButton = () => (
-    <WarningButton onClick={() => unlist()}>Unlist</WarningButton>
-  );
+  const trash = <Trash onClick={() => deleteSection()} />;
+  const hide = <Hide onClick={() => unlist()} />;
 
   if (column === "splitListedLeft" || column === "splitListedRight") {
     return (
       <>
-        <Button onClick={() => migrate()}>
-          List&nbsp;in&nbsp;
-          {column === "splitListedLeft" ? "right" : "left"}
-          &nbsp;column
-        </Button>
-        {renderUnlistButton()}
+        {column === "splitListedLeft" ? (
+          <Right onClick={() => migrate()} />
+        ) : (
+          <Left onClick={() => migrate()} />
+        )}
+        {hide}
       </>
     );
   }
@@ -75,24 +89,20 @@ const Management = ({
   if (column === "splitUnlisted") {
     return (
       <>
-        <Button onClick={() => list("leftOrder")}>
-          List&nbsp;in&nbsp;left&nbsp;column
-        </Button>
-        <Button onClick={() => list("rightOrder")}>
-          List&nbsp;in&nbsp;right&nbsp;column
-        </Button>
-        {deletable && renderDeleteButton()}
+        <AddLeft onClick={() => list("leftOrder")} />
+        <AddRight onClick={() => list("rightOrder")} />
+        {deletable && trash}
       </>
     );
   }
 
-  if (column === "fullListed") return renderUnlistButton();
+  if (column === "fullListed") return hide;
 
   if (column === "fullUnlisted") {
     return (
       <>
-        <Button onClick={() => list("order")}>List&nbsp;in&nbsp;Resume</Button>
-        {deletable && renderDeleteButton()}
+        <Show onClick={() => list("order")} />
+        {deletable && trash}
       </>
     );
   }
