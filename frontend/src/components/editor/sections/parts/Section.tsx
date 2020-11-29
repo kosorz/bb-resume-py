@@ -88,7 +88,7 @@ const Content = styled.section`
   `};
 `;
 
-const Children = styled.div`
+const Children = styled.article`
   padding: ${({ theme }) => theme.spaceSmall + "px"};
   padding-top: ${({ theme }) => theme.space + "px"};
 `;

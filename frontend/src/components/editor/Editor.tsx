@@ -25,7 +25,7 @@ const Wrapper = styled.section`
   `} */
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h2`
   margin: 0;
   margin-bottom: ${({ theme }) => theme.spaceSmall + "px"};
   padding: ${({ theme }) => theme.spaceSmall + "px"};
