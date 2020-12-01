@@ -8,6 +8,7 @@ import Button from "../../../../page/Button";
 
 const AddWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
   justify-content: center;
   opacity: 0;

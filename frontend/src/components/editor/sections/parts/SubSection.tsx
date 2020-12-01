@@ -9,6 +9,7 @@ import Pencil from "../../../page/Pencil";
 
 const Wrapper = styled.section`
   overflow-anchor: none;
+  background: ${({ theme }) => theme.white};
 `;
 
 const Row = styled.article`
@@ -76,18 +77,25 @@ const SubSection = ({
       <Row>
         <Title>{title}</Title>
         <Controls>
-          <VerticalKnobs
-            onUp={onUp}
-            onDown={onDown}
-            renderUp={!isFirst}
-            renderDown={!isLast}
-          />
-          {opened ? (
-            <Close onClick={() => setOpened(undefined)} />
-          ) : (
-            <Pencil onClick={() => setOpened(id)} />
+          {(!isFirst || !isLast) && (
+            <>
+              {renderDelete && <Trash onClick={handleDelete} />}
+              {opened ? (
+                <Close onClick={() => setOpened(undefined)} />
+              ) : (
+                <>
+                  <Pencil onClick={() => setOpened(id)} />
+                  <VerticalKnobs
+                    onUp={onUp}
+                    onDown={onDown}
+                    renderUp={false}
+                    renderDown={false}
+                    renderHandle={true}
+                  />
+                </>
+              )}
+            </>
           )}
-          {renderDelete && <Trash onClick={handleDelete} />}
         </Controls>
       </Row>
       <Collapse isOpened={opened}>{children}</Collapse>

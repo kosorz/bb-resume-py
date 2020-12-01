@@ -1,32 +1,43 @@
-import React, { ReactNode } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import Section from "../sections/parts/Section";
 import Experience from "./picks/Experience";
 import Skills from "./picks/Skills";
+import { observer } from "mobx-react-lite";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { Title } from "../Editor";
 
 const Wrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
 `;
 
-const Gallery = ({ availablePicks }: { availablePicks: string[] }) => {
-  const picks: { [key: string]: ReactNode } = {
-    skills: <Skills />,
-    experience: <Experience />,
-  };
+const Gallery = observer(() => {
+  const resumeBubble = useContext(ResumeBubble);
+  const { resume } = resumeBubble;
+  const { skills, experience } = resume;
+  const allPicks = [
+    !skills ? <Skills /> : undefined,
+    !experience ? <Experience /> : undefined,
+  ];
 
-  return (
-    <Section
-      identifier={"gallery"}
-      title={"Content gallery"}
-      purpose={`There are many variations of passages of Lorem Ipsum available, but 
+  const picks = allPicks.filter((p) => !!p);
+
+  return picks.length > 0 ? (
+    <>
+      <Title>Settings</Title>
+      <Section
+        identifier={"gallery"}
+        title={"Content gallery"}
+        purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
-    >
-      <Wrapper>{availablePicks.map((p) => picks[p])}</Wrapper>
-    </Section>
-  );
-};
+      >
+        <Wrapper>{picks}</Wrapper>
+      </Section>
+    </>
+  ) : null;
+});
 
 export default Gallery;

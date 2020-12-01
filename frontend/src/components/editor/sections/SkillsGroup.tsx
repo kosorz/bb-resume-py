@@ -50,7 +50,7 @@ const SkillsGroup = observer(
     const deleteFn = () =>
       axios.delete(`/parts/skills_group/${id}`).then((res) => {
         opened && setOpened(undefined);
-        setTimeout(() => removeSkillsGroup(res.data), 500);
+        setTimeout(() => removeSkillsGroup(res.data), 350);
       });
 
     const changeOrder = (dir: string) => {

@@ -5,6 +5,7 @@ const Up = styled(UpIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightMain};
     fill: ${({ theme }) => theme.main};
+    cursor: pointer;
   }
 `;
 

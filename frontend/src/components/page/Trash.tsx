@@ -5,6 +5,7 @@ const Trash = styled(TrashIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightRed};
     fill: ${({ theme }) => theme.red};
+    cursor: pointer;
   }
 `;
 

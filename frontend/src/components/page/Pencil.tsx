@@ -5,6 +5,7 @@ const Pencil = styled(PencilIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightMain};
     fill: ${({ theme }) => theme.main};
+    cursor: pointer;
   }
 `;
 

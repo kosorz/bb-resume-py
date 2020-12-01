@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
@@ -14,13 +14,20 @@ import {
   sortSkillsGroups,
 } from "../../../util/fns";
 import axios from "../../../util/axios";
+import { SortableList } from "./parts/SortableList";
 
 const Skills = observer(() => {
-  const [openedGroup, setOpenedGroup] = useState();
   const resumeBubble = React.useContext(ResumeBubble);
   const { resume, updateSkills, addSkillsGroup } = resumeBubble;
   const { full, split } = resume.meta!.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
+  const [openedGroup, setOpenedGroup] = useState<number>();
+
+  useEffect(() => {
+    if (order.length === 1) {
+      setOpenedGroup(order[0]);
+    }
+  }, [order]);
 
   const formik = useFormik({
     initialValues: skillsEditorData,
@@ -42,6 +49,23 @@ const Skills = observer(() => {
       .then((res) => addSkillsGroup(res.data));
   };
 
+  const sortableGroups = sortSkillsGroups(order, groups).map((gr, i, arr) => {
+    return {
+      key: `skills_group_${gr.id}_editor`,
+      value: (
+        <SkillsGroup
+          i={i + 1}
+          opened={gr.id === openedGroup}
+          setOpened={setOpenedGroup}
+          hasSiblings={arr.length > 1}
+          isLast={arr.length - 1 === i}
+          isFirst={i === 0}
+          {...gr}
+        />
+      ),
+    };
+  });
+
   return (
     <Section
       key={`section-${full.order.indexOf("skills")}-${split.leftOrder.indexOf(
@@ -56,18 +80,15 @@ const Skills = observer(() => {
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
     >
-      {sortSkillsGroups(order, groups).map((gr, i, arr) => (
-        <SkillsGroup
-          i={i + 1}
-          opened={gr.id === openedGroup}
-          setOpened={setOpenedGroup}
-          hasSiblings={arr.length > 1}
-          key={`skills_group_${gr.id}_editor`}
-          isLast={arr.length - 1 === i}
-          isFirst={i === 0}
-          {...gr}
-        />
-      ))}
+      <SortableList
+        order={"experience-units"}
+        items={sortableGroups}
+        lockToContainerEdges={true}
+        lockAxis={"y"}
+        lockOffset={"0%"}
+        pressDelay={100}
+        useDragHandle={true}
+      />
     </Section>
   );
 });

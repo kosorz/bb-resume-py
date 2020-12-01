@@ -5,6 +5,7 @@ const Hide = styled(HideIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightOrange};
     fill: ${({ theme }) => theme.orange};
+    cursor: pointer;
   }
 `;
 

@@ -5,6 +5,7 @@ const Show = styled(ShowIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightGreen};
     fill: ${({ theme }) => theme.green};
+    cursor: pointer;
   }
 `;
 

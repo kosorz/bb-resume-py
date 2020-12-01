@@ -12,7 +12,6 @@ export interface SkillsGroupEditor extends SkillsGroupShape {
   hasSiblings: boolean;
   opened: boolean;
   setOpened: Function;
-
   i: number;
 }
 

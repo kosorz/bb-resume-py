@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { ReactComponent as DownIcon } from "./icons/Down.svg";
+import { ReactComponent as MoveIcon } from "./icons/Move.svg";
 
-const Down = styled(DownIcon)`
+const Move = styled(MoveIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightMain};
     fill: ${({ theme }) => theme.main};
-    cursor: pointer;
+    cursor: grab;
   }
 `;
 
-export default Down;
+export default Move;

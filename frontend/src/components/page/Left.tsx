@@ -5,6 +5,7 @@ const Left = styled(LeftIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightMain};
     fill: ${({ theme }) => theme.main};
+    cursor: pointer;
   }
 `;
 

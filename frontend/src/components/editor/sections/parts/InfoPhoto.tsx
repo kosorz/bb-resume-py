@@ -1,12 +1,20 @@
 import React, { useContext, useRef } from "react";
 import styled from "styled-components";
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
+
 import FormikLabel from "./Label";
-import DangerButton from "../../../page/DangerButton";
+import Trash from "../../../page/Trash";
+
 import axios from "../../../../util/axios";
 
 const InvisibleInput = styled.input`
   display: none;
+`;
+
+const Delete = styled(Trash)`
+  margin-top: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  border-radius: 50%;
 `;
 
 const Uploader = styled.div`
@@ -99,13 +107,11 @@ const InfoPhoto = () => {
                 src={`${process.env.REACT_APP_OBJECT_STORAGE_URL}${process.env.REACT_APP_RESUME_PHOTO_STORAGE_PATH}${photo}`}
               />
             </OwnerFrame>
-            <DangerButton
+            <Delete
               onClick={() =>
                 axios.delete(url).then((res) => updateInfoPhoto(res.data))
               }
-            >
-              Delete
-            </DangerButton>
+            />
           </>
         ) : (
           <Empty

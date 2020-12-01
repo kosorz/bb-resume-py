@@ -29,6 +29,8 @@ const Wrapper = styled.section`
 `;
 
 const About = styled.article`
+  background: ${({ theme }) => theme.background};
+  border-radius: ${({ theme }) => 2 * theme.spaceBig + "px"};
   padding-right: ${({ theme }) => theme.space + "px"};
   margin-bottom: ${({ theme }) => theme.space + "px"};
   display: flex;
@@ -79,6 +81,7 @@ const SectionNavigation = styled.nav`
 `;
 
 const Content = styled.section`
+  border-top: 3px solid ${({ theme }) => theme.main};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   background-color: ${({ theme }) => theme.white};
   box-shadow: ${({ theme }) => theme.cardShadow};
@@ -232,8 +235,9 @@ const Section = ({
             <VerticalKnobs
               onUp={() => move("up")}
               onDown={() => move("down")}
-              renderUp={!isFirst}
-              renderDown={!isLast}
+              renderUp={false}
+              renderDown={false}
+              renderHandle={true}
             />
           )}
           {manageable && (
@@ -249,13 +253,13 @@ const Section = ({
       </About>
       <Content>
         <Children>{children}</Children>
-        <Footer>
-          {subtitle && addFn && (
+        {subtitle && addFn && (
+          <Footer>
             <SuccessButton onClick={() => addFn()}>
               Add {subtitle}
             </SuccessButton>
-          )}
-        </Footer>
+          </Footer>
+        )}
       </Content>
     </Wrapper>
   );

@@ -52,7 +52,7 @@ const ExperienceUnit = observer(
     const deleteFn = () =>
       axios.delete(`/parts/experience_unit/${id}`).then((res) => {
         opened && setOpened(undefined);
-        setTimeout(() => removeExperienceUnit(res.data), 500);
+        setTimeout(() => removeExperienceUnit(res.data), 350);
       });
 
     const changeOrder = (dir: string) => {

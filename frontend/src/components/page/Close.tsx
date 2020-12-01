@@ -5,6 +5,7 @@ const Close = styled(CloseIcon)`
   &:hover {
     background: ${({ theme }) => theme.lightMain};
     fill: ${({ theme }) => theme.main};
+    cursor: pointer;
   }
 `;
 

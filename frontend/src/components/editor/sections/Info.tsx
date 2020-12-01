@@ -9,6 +9,7 @@ import Form from "./parts/Form";
 import Settings from "./parts/Settings";
 import Values from "./parts/Values";
 import InfoPhoto from "./parts/InfoPhoto";
+import { Title } from "../Editor";
 
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
@@ -34,36 +35,39 @@ const Info = observer(() => {
   useFormikAutoSave(formik);
 
   return (
-    <Section
-      identifier={"info"}
-      title={"Info"}
-      purpose={`There are many variations of passages of Lorem Ipsum available, but 
+    <>
+      <Title>Basic Information</Title>
+      <Section
+        identifier={"info"}
+        title={"Info"}
+        purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
-    >
-      <Form>
-        <Values>
-          <InfoPhoto />
-          <Input {...getFieldProps(formik, "name")} placeholder="Name" />
-          <Input {...getFieldProps(formik, "role")} placeholder="Role" />
-          <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
-          <Input {...getFieldProps(formik, "email")} placeholder="Email" />
-          <Input {...getFieldProps(formik, "link")} placeholder="Link" />
-          <Input
-            {...getFieldProps(formik, "location")}
-            placeholder="Location"
-          />
-        </Values>
-        <Settings>
-          <Checkbox {...getFieldProps(formik, "photo_enabled")} />
-          <Checkbox {...getFieldProps(formik, "role_enabled")} />
-          <Checkbox {...getFieldProps(formik, "location_enabled")} />
-          <Checkbox {...getFieldProps(formik, "phone_enabled")} />
-          <Checkbox {...getFieldProps(formik, "email_enabled")} />
-          <Checkbox {...getFieldProps(formik, "link_enabled")} />
-        </Settings>
-      </Form>
-    </Section>
+      >
+        <Form>
+          <Values>
+            <InfoPhoto />
+            <Input {...getFieldProps(formik, "name")} placeholder="Name" />
+            <Input {...getFieldProps(formik, "role")} placeholder="Role" />
+            <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
+            <Input {...getFieldProps(formik, "email")} placeholder="Email" />
+            <Input {...getFieldProps(formik, "link")} placeholder="Link" />
+            <Input
+              {...getFieldProps(formik, "location")}
+              placeholder="Location"
+            />
+          </Values>
+          <Settings>
+            <Checkbox {...getFieldProps(formik, "photo_enabled")} />
+            <Checkbox {...getFieldProps(formik, "role_enabled")} />
+            <Checkbox {...getFieldProps(formik, "location_enabled")} />
+            <Checkbox {...getFieldProps(formik, "phone_enabled")} />
+            <Checkbox {...getFieldProps(formik, "email_enabled")} />
+            <Checkbox {...getFieldProps(formik, "link_enabled")} />
+          </Settings>
+        </Form>
+      </Section>
+    </>
   );
 });
 
