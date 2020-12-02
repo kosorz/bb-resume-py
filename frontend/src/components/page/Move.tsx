@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ReactComponent as MoveIcon } from "./icons/Move.svg";
+import { SortableHandle } from "react-sortable-hoc";
 
 const Move = styled(MoveIcon)`
   &:hover {
@@ -9,4 +10,4 @@ const Move = styled(MoveIcon)`
   }
 `;
 
-export default Move;
+export default SortableHandle(Move);

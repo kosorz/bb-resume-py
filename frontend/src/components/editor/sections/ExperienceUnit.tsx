@@ -24,16 +24,18 @@ const ExperienceUnit = observer(
     isLast,
     isFirst,
     hasSiblings,
-    opened,
-    setOpened,
+    wobble,
     ...experienceUnitEditorData
   }: ExperienceUnitEditor) => {
     const resumeBubble = useContext(ResumeBubble);
     const {
+      openSubSections,
+      setOpenSubSection,
       updateExperienceUnit,
       removeExperienceUnit,
-      updateExperienceOrder,
+      // updateSubSectionsOrder,
     } = resumeBubble;
+    const opened = openSubSections["experience"] === id;
 
     const formik = useFormik({
       initialValues: experienceUnitEditorData,
@@ -51,25 +53,24 @@ const ExperienceUnit = observer(
 
     const deleteFn = () =>
       axios.delete(`/parts/experience_unit/${id}`).then((res) => {
-        opened && setOpened(undefined);
+        opened && setOpenSubSection("experience", undefined);
         setTimeout(() => removeExperienceUnit(res.data), 350);
       });
 
-    const changeOrder = (dir: string) => {
-      axios
-        .post(`/parts/experience_unit/${id}/move/${dir}`)
-        .then((res) => updateExperienceOrder(res.data));
-    };
+    // const changeOrder = (dir: string) => {
+    //   axios
+    //     .post(`/parts/experience_unit/${id}/move/${dir}`)
+    //     .then((res) => updateSubSectionsOrder("experience", res.data));
+    // };
 
     return (
       <SubSection
         id={id}
         opened={opened}
-        setOpened={setOpened}
+        wobble={wobble}
+        identifier={"experience"}
         renderDelete={hasSiblings}
         title={experienceUnitEditorData.title || `Experience ${i}`}
-        onUp={() => changeOrder("up")}
-        onDown={() => changeOrder("down")}
         isLast={isLast}
         isFirst={isFirst}
         deleteFn={deleteFn}

@@ -20,8 +20,7 @@ export interface ExperienceUnitEditor extends ExperienceUnitShape {
   isLast: boolean;
   isFirst: boolean;
   hasSiblings: boolean;
-  opened: boolean;
-  setOpened: Function;
+  wobble: boolean;
   i: number;
 }
 

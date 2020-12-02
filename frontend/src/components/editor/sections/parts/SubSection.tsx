@@ -1,15 +1,33 @@
-import React, { ReactNode, SyntheticEvent } from "react";
+import React, { ReactNode, useContext } from "react";
 import styled from "styled-components";
 import { Collapse } from "react-collapse";
 
-import VerticalKnobs from "./VerticalKnobs";
+import Move from "../../../page/Move";
 import Trash from "../../../page/Trash";
 import Close from "../../../page/Close";
 import Pencil from "../../../page/Pencil";
+import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
+import { wobbleTwo, wobbleOne } from "./Wooble";
 
 const Wrapper = styled.section`
   overflow-anchor: none;
   background: ${({ theme }) => theme.white};
+
+  &:nth-of-type(2n) > article {
+    animation-name: ${({ wobble }: { wobble: boolean }) =>
+      wobble ? wobbleOne : ""};
+    animation-iteration-count: infinite;
+    transform-origin: 50% 10%;
+    animation-duration: 0.5s;
+  }
+
+  &:nth-of-type(2n + 1) > article {
+    animation-name: ${({ wobble }: { wobble: boolean }) =>
+      wobble ? wobbleTwo : ""};
+    animation-iteration-count: infinite;
+    transform-origin: 30% 5%;
+    animation-duration: 0.5s;
+  }
 `;
 
 const Row = styled.article`
@@ -39,29 +57,29 @@ const Controls = styled.div`
 
 const SubSection = ({
   id,
+  wobble,
+  identifier,
   opened,
-  setOpened,
   children,
   isLast,
   isFirst,
   title,
   renderDelete,
   deleteFn,
-  onUp,
-  onDown,
 }: {
   id: number;
   children: ReactNode;
+  wobble: boolean;
+  identifier: "skills" | "experience";
   isLast: boolean;
   isFirst: boolean;
   title: string;
   renderDelete: boolean;
   opened: boolean;
-  setOpened: Function;
   deleteFn: Function;
-  onUp?: (event: SyntheticEvent<Element, Event>) => void;
-  onDown?: (event: SyntheticEvent<Element, Event>) => void;
 }) => {
+  const resumeBubble = useContext(ResumeBubble);
+  const { setOpenSubSection } = resumeBubble;
   const handleDelete = () => {
     if (
       window.confirm(
@@ -73,7 +91,7 @@ const SubSection = ({
   };
 
   return (
-    <Wrapper>
+    <Wrapper wobble={wobble}>
       <Row>
         <Title>{title}</Title>
         <Controls>
@@ -81,17 +99,13 @@ const SubSection = ({
             <>
               {renderDelete && <Trash onClick={handleDelete} />}
               {opened ? (
-                <Close onClick={() => setOpened(undefined)} />
+                <Close
+                  onClick={() => setOpenSubSection(identifier, undefined)}
+                />
               ) : (
                 <>
-                  <Pencil onClick={() => setOpened(id)} />
-                  <VerticalKnobs
-                    onUp={onUp}
-                    onDown={onDown}
-                    renderUp={false}
-                    renderDown={false}
-                    renderHandle={true}
-                  />
+                  <Pencil onClick={() => setOpenSubSection(identifier, id)} />
+                  <Move />
                 </>
               )}
             </>

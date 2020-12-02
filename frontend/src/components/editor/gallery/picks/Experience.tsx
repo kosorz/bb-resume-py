@@ -36,14 +36,15 @@ const Experience = observer(() => {
       <Content>
         <TimeAndGeo>
           <Data
+            bare={true}
             type={"date"}
             value={DateTime.fromISO("2020-11-26T20:38:17+00:00").toFormat(
               "MM/yyyy"
             )}
           />
-          <Data type={"location"} />
+          <Data bare={true} type={"location"} />
         </TimeAndGeo>
-        <Data type={"link"} />
+        <Data bare={true} type={"link"} />
       </Content>
       <Content>
         Lorem Ipsum has been the industry's standard dummy text ever since the

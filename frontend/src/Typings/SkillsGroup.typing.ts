@@ -10,8 +10,7 @@ export interface SkillsGroupEditor extends SkillsGroupShape {
   isLast: boolean;
   isFirst: boolean;
   hasSiblings: boolean;
-  opened: boolean;
-  setOpened: Function;
+  wobble: boolean;
   i: number;
 }
 

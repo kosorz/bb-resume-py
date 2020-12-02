@@ -6,6 +6,10 @@ import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
   updatedAt: undefined,
+  openSubSections: {
+    skills: undefined,
+    experience: undefined,
+  },
   resume: {
     title: "",
     id: 0,
@@ -21,18 +25,19 @@ let initialState: ResumeBubbleShape = {
   setResume: () => {},
   updateInfo: () => {},
   updateInfoPhoto: () => {},
+  setOpenSubSection: () => {},
   updateSkills: () => {},
   updateSkillsGroup: () => {},
-  updateSkillsOrder: () => {},
   addSkillsGroup: () => {},
   removeSkillsGroup: () => {},
   updateExperience: () => {},
   updateExperienceUnit: () => {},
-  updateExperienceOrder: () => {},
   addExperienceUnit: () => {},
   removeExperienceUnit: () => {},
   deleteSectionUpdate: () => {},
+  updateContentOrder: () => {},
   addSectionUpdate: () => {},
+  updateSubSectionsOrder: () => {},
   updateContent: () => {},
 };
 
@@ -56,6 +61,23 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     deleteSectionUpdate: (content, identifier) => {
       store.setResume({ [identifier]: undefined });
       store.updateContent(content);
+      store.setUpdateTime();
+    },
+    setOpenSubSection: (identifier, id) => {
+      store.openSubSections = {
+        ...store.openSubSections,
+        [identifier]: id,
+      };
+    },
+    updateContentOrder: (layout, order, data) => {
+      if (store.resume.meta) {
+        const { content } = store.resume.meta;
+        store.resume.meta.content = {
+          ...content,
+          [layout]: { ...content[layout], [order]: data },
+        };
+        store.setUpdateTime();
+      }
     },
     addSectionUpdate: (data, identifier, order) => {
       store.setResume({ [identifier]: data });
@@ -85,8 +107,8 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
                   [order]: [...content.split[order], identifier],
                 },
               };
+        store.setUpdateTime();
       }
-      store.setUpdateTime();
     },
     updateInfo: (data) => {
       store.resume.info = data;
@@ -107,12 +129,6 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.resume.skills.groups = store.resume.skills.groups.map((gr) =>
           gr.id === data.id ? data : gr
         );
-        store.setUpdateTime();
-      }
-    },
-    updateSkillsOrder: (order) => {
-      if (store.resume.skills) {
-        store.resume.skills.order = order;
         store.setUpdateTime();
       }
     },
@@ -146,12 +162,6 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.setUpdateTime();
       }
     },
-    updateExperienceOrder: (order) => {
-      if (store.resume.experience) {
-        store.resume.experience.order = order;
-        store.setUpdateTime();
-      }
-    },
     addExperienceUnit: (data) => {
       if (store.resume.experience) {
         store.resume.experience.units = store.resume.experience.units.concat(
@@ -177,6 +187,13 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     updateContent: (content) => {
       if (store.resume.meta) {
         store.resume.meta.content = content;
+        store.setUpdateTime();
+      }
+    },
+    updateSubSectionsOrder: (identifier, data) => {
+      const section = store.resume[identifier];
+      if (section) {
+        section.order = data;
         store.setUpdateTime();
       }
     },

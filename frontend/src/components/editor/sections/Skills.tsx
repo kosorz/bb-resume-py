@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
+import move from "array-move";
 
 import SkillsGroup from "./SkillsGroup";
 import Section from "./parts/Section";
@@ -18,16 +19,22 @@ import { SortableList } from "./parts/SortableList";
 
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
-  const { resume, updateSkills, addSkillsGroup } = resumeBubble;
+  const {
+    resume,
+    updateSkills,
+    addSkillsGroup,
+    setOpenSubSection,
+    updateSubSectionsOrder,
+  } = resumeBubble;
   const { full, split } = resume.meta!.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
-  const [openedGroup, setOpenedGroup] = useState<number>();
+  const [wobble, setWobble] = useState(false);
 
   useEffect(() => {
     if (order.length === 1) {
-      setOpenedGroup(order[0]);
+      setOpenSubSection("skills", order[0]);
     }
-  }, [order]);
+  }, [order, setOpenSubSection]);
 
   const formik = useFormik({
     initialValues: skillsEditorData,
@@ -55,8 +62,7 @@ const Skills = observer(() => {
       value: (
         <SkillsGroup
           i={i + 1}
-          opened={gr.id === openedGroup}
-          setOpened={setOpenedGroup}
+          wobble={wobble}
           hasSiblings={arr.length > 1}
           isLast={arr.length - 1 === i}
           isFirst={i === 0}
@@ -65,6 +71,24 @@ const Skills = observer(() => {
       ),
     };
   });
+
+  const onSortEnd = ({
+    oldIndex,
+    newIndex,
+  }: {
+    oldIndex: number;
+    newIndex: number;
+  }) => {
+    setWobble(false);
+    const movedOrder = move(order, oldIndex, newIndex);
+    if (movedOrder.toString() !== order.toString()) {
+      updateSubSectionsOrder("skills", move(order, oldIndex, newIndex));
+    }
+  };
+
+  const onSortStart = () => {
+    setWobble(true);
+  };
 
   return (
     <Section
@@ -81,12 +105,13 @@ const Skills = observer(() => {
     or randomised words which.`}
     >
       <SortableList
-        order={"experience-units"}
+        order={"skill-groups"}
         items={sortableGroups}
         lockToContainerEdges={true}
         lockAxis={"y"}
         lockOffset={"0%"}
-        pressDelay={100}
+        onSortEnd={onSortEnd}
+        onSortStart={onSortStart}
         useDragHandle={true}
       />
     </Section>

@@ -8,6 +8,10 @@ import { ContentShape } from "./Meta.typing";
 
 type ResumeBubbleShape = {
   updatedAt?: number;
+  openSubSections: {
+    skills?: number;
+    experience?: number;
+  };
   resume: ResumeShape;
   getResume: () => void;
   setResume: (data: Partial<ResumeShape>) => void;
@@ -25,14 +29,22 @@ type ResumeBubbleShape = {
   updateInfoPhoto: (photoId: string) => void;
   updateSkills: (data: SkillsShape) => void;
   updateSkillsGroup: (data: SkillsGroupShape) => void;
-  updateSkillsOrder: (order: number[]) => void;
+  setOpenSubSection: (identifier: "skills" | "experience", id?: number) => void;
   addSkillsGroup: (data: SkillsGroupShape) => void;
   removeSkillsGroup: (id: number) => void;
   updateExperience: (data: ExperienceShape) => void;
   updateExperienceUnit: (data: ExperienceUnitShape) => void;
-  updateExperienceOrder: (order: number[]) => void;
+  updateContentOrder: (
+    layout: "full" | "split",
+    order: "unlisted" | "order" | "leftOrder" | "rightOrder",
+    data: string[]
+  ) => void;
   addExperienceUnit: (data: ExperienceUnitShape) => void;
   removeExperienceUnit: (id: number) => void;
+  updateSubSectionsOrder: (
+    identifier: "skills" | "experience",
+    data: number[]
+  ) => void;
   updateContent: (data: ContentShape) => void;
 };
 

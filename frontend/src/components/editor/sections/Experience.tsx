@@ -1,6 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
+import move from "array-move";
 
 import ExperienceUnit from "./ExperienceUnit";
 import Section from "./parts/Section";
@@ -18,7 +19,13 @@ import { SortableList } from "./parts/SortableList";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
-  const { updateExperience, resume, addExperienceUnit } = resumeBubble;
+  const {
+    resume,
+    updateExperience,
+    addExperienceUnit,
+    setOpenSubSection,
+    updateSubSectionsOrder,
+  } = resumeBubble;
   const { full, split } = resume.meta!.content;
   const {
     id,
@@ -27,13 +34,13 @@ const Experience = observer(() => {
     order,
     ...experienceEditorData
   } = resume.experience!;
-  const [openedUnit, setOpenedUnit] = useState<number>();
+  const [wobble, setWobble] = useState(false);
 
   useEffect(() => {
     if (order.length === 1) {
-      setOpenedUnit(order[0]);
+      setOpenSubSection("experience", order[0]);
     }
-  }, [order]);
+  }, [order, setOpenSubSection]);
 
   const formik = useFormik({
     initialValues: experienceEditorData,
@@ -61,8 +68,7 @@ const Experience = observer(() => {
       value: (
         <ExperienceUnit
           i={i + 1}
-          opened={u.id === openedUnit}
-          setOpened={setOpenedUnit}
+          wobble={wobble}
           hasSiblings={arr.length > 1}
           isLast={arr.length - 1 === i}
           isFirst={i === 0}
@@ -71,6 +77,24 @@ const Experience = observer(() => {
       ),
     };
   });
+
+  const onSortEnd = ({
+    oldIndex,
+    newIndex,
+  }: {
+    oldIndex: number;
+    newIndex: number;
+  }) => {
+    setWobble(false);
+    const movedOrder = move(order, oldIndex, newIndex);
+    if (movedOrder.toString() !== order.toString()) {
+      updateSubSectionsOrder("experience", move(order, oldIndex, newIndex));
+    }
+  };
+
+  const onSortStart = () => {
+    setWobble(true);
+  };
 
   return (
     <Section
@@ -92,9 +116,10 @@ const Experience = observer(() => {
         order={"experience-units"}
         items={sortableUnits}
         lockToContainerEdges={true}
+        onSortEnd={onSortEnd}
         lockAxis={"y"}
         lockOffset={"0%"}
-        pressDelay={100}
+        onSortStart={onSortStart}
         useDragHandle={true}
       />
     </Section>

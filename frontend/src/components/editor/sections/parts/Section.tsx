@@ -2,7 +2,7 @@ import React, { ReactNode, useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { FieldInputProps, FieldMetaProps } from "formik";
 
-import VerticalKnobs from "./VerticalKnobs";
+import Move from "../../../page/Move";
 import Management from "./Management";
 import SectionEditableTitle from "./SectionEditableTitle";
 import SuccessButton from "../../../page/SuccessButton";
@@ -14,13 +14,17 @@ import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
 
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
-import axios from "../../../../util/axios";
+// import axios from "../../../../util/axios";
 
 const Wrapper = styled.section`
-  margin-bottom: ${({ theme }) => 2 * theme.spaceBig + "px"};
+  background: ${({ theme }) => theme.background};
+  border-radius: ${({ theme }) => 2 * theme.spaceBig + "px"};
+  padding-bottom: ${({ theme }) => theme.spaceBig + "px"};
+  margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
   padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
   display: flex;
   justify-content: center;
+  min-height: 400px;
   align-items: center;
 
   ${media.phone`
@@ -29,8 +33,6 @@ const Wrapper = styled.section`
 `;
 
 const About = styled.article`
-  background: ${({ theme }) => theme.background};
-  border-radius: ${({ theme }) => 2 * theme.spaceBig + "px"};
   padding-right: ${({ theme }) => theme.space + "px"};
   margin-bottom: ${({ theme }) => theme.space + "px"};
   display: flex;
@@ -154,7 +156,10 @@ const Section = ({
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
-  const { resume, updateContent } = resumeBubble;
+  const {
+    resume,
+    // updateContent
+  } = resumeBubble;
   const { id, meta } = resume;
   const { content, paper } = meta!;
   const { split, full } = content;
@@ -214,11 +219,11 @@ const Section = ({
 
   const urlBase = `/resumes/${id}/section/${identifier}`;
 
-  const move = (dir: string) => {
-    axios.post(`${urlBase}/move/${dir}`).then((res) => {
-      updateContent(res.data);
-    });
-  };
+  // const move = (dir: string) => {
+  //   axios.post(`${urlBase}/move/${dir}`).then((res) => {
+  //     updateContent(res.data);
+  //   });
+  // };
 
   return (
     <Wrapper>
@@ -231,15 +236,7 @@ const Section = ({
         )}
         <Purpose>{purpose}</Purpose>
         <SectionNavigation>
-          {(!isFirst || !isLast) && movable && (
-            <VerticalKnobs
-              onUp={() => move("up")}
-              onDown={() => move("down")}
-              renderUp={false}
-              renderDown={false}
-              renderHandle={true}
-            />
-          )}
+          {(!isFirst || !isLast) && movable && <Move />}
           {manageable && (
             <Management
               title={title}

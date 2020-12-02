@@ -18,8 +18,8 @@ const Gallery = observer(() => {
   const { resume } = resumeBubble;
   const { skills, experience } = resume;
   const allPicks = [
-    !skills ? <Skills /> : undefined,
-    !experience ? <Experience /> : undefined,
+    !skills ? <Skills key={"skills-pick"} /> : undefined,
+    !experience ? <Experience key={"experience-pick"} /> : undefined,
   ];
 
   const picks = allPicks.filter((p) => !!p);

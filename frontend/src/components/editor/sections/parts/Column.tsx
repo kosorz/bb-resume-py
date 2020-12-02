@@ -1,5 +1,6 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useContext, memo, useState } from "react";
 import styled from "styled-components";
+import move from "array-move";
 
 import Experience from "../Experience";
 import Skills from "../Skills";
@@ -7,10 +8,30 @@ import { Title } from "../../Editor";
 import { observer } from "mobx-react-lite";
 import { SortableList } from "./SortableList";
 import MetaShape from "../../../../typings/Meta.typing";
+import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
+import { wobbleOne, wobbleTwo } from "./Wooble";
 
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
+
+  > section > section:nth-child(2n) > section,
+  > section > section:nth-child(2n) > article {
+    animation-name: ${({ wobble }: { wobble: boolean }) =>
+      wobble ? wobbleOne : ""};
+    animation-iteration-count: infinite;
+    transform-origin: 50% 10%;
+    animation-duration: 0.5s;
+  }
+
+  > section > section:nth-child(2n + 1) > section,
+  > section > section:nth-child(2n + 1) > article {
+    animation-name: ${({ wobble }: { wobble: boolean }) =>
+      wobble ? wobbleTwo : ""};
+    animation-iteration-count: infinite;
+    transform-origin: 30% 5%;
+    animation-duration: 0.5s;
+  }
 `;
 
 const getTitle = (order: string) => {
@@ -39,11 +60,14 @@ const Column = observer(
     order: "order" | "leftOrder" | "rightOrder" | "unlisted";
     meta: MetaShape;
   }) => {
+    const resumeBubble = useContext(ResumeBubble);
+    const { updateContentOrder } = resumeBubble;
     const { content, paper } = meta;
     const { layout } = paper;
     const { full, split } = content;
+    const [wobble, setWobble] = useState(false);
 
-    let orderArray;
+    let orderArray: string[];
 
     if (order === "order") {
       orderArray = full[order];
@@ -57,20 +81,37 @@ const Column = observer(
       return { key: s, value: sections[s] };
     });
 
+    const onSortEnd = ({
+      oldIndex,
+      newIndex,
+    }: {
+      oldIndex: number;
+      newIndex: number;
+    }) => {
+      setWobble(false);
+      updateContentOrder(layout, order, move(orderArray, oldIndex, newIndex));
+    };
+
+    const onSortStart = () => {
+      setWobble(true);
+    };
+
     const title = getTitle(order);
     return items.length > 0 ? (
       <>
         <Title>{title}</Title>
-        <Wrapper>
+        <Wrapper wobble={wobble}>
           <SortableList
             order={order}
             layout={layout}
+            onSortEnd={onSortEnd}
+            onSortStart={onSortStart}
             items={items}
             lockToContainerEdges={true}
             lockAxis={"y"}
-            lockOffset={"0%"}
-            pressDelay={100}
+            lockOffset={"48px"}
             useDragHandle={true}
+            pressDelay={0}
           />
         </Wrapper>
       </>
@@ -78,4 +119,4 @@ const Column = observer(
   }
 );
 
-export default Column;
+export default memo(Column);

@@ -22,16 +22,18 @@ const SkillsGroup = observer(
     isLast,
     isFirst,
     hasSiblings,
-    opened,
-    setOpened,
+    wobble,
     ...skillsGroupEditorData
   }: SkillsGroupEditor) => {
     const resumeBubble = useContext(ResumeBubble);
     const {
+      openSubSections,
+      setOpenSubSection,
       updateSkillsGroup,
       removeSkillsGroup,
-      updateSkillsOrder,
+      // updateSubSectionsOrder,
     } = resumeBubble;
+    const opened = openSubSections["skills"] === id;
 
     const formik = useFormik({
       initialValues: skillsGroupEditorData,
@@ -49,25 +51,24 @@ const SkillsGroup = observer(
 
     const deleteFn = () =>
       axios.delete(`/parts/skills_group/${id}`).then((res) => {
-        opened && setOpened(undefined);
+        opened && setOpenSubSection("skills", undefined);
         setTimeout(() => removeSkillsGroup(res.data), 350);
       });
 
-    const changeOrder = (dir: string) => {
-      axios
-        .post(`/parts/skills_group/${id}/move/${dir}`)
-        .then((res) => updateSkillsOrder(res.data));
-    };
+    // const changeOrder = (dir: string) => {
+    //   axios
+    //     .post(`/parts/skills_group/${id}/move/${dir}`)
+    //     .then((res) => updateSubSectionsOrder("skills", res.data));
+    // };
 
     return (
       <SubSection
         id={id}
+        wobble={wobble}
         opened={opened}
-        setOpened={setOpened}
+        identifier={"skills"}
         renderDelete={hasSiblings}
         title={skillsGroupEditorData.title || `Skills ${i}`}
-        onUp={() => changeOrder("up")}
-        onDown={() => changeOrder("down")}
         isLast={isLast}
         isFirst={isFirst}
         deleteFn={deleteFn}
