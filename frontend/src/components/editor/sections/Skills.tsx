@@ -5,6 +5,7 @@ import move from "array-move";
 
 import SkillsGroup from "./SkillsGroup";
 import Section from "./parts/Section";
+import { SortableList } from "./parts/SortableList";
 
 import { skillsValidationSchema } from "../validationSchemas";
 import { useFormikAutoSave } from "../../../util/hooks";
@@ -15,7 +16,6 @@ import {
   sortSkillsGroups,
 } from "../../../util/fns";
 import axios from "../../../util/axios";
-import { SortableList } from "./parts/SortableList";
 
 const Skills = observer(() => {
   const resumeBubble = React.useContext(ResumeBubble);
@@ -30,6 +30,8 @@ const Skills = observer(() => {
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
   const [wobble, setWobble] = useState(false);
 
+  const urlBase = `/parts/skills/${id}`;
+
   useEffect(() => {
     if (order.length === 1) {
       setOpenSubSection("skills", order[0]);
@@ -39,12 +41,7 @@ const Skills = observer(() => {
   const formik = useFormik({
     initialValues: skillsEditorData,
     onSubmit: (values) => {
-      saveChangedValues(
-        values,
-        skillsEditorData,
-        `/parts/skills/${id}`,
-        updateSkills
-      );
+      saveChangedValues(values, skillsEditorData, urlBase, updateSkills);
     },
     validationSchema: skillsValidationSchema,
   });
@@ -80,9 +77,12 @@ const Skills = observer(() => {
     newIndex: number;
   }) => {
     setWobble(false);
-    const movedOrder = move(order, oldIndex, newIndex);
-    if (movedOrder.toString() !== order.toString()) {
-      updateSubSectionsOrder("skills", move(order, oldIndex, newIndex));
+    const newOrder = move(order, oldIndex, newIndex);
+    if (newOrder.toString() !== order.toString()) {
+      updateSubSectionsOrder("skills", newOrder);
+      axios.post(`${urlBase}/reorganize`, newOrder).catch(() => {
+        updateSubSectionsOrder("skills", order);
+      });
     }
   };
 

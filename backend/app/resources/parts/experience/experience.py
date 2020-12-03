@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from .schemas import Experience, ExperienceUpdate, ExperienceFull, ExperienceUnit, ExperienceUnitUpdate
 from ..schemas import OrderUpdate
-from ...resumes.fns import adjust_section_position, move, check_create_section_target
+from ...resumes.fns import adjust_resume_orders, reorganize, is_valid_column
 from ...resumes.schemas import ResumeFull, ServerResumeUpdate, Resume
 from ....util.deps import get_owned_resume, get_current_user_experience, get_current_user_experience_units, db
 from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
@@ -31,10 +31,10 @@ def create_experience(
                              value=resume_id,
                              error=False,
                              throw_on_present=True)
-    check_create_section_target(target)
+    is_valid_column(target)
     experience = crud.create_resume_experience(db, resume_id)
     unit = crud.create_experience_unit(db, experience.id)
-    adjust_section_position(db, owned_resume, 'experience', target, True)
+    adjust_resume_orders(db, owned_resume, target, 'experience', True)
     update_existing_resource(db, experience.id, OrderUpdate(order=[unit.id]),
                              Experience, crud.get_experience,
                              crud.update_experience)
@@ -55,6 +55,26 @@ def update_experience(experience_id: int,
     return update_existing_resource(db, experience_id, experience, Experience,
                                     crud.get_experience,
                                     crud.update_experience)
+
+
+@router.post(
+    "/experience/{experience_id}/reorganize",
+    response_model=List,
+    name="experience:reorganize",
+)
+def reorganize_skills(
+    experience_id: int,
+    requested_order: List[int],
+    db: Session = Depends(db),
+    current_user_experience: List[ExperienceFull] = Depends(
+        get_current_user_experience),
+):
+    experience = find_item_with_key_value(current_user_experience, "id",
+                                          experience_id)
+    return update_existing_resource(
+        db, experience.id,
+        OrderUpdate(order=reorganize(requested_order, experience.order)),
+        Experience, crud.get_experience, crud.update_experience).order
 
 
 @router.post(
@@ -92,30 +112,6 @@ def update_experience_unit(
     return update_existing_resource(db, unit_id, experience_unit,
                                     ExperienceUnit, crud.get_experience_unit,
                                     crud.update_experience_unit)
-
-
-@router.post(
-    "/experience_unit/{unit_id}/move/{direction}",
-    response_model=List,
-    name="experience:move-unit",
-)
-def move_experience_unit(
-    unit_id: int,
-    direction: str,
-    db: Session = Depends(db),
-    current_user_experience: List[ExperienceFull] = Depends(
-        get_current_user_experience),
-    current_user_experience_units: List[ExperienceUnit] = Depends(
-        get_current_user_experience_units)):
-    unit = find_item_with_key_value(current_user_experience_units, "id",
-                                    unit_id)
-    experience = find_item_with_key_value(current_user_experience, "id",
-                                          unit.experience_id)
-
-    return update_existing_resource(
-        db, experience.id,
-        OrderUpdate(order=move(direction, experience.order, unit_id)),
-        Experience, crud.get_experience, crud.update_experience).order
 
 
 @router.delete(

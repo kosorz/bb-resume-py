@@ -1,15 +1,17 @@
 import React, { ReactElement, useContext, memo, useState } from "react";
 import styled from "styled-components";
 import move from "array-move";
+import { observer } from "mobx-react-lite";
 
 import Experience from "../Experience";
 import Skills from "../Skills";
 import { Title } from "../../Editor";
-import { observer } from "mobx-react-lite";
 import { SortableList } from "./SortableList";
+import { wobbleOne, wobbleTwo } from "./Wooble";
+
 import MetaShape from "../../../../typings/Meta.typing";
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
-import { wobbleOne, wobbleTwo } from "./Wooble";
+import axios from "../../../../util/axios";
 
 const Wrapper = styled.section`
   display: flex;
@@ -61,7 +63,8 @@ const Column = observer(
     meta: MetaShape;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
-    const { updateContentOrder } = resumeBubble;
+    const { updateContentOrder, resume } = resumeBubble;
+    const { id } = resume;
     const { content, paper } = meta;
     const { layout } = paper;
     const { full, split } = content;
@@ -89,7 +92,15 @@ const Column = observer(
       newIndex: number;
     }) => {
       setWobble(false);
-      updateContentOrder(layout, order, move(orderArray, oldIndex, newIndex));
+      const newOrder = move(orderArray, oldIndex, newIndex);
+      if (newOrder.toString() !== order.toString()) {
+        updateContentOrder(layout, order, newOrder);
+        axios
+          .post(`/resumes/${id}/column/${order}/reorganize`, newOrder)
+          .catch(() => {
+            updateContentOrder(layout, order, orderArray);
+          });
+      }
     };
 
     const onSortStart = () => {

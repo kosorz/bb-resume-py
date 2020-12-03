@@ -51,19 +51,19 @@ class TestResumesRoutes:
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
-    async def test_move_resume_section_endpoint_existence(
+    async def test_reorganize_resume_endpoint_existence(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-
         res = await client.post(
             app.url_path_for(
-                "resumes:move-section",
+                "resumes:reorganize",
                 resume_id=2,
-                section='skills',
-                direction='down',
-            ))
+                column='leftOrder',
+            ),
+            json=["skills", "experience"],
+        )
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
     async def test_migrate_resume_section_endpoint_existence(
@@ -81,7 +81,7 @@ class TestResumesRoutes:
 
 
 class TestResumes:
-    async def test_move_resume_section_authorization_check(
+    async def test_reorganize_resume_authorization_check(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -92,11 +92,12 @@ class TestResumes:
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
             app.url_path_for(
-                "resumes:move-section",
-                resume_id=1,
-                section='experience',
-                direction='up',
-            ))
+                "resumes:reorganize",
+                resume_id=2,
+                column='leftOrder',
+            ),
+            json=["skills", "experience"],
+        )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_migrate_resume_section_authorization_check(
@@ -147,51 +148,42 @@ class TestResumes:
                 "resumes:list-section",
                 resume_id=2,
                 section='experience',
-                column='rightOrder',
+                column="rightOrder",
             ))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
-    async def test_move_full_resume_section_validation(
+    async def test_reorganize_full_resume_validation(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if move will be rejected if section is first in order
+        # Checks if reorganize will be rejected
         res = await client.post(
             app.url_path_for(
-                "resumes:move-section",
+                "resumes:reorganize",
                 resume_id=2,
-                section='experience',
-                direction='up',
-            ))
+                column="leftOrder",
+            ),
+            json=["skills", "experience", "other"],
+        )
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
-    async def test_move_full_resume_section_response(
+    async def test_reorganize_full_resume_response(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if move will be made if section is not last in order
+        # Checks if resume will be made reorganized
         res = await client.post(
             app.url_path_for(
-                "resumes:move-section",
+                "resumes:reorganize",
                 resume_id=2,
-                section='experience',
-                direction='down',
-            ))
+                column="order",
+            ),
+            json=["skills", "experience"],
+        )
         assert res.status_code == status.HTTP_200_OK
         assert res.json()['full']['order'] == ['skills', 'experience']
-
-        # Checks if move will be made if section is not first in order
-        res = await client.post(
-            app.url_path_for(
-                "resumes:move-section",
-                resume_id=2,
-                section='experience',
-                direction='up',
-            ))
-        assert res.status_code == status.HTTP_200_OK
-        assert res.json()['full']['order'] == ['experience', 'skills']
 
     async def test_list_full_resume_section_validation(
         self,
@@ -286,29 +278,20 @@ class TestResumes:
             }})
         assert res.status_code == status.HTTP_200_OK
 
-    async def test_move_split_resume_section_validation(
+    async def test_reorganize_split_resume_validation(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if move will be rejected if section is first in order
+        # Checks if reorganize will be rejected
         res = await client.post(
             app.url_path_for(
-                "resumes:move-section",
+                "resumes:reorganize",
                 resume_id=2,
-                section='experience',
-                direction='up',
-            ))
-        assert res.status_code == status.HTTP_400_BAD_REQUEST
-
-        # Checks if move will be rejected if section is last in order
-        res = await client.post(
-            app.url_path_for(
-                "resumes:move-section",
-                resume_id=2,
-                section='experience',
-                direction='down',
-            ))
+                column="rightOrder",
+            ),
+            json=["skills", "experience", "other"],
+        )
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     async def test_list_split_resume_section_response(
@@ -342,32 +325,21 @@ class TestResumes:
             ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
-    async def test_move_split_resume_section_response(
+    async def test_reorganize_split_resume_response(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if move will be made if section is not last in order
         res = await client.post(
             app.url_path_for(
-                "resumes:move-section",
+                "resumes:reorganize",
                 resume_id=2,
-                section='experience',
-                direction='down',
-            ))
+                column="leftOrder",
+            ),
+            json=["skills", "experience"],
+        )
         assert res.status_code == status.HTTP_200_OK
         assert res.json()['split']['leftOrder'] == ['skills', 'experience']
-
-        # Checks if move will be made if section is not first in order
-        res = await client.post(
-            app.url_path_for(
-                "resumes:move-section",
-                resume_id=2,
-                section='experience',
-                direction='up',
-            ))
-        assert res.status_code == status.HTTP_200_OK
-        assert res.json()['split']['leftOrder'] == ['experience', 'skills']
 
     async def test_migrate_split_resume_section_response(
         self,
@@ -506,17 +478,17 @@ class TestResumes:
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
 
-    async def test_move_resume_section_endpoint_access(
+    async def test_reorganize_resume_endpoint_access(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-
         res = await client.post(
             app.url_path_for(
-                "resumes:move-section",
+                "resumes:reorganize",
                 resume_id=1,
-                section='skills',
-                direction='down',
-            ))
+                column="leftOrder",
+            ),
+            json=["skills", "experience"],
+        )
         assert res.status_code == status.HTTP_403_FORBIDDEN

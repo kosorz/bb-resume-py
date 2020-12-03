@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 
-from .fns import adjust_section_position
+from .fns import adjust_resume_orders
 from ..resumes.schemas import Resume, ResumeCreate, ResumeUpdate, ResumeFull, Content
 from ..users.schemas import User
 from ..parts.experience.schemas import Experience
@@ -41,16 +41,16 @@ async def update_resume(
 
 
 @router.post(
-    "/{resume_id}/section/{section}/move/{direction}",
+    "/{resume_id}/column/{column}/reorganize",
     response_model=Content,
-    name="resumes:move-section",
+    name="resumes:reorganize",
 )
-async def move_resume_section(
-    section: str,
-    direction: str,
+async def reorganize_resume(
+    column: str,
+    requested_order: List[str],
     db: Session = Depends(db),
     owned_resume: ResumeFull = Depends(get_owned_resume)):
-    return adjust_section_position(db, owned_resume, section, direction)
+    return adjust_resume_orders(db, owned_resume, requested_order, column)
 
 
 @router.post(
@@ -62,7 +62,7 @@ async def migrate_resume_section(
     section: str,
     db: Session = Depends(db),
     owned_resume: ResumeFull = Depends(get_owned_resume)):
-    return adjust_section_position(db, owned_resume, section, 'migrate')
+    return adjust_resume_orders(db, owned_resume, 'migrate', section)
 
 
 @router.post(
@@ -74,7 +74,7 @@ async def unlist_resume_section(
     section: str,
     db: Session = Depends(db),
     owned_resume: ResumeFull = Depends(get_owned_resume)):
-    return adjust_section_position(db, owned_resume, section, 'unlist')
+    return adjust_resume_orders(db, owned_resume, 'unlist', section)
 
 
 @router.post(
@@ -87,7 +87,7 @@ async def list_resume_section(
     column: str,
     db: Session = Depends(db),
     owned_resume: ResumeFull = Depends(get_owned_resume)):
-    return adjust_section_position(db, owned_resume, section, column)
+    return adjust_resume_orders(db, owned_resume, column, section)
 
 
 @router.get(
@@ -121,7 +121,7 @@ def delete_resume_section(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Bad request")
 
-    order = adjust_section_position(db, owned_resume, section, "remove")
+    order = adjust_resume_orders(db, owned_resume, "remove", section)
     delete_existing_resource(
         db,
         owned_resume.id,

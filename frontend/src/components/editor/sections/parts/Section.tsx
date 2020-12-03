@@ -19,8 +19,7 @@ import media from "../../../../styled/media";
 const Wrapper = styled.section`
   background: ${({ theme }) => theme.background};
   border-radius: ${({ theme }) => 2 * theme.spaceBig + "px"};
-  padding-bottom: ${({ theme }) => theme.spaceBig + "px"};
-  margin-bottom: ${({ theme }) => theme.spaceBig + "px"};
+  margin-bottom: ${({ theme }) => 2 * theme.spaceBig + "px"};
   padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
   display: flex;
   justify-content: center;

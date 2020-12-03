@@ -5,6 +5,7 @@ import move from "array-move";
 
 import ExperienceUnit from "./ExperienceUnit";
 import Section from "./parts/Section";
+import { SortableList } from "./parts/SortableList";
 
 import {
   getFieldProps,
@@ -15,7 +16,6 @@ import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { experienceValidationSchema } from "../validationSchemas";
 import axios from "../../../util/axios";
-import { SortableList } from "./parts/SortableList";
 
 const Experience = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -35,6 +35,8 @@ const Experience = observer(() => {
     ...experienceEditorData
   } = resume.experience!;
   const [wobble, setWobble] = useState(false);
+
+  const urlBase = `/parts/experience/${id}`;
 
   useEffect(() => {
     if (order.length === 1) {
@@ -86,9 +88,12 @@ const Experience = observer(() => {
     newIndex: number;
   }) => {
     setWobble(false);
-    const movedOrder = move(order, oldIndex, newIndex);
-    if (movedOrder.toString() !== order.toString()) {
-      updateSubSectionsOrder("experience", move(order, oldIndex, newIndex));
+    const newOrder = move(order, oldIndex, newIndex);
+    if (newOrder.toString() !== order.toString()) {
+      updateSubSectionsOrder("experience", newOrder);
+      axios.post(`${urlBase}/reorganize`, newOrder).catch(() => {
+        updateSubSectionsOrder("experience", order);
+      });
     }
   };
 

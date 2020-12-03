@@ -252,15 +252,17 @@ class TestExperienceUnitsRoutes:
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
-    async def test_move_experience_unit_endpoint_existence(
+    async def test_reorganize_experience_endpoint_existence(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if move experience unit endpoint is available
+        # Checks if reorganize experience endpoint is available
         res = await client.post(
-            app.url_path_for("experience:move-unit", unit_id=1,
-                             direction="up"))
+            app.url_path_for(
+                "experience:reorganize",
+                experience_id=1,
+            ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
 
@@ -304,7 +306,7 @@ class TestExperienceUnits:
             app.url_path_for("experience:delete-unit", unit_id=2), )
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
-    async def test_move_experience_unit_authorization_check(
+    async def test_reorganize_experience_authorization_check(
         self,
         app: FastAPI,
         client: AsyncClient,
@@ -314,8 +316,10 @@ class TestExperienceUnits:
 
         # Checks if request will be rejected if user is not authorized
         res = await client.post(
-            app.url_path_for("experience:move-unit", unit_id=2,
-                             direction="up"), )
+            app.url_path_for(
+                "experience:reorganize",
+                experience_id=2,
+            ))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_create_experience_unit_response(
@@ -354,62 +358,35 @@ class TestExperienceUnits:
         # Checks if experience order has newly created unit id
         assert get_resume_experience(app.state._db, 2).order == [2, 3]
 
-    async def test_move_up_experience_unit_response(
+    async def test_reorganize_experience_response(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if experience unit will be moved up
+        # Checks if experience will be reorganized
         res = await client.post(
             app.url_path_for(
-                "experience:move-unit",
-                unit_id=3,
-                direction="up",
-            ), )
+                "experience:reorganize",
+                experience_id=2,
+            ),
+            json=[3, 2],
+        )
         assert res.json() == [3, 2]
         assert res.status_code == status.HTTP_200_OK
 
-    async def test_move_up_experience_unit_validation(
+    async def test_reorganize_experience_validation(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if experience unit will not be moved up
+        # Checks if experience will not be reorganized
         res = await client.post(
             app.url_path_for(
-                "experience:move-unit",
-                unit_id=3,
-                direction="up",
-            ), )
-        assert res.status_code == status.HTTP_400_BAD_REQUEST
-
-    async def test_move_down_experience_unit_response(
-        self,
-        app: FastAPI,
-        client: AsyncClient,
-    ) -> None:
-        # Checks if experience unit will be moved down
-        res = await client.post(
-            app.url_path_for(
-                "experience:move-unit",
-                unit_id=3,
-                direction="down",
-            ), )
-        assert res.json() == [2, 3]
-        assert res.status_code == status.HTTP_200_OK
-
-    async def test_move_dow_experience_unit_validation(
-        self,
-        app: FastAPI,
-        client: AsyncClient,
-    ) -> None:
-        # Checks if experience unit will not be moved down
-        res = await client.post(
-            app.url_path_for(
-                "experience:move-unit",
-                unit_id=3,
-                direction="down",
-            ), )
+                "experience:reorganize",
+                experience_id=2,
+            ),
+            json=[3, 2, 1],
+        )
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.parametrize("body", (
