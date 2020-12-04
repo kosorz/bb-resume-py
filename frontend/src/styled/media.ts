@@ -11,7 +11,6 @@ const sizes: SizesShape = {
 };
 
 export const queries: QueriesShape = {
-  desktop: `(max-width: ${sizes.desktop}px)`,
   tablet: `(max-width: ${sizes.tablet}px)`,
   phone: `(max-width: ${sizes.phone}px)`,
 };
@@ -20,10 +19,7 @@ const media = Object.keys(sizes).reduce(
   (acc: CombinedQueriesShape, label: string) => {
     acc[label] = (...args) => css`
       @media (max-width: ${sizes[label] / 16}em) {
-        ${css(
-          //@ts-ignore
-          ...args
-        )}
+        ${css(args[0], ...args.slice(1))}
       }
     `;
 

@@ -3,7 +3,7 @@ import { ThemeShape } from "../typings/Theme.typing";
 const theme: ThemeShape = {
   background: "#f4f7fe",
   gray: "#f6f6f6",
-  darkGray: "#595959",
+  darkGray: "#8c8c8c",
   white: "#FFF",
 
   red: "#F22300",

@@ -1,78 +1,99 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import styled from "styled-components";
-import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
+import Cropper from "react-easy-crop";
 
-import FormikLabel from "./Label";
+import ImageIcon from "../../../page/Image";
+import RefreshIcon from "../../../page/Refresh";
 import Trash from "../../../page/Trash";
 
 import axios from "../../../../util/axios";
+import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 
 const InvisibleInput = styled.input`
   display: none;
 `;
 
 const Delete = styled(Trash)`
-  margin-top: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: 50%;
+  position: absolute;
+  bottom: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  right: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  fill: ${({ theme }) => theme.white};
 `;
 
-const Uploader = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 100%;
+const Refresh = styled(RefreshIcon)`
+  padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  border-radius: 50%;
+  position: absolute;
+  top: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  right: ${({ theme }) => theme.spaceSmall / 2 + "px"};
 `;
 
-const OwnerFrame = styled.div`
-  width: 100px;
-  height: auto;
+const Wrapper = styled.article`
   position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: ${({ theme }) => theme.darkGray};
 
-  &:hover::before {
-    content: attr(data-change);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: ${({ theme }) => theme.white};
-    z-index: 1;
-    pointer-events: none;
+  &,
+  > div,
+  > div > img {
+    border-top-left-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+    border-top-right-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   }
 `;
 
-const Owner = styled.img`
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-
-  &:hover {
-    filter: brightness(50%);
-    transition: all 0.5s ease;
-  }
-`;
-
-const Empty = styled.div`
-  width: 100px;
-  height: 100px;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  border: 1px dashed;
-  cursor: pointer;
-  border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
+const Image = styled(ImageIcon)`
+  border-radius: 50%;
+  height: 60px;
+  width: auto;
+  padding: ${({ theme }) => theme.spaceSmall + "px"};
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 `;
 
 const InfoPhoto = () => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, updateInfoPhoto } = resumeBubble;
-  const { id, info, meta } = resume;
+  const { id, info } = resume;
   const { photo } = info!;
-  const { colors } = meta!;
+
+  const [cropperState, setCropperState] = useState({
+    image: photo,
+    crop: { x: 0, y: 0 },
+    zoom: 1,
+    aspect: 1,
+  });
 
   const invisibleInputRef = useRef<HTMLInputElement>(null);
 
   const url = `/parts/${id}/info-photo`;
+
+  const onCropChange = (crop: { x: number; y: number }) => {
+    setCropperState((prevState) => {
+      return {
+        ...prevState,
+        crop,
+      };
+    });
+  };
+
+  const onZoomChange = (zoom: number) => {
+    setCropperState((prevState) => {
+      return { ...prevState, zoom };
+    });
+  };
+
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    console.log(croppedAreaPixels);
+  };
 
   return (
     <>
@@ -80,6 +101,10 @@ const InfoPhoto = () => {
         ref={invisibleInputRef}
         multiple={false}
         onChange={(e) => {
+          if (!e.target.value) {
+            return;
+          }
+
           var formData = new FormData();
           e.target.files && formData.append("f", e.target.files[0]);
 
@@ -89,39 +114,52 @@ const InfoPhoto = () => {
                 "Content-Type": "multipart/form-data",
               },
             })
-            .then((res) => updateInfoPhoto(res.data));
+            .then((res) => {
+              setCropperState((prevState) => {
+                return { ...prevState, image: res.data };
+              });
+              updateInfoPhoto(res.data);
+            });
         }}
         type="file"
         name="resume-photo"
         id="resume-photo"
         accept="image/png,image/jpeg"
       />
-      <FormikLabel name={"photo"} />
-      <Uploader>
+      <Wrapper>
         {photo ? (
           <>
-            <OwnerFrame data-change="Change">
-              <Owner
-                onClick={() => invisibleInputRef.current?.click()}
-                alt="You"
-                src={`${process.env.REACT_APP_OBJECT_STORAGE_URL}${process.env.REACT_APP_RESUME_PHOTO_STORAGE_PATH}${photo}`}
-              />
-            </OwnerFrame>
+            <Cropper
+              image={`${process.env.REACT_APP_OBJECT_STORAGE_URL}${process.env.REACT_APP_RESUME_PHOTO_STORAGE_PATH}${cropperState.image}`}
+              crop={cropperState.crop}
+              zoom={cropperState.zoom}
+              aspect={cropperState.aspect}
+              onCropChange={onCropChange}
+              onCropComplete={onCropComplete}
+              onZoomChange={onZoomChange}
+            />
+            <Refresh onClick={() => invisibleInputRef.current?.click()} />
             <Delete
-              onClick={() =>
-                axios.delete(url).then((res) => updateInfoPhoto(res.data))
-              }
+              onClick={() => {
+                axios.delete(url).then((res) => {
+                  if (invisibleInputRef.current) {
+                    invisibleInputRef.current.value = "";
+                  }
+                  setCropperState({
+                    image: photo,
+                    crop: { x: 0, y: 0 },
+                    zoom: 1,
+                    aspect: 1,
+                  });
+                  updateInfoPhoto(res.data);
+                });
+              }}
             />
           </>
         ) : (
-          <Empty
-            style={{ borderColor: colors.main }}
-            onClick={() => invisibleInputRef.current?.click()}
-          >
-            Upload your photo
-          </Empty>
+          <Image onClick={() => invisibleInputRef.current?.click()} />
         )}
-      </Uploader>
+      </Wrapper>
     </>
   );
 };

@@ -14,7 +14,6 @@ import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
 
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
-// import axios from "../../../../util/axios";
 
 const Wrapper = styled.section`
   background: ${({ theme }) => theme.background};
@@ -82,7 +81,9 @@ const SectionNavigation = styled.nav`
 `;
 
 const Content = styled.section`
-  border-top: 3px solid ${({ theme }) => theme.main};
+  border-color: ${({ theme }) => theme.main};
+  border-width: ${({ noBorder }: { noBorder: boolean }) =>
+    noBorder ? 0 : "3px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   background-color: ${({ theme }) => theme.white};
   box-shadow: ${({ theme }) => theme.cardShadow};
@@ -124,6 +125,7 @@ const icons: { [key: string]: ReactNode } = {
 
 const Section = ({
   children,
+  contentForehead,
   title,
   identifier,
   subtitle,
@@ -135,6 +137,7 @@ const Section = ({
   title: string;
   purpose: string;
   identifier: "skills" | "experience" | "info" | "meta" | "gallery" | "";
+  contentForehead?: ReactNode;
   addFn?: Function;
   subtitle?: string;
   editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
@@ -218,12 +221,6 @@ const Section = ({
 
   const urlBase = `/resumes/${id}/section/${identifier}`;
 
-  // const move = (dir: string) => {
-  //   axios.post(`${urlBase}/move/${dir}`).then((res) => {
-  //     updateContent(res.data);
-  //   });
-  // };
-
   return (
     <Wrapper>
       <About>
@@ -247,7 +244,8 @@ const Section = ({
           )}
         </SectionNavigation>
       </About>
-      <Content>
+      <Content noBorder={identifier === "info"}>
+        {contentForehead}
         <Children>{children}</Children>
         {subtitle && addFn && (
           <Footer>

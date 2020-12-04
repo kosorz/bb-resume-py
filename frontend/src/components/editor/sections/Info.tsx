@@ -40,13 +40,13 @@ const Info = observer(() => {
       <Section
         identifier={"info"}
         title={"Info"}
+        contentForehead={<InfoPhoto />}
         purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
       >
         <Form>
           <Values>
-            <InfoPhoto />
             <Input {...getFieldProps(formik, "name")} placeholder="Name" />
             <Input {...getFieldProps(formik, "role")} placeholder="Role" />
             <Input {...getFieldProps(formik, "phone")} placeholder="Phone" />
