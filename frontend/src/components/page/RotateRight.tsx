@@ -1,0 +1,13 @@
+import styled from "styled-components";
+import { ReactComponent as RotateRightIcon } from "./icons/RotateRight.svg";
+import { SortableHandle } from "react-sortable-hoc";
+
+const RotateRight = styled(RotateRightIcon)`
+  &:hover {
+    background: ${({ theme }) => theme.lightMain};
+    fill: ${({ theme }) => theme.main};
+    cursor: grab;
+  }
+`;
+
+export default SortableHandle(RotateRight);

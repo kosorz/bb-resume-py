@@ -6,12 +6,12 @@ import logging
 
 from .schemas import ServerResumeUpdate, Resume, ResumeFull
 from ...db.crud import get_resume, update_resume
-from ...util.fns import update_existing_resource
+from ...util.defs import update_existing_resource
 
 
-def remove_object_from_bucket(object_storage, bucket: str, key: str):
+def remove_object_from_bucket(storage_client, bucket: str, key: str):
     try:
-        object_storage.delete_object(Bucket=bucket, Key=key)
+        storage_client.delete_object(Bucket=bucket, Key=key)
     except ClientError as e:
         logging.error(e)
 

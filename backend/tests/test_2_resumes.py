@@ -117,6 +117,13 @@ class TestResumes:
                     "large": 22,
                     "big": 38
                 },
+                    "photoSettings": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 0,
+                    "height": 0,
+                    "rotation": 0,
+                },
                 "paper": {
                     "size": "A4",
                     "space": 50,
@@ -167,6 +174,13 @@ class TestResumes:
                     "large": 22,
                     "big": 38
                 },
+                "photoSettings": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 0.0,
+                    "height": 0.0,
+                    "rotation": 0,
+                },
                 "paper": {
                     "size": "A4",
                     "space": 50,
@@ -193,6 +207,7 @@ class TestResumes:
                 "phone": "",
                 "link": "",
                 "email": "",
+                'cropped_photo': '',
                 "location": "",
                 "photo": "",
                 "photo_enabled": True,
@@ -233,6 +248,13 @@ class TestResumes:
                     "medium": 16,
                     "large": 22,
                     "big": 38
+                },
+                "photoSettings": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 0,
+                    "height": 0,
+                    "rotation": 0,
                 },
                 "paper": {
                     "size": "A4",

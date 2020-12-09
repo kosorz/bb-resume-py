@@ -7,6 +7,7 @@ type InfoShape = {
   link: string;
   email: string;
   photo: string;
+  cropped_photo: string;
   location: string;
   role: string;
   phone_enabled: boolean;
@@ -17,7 +18,7 @@ type InfoShape = {
   role_enabled: boolean;
 };
 
-export interface InfoViewer extends InfoShape {
+export interface InfoViewer extends Omit<InfoShape, "photo"> {
   meta: MetaShape;
 }
 

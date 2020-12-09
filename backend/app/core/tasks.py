@@ -39,10 +39,12 @@ async def connect_to_s3(app: FastAPI) -> None:
 
     try:
         client.head_bucket(Bucket='resume-photos')
+        client.head_bucket(Bucket='resume-cropped-photos')
     except ClientError:
         client.create_bucket(Bucket='resume-photos')
+        client.create_bucket(Bucket='resume-cropped-photos')
 
-    app.state._object_storage = client
+    app.state._object_storage = object_storage
 
 
 async def close_db_connection(app: FastAPI) -> None:

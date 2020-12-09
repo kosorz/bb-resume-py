@@ -52,6 +52,7 @@ class Info(Base):
     location = Column(String, default="")
     role = Column(String, default="")
     photo = Column(String, default="")
+    cropped_photo = Column(String, default="")
     phone_enabled = Column(Boolean, default=True)
     link_enabled = Column(Boolean, default=True)
     email_enabled = Column(Boolean, default=True)

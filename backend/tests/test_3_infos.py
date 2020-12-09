@@ -39,6 +39,19 @@ class TestInfosRoutes:
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
+    async def test_update_cropped_photo_endpoint_existence(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if update photo endpoint is available
+        res = await client.patch(
+            app.url_path_for(
+                "info:update-cropped-photo",
+                resume_id=1,
+            ))
+        assert res.status_code != status.HTTP_404_NOT_FOUND
+
     async def test_delete_photo_endpoint_existence(
         self,
         app: FastAPI,
@@ -83,6 +96,19 @@ class TestInfos:
             app.url_path_for("info:update-photo", resume_id=2))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
+    async def test_update_cropped_photo_authorization_check(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Replace get_current_user dependency override with it's genuine counterpart
+        app.dependency_overrides[get_current_user] = get_current_user
+
+        # Checks if request will be rejected if user is not authorized
+        res = await client.patch(
+            app.url_path_for("info:update-cropped-photo", resume_id=2))
+        assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
     async def test_delete_photo_authorization_check(
         self,
         app: FastAPI,
@@ -102,7 +128,7 @@ class TestInfos:
         base_client: AsyncClient,
         txt_file,
     ) -> None:
-        # Checks if photo will be updated when correct data submitted and user owns resume
+        # Checks if photo not will be updated when incorrect file type is submitted
         res = await base_client.patch(
             app.url_path_for(
                 "info:update-photo",
@@ -111,6 +137,27 @@ class TestInfos:
             files={"f": txt_file},
         )
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    async def test_update_cropped_photo_no_base_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if cropped photo not will be updated when there's no base photo
+        res = await client.patch(
+            app.url_path_for(
+                "info:update-cropped-photo",
+                resume_id=2,
+            ),
+            json={
+                "x": 150,
+                "y": 150,
+                "width": 120.0,
+                "height": 120.0,
+                "rotation": 90,
+            },
+        )
+        assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     async def test_update_resume_info_validation(
         self,
@@ -126,6 +173,7 @@ class TestInfos:
             json={"not_existing_key": "nothing"},
         )
         assert res.json() == {
+            "cropped_photo": "",
             "name": "string",
             "id": 2,
             "resume_id": 2,
@@ -222,6 +270,7 @@ class TestInfos:
             },
         )
         assert res.json() == {
+            'cropped_photo': '',
             "name": "string",
             "id": 2,
             "resume_id": 2,
@@ -299,12 +348,63 @@ class TestInfos:
         info = get_resume_info(app.state._db, 2)
         assert info.photo
 
+    async def test_update_cropped_photo_rotation_validation(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if cropped photo not will be updated when invalid rotation requested
+        res = await client.patch(
+            app.url_path_for(
+                "info:update-cropped-photo",
+                resume_id=2,
+            ),
+            json={
+                "x": 150,
+                "y": 150,
+                "width": 120,
+                "height": 120,
+                "rotation": 45,
+            },
+        )
+        assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    async def test_update_cropped_photo(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks if cropped photo will be updated when settins correct and base photo present
+        res = await client.patch(
+            app.url_path_for(
+                "info:update-cropped-photo",
+                resume_id=2,
+            ),
+            json={
+                "x": 150,
+                "y": 150,
+                "width": 120,
+                "height": 120,
+                "rotation": 90,
+            },
+        )
+        assert res.status_code == status.HTTP_200_OK
+
+    async def test_update_cropped_photo_outcome(
+        self,
+        app: FastAPI,
+        client: AsyncClient,
+    ) -> None:
+        # Checks outcome of cropped photo update
+        info = get_resume_info(app.state._db, 2)
+        assert info.cropped_photo
+
     async def test_delete_photo(
         self,
         app: FastAPI,
         client: AsyncClient,
     ) -> None:
-        # Checks if photo will be deleted when correct data submitted and user owns resume
+        # Checks if photos will be deleted when correct data submitted and user owns resume
         res = await client.delete(
             app.url_path_for(
                 "info:delete-photo",
@@ -333,6 +433,7 @@ class TestInfos:
         # Checks outcome of photo delete
         info = get_resume_info(app.state._db, 2)
         assert not info.photo
+        assert not info.cropped_photo
 
     async def test_update_resume_info_access(
         self,
@@ -356,6 +457,22 @@ class TestInfos:
         jpeg_file,
     ) -> None:
         # Checks if photo will not be updated when user doesn't own the resume
+        res = await base_client.patch(
+            app.url_path_for(
+                "info:update-photo",
+                resume_id=1,
+            ),
+            files={"f": jpeg_file},
+        )
+        assert res.status_code == status.HTTP_403_FORBIDDEN
+
+    async def test_update_cropped_photo_access(
+        self,
+        app: FastAPI,
+        base_client: AsyncClient,
+        jpeg_file,
+    ) -> None:
+        # Checks if cropped photo will not be updated when user doesn't own the resume
         res = await base_client.patch(
             app.url_path_for(
                 "info:update-photo",

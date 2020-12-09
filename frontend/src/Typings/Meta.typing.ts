@@ -29,6 +29,14 @@ export type ContentShape = {
   };
 };
 
+export type PhotoCropShape = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rotation: number;
+};
+
 export type MetaShape = {
   colors: ColorsShape;
   fontSize: FontSizeShape;
@@ -44,6 +52,7 @@ export type MetaShape = {
     | "X-parts";
   paper: PaperShape;
   content: ContentShape;
+  photoSettings: PhotoCropShape;
 };
 
 export default MetaShape;

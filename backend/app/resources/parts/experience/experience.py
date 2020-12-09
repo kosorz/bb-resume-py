@@ -4,10 +4,10 @@ from sqlalchemy.orm import Session
 
 from .schemas import Experience, ExperienceUpdate, ExperienceFull, ExperienceUnit, ExperienceUnitUpdate
 from ..schemas import OrderUpdate
-from ...resumes.fns import adjust_resume_orders, reorganize, is_valid_column
+from ...resumes.defs import adjust_resume_orders, reorganize, is_valid_column
 from ...resumes.schemas import ResumeFull, ServerResumeUpdate, Resume
 from ....util.deps import get_owned_resume, get_current_user_experience, get_current_user_experience_units, db
-from ....util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
+from ....util.defs import update_existing_resource, find_item_with_key_value, delete_existing_resource
 from ....db import crud
 
 router = APIRouter()

@@ -18,6 +18,7 @@ class Info(InfoBase):
     email: str
     location: str
     role: str
+    cropped_photo: str
     photo: str
     phone_enabled: bool
     link_enabled: bool
@@ -47,3 +48,4 @@ class InfoUpdate(BaseModel):
 
 class ServerInfoUpdate(InfoUpdate):
     photo: Optional[str]
+    cropped_photo: Optional[str]

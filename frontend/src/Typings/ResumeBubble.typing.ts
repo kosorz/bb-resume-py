@@ -14,6 +14,7 @@ type ResumeBubbleShape = {
   };
   resume: ResumeShape;
   getResume: () => void;
+  resetPhotoSettings: () => void;
   setResume: (data: Partial<ResumeShape>) => void;
   setUpdateTime: () => void;
   deleteSectionUpdate: (
@@ -26,7 +27,7 @@ type ResumeBubbleShape = {
     order: "leftOrder" | "rightOrder" | "order"
   ) => void;
   updateInfo: (data: InfoShape) => void;
-  updateInfoPhoto: (photoId: string) => void;
+  updateInfoCroppedPhoto: (croppedPhotoId: string) => void;
   updateSkills: (data: SkillsShape) => void;
   updateSkillsGroup: (data: SkillsGroupShape) => void;
   setOpenSubSection: (identifier: "skills" | "experience", id?: number) => void;

@@ -24,7 +24,7 @@ let initialState: ResumeBubbleShape = {
   getResume: () => {},
   setResume: () => {},
   updateInfo: () => {},
-  updateInfoPhoto: () => {},
+  updateInfoCroppedPhoto: () => {},
   setOpenSubSection: () => {},
   updateSkills: () => {},
   updateSkillsGroup: () => {},
@@ -39,6 +39,7 @@ let initialState: ResumeBubbleShape = {
   addSectionUpdate: () => {},
   updateSubSectionsOrder: () => {},
   updateContent: () => {},
+  resetPhotoSettings: () => {},
 };
 
 export const ResumeBubble = createContext(initialState);
@@ -79,6 +80,18 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         store.setUpdateTime();
       }
     },
+    resetPhotoSettings: () => {
+      if (store.resume.meta) {
+        store.resume.meta.photoSettings = {
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+          rotation: 0,
+        };
+      }
+    },
+
     addSectionUpdate: (data, identifier, order) => {
       store.setResume({ [identifier]: data });
       if (store.resume.meta) {
@@ -114,9 +127,9 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
       store.resume.info = data;
       store.setUpdateTime();
     },
-    updateInfoPhoto: (photoId) => {
+    updateInfoCroppedPhoto: (croppedPhotoId) => {
       if (store.resume.info) {
-        store.resume.info.photo = photoId;
+        store.resume.info.cropped_photo = croppedPhotoId;
         store.setUpdateTime();
       }
     },

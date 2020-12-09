@@ -89,7 +89,7 @@ const Content = styled.section`
   box-shadow: ${({ theme }) => theme.cardShadow};
   transition: ${({ theme }) => theme.cardShadowTransition};
   flex-shrink: 0;
-  flex-basis: 400px;
+  flex-basis: 375px;
 
   ${media.tablet`
     flex-basis: 50%;

@@ -5,7 +5,7 @@ from httpx import AsyncClient
 from fastapi import FastAPI
 
 from app.util.deps import get_current_user
-from app.util.fns import compare_while_excluding
+from app.util.defs import compare_while_excluding
 from app.db.crud import get_resume_experience, get_experience_unit, get_resume
 
 pytestmark = pytest.mark.asyncio

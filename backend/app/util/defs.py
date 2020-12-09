@@ -13,6 +13,10 @@ def recursive_dict_update(d, u):
     return d
 
 
+def ext_from_ct(mime):
+    return mime.partition('/')[2]
+
+
 def update_existing_resource(
     db: Session,
     resource_id: int,

@@ -26,6 +26,14 @@ class Paper(BaseModel):
     layout: str
 
 
+class PhotoSettings(BaseModel):
+    x: float
+    y: float
+    width: float
+    height: float
+    rotation: int
+
+
 class SplitContent(BaseModel):
     leftOrder: List[str] = []
     rightOrder: List[str] = []
@@ -58,10 +66,23 @@ class ContentUpdate(BaseModel):
     full: Optional[FullContentUpdate]
 
 
+class PhotoSettingsUpdate(PhotoSettings):
+    rotation: int
+
+    @validator("rotation")
+    def must_be_right_angle(cls, v):
+        if v % 90 != 0:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Unprocessable Entity")
+        return v
+
+
 class Meta(BaseModel):
     colors: Colors
     fontSize: FontSize
     paper: Paper
+    photoSettings: PhotoSettings
     fontFamily: str
     background: str
     content: Content
@@ -174,10 +195,6 @@ class MetaUpdate(BaseModel):
         return v
 
 
-class ServerMetaUpdate(MetaUpdate):
-    content: Optional[ContentUpdate]
-
-
 class ResumeBase(BaseModel):
     title: str
 
@@ -211,5 +228,15 @@ class ResumeUpdate(BaseModel):
     meta: Optional[MetaUpdate]
 
 
+class ServerMetaUpdate(MetaUpdate):
+    content: Optional[ContentUpdate]
+    photoSettings: Optional[PhotoSettings]
+
+
 class ServerResumeUpdate(ResumeUpdate):
     meta: Optional[ServerMetaUpdate]
+
+
+class ResumePhotos(BaseModel):
+    photo: str
+    cropped_photo: str

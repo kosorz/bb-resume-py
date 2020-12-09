@@ -2,12 +2,12 @@ from typing import List
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 
-from .fns import adjust_resume_orders
+from .defs import adjust_resume_orders
 from ..resumes.schemas import Resume, ResumeCreate, ResumeUpdate, ResumeFull, Content
 from ..users.schemas import User
 from ..parts.experience.schemas import Experience
 from ...util.deps import get_current_active_user, get_owned_resume, db
-from ...util.fns import update_existing_resource, find_item_with_key_value, delete_existing_resource
+from ...util.defs import update_existing_resource, find_item_with_key_value, delete_existing_resource
 from ...db import crud
 
 router = APIRouter()

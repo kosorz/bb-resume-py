@@ -18,8 +18,13 @@ def db(request: Request):
     return request.app.state._db
 
 
-def object_storage(request: Request):
+# Storage
+def storage(request: Request):
     return request.app.state._object_storage
+
+
+def storage_client(request: Request, storage=Depends(storage)):
+    return storage.meta.client
 
 
 # Current user
@@ -104,7 +109,6 @@ def get_requested_resume(resume_id: str, db: Session = Depends(db)):
 
 
 def get_owned_resume(
-        db: Session = Depends(db),
         requested_resume: ResumeFull = Depends(get_requested_resume),
         current_user: User = Depends(get_current_active_user),
 ):
@@ -115,3 +119,12 @@ def get_owned_resume(
         )
 
     return requested_resume
+
+
+def get_owned_resume_photos(
+        owned_resume: ResumeFull = Depends(get_owned_resume)):
+
+    return {
+        "photo": owned_resume.info.photo,
+        "cropped_photo": owned_resume.info.cropped_photo
+    }

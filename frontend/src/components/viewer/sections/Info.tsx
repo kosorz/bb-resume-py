@@ -9,7 +9,7 @@ const Info = ({
   phone,
   link,
   email,
-  photo,
+  cropped_photo,
   location,
   role,
   phone_enabled,
@@ -91,7 +91,7 @@ const Info = ({
         {photo_enabled && (
           <Image
             style={styles.image}
-            source={`${process.env.REACT_APP_OBJECT_STORAGE_URL}${process.env.REACT_APP_RESUME_PHOTO_STORAGE_PATH}${photo}`}
+            source={`${process.env.REACT_APP_OBJECT_STORAGE_URL}${process.env.REACT_APP_RESUME_PHOTO_CROPS_STORAGE_PATH}${cropped_photo}`}
           />
         )}
       </View>
