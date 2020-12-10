@@ -1,11 +1,12 @@
+import json
 from typing import List
 from sqlalchemy.orm import Session
-from fastapi import Depends, status, HTTPException
+from fastapi import Depends, status, HTTPException, Form, UploadFile, File
 from jose import JWTError, jwt
 from starlette.requests import Request
 
 from ..core.config import SECRET_KEY, ALGORITHM, oauth2_scheme
-from ..resources.resumes.schemas import Resume, ResumeFull
+from ..resources.resumes.schemas import Resume, ResumeFull, PhotoSettingsUpdate
 from ..resources.auth.schemas import TokenData
 from ..resources.users.schemas import User
 from ..resources.parts.experience.schemas import ExperienceFull
@@ -128,3 +129,16 @@ def get_owned_resume_photos(
         "photo": owned_resume.info.photo,
         "cropped_photo": owned_resume.info.cropped_photo
     }
+
+
+# Other
+async def get_photo_settings(photo_settings: str = Form(...)):
+    loaded_settings = json.loads(photo_settings)
+    return PhotoSettingsUpdate(**loaded_settings)
+
+
+async def get_f_image(f: UploadFile = File(...)):
+    if (f.content_type not in ['image/jpeg', 'image/png']):
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            detail="Unprocessable Entity")
+    return f

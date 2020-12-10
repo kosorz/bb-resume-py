@@ -147,7 +147,7 @@ class TestAuth:
         self,
         app: FastAPI,
         client: AsyncClient,
-        credentials: str,
+        credentials: Dict,
     ) -> None:
         client.headers["content-type"] = "application/x-www-form-urlencoded"
         # Checks if will not authorize for invalid credentials
@@ -155,7 +155,7 @@ class TestAuth:
                                 data=credentials)
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
-    async def test_login_and_its__valid_outcome(
+    async def test_login_and_its_valid_outcome(
         self,
         app: FastAPI,
         client: AsyncClient,

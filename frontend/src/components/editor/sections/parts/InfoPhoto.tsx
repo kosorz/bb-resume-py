@@ -8,6 +8,7 @@ import RotateLeftIcon from "../../../page/RotateLeft";
 import RotateRightIcon from "../../../page/RotateRight";
 
 import axios from "../../../../util/axios";
+import imageCrop from "../../../../util/imageCrop";
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import { useDebounce } from "../../../../util/hooks";
 
@@ -91,7 +92,7 @@ const InfoPhoto = () => {
     width: 0,
     rotation: 0,
   });
-  const debouncedCroppedPixels = useDebounce(croppedPixels, 500);
+  const debouncedCroppedPixels = useDebounce(croppedPixels, 1500);
 
   const url = `/parts/${id}`;
 
@@ -100,9 +101,25 @@ const InfoPhoto = () => {
 
     if (width && height) {
       if (image && (!cropped_photo || !skipInitialPhotoUpdate.current)) {
-        axios
-          .patch(url + "/info_photo_crop", debouncedCroppedPixels)
-          .then((res) => updateInfoCroppedPhoto(res.data));
+        imageCrop(
+          `${process.env.REACT_APP_OBJECT_STORAGE_URL}${process.env.REACT_APP_RESUME_PHOTO_STORAGE_PATH}${image}`,
+          debouncedCroppedPixels
+        ).then((file) => {
+          var formData = new FormData();
+          formData.append("f", file as File);
+          formData.append(
+            "photo_settings",
+            JSON.stringify(debouncedCroppedPixels)
+          );
+
+          axios
+            .patch(url + "/info_photo_crop", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((res) => updateInfoCroppedPhoto(res.data));
+        });
       }
 
       skipInitialPhotoUpdate.current = false;

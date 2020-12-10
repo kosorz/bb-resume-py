@@ -141,21 +141,20 @@ class TestInfos:
     async def test_update_cropped_photo_no_base_validation(
         self,
         app: FastAPI,
-        client: AsyncClient,
+        base_client: AsyncClient,
+        jpeg_file,
     ) -> None:
         # Checks if cropped photo not will be updated when there's no base photo
-        res = await client.patch(
+        res = await base_client.patch(
             app.url_path_for(
                 "info:update-cropped-photo",
                 resume_id=2,
             ),
-            json={
-                "x": 150,
-                "y": 150,
-                "width": 120.0,
-                "height": 120.0,
-                "rotation": 90,
+            data={
+                "photo_settings":
+                '{"rotation":0,"width":354,"height":354,"x":337,"y":111}'
             },
+            files={"f": jpeg_file},
         )
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
@@ -351,42 +350,60 @@ class TestInfos:
     async def test_update_cropped_photo_rotation_validation(
         self,
         app: FastAPI,
-        client: AsyncClient,
+        base_client: AsyncClient,
+        jpeg_file,
     ) -> None:
         # Checks if cropped photo not will be updated when invalid rotation requested
-        res = await client.patch(
+        res = await base_client.patch(
             app.url_path_for(
                 "info:update-cropped-photo",
                 resume_id=2,
             ),
-            json={
-                "x": 150,
-                "y": 150,
-                "width": 120,
-                "height": 120,
-                "rotation": 45,
+            data={
+                "photo_settings":
+                '{"rotation":1,"width":354,"height":354,"x":337,"y":111}'
             },
+            files={"f": jpeg_file},
+        )
+        assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+    async def test_update_cropped_photo_file_validation(
+        self,
+        app: FastAPI,
+        base_client: AsyncClient,
+        txt_file,
+    ) -> None:
+        # Checks if cropped photo not will be updated when invalid rotation requested
+        res = await base_client.patch(
+            app.url_path_for(
+                "info:update-cropped-photo",
+                resume_id=2,
+            ),
+            data={
+                "photo_settings":
+                '{"rotation":0,"width":354,"height":354,"x":337,"y":111}'
+            },
+            files={"f": txt_file},
         )
         assert res.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     async def test_update_cropped_photo(
         self,
         app: FastAPI,
-        client: AsyncClient,
+        base_client: AsyncClient,
+        jpeg_file,
     ) -> None:
         # Checks if cropped photo will be updated when settins correct and base photo present
-        res = await client.patch(
+        res = await base_client.patch(
             app.url_path_for(
                 "info:update-cropped-photo",
                 resume_id=2,
             ),
-            json={
-                "x": 150,
-                "y": 150,
-                "width": 120,
-                "height": 120,
-                "rotation": 90,
+            data={
+                "photo_settings":
+                '{"rotation":0,"width":354,"height":354,"x":337,"y":111}'
             },
+            files={"f": jpeg_file},
         )
         assert res.status_code == status.HTTP_200_OK
 
