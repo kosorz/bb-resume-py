@@ -67,7 +67,7 @@ const Info = ({
     <View style={styles.info} wrap={false}>
       <View style={styles.rest}>
         <View>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name}>{name || "Your name"}</Text>
           {role_enabled && <Text style={styles.role}>{role}</Text>}
         </View>
         <View style={styles.contactInfo}>

@@ -1,9 +1,12 @@
 import React from "react";
 import { FieldInputProps } from "formik";
 import styled from "styled-components";
-import { capitalize } from "../../../../util/fns";
+import { capitalize } from "../../../../../util/fns";
 
-const Label = styled.label``;
+const Label = styled.label`
+  flex: 100%;
+  font-size: ${({ theme }) => theme.mediumFont};
+`;
 
 const FormikLabel = ({
   name,
@@ -13,7 +16,7 @@ const FormikLabel = ({
 }) => {
   return (
     <Label className={className}>
-      {capitalize(name.replace(/_/g, "\xa0").replace(/enabled/g, "visible"))}
+      {capitalize(name.replace(/_/g, "\xa0"))}
     </Label>
   );
 };

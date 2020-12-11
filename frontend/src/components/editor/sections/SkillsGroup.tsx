@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
-import Input from "./parts/Input";
-import Area from "./parts/Area";
+import Input from "./parts/formik/Input";
+import Area from "./parts/formik/Area";
 import SubSection from "./parts/SubSection";
-import Form from "./parts/Form";
+import Form from "./parts/formik/Form";
 import Values from "./parts/Values";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
@@ -55,12 +55,6 @@ const SkillsGroup = observer(
         setTimeout(() => removeSkillsGroup(res.data), 350);
       });
 
-    // const changeOrder = (dir: string) => {
-    //   axios
-    //     .post(`/parts/skills_group/${id}/move/${dir}`)
-    //     .then((res) => updateSubSectionsOrder("skills", res.data));
-    // };
-
     return (
       <SubSection
         id={id}
@@ -75,10 +69,15 @@ const SkillsGroup = observer(
       >
         <Form>
           <Values>
-            <Input {...getFieldProps(formik, "title")} placeholder="Name" />
+            <Input
+              {...getFieldProps(formik, "title")}
+              placeholder="Enter skills group name"
+              withSpace={false}
+            />
             <Area
               {...getFieldProps(formik, "values")}
               placeholder="Communication,problem solving,stress handling"
+              withSpace={false}
             />
           </Values>
         </Form>

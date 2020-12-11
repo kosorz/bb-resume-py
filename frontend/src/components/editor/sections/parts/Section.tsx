@@ -14,6 +14,7 @@ import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
 
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
+import { ThemeShape } from "../../../../typings/Theme.typing";
 
 const Wrapper = styled.section`
   background: ${({ theme }) => theme.background};
@@ -40,7 +41,7 @@ const About = styled.article`
 
   svg {
     width: 100px;
-    height: auto;
+    height: 100px;
     display: block;
   }
 
@@ -81,9 +82,9 @@ const SectionNavigation = styled.nav`
 `;
 
 const Content = styled.section`
-  border-color: ${({ theme }) => theme.main};
-  border-width: ${({ noBorder }: { noBorder: boolean }) =>
-    noBorder ? 0 : "3px"};
+  border-top: solid
+    ${({ noBorder, theme }: { noBorder: boolean; theme: ThemeShape }) =>
+      noBorder ? 0 : "3px" + theme.main};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   background-color: ${({ theme }) => theme.white};
   box-shadow: ${({ theme }) => theme.cardShadow};

@@ -1,4 +1,10 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, {
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import styled from "styled-components";
 import Cropper from "react-easy-crop";
 
@@ -71,7 +77,7 @@ const Wrapper = styled.article`
   }
 `;
 
-const InfoPhoto = () => {
+const InfoPhoto = ({ toggle }: { toggle: ReactNode }) => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, updateInfoCroppedPhoto, resetPhotoSettings } = resumeBubble;
   const { id, info, meta } = resume;
@@ -175,6 +181,7 @@ const InfoPhoto = () => {
               }
               aspect={1}
             />
+            {toggle}
             <Camera onClick={() => invisibleInputRef.current?.click()} />
             <RotateLeft
               onClick={() => setRotation((prevState) => prevState - 90)}

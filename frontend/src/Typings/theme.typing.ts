@@ -15,6 +15,7 @@ export type ThemeShape = {
   lightMain: string;
 
   smallFont: string;
+  mediumFont: string;
   biggerFont: string;
 
   spaceSmall: number;

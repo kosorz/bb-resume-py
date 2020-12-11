@@ -133,8 +133,7 @@ def get_owned_resume_photos(
 
 # Other
 async def get_photo_settings(photo_settings: str = Form(...)):
-    loaded_settings = json.loads(photo_settings)
-    return PhotoSettingsUpdate(**loaded_settings)
+    return PhotoSettingsUpdate(**json.loads(photo_settings))
 
 
 async def get_f_image(f: UploadFile = File(...)):

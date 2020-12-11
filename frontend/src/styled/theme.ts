@@ -17,6 +17,7 @@ const theme: ThemeShape = {
   lightMain: "#e6f7ff",
 
   smallFont: "12px",
+  mediumFont: "13px",
   biggerFont: "14px",
 
   spaceSmall: 10,

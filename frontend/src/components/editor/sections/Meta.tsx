@@ -2,11 +2,10 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 
 import Section from "./parts/Section";
-import Form from "./parts/Form";
-import ColorPicker from "./parts/ColorPicker";
-import Select from "./parts/Select";
-import Range from "./parts/Range";
-import Settings from "./parts/Settings";
+import Form from "./parts/formik/Form";
+import ColorPicker from "./parts/formik/ColorPicker";
+import Select from "./parts/formik/Select";
+import Range from "./parts/formik/Range";
 import { Title } from "../Editor";
 
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
@@ -17,6 +16,7 @@ import {
   getManualFieldProps,
 } from "../../../util/fns";
 import { useFormikAutoSave } from "../../../util/hooks";
+import Values from "./parts/Values";
 
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -65,7 +65,7 @@ const Meta = observer(() => {
     or randomised words which.`}
       >
         <Form>
-          <Settings>
+          <Values>
             <ColorPicker
               displayName={"Accents"}
               {...getManualFieldProps(colorsFormik, "main")}
@@ -142,7 +142,7 @@ const Meta = observer(() => {
               <option value={"Wood"} label={"Wood"} />
               <option value={"X-parts"} label={"X-parts"} />
             </Select>
-          </Settings>
+          </Values>
         </Form>
       </Section>
     </>
