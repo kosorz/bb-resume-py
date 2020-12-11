@@ -7,7 +7,6 @@ import Toggle from "./parts/Toggle";
 import Input from "./parts/formik/Input";
 import Section from "./parts/Section";
 import Form from "./parts/formik/Form";
-import Values from "./parts/Values";
 import InfoPhoto from "./parts/InfoPhoto";
 import { Title } from "../Editor";
 
@@ -57,37 +56,35 @@ const Info = observer(() => {
     or randomised words which.`}
       >
         <Form>
-          <Values>
-            <Input
-              {...getFieldProps(formik, "name")}
-              placeholder="Enter your name"
-            />
-            <Input
-              {...getFieldProps(formik, "role")}
-              placeholder="Enter your role"
-              toggle={<Toggle {...getFieldProps(formik, "role_enabled")} />}
-            />
-            <Input
-              {...getFieldProps(formik, "phone number")}
-              placeholder="Enter your phone number"
-              toggle={<Toggle {...getFieldProps(formik, "phone_enabled")} />}
-            />
-            <Input
-              {...getFieldProps(formik, "email")}
-              placeholder="Enter your email address"
-              toggle={<Toggle {...getFieldProps(formik, "email_enabled")} />}
-            />
-            <Input
-              {...getFieldProps(formik, "link")}
-              placeholder="Enter link to your website"
-              toggle={<Toggle {...getFieldProps(formik, "link_enabled")} />}
-            />
-            <Input
-              {...getFieldProps(formik, "location")}
-              placeholder="Enter your location"
-              toggle={<Toggle {...getFieldProps(formik, "location_enabled")} />}
-            />
-          </Values>
+          <Input
+            {...getFieldProps(formik, "name")}
+            placeholder="Enter your name"
+          />
+          <Input
+            {...getFieldProps(formik, "role")}
+            placeholder="Enter your role"
+            toggle={<Toggle {...getFieldProps(formik, "role_enabled")} />}
+          />
+          <Input
+            {...getFieldProps(formik, "phone number")}
+            placeholder="Enter your phone number"
+            toggle={<Toggle {...getFieldProps(formik, "phone_enabled")} />}
+          />
+          <Input
+            {...getFieldProps(formik, "email")}
+            placeholder="Enter your email address"
+            toggle={<Toggle {...getFieldProps(formik, "email_enabled")} />}
+          />
+          <Input
+            {...getFieldProps(formik, "link")}
+            placeholder="Enter link to your website"
+            toggle={<Toggle {...getFieldProps(formik, "link_enabled")} />}
+          />
+          <Input
+            {...getFieldProps(formik, "location")}
+            placeholder="Enter your location"
+            toggle={<Toggle {...getFieldProps(formik, "location_enabled")} />}
+          />
         </Form>
       </Section>
     </>

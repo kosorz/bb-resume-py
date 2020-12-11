@@ -6,7 +6,6 @@ import Input from "./parts/formik/Input";
 import Toggle from "./parts/Toggle";
 import SubSection from "./parts/SubSection";
 import Form from "./parts/formik/Form";
-import Values from "./parts/Values";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
@@ -69,36 +68,34 @@ const ExperienceUnit = observer(
         deleteFn={deleteFn}
       >
         <Form>
-          <Values>
-            <Input
-              {...getFieldProps(formik, "title")}
-              placeholder="Enter experience title"
-            />
-            <Input
-              {...getFieldProps(formik, "company_name")}
-              placeholder="Enter company name"
-              toggle={
-                <Toggle {...getFieldProps(formik, "company_name_enabled")} />
-              }
-            />
-            <Input
-              {...getFieldProps(formik, "location")}
-              placeholder="Enter location"
-              toggle={<Toggle {...getFieldProps(formik, "location_enabled")} />}
-            />
-            <Input
-              {...getFieldProps(formik, "link")}
-              placeholder="Enter website link"
-              toggle={<Toggle {...getFieldProps(formik, "link_enabled")} />}
-            />
-            <Area
-              {...getFieldProps(formik, "description")}
-              placeholder="Enter experience description"
-              toggle={
-                <Toggle {...getFieldProps(formik, "description_enabled")} />
-              }
-            />
-          </Values>
+          <Input
+            {...getFieldProps(formik, "title")}
+            placeholder="Enter experience title"
+          />
+          <Input
+            {...getFieldProps(formik, "company_name")}
+            placeholder="Enter company name"
+            toggle={
+              <Toggle {...getFieldProps(formik, "company_name_enabled")} />
+            }
+          />
+          <Input
+            {...getFieldProps(formik, "location")}
+            placeholder="Enter location"
+            toggle={<Toggle {...getFieldProps(formik, "location_enabled")} />}
+          />
+          <Input
+            {...getFieldProps(formik, "link")}
+            placeholder="Enter website link"
+            toggle={<Toggle {...getFieldProps(formik, "link_enabled")} />}
+          />
+          <Area
+            {...getFieldProps(formik, "description")}
+            placeholder="Enter experience description"
+            toggle={
+              <Toggle {...getFieldProps(formik, "description_enabled")} />
+            }
+          />
         </Form>
       </SubSection>
     );

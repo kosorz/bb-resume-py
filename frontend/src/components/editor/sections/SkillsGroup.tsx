@@ -6,7 +6,6 @@ import Input from "./parts/formik/Input";
 import Area from "./parts/formik/Area";
 import SubSection from "./parts/SubSection";
 import Form from "./parts/formik/Form";
-import Values from "./parts/Values";
 
 import { getFieldProps, saveChangedValues } from "../../../util/fns";
 import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
@@ -68,18 +67,16 @@ const SkillsGroup = observer(
         deleteFn={deleteFn}
       >
         <Form>
-          <Values>
-            <Input
-              {...getFieldProps(formik, "title")}
-              placeholder="Enter skills group name"
-              withSpace={false}
-            />
-            <Area
-              {...getFieldProps(formik, "values")}
-              placeholder="Communication,problem solving,stress handling"
-              withSpace={false}
-            />
-          </Values>
+          <Input
+            {...getFieldProps(formik, "title")}
+            placeholder="Enter skills group name"
+            withSpace={false}
+          />
+          <Area
+            {...getFieldProps(formik, "values")}
+            placeholder="Communication,problem solving,stress handling"
+            withSpace={false}
+          />
         </Form>
       </SubSection>
     );

@@ -24,10 +24,6 @@ const Area = styled.textarea`
   }) =>
     (withToggle ? theme.spaceSmall : withSpace ? 2 * theme.spaceBig : 0) +
     "px"};
-
-  &:disabled {
-    cursor: not-allowed;
-  }
 `;
 
 const FormikArea = ({

@@ -97,9 +97,7 @@ const Experience = observer(() => {
     }
   };
 
-  const onSortStart = () => {
-    setWobble(true);
-  };
+  const onSortStart = () => setWobble(true);
 
   return (
     <Section

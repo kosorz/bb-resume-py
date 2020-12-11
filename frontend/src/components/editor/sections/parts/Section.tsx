@@ -41,7 +41,7 @@ const About = styled.article`
 
   svg {
     width: 100px;
-    height: 100px;
+    height: auto;
     display: block;
   }
 

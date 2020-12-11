@@ -16,7 +16,6 @@ import {
   getManualFieldProps,
 } from "../../../util/fns";
 import { useFormikAutoSave } from "../../../util/hooks";
-import Values from "./parts/Values";
 
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
@@ -65,84 +64,82 @@ const Meta = observer(() => {
     or randomised words which.`}
       >
         <Form>
-          <Values>
-            <ColorPicker
-              displayName={"Accents"}
-              {...getManualFieldProps(colorsFormik, "main")}
-            />
-            <ColorPicker
-              displayName={"Text"}
-              {...getManualFieldProps(colorsFormik, "secondary")}
-            />
-            <Range
-              displayName={"Spacing"}
-              min={40}
-              max={60}
-              step={5}
-              {...getFieldProps(paperFormik, "space")}
-            />
-            <Range
-              displayName={"Your name"}
-              min={34}
-              max={42}
-              step={1}
-              {...getFieldProps(fontSizeFormik, "big")}
-            />
-            <Range
-              displayName={"Headlines"}
-              min={20}
-              max={24}
-              step={1}
-              {...getFieldProps(fontSizeFormik, "large")}
-            />
-            <Range
-              displayName={"Titles"}
-              min={15}
-              max={17}
-              step={1}
-              {...getFieldProps(fontSizeFormik, "medium")}
-            />
-            <Range
-              displayName={"Content"}
-              min={10}
-              max={12}
-              step={1}
-              {...getFieldProps(fontSizeFormik, "small")}
-            />
-            <Select
-              displayName={"Arrangement"}
-              {...getFieldProps(paperFormik, "layout")}
-            >
-              <option value={"full"} label={"Single column"} />
-              <option value={"split"} label={"Two columns"} />
-            </Select>
-            <Select
-              displayName={"Font"}
-              {...getFieldProps(restFormik, "fontFamily")}
-            >
-              <option value={"Rubik"} label={"Rubik"} />
-              <option value={"Roboto"} label={"Roboto"} />
-              <option value={"Exo"} label={"Exo"} />
-              <option value={"Chivo"} label={"Chivo"} />
-              <option value={"Montserrat"} label={"Montserrat"} />
-              <option value={"Oswald"} label={"Oswald"} />
-              <option value={"Lato"} label={"Lato"} />
-              <option value={"Bitter"} label={"Bitter"} />
-            </Select>
-            <Select
-              displayName={"Background"}
-              {...getFieldProps(restFormik, "background")}
-            >
-              <option value={""} label={"None"} />
-              <option value={"Crossings"} label={"Crossings"} />
-              <option value={"Hectagons"} label={"Hectagons"} />
-              <option value={"Net"} label={"Net"} />
-              <option value={"Waves"} label={"Waves"} />
-              <option value={"Triangles"} label={"Triangles"} />
-              <option value={"Wood"} label={"Wood"} />
-              <option value={"X-parts"} label={"X-parts"} />
-            </Select>
-          </Values>
+          <ColorPicker
+            displayName={"Accents"}
+            {...getManualFieldProps(colorsFormik, "main")}
+          />
+          <ColorPicker
+            displayName={"Text"}
+            {...getManualFieldProps(colorsFormik, "secondary")}
+          />
+          <Range
+            displayName={"Spacing"}
+            min={40}
+            max={60}
+            step={5}
+            {...getFieldProps(paperFormik, "space")}
+          />
+          <Range
+            displayName={"Your name"}
+            min={34}
+            max={42}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "big")}
+          />
+          <Range
+            displayName={"Headlines"}
+            min={20}
+            max={24}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "large")}
+          />
+          <Range
+            displayName={"Titles"}
+            min={15}
+            max={17}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "medium")}
+          />
+          <Range
+            displayName={"Content"}
+            min={10}
+            max={12}
+            step={1}
+            {...getFieldProps(fontSizeFormik, "small")}
+          />
+          <Select
+            displayName={"Arrangement"}
+            {...getFieldProps(paperFormik, "layout")}
+          >
+            <option value={"full"} label={"Single column"} />
+            <option value={"split"} label={"Two columns"} />
+          </Select>
+          <Select
+            displayName={"Font"}
+            {...getFieldProps(restFormik, "fontFamily")}
+          >
+            <option value={"Rubik"} label={"Rubik"} />
+            <option value={"Roboto"} label={"Roboto"} />
+            <option value={"Exo"} label={"Exo"} />
+            <option value={"Chivo"} label={"Chivo"} />
+            <option value={"Montserrat"} label={"Montserrat"} />
+            <option value={"Oswald"} label={"Oswald"} />
+            <option value={"Lato"} label={"Lato"} />
+            <option value={"Bitter"} label={"Bitter"} />
+          </Select>
+          <Select
+            displayName={"Background"}
+            {...getFieldProps(restFormik, "background")}
+          >
+            <option value={""} label={"None"} />
+            <option value={"Crossings"} label={"Crossings"} />
+            <option value={"Hectagons"} label={"Hectagons"} />
+            <option value={"Net"} label={"Net"} />
+            <option value={"Waves"} label={"Waves"} />
+            <option value={"Triangles"} label={"Triangles"} />
+            <option value={"Wood"} label={"Wood"} />
+            <option value={"X-parts"} label={"X-parts"} />
+          </Select>
         </Form>
       </Section>
     </>

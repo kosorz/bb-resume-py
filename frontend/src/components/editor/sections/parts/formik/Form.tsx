@@ -1,17 +1,18 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.form`
+const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
+  padding: ${({ theme }) => theme.spaceSmall + "px"};
 `;
 
-const Form = ({
+const FormikForm = ({
   children,
   className,
 }: {
   children: ReactNode | ReactNode[];
   className?: string;
-}) => <Wrapper className={className}>{children}</Wrapper>;
+}) => <Form className={className}>{children}</Form>;
 
-export default Form;
+export default FormikForm;

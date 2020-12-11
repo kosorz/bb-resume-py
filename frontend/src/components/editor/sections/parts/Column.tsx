@@ -103,9 +103,7 @@ const Column = observer(
       }
     };
 
-    const onSortStart = () => {
-      setWobble(true);
-    };
+    const onSortStart = () => setWobble(true);
 
     const title = getTitle(order);
     return items.length > 0 ? (
