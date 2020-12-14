@@ -95,14 +95,12 @@ class ColorsUpdate(BaseModel):
     @validator("main")
     def must_be_main_color(cls, v):
         if v not in [
-                "#34568b",
-                "#ff6f61",
-                "#6b5b95",
+                "#038cff",
+                "#ff0105",
+                "#ff6e04",
                 "#88b04b",
-                "#f7cac9",
                 "#92a8d1",
-                "#955251",
-                "#b565a7",
+                "#a303cb",
         ]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -111,16 +109,7 @@ class ColorsUpdate(BaseModel):
 
     @validator("secondary")
     def must_be_secondary_color(cls, v):
-        if v not in [
-                "#000000",
-                "#141414",
-                "#1f1f1f",
-                "#262626",
-                "#434343",
-                "#595959",
-                "#8c8c8c",
-                "#bfbfbf",
-        ]:
+        if v not in ["#000000", "#1f1f1f", "#434343"]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="Unprocessable Entity")

@@ -31,7 +31,7 @@ export const Title = styled.h2`
   text-decoration: underline;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
 `;
 
@@ -40,6 +40,7 @@ const Editor = observer(({ meta }: ResumeEditor) => {
 
   return (
     <Wrapper>
+      <Title>Settings</Title>
       <Gallery />
       <Meta />
       <Info />

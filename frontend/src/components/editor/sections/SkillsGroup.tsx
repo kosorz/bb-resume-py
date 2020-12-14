@@ -7,7 +7,7 @@ import Area from "./parts/formik/Area";
 import SubSection from "./parts/SubSection";
 import Form from "./parts/formik/Form";
 
-import { getFieldProps, saveChangedValues } from "../../../util/fns";
+import { getFieldPropsMeta, saveChangedValues } from "../../../util/fns";
 import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useFormikAutoSave } from "../../../util/hooks";
@@ -30,7 +30,6 @@ const SkillsGroup = observer(
       setOpenSubSection,
       updateSkillsGroup,
       removeSkillsGroup,
-      // updateSubSectionsOrder,
     } = resumeBubble;
     const opened = openSubSections["skills"] === id;
 
@@ -68,12 +67,12 @@ const SkillsGroup = observer(
       >
         <Form>
           <Input
-            {...getFieldProps(formik, "title")}
+            {...getFieldPropsMeta(formik, "title")}
             placeholder="Enter skills group name"
             withSpace={false}
           />
           <Area
-            {...getFieldProps(formik, "values")}
+            {...getFieldPropsMeta(formik, "values")}
             placeholder="Communication,problem solving,stress handling"
             withSpace={false}
           />

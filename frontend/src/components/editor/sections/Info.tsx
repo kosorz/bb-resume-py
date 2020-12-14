@@ -3,17 +3,18 @@ import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
-import Toggle from "./parts/Toggle";
+import Toggle from "./parts/formik/Toggle";
 import Input from "./parts/formik/Input";
 import Section from "./parts/Section";
 import Form from "./parts/formik/Form";
 import InfoPhoto from "./parts/InfoPhoto";
 import { Title } from "../Editor";
+import { PhotoDisclaimer } from "./parts/Section";
 
-import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import { getFieldProps, saveChangedValues } from "../../../util/fns";
-import { useFormikAutoSave } from "../../../util/hooks";
 import { infoValidationSchema } from "../validationSchemas";
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { getFieldPropsMeta, saveChangedValues } from "../../../util/fns";
+import { useFormikAutoSave } from "../../../util/hooks";
 
 const PhotoToggle = styled(Toggle)`
   position: absolute;
@@ -47,43 +48,55 @@ const Info = observer(() => {
         identifier={"info"}
         title={"Info"}
         contentForehead={
-          <InfoPhoto
-            toggle={<PhotoToggle {...getFieldProps(formik, "photo_enabled")} />}
-          />
+          <>
+            <InfoPhoto
+              toggle={
+                <PhotoToggle {...getFieldPropsMeta(formik, "photo_enabled")} />
+              }
+            />
+            <PhotoDisclaimer>
+              Keep in mind that in some US states, having a photo on your resume
+              is forbidden.
+            </PhotoDisclaimer>
+          </>
         }
         purpose={`There are many variations of passages of Lorem Ipsum available, but 
+    the majority have suffered alteration in some form, by injected humour, 
+    or randomised words which.There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
       >
         <Form>
           <Input
-            {...getFieldProps(formik, "name")}
+            {...getFieldPropsMeta(formik, "name")}
             placeholder="Enter your name"
           />
           <Input
-            {...getFieldProps(formik, "role")}
+            {...getFieldPropsMeta(formik, "role")}
             placeholder="Enter your role"
-            toggle={<Toggle {...getFieldProps(formik, "role_enabled")} />}
+            toggle={<Toggle {...getFieldPropsMeta(formik, "role_enabled")} />}
           />
           <Input
-            {...getFieldProps(formik, "phone number")}
+            {...getFieldPropsMeta(formik, "phone number")}
             placeholder="Enter your phone number"
-            toggle={<Toggle {...getFieldProps(formik, "phone_enabled")} />}
+            toggle={<Toggle {...getFieldPropsMeta(formik, "phone_enabled")} />}
           />
           <Input
-            {...getFieldProps(formik, "email")}
+            {...getFieldPropsMeta(formik, "email")}
             placeholder="Enter your email address"
-            toggle={<Toggle {...getFieldProps(formik, "email_enabled")} />}
+            toggle={<Toggle {...getFieldPropsMeta(formik, "email_enabled")} />}
           />
           <Input
-            {...getFieldProps(formik, "link")}
+            {...getFieldPropsMeta(formik, "link")}
             placeholder="Enter link to your website"
-            toggle={<Toggle {...getFieldProps(formik, "link_enabled")} />}
+            toggle={<Toggle {...getFieldPropsMeta(formik, "link_enabled")} />}
           />
           <Input
-            {...getFieldProps(formik, "location")}
+            {...getFieldPropsMeta(formik, "location")}
             placeholder="Enter your location"
-            toggle={<Toggle {...getFieldProps(formik, "location_enabled")} />}
+            toggle={
+              <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
+            }
           />
         </Form>
       </Section>

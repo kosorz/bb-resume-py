@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { ReactComponent as RotateRightIcon } from "./icons/RotateRight.svg";
-import { SortableHandle } from "react-sortable-hoc";
 
 const RotateRight = styled(RotateRightIcon)`
   &:hover {
@@ -10,4 +9,4 @@ const RotateRight = styled(RotateRightIcon)`
   }
 `;
 
-export default SortableHandle(RotateRight);
+export default RotateRight;

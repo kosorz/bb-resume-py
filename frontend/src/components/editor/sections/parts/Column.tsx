@@ -63,7 +63,7 @@ const Column = observer(
     meta: MetaShape;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
-    const { updateContentOrder, resume } = resumeBubble;
+    const { resume, updateContentOrder } = resumeBubble;
     const { id } = resume;
     const { content, paper } = meta;
     const { layout } = paper;

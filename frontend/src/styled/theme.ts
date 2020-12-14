@@ -7,6 +7,7 @@ const theme: ThemeShape = {
   white: "#FFF",
 
   red: "#F22300",
+  ivory: "#fffff0",
   lightRed: "#fff1f0",
   green: "#389e0d",
   lightGreen: "#f6ffed",
@@ -14,7 +15,8 @@ const theme: ThemeShape = {
   lightOrange: "#ffe7ba",
 
   main: "#102f6e",
-  lightMain: "#e6f7ff",
+  activeMain: "#16429B",
+  lightMain: "#e9effc",
 
   smallFont: "12px",
   mediumFont: "13px",

@@ -180,6 +180,7 @@ const InfoPhoto = ({ toggle }: { toggle: ReactNode }) => {
                 !photoSettings.height && setZoom(height / INFO_PHOTO_HEIGHT)
               }
               aspect={1}
+              maxZoom={5}
             />
             {toggle}
             <Camera onClick={() => invisibleInputRef.current?.click()} />

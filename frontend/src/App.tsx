@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-
-import ResumeBubble from "./bubbles/ResumeBubble";
-import Editor from "./components/editor/Editor";
 import styled, { ThemeProvider } from "styled-components";
+
+import GlobalFonts from "./components/page/fonts/fonts-loader";
 import Viewer from "./components/viewer/util/Viewer";
+import Editor from "./components/editor/Editor";
+
 import theme from "./styled/theme";
+import ResumeBubble from "./bubbles/ResumeBubble";
 import { ResumeBubble as Bubble } from "./bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
@@ -36,6 +38,7 @@ const BBResume = observer(() => {
 function App() {
   return (
     <ResumeBubble>
+      <GlobalFonts />
       <ThemeProvider theme={theme}>
         <BBResume />
       </ThemeProvider>

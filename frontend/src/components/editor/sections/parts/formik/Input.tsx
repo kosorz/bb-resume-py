@@ -2,14 +2,14 @@ import React, { ReactNode } from "react";
 import { FieldInputProps, FieldMetaProps } from "formik";
 import styled from "styled-components";
 
-import FormikField from "./Field";
+import Field from "./Field";
+
 import { ThemeShape } from "../../../../../typings/Theme.typing";
 
 const Input = styled.input`
   flex: 100%;
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  margin: ${({ theme }) => theme.spaceSmall / 4 + "px"} 0;
   color: ${({ theme }) => theme.main};
   margin-right: ${({
     withToggle,
@@ -42,18 +42,14 @@ const FormikInput = ({
 } & FieldInputProps<any> &
   FieldMetaProps<any>) => {
   return (
-    <FormikField
-      name={displayName || rest.name}
-      touched={touched}
-      error={error}
-    >
+    <Field name={displayName || rest.name} touched={touched} error={error}>
       <Input
         withToggle={typeof toggle !== "undefined"}
         withSpace={withSpace}
         {...rest}
       />
       {toggle}
-    </FormikField>
+    </Field>
   );
 };
 

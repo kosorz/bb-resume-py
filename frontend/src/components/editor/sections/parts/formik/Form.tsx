@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
-  padding: ${({ theme }) => theme.spaceSmall + "px"};
+  padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
 `;
 
 const FormikForm = ({

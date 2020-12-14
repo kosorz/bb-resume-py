@@ -1,7 +1,7 @@
 body {
   margin: 0;
-  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: "Roboto", "Courier Prime", "Montserrat", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f4f7fe;
@@ -13,8 +13,8 @@ button,
 textarea,
 label,
 legend {
-  font-family: "Montserrat", "Courier Prime", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: "Roboto", "Courier Prime", "Montserrat", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
 }
 
@@ -30,6 +30,15 @@ h1 {
 
 svg {
   fill: #595959;
+}
+
+hr {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 96%;
+  background-color: #f6f6f6;
+  height: 1px;
 }
 
 .ReactCollapse--collapse {

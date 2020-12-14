@@ -8,7 +8,7 @@ import Section from "./parts/Section";
 import { SortableList } from "./parts/SortableList";
 
 import {
-  getFieldProps,
+  getFieldPropsMeta,
   saveChangedValues,
   sortExperienceUnits,
 } from "../../../util/fns";
@@ -107,7 +107,7 @@ const Experience = observer(() => {
         "experience"
       )}`}
       identifier={"experience"}
-      editableTitle={getFieldProps(formik, "title")}
+      editableTitle={getFieldPropsMeta(formik, "title")}
       subtitle={"experience"}
       title={"Experience"}
       addFn={addFn}

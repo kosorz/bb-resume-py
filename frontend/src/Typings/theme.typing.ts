@@ -5,6 +5,7 @@ export type ThemeShape = {
   white: string;
 
   red: string;
+  ivory: string;
   lightRed: string;
   green: string;
   lightGreen: string;
@@ -12,6 +13,7 @@ export type ThemeShape = {
   lightOrange: string;
 
   main: string;
+  activeMain: string;
   lightMain: string;
 
   smallFont: string;

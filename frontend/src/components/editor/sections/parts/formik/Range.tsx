@@ -2,13 +2,12 @@ import React from "react";
 import { FieldInputProps, FieldMetaProps } from "formik";
 import styled from "styled-components";
 
-import FormikField from "./Field";
+import Field from "./Field";
 
 const Range = styled.input`
+  margin: 0;
+  margin-top: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   width: 100%;
-  padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
-  margin: ${({ theme }) => theme.spaceSmall / 2 + "px"} 0;
 `;
 
 const FormikRange = ({
@@ -28,13 +27,9 @@ const FormikRange = ({
   FieldMetaProps<any>) => {
   return (
     <>
-      <FormikField
-        name={displayName || rest.name}
-        touched={touched}
-        error={error}
-      >
+      <Field name={displayName || rest.name} touched={touched} error={error}>
         <Range {...rest} type={"range"} />
-      </FormikField>
+      </Field>
     </>
   );
 };

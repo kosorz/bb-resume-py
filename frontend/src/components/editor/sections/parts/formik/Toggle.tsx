@@ -4,13 +4,17 @@ import { FieldInputProps, FieldMetaProps } from "formik";
 import ToggleBase from "react-toggle";
 import "react-toggle/style.css";
 
-import { ReactComponent as Show } from "../../../page/icons/ShowFilled.svg";
-import { ReactComponent as Hide } from "../../../page/icons/HideFilled.svg";
+import { ReactComponent as Show } from "../../../../page/icons/ShowFilled.svg";
+import { ReactComponent as Hide } from "../../../../page/icons/HideFilled.svg";
 
-import { ThemeShape } from "../../../../typings/Theme.typing";
+import { ThemeShape } from "../../../../../typings/Theme.typing";
 
 const Toggle = styled(ToggleBase)`
   > div {
+    background: ${({ theme }) => theme.ivory};
+    box-shadow: ${({ theme }) => theme.cardShadow};
+    transition: ${({ theme }) => theme.cardShadowTransition};
+
     &:first-of-type {
       background: ${({
         checked,

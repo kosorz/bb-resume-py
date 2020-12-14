@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 
 import Area from "./parts/formik/Area";
 import Input from "./parts/formik/Input";
-import Toggle from "./parts/Toggle";
+import Toggle from "./parts/formik/Toggle";
 import SubSection from "./parts/SubSection";
 import Form from "./parts/formik/Form";
 
-import { getFieldProps, saveChangedValues } from "../../../util/fns";
+import { experienceUnitValidationSchema } from "../validationSchemas";
+import { getFieldPropsMeta, saveChangedValues } from "../../../util/fns";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import { observer } from "mobx-react-lite";
 import { ExperienceUnitEditor } from "../../../typings/ExperienceUnit.typing";
 import { useFormikAutoSave } from "../../../util/hooks";
-import { experienceUnitValidationSchema } from "../validationSchemas";
 import axios from "../../../util/axios";
 
 const ExperienceUnit = observer(
@@ -69,31 +69,33 @@ const ExperienceUnit = observer(
       >
         <Form>
           <Input
-            {...getFieldProps(formik, "title")}
+            {...getFieldPropsMeta(formik, "title")}
             placeholder="Enter experience title"
           />
           <Input
-            {...getFieldProps(formik, "company_name")}
+            {...getFieldPropsMeta(formik, "company_name")}
             placeholder="Enter company name"
             toggle={
-              <Toggle {...getFieldProps(formik, "company_name_enabled")} />
+              <Toggle {...getFieldPropsMeta(formik, "company_name_enabled")} />
             }
           />
           <Input
-            {...getFieldProps(formik, "location")}
+            {...getFieldPropsMeta(formik, "location")}
             placeholder="Enter location"
-            toggle={<Toggle {...getFieldProps(formik, "location_enabled")} />}
+            toggle={
+              <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
+            }
           />
           <Input
-            {...getFieldProps(formik, "link")}
+            {...getFieldPropsMeta(formik, "link")}
             placeholder="Enter website link"
-            toggle={<Toggle {...getFieldProps(formik, "link_enabled")} />}
+            toggle={<Toggle {...getFieldPropsMeta(formik, "link_enabled")} />}
           />
           <Area
-            {...getFieldProps(formik, "description")}
+            {...getFieldPropsMeta(formik, "description")}
             placeholder="Enter experience description"
             toggle={
-              <Toggle {...getFieldProps(formik, "description_enabled")} />
+              <Toggle {...getFieldPropsMeta(formik, "description_enabled")} />
             }
           />
         </Form>

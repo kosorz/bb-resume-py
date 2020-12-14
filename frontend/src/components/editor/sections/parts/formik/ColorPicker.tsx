@@ -1,13 +1,23 @@
 import React from "react";
-import { FieldInputProps, FieldHelperProps, FieldMetaProps } from "formik";
-import { GithubPicker as Picker } from "react-color";
-
-import FormikField from "./Field";
 import styled from "styled-components";
+import { FieldInputProps, FieldHelperProps, FieldMetaProps } from "formik";
+import { CirclePicker as Picker } from "react-color";
+
+import Field from "./Field";
+
+import theme from "../../../../../styled/theme";
 
 const PickerWrapper = styled.div`
+  padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};
   flex: 100%;
-  margin: ${({ theme }) => theme.spaceSmall / 2 + "px"} 0;
+  margin: auto;
+
+  > div > span > div {
+    background-size: ${({ theme }) => theme.space + "px"};
+    background: url(/icons/Check.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 `;
 
 const FormikColorPicker = ({
@@ -23,45 +33,21 @@ const FormikColorPicker = ({
   FieldHelperProps<any> &
   FieldMetaProps<any>) => {
   const colors: { [key: string]: string[] } = {
-    main: [
-      "#34568b",
-      "#ff6f61",
-      "#6b5b95",
-      "#88b04b",
-      "#f7cac9",
-      "#92a8d1",
-      "#955251",
-      "#b565a7",
-    ],
-    secondary: [
-      "#000000",
-      "#141414",
-      "#1f1f1f",
-      "#262626",
-      "#434343",
-      "#595959",
-      "#8c8c8c",
-      "#bfbfbf",
-    ],
+    main: ["#038cff", "#ff0105", "#ff6e04", "#88b04b", "#92a8d1", "#a303cb"],
+    secondary: ["#000000", "#1f1f1f", "#434343"],
   };
 
   return (
-    <>
-      <FormikField
-        name={displayName || rest.name}
-        touched={touched}
-        error={error}
-      >
-        <PickerWrapper>
-          <Picker
-            color={rest.value}
-            colors={colors[rest.name]}
-            triangle={"hide"}
-            onChangeComplete={(val) => setValue(val.hex)}
-          />
-        </PickerWrapper>
-      </FormikField>
-    </>
+    <Field name={displayName || rest.name} touched={touched} error={error}>
+      <PickerWrapper>
+        <Picker
+          color={rest.value}
+          colors={colors[rest.name]}
+          onChangeComplete={(val) => setValue(val.hex)}
+          circleSpacing={theme.spaceSmall / 2}
+        />
+      </PickerWrapper>
+    </Field>
   );
 };
 

@@ -12,8 +12,8 @@ import { ReactComponent as MetaIcon } from "../icons/Design.svg";
 import { ReactComponent as InfoIcon } from "../icons/Info.svg";
 import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
 
-import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import media from "../../../../styled/media";
+import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import { ThemeShape } from "../../../../typings/Theme.typing";
 
 const Wrapper = styled.section`
@@ -60,7 +60,7 @@ const Title = styled.h2`
 `;
 
 const Purpose = styled.p`
-  text-align: justify;
+  text-align: center;
   color: ${({ theme }) => theme.main};
   margin: 0;
 
@@ -84,7 +84,7 @@ const SectionNavigation = styled.nav`
 const Content = styled.section`
   border-top: solid
     ${({ noBorder, theme }: { noBorder: boolean; theme: ThemeShape }) =>
-      noBorder ? 0 : "3px" + theme.main};
+      noBorder ? 0 : "4px" + theme.main};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   background-color: ${({ theme }) => theme.white};
   box-shadow: ${({ theme }) => theme.cardShadow};
@@ -114,6 +114,12 @@ const Footer = styled.div`
   background: ${({ theme }) => theme.gray};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   padding: ${({ theme }) => theme.spaceSmall + "px"};
+`;
+
+export const PhotoDisclaimer = styled(Footer)`
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  font-size: ${({ theme }) => theme.smallFont};
 `;
 
 const icons: { [key: string]: ReactNode } = {

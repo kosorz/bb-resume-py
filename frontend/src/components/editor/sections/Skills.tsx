@@ -11,7 +11,7 @@ import { skillsValidationSchema } from "../validationSchemas";
 import { useFormikAutoSave } from "../../../util/hooks";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import {
-  getFieldProps,
+  getFieldPropsMeta,
   saveChangedValues,
   sortSkillsGroups,
 } from "../../../util/fns";
@@ -95,7 +95,7 @@ const Skills = observer(() => {
       )}-${split.rightOrder.indexOf("skills")}`}
       identifier={"skills"}
       title={"Skills"}
-      editableTitle={getFieldProps(formik, "title")}
+      editableTitle={getFieldPropsMeta(formik, "title")}
       subtitle={"skills group"}
       addFn={addFn}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 

@@ -4,27 +4,33 @@ import React, {
   useContext,
   ReactElement,
   MouseEvent,
+  useRef,
 } from "react";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { pdf } from "@react-pdf/renderer";
+import useComponentSize from "@rehooks/component-size";
 //@ts-ignore
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
 import Resume from "../Resume";
 
 import MetaShape from "../../../typings/Meta.typing";
-import loadFonts from "./fonts/fonts-loader";
 import media from "../../../styled/media";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-
-loadFonts();
+import { useWindowHeight, useDebounce } from "../../../util/hooks";
 
 const PageWrapper = styled.div`
   position: sticky;
   top: ${({ theme }) => theme.spaceSmall + "px"};
   overflow: hidden;
-
+  top: ${({
+    ownHeight,
+    windowHeight,
+  }: {
+    ownHeight: number;
+    windowHeight: number;
+  }) => (windowHeight - ownHeight) / 2 + "px"};
   span {
     display: none;
   }
@@ -32,7 +38,7 @@ const PageWrapper = styled.div`
 
 const DocumentWrapper = styled.div`
   color: #f8f9fa;
-  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  border-radius: 0;
   box-shadow: ${({ theme }) => theme.cardShadow};
   transition: ${({ theme }) => theme.cardShadowTransition};
   margin: ${({ theme }) => theme.spaceSmall + "px"};
@@ -53,6 +59,10 @@ const PDFViewer = (props: {
     numPages: null,
     currentPage: 1,
   });
+  const windowHeight = useWindowHeight();
+  const debouncedWindowHeight = useDebounce(windowHeight, 200);
+  const selfRef = useRef<HTMLDivElement>(null);
+  let size = useComponentSize(selfRef);
 
   const bubble = useContext(ResumeBubble);
 
@@ -110,7 +120,11 @@ const PDFViewer = (props: {
   };
 
   return (
-    <PageWrapper>
+    <PageWrapper
+      ref={selfRef}
+      ownHeight={size.height}
+      windowHeight={debouncedWindowHeight}
+    >
       <DocumentWrapper>
         <Document
           file={state.document}

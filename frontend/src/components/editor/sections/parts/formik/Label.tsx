@@ -4,8 +4,12 @@ import styled from "styled-components";
 import { capitalize } from "../../../../../util/fns";
 
 const Label = styled.label`
+  font-size: ${({ theme }) => theme.smallFont};
+  color: ${({ theme }) => theme.activeMain};
+  margin-top: ${({ theme }) => theme.spaceSmall + "px"};
+  margin-bottom: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   flex: 100%;
-  font-size: ${({ theme }) => theme.mediumFont};
+  text-transform: uppercase;
 `;
 
 const FormikLabel = ({

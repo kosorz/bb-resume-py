@@ -19,7 +19,6 @@ const FormikField = ({
   children,
 }: {
   children: ReactNode | ReactNode[];
-  toggle?: ReactNode;
 } & Pick<FieldInputProps<any>, "name"> &
   Pick<FieldMetaProps<any>, "touched" | "error">) => {
   return (

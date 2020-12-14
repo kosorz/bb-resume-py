@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { FormikValues } from "formik";
 
 export const useDebounce = (value: any, delay: number) => {
@@ -23,6 +23,19 @@ export const useIsMount = () => {
     isMountRef.current = false;
   }, []);
   return isMountRef.current;
+};
+
+export const useWindowHeight = () => {
+  const [height, setHeight] = useState(0);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setHeight(window.innerHeight);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+  return height;
 };
 
 export const useFormikAutoSave = (

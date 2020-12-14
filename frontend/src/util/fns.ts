@@ -19,7 +19,7 @@ import MetaShape, {
   FontSizeShape,
 } from "../typings/Meta.typing";
 
-export function getFieldProps(
+export function getFieldPropsMeta(
   formik: FormikProps<any>,
   name: string
 ): FieldInputProps<any> & FieldMetaProps<any> {
@@ -29,7 +29,17 @@ export function getFieldProps(
   };
 }
 
-export function getManualFieldProps(
+export function getFieldPropsHelpers(
+  formik: FormikProps<any>,
+  name: string
+): FieldHelperProps<any> & FieldInputProps<any> {
+  return {
+    ...formik.getFieldProps(name),
+    ...formik.getFieldHelpers(name),
+  };
+}
+
+export function getFieldPropsMetaHelpers(
   formik: FormikProps<any>,
   name: string
 ): FieldHelperProps<any> & FieldInputProps<any> & FieldMetaProps<any> {

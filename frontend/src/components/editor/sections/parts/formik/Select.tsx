@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { FieldInputProps, FieldMetaProps } from "formik";
 import styled from "styled-components";
 
-import FormikField from "./Field";
+import Field from "./Field";
 
 const Select = styled.select`
   width: 100%;
@@ -26,15 +26,9 @@ const FormikSelect = ({
 } & FieldInputProps<any> &
   FieldMetaProps<any>) => {
   return (
-    <>
-      <FormikField
-        name={displayName || rest.name}
-        touched={touched}
-        error={error}
-      >
-        <Select {...rest}>{children}</Select>
-      </FormikField>
-    </>
+    <Field name={displayName || rest.name} touched={touched} error={error}>
+      <Select {...rest}>{children}</Select>
+    </Field>
   );
 };
 
