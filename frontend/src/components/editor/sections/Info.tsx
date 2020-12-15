@@ -9,12 +9,18 @@ import Section from "./parts/Section";
 import Form from "./parts/formik/Form";
 import InfoPhoto from "./parts/InfoPhoto";
 import { Title } from "../Editor";
-import { PhotoDisclaimer } from "./parts/Section";
-
+import { Footer } from "./parts/Section";
 import { infoValidationSchema } from "../validationSchemas";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { getFieldPropsMeta, saveChangedValues } from "../../../util/fns";
 import { useFormikAutoSave } from "../../../util/hooks";
+
+export const PhotoDisclaimer = styled(Footer)`
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  font-size: ${({ theme }) => theme.smallFont};
+  background: ${({ theme }) => theme.ivory};
+`;
 
 const PhotoToggle = styled(Toggle)`
   position: absolute;

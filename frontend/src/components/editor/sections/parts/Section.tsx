@@ -106,7 +106,7 @@ const Children = styled.article`
   padding-top: ${({ theme }) => theme.space + "px"};
 `;
 
-const Footer = styled.div`
+export const Footer = styled.div`
   padding-top: ${({ theme }) => theme.space + "px"};
   padding-bottom: ${({ theme }) => theme.space + "px"};
   display: flex;
@@ -114,12 +114,6 @@ const Footer = styled.div`
   background: ${({ theme }) => theme.gray};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   padding: ${({ theme }) => theme.spaceSmall + "px"};
-`;
-
-export const PhotoDisclaimer = styled(Footer)`
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  font-size: ${({ theme }) => theme.smallFont};
 `;
 
 const icons: { [key: string]: ReactNode } = {

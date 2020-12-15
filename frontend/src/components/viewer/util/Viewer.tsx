@@ -24,13 +24,8 @@ const PageWrapper = styled.div`
   position: sticky;
   top: ${({ theme }) => theme.spaceSmall + "px"};
   overflow: hidden;
-  top: ${({
-    ownHeight,
-    windowHeight,
-  }: {
-    ownHeight: number;
-    windowHeight: number;
-  }) => (windowHeight - ownHeight) / 2 + "px"};
+  top: ${({ height, windowHeight }: { height: number; windowHeight: number }) =>
+    (windowHeight - height) / 2 + "px"};
   span {
     display: none;
   }
@@ -122,7 +117,7 @@ const PDFViewer = (props: {
   return (
     <PageWrapper
       ref={selfRef}
-      ownHeight={size.height}
+      height={size.width * 1.414141}
       windowHeight={debouncedWindowHeight}
     >
       <DocumentWrapper>
