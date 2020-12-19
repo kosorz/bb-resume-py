@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Info from "./sections/Info";
 import Column from "./sections/parts/Column";
 import Meta from "./sections/Meta";
-import Gallery from "./gallery/Gallery";
 
 import { ResumeEditor } from "../../typings/Resume.typing";
 import media from "../../styled/media";
@@ -41,7 +40,6 @@ const Editor = observer(({ meta }: ResumeEditor) => {
   return (
     <Wrapper>
       <Title>Settings</Title>
-      <Gallery />
       <Meta />
       <Info />
       {layout === "split" && (

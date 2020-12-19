@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
-import MetaShape from "../../../../typings/Meta.typing";
+import MetaShape from "../../../../../typings/Meta.typing";
 import EmptyState from "./EmptyState";
 
 const TwoColumns = ({

@@ -4,8 +4,8 @@ import { View } from "@react-pdf/renderer";
 import SectionHeadline from "./parts/SectionHeadline";
 import ExperienceUnit from "./ExperienceUnit";
 
-import { sortExperienceUnits } from "../../../util/fns";
-import { ExperienceViewer } from "../../../typings/Experience.typing";
+import { sortExperienceUnits } from "../../../../util/fns";
+import { ExperienceViewer } from "../../../../typings/Experience.typing";
 
 const Experience = ({ title, units, order, meta }: ExperienceViewer) => {
   const values = sortExperienceUnits(order, units);

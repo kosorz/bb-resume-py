@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import SubSectionHeadline from "./parts/SubSectionHeadline";
 import Data from "./parts/Data";
 
-import { ExperienceUnitViewer } from "../../../typings/ExperienceUnit.typing";
+import { ExperienceUnitViewer } from "../../../../typings/ExperienceUnit.typing";
 
 const ExperienceUnit = ({
   meta,

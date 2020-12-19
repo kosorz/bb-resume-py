@@ -34,7 +34,7 @@ const Management = ({
   title: string;
   column: string;
   urlBase: string;
-  identifier: "skills" | "experience" | "meta" | "info" | "gallery" | "";
+  identifier: "skills" | "experience" | "meta" | "info" | "";
   deletable: boolean;
 }) => {
   const resumeBubble = useContext(ResumeBubble);

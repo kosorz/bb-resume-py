@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "@react-pdf/renderer";
-import { InfoViewer } from "../../../typings/Info.typing";
+import { InfoViewer } from "../../../../typings/Info.typing";
 
 import Data from "./parts/Data";
 
@@ -20,7 +20,7 @@ const Info = ({
   photo_enabled,
   meta,
 }: InfoViewer) => {
-  const { paper, colors, fontSize } = meta;
+  const { paper, colors, fontSize, fontFamily } = meta;
 
   const styles = StyleSheet.create({
     info: {
@@ -36,6 +36,7 @@ const Info = ({
     },
     name: {
       fontSize: fontSize.big,
+      fontFamily: fontFamily + "-Bold",
     },
     role: {
       color: colors.main,

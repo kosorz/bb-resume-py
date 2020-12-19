@@ -107,7 +107,7 @@ class TestResumes:
             "id": 2,
             "meta": {
                 "colors": {
-                    "main": "#34568b",
+                    "main": "#038cff",
                     "secondary": "#000000"
                 },
                 "fontSize": {
@@ -117,7 +117,7 @@ class TestResumes:
                     "large": 22,
                     "big": 38
                 },
-                    "photoSettings": {
+                "photoSettings": {
                     "x": 0,
                     "y": 0,
                     "width": 0,
@@ -164,7 +164,7 @@ class TestResumes:
             "experience": None,
             "meta": {
                 "colors": {
-                    "main": "#34568b",
+                    "main": "#038cff",
                     "secondary": "#000000"
                 },
                 "fontSize": {
@@ -239,7 +239,7 @@ class TestResumes:
             "id": 2,
             "meta": {
                 "colors": {
-                    "main": "#34568b",
+                    "main": "#038cff",
                     "secondary": "#000000"
                 },
                 "fontSize": {
@@ -401,14 +401,14 @@ class TestResumes:
         {
             "meta": {
                 "colors": {
-                    "main": "#34568b"
+                    "main": "#038cff"
                 }
             },
         },
         {
             "meta": {
                 "colors": {
-                    "secondary": "#141414"
+                    "secondary": "#1f1f1f"
                 }
             },
         },
@@ -504,8 +504,8 @@ class TestResumes:
         resume = get_resume(app.state._db, 2)
         assert resume.title == "updated_string"
         assert resume.deleted == True
-        assert resume.meta["colors"]["main"] == "#34568b"
-        assert resume.meta["colors"]["secondary"] == "#141414"
+        assert resume.meta["colors"]["main"] == "#038cff"
+        assert resume.meta["colors"]["secondary"] == "#1f1f1f"
         assert resume.meta["fontSize"]["small"] == 10
         assert resume.meta["fontSize"]["main"] == 14
         assert resume.meta["fontSize"]["medium"] == 16

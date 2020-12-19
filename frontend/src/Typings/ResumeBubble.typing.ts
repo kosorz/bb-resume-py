@@ -19,11 +19,11 @@ type ResumeBubbleShape = {
   setUpdateTime: () => void;
   deleteSectionUpdate: (
     content: ContentShape,
-    identifier: "skills" | "experience" | "info" | "meta" | "gallery" | ""
+    identifier: "skills" | "experience" | "info" | "meta" | ""
   ) => void;
   addSectionUpdate: (
     data: SkillsShape | ExperienceShape,
-    identifier: "skills" | "experience" | "info" | "meta" | "gallery" | "",
+    identifier: "skills" | "experience" | "info" | "meta" | "",
     order: "leftOrder" | "rightOrder" | "order"
   ) => void;
   updateInfo: (data: InfoShape) => void;

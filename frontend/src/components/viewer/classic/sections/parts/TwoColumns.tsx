@@ -3,7 +3,7 @@ import { View, StyleSheet } from "@react-pdf/renderer";
 
 import EmptyState from "./EmptyState";
 
-import MetaShape from "../../../../typings/Meta.typing";
+import MetaShape from "../../../../../typings/Meta.typing";
 
 const TwoColumns = ({
   leftChildren,

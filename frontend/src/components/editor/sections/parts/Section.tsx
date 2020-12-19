@@ -7,7 +7,6 @@ import Management from "./Management";
 import SectionEditableTitle from "./SectionEditableTitle";
 import SuccessButton from "../../../page/SuccessButton";
 import { ReactComponent as ExperienceIcon } from "../icons/Experience.svg";
-import { ReactComponent as GalleryIcon } from "../icons/Hiring.svg";
 import { ReactComponent as MetaIcon } from "../icons/Design.svg";
 import { ReactComponent as InfoIcon } from "../icons/Info.svg";
 import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
@@ -102,8 +101,8 @@ const Content = styled.section`
 `;
 
 const Children = styled.article`
-  padding: ${({ theme }) => theme.spaceSmall + "px"};
-  padding-top: ${({ theme }) => theme.space + "px"};
+  padding: ${({ theme }) => theme.spaceSmall + "px"} 0
+    ${({ theme }) => theme.space + "px"} 0;
 `;
 
 export const Footer = styled.div`
@@ -121,7 +120,6 @@ const icons: { [key: string]: ReactNode } = {
   skills: <SkillsIcon />,
   meta: <MetaIcon />,
   info: <InfoIcon />,
-  gallery: <GalleryIcon />,
 };
 
 const Section = ({
@@ -137,7 +135,7 @@ const Section = ({
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
-  identifier: "skills" | "experience" | "info" | "meta" | "gallery" | "";
+  identifier: "skills" | "experience" | "info" | "meta" | "";
   contentForehead?: ReactNode;
   addFn?: Function;
   subtitle?: string;
@@ -155,7 +153,7 @@ const Section = ({
     isFirst: false,
     isLast: false,
     movable: false,
-    manageable: !["info", "meta", "gallery"].includes(identifier),
+    manageable: !["info", "meta"].includes(identifier),
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
@@ -169,7 +167,7 @@ const Section = ({
   const { layout } = paper;
 
   useEffect(() => {
-    const staticSectionOpen = ["info", "meta", "gallery"].includes(identifier);
+    const staticSectionOpen = ["info", "meta"].includes(identifier);
     const deletable =
       split.unlisted.includes(identifier) && full.unlisted.includes(identifier);
     const data =

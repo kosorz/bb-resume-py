@@ -1,6 +1,6 @@
 meta = {
     "colors": {
-        "main": "#34568b",
+        "main": "#038cff",
         "secondary": "#000000"
     },
     "fontSize": {

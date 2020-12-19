@@ -83,7 +83,7 @@ const Info = observer(() => {
             toggle={<Toggle {...getFieldPropsMeta(formik, "role_enabled")} />}
           />
           <Input
-            {...getFieldPropsMeta(formik, "phone number")}
+            {...getFieldPropsMeta(formik, "phone")}
             placeholder="Enter your phone number"
             toggle={<Toggle {...getFieldPropsMeta(formik, "phone_enabled")} />}
           />

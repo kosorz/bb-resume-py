@@ -216,7 +216,6 @@ const Wrapper = styled.section`
   canvas {
     width: 100% !important;
     height: auto !important;
-    border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   }
 
   ${media.tablet`

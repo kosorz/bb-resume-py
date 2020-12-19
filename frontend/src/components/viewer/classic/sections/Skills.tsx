@@ -2,10 +2,10 @@ import React from "react";
 import { View } from "@react-pdf/renderer";
 
 import SectionHeadline from "./parts/SectionHeadline";
-import SkillsGroup from "../../viewer/sections/SkillsGroup";
+import SkillsGroup from "./SkillsGroup";
 
-import { SkillsViewer } from "../../../typings/Skills.typing";
-import { sortSkillsGroups } from "../../../util/fns";
+import { sortSkillsGroups } from "../../../../util/fns";
+import { SkillsViewer } from "../../../../typings/Skills.typing";
 
 const Skills = ({ title, groups, order, meta }: SkillsViewer) => {
   const values = sortSkillsGroups(order, groups);

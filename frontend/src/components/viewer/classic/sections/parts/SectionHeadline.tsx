@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, View } from "@react-pdf/renderer";
 
-import MetaShape from "../../../../typings/Meta.typing";
+import MetaShape from "../../../../../typings/Meta.typing";
 
 const SectionHeadline = ({
   text,

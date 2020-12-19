@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "@react-pdf/renderer";
 
-import MetaShape from "../../../../typings/Meta.typing";
+import MetaShape from "../../../../../typings/Meta.typing";
 
 const EmptyState = ({
   title,

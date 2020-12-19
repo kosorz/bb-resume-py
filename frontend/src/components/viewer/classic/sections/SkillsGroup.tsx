@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "@react-pdf/renderer";
 
-import { SkillsGroupViewer } from "../../../typings/SkillsGroup.typing";
+import { SkillsGroupViewer } from "../../../../typings/SkillsGroup.typing";
 import SubSectionHeadline from "./parts/SubSectionHeadline";
 
 const SkillsGroup = ({ meta, title, values }: SkillsGroupViewer) => {
