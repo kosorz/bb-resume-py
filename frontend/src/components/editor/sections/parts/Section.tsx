@@ -162,7 +162,7 @@ const Section = ({
     // updateContent
   } = resumeBubble;
   const { id, meta } = resume;
-  const { content, paper } = meta!;
+  const { content, paper, template } = meta!;
   const { split, full } = content;
   const { layout } = paper;
 
@@ -175,15 +175,16 @@ const Section = ({
         ? {
             deletable,
             isFirst:
-              split.leftOrder[0] === identifier ||
-              split.rightOrder[0] === identifier,
+              split.mainOrder[0] === identifier ||
+              split.secondaryOrder[0] === identifier,
             isLast:
-              split.leftOrder[split.leftOrder.length - 1] === identifier ||
-              split.rightOrder[split.rightOrder.length - 1] === identifier,
+              split.mainOrder[split.mainOrder.length - 1] === identifier ||
+              split.secondaryOrder[split.secondaryOrder.length - 1] ===
+                identifier,
             movable: !split.unlisted.includes(identifier) && !staticSectionOpen,
-            column: split.leftOrder.includes(identifier)
+            column: split.mainOrder.includes(identifier)
               ? "splitListedLeft"
-              : split.rightOrder.includes(identifier)
+              : split.secondaryOrder.includes(identifier)
               ? "splitListedRight"
               : "splitUnlisted",
           }
@@ -202,8 +203,8 @@ const Section = ({
   }, [
     layout,
     identifier,
-    split.rightOrder,
-    split.leftOrder,
+    split.secondaryOrder,
+    split.mainOrder,
     split.unlisted,
     full.order,
     full.unlisted,
@@ -243,7 +244,7 @@ const Section = ({
           )}
         </SectionNavigation>
       </About>
-      <Content noBorder={identifier === "info"}>
+      <Content noBorder={identifier === "info" && template !== "calm"}>
         {contentForehead}
         <Children>{children}</Children>
         {subtitle && addFn && (

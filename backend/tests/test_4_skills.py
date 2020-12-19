@@ -167,7 +167,7 @@ class TestSkills:
             app.url_path_for(
                 "skills:create",
                 resume_id=2,
-                target="leftOrder",
+                target="mainOrder",
             ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 

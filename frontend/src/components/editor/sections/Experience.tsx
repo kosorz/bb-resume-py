@@ -103,9 +103,9 @@ const Experience = observer(() => {
     <Section
       key={`section-${full.order.indexOf(
         "experience"
-      )}-${split.leftOrder.indexOf("experience")}-${split.rightOrder.indexOf(
+      )}-${split.mainOrder.indexOf(
         "experience"
-      )}`}
+      )}-${split.secondaryOrder.indexOf("experience")}`}
       identifier={"experience"}
       editableTitle={getFieldPropsMeta(formik, "title")}
       subtitle={"experience"}

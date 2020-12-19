@@ -60,7 +60,7 @@ class TestResumesRoutes:
             app.url_path_for(
                 "resumes:reorganize",
                 resume_id=2,
-                column='leftOrder',
+                column='mainOrder',
             ),
             json=["skills", "experience"],
         )
@@ -94,7 +94,7 @@ class TestResumes:
             app.url_path_for(
                 "resumes:reorganize",
                 resume_id=2,
-                column='leftOrder',
+                column='mainOrder',
             ),
             json=["skills", "experience"],
         )
@@ -148,7 +148,7 @@ class TestResumes:
                 "resumes:list-section",
                 resume_id=2,
                 section='experience',
-                column="rightOrder",
+                column="secondaryOrder",
             ))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -162,7 +162,7 @@ class TestResumes:
             app.url_path_for(
                 "resumes:reorganize",
                 resume_id=2,
-                column="leftOrder",
+                column="mainOrder",
             ),
             json=["skills", "experience", "other"],
         )
@@ -288,7 +288,7 @@ class TestResumes:
             app.url_path_for(
                 "resumes:reorganize",
                 resume_id=2,
-                column="rightOrder",
+                column="secondaryOrder",
             ),
             json=["skills", "experience", "other"],
         )
@@ -305,10 +305,10 @@ class TestResumes:
                 "resumes:list-section",
                 resume_id=2,
                 section='skills',
-                column='leftOrder',
+                column='mainOrder',
             ))
         assert res.status_code == status.HTTP_200_OK
-        assert res.json()['split']['leftOrder'] == ['experience', 'skills']
+        assert res.json()['split']['mainOrder'] == ['experience', 'skills']
 
     async def test_list_split_resume_section_validation(
         self,
@@ -321,7 +321,7 @@ class TestResumes:
                 "resumes:list-section",
                 resume_id=2,
                 section='skills',
-                column='leftOrder',
+                column='mainOrder',
             ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
@@ -334,12 +334,12 @@ class TestResumes:
             app.url_path_for(
                 "resumes:reorganize",
                 resume_id=2,
-                column="leftOrder",
+                column="mainOrder",
             ),
             json=["skills", "experience"],
         )
         assert res.status_code == status.HTTP_200_OK
-        assert res.json()['split']['leftOrder'] == ['skills', 'experience']
+        assert res.json()['split']['mainOrder'] == ['skills', 'experience']
 
     async def test_migrate_split_resume_section_response(
         self,
@@ -354,8 +354,8 @@ class TestResumes:
                 section='experience',
             ))
         assert res.status_code == status.HTTP_200_OK
-        assert res.json()['split']['leftOrder'] == ['skills']
-        assert res.json()['split']['rightOrder'] == ['experience']
+        assert res.json()['split']['mainOrder'] == ['skills']
+        assert res.json()['split']['secondaryOrder'] == ['experience']
 
     async def test_delete_resume_section_validation(
         self,
@@ -393,7 +393,7 @@ class TestResumes:
             ))
         assert res.status_code == status.HTTP_200_OK
 
-        assert res.json()['split']['rightOrder'] == []
+        assert res.json()['split']['secondaryOrder'] == []
         assert res.json()['split']['unlisted'] == ['experience', 'skills']
 
     async def test_delete_resume_section_response(
@@ -487,7 +487,7 @@ class TestResumes:
             app.url_path_for(
                 "resumes:reorganize",
                 resume_id=1,
-                column="leftOrder",
+                column="mainOrder",
             ),
             json=["skills", "experience"],
         )

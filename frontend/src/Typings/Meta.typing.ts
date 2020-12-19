@@ -20,8 +20,8 @@ export type PaperShape = {
 export type ContentShape = {
   split: {
     unlisted: string[];
-    leftOrder: string[];
-    rightOrder: string[];
+    mainOrder: string[];
+    secondaryOrder: string[];
   };
   full: {
     unlisted: string[];
@@ -38,6 +38,7 @@ export type PhotoSettingsShape = {
 };
 
 export type MetaShape = {
+  template: "classic" | "calm";
   colors: ColorsShape;
   fontSize: FontSizeShape;
   fontFamily: "Roboto" | "Rubik" | "Exo";

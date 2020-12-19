@@ -15,6 +15,7 @@ const Data = ({
     location: { emoji: " 📍", fallback: "Somewhere" },
     date: { emoji: " 📅 ", fallback: "12/2018" },
     phone: { emoji: " 📞 ", fallback: "+12 3456789" },
+    email: { emoji: " ✉️ ", fallback: "john@doe.com" },
   };
 
   return (

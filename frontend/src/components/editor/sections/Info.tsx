@@ -33,6 +33,7 @@ const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, updateInfo } = resumeBubble;
   const { resume_id, cropped_photo, photo, ...infoEditorData } = resume.info!;
+  const { template } = resume.meta!;
 
   const formik = useFormik({
     initialValues: infoEditorData,
@@ -54,17 +55,21 @@ const Info = observer(() => {
         identifier={"info"}
         title={"Info"}
         contentForehead={
-          <>
-            <InfoPhoto
-              toggle={
-                <PhotoToggle {...getFieldPropsMeta(formik, "photo_enabled")} />
-              }
-            />
-            <PhotoDisclaimer>
-              Keep in mind that in some US states, having a photo on your resume
-              is forbidden.
-            </PhotoDisclaimer>
-          </>
+          template !== "calm" && (
+            <>
+              <InfoPhoto
+                toggle={
+                  <PhotoToggle
+                    {...getFieldPropsMeta(formik, "photo_enabled")}
+                  />
+                }
+              />
+              <PhotoDisclaimer>
+                Keep in mind that in some US states, having a photo on your
+                resume is forbidden.
+              </PhotoDisclaimer>
+            </>
+          )
         }
         purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 

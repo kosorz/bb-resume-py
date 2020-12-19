@@ -130,11 +130,12 @@ class TestResumes:
                     "layout": "split"
                 },
                 "fontFamily": "Roboto",
+                "template": "classic",
                 "background": "X-parts",
                 "content": {
                     "split": {
-                        "leftOrder": [],
-                        "rightOrder": [],
+                        "mainOrder": [],
+                        "secondaryOrder": [],
                         "unlisted": [],
                     },
                     "full": {
@@ -187,11 +188,12 @@ class TestResumes:
                     "layout": "split"
                 },
                 "fontFamily": "Roboto",
+                "template": "classic",
                 "background": "X-parts",
                 "content": {
                     "split": {
-                        "leftOrder": [],
-                        "rightOrder": [],
+                        "mainOrder": [],
+                        "secondaryOrder": [],
                         "unlisted": [],
                     },
                     "full": {
@@ -262,11 +264,12 @@ class TestResumes:
                     "layout": "split"
                 },
                 "fontFamily": "Roboto",
+                "template": "classic",
                 "background": "X-parts",
                 "content": {
                     "split": {
-                        "leftOrder": [],
-                        "rightOrder": [],
+                        "mainOrder": [],
+                        "secondaryOrder": [],
                         "unlisted": [],
                     },
                     "full": {
@@ -351,6 +354,10 @@ class TestResumes:
     }, {
         "meta": {
             "fontFamily": "not roboto"
+        },
+    }, {
+        "meta": {
+            "template": "not classic"
         },
     }, {
         "meta": {
@@ -449,6 +456,11 @@ class TestResumes:
         },
         {
             "meta": {
+                "template": "calm",
+            },
+        },
+        {
+            "meta": {
                 "fontFamily": "Roboto"
             },
         },
@@ -510,6 +522,7 @@ class TestResumes:
         assert resume.meta["fontSize"]["main"] == 14
         assert resume.meta["fontSize"]["medium"] == 16
         assert resume.meta["fontSize"]["large"] == 20
+        assert resume.meta["template"] == 'calm'
         assert resume.meta["fontSize"]["big"] == 42
         assert resume.meta["fontFamily"] == "Roboto"
         assert resume.meta["background"] == "X-parts"

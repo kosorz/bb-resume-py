@@ -32,7 +32,7 @@ def reorganize(
 
 
 def is_valid_column(target):
-    if target not in ['order', 'leftOrder', 'rightOrder']:
+    if target not in ['order', 'mainOrder', 'secondaryOrder']:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail="Bad request")
 
@@ -49,9 +49,9 @@ def adjust_resume_orders(
     full_layout_in_use = resume.meta["paper"]["layout"] == "full"
     full_content = resume.meta["content"]["full"]
     split_content = resume.meta["content"]["split"]
-    is_in_left_order = target in split_content["leftOrder"]
-    is_in_right_order = target in split_content["rightOrder"]
-    split_order = "leftOrder" if is_in_left_order else "rightOrder" if is_in_right_order else target
+    is_in_left_order = target in split_content["mainOrder"]
+    is_in_right_order = target in split_content["secondaryOrder"]
+    split_order = "mainOrder" if is_in_left_order else "secondaryOrder" if is_in_right_order else target
 
     content_update = None
 
@@ -113,7 +113,7 @@ def adjust_resume_orders(
             }
         }
 
-    if (action in ['order', 'leftOrder', 'rightOrder']):
+    if (action in ['order', 'mainOrder', 'secondaryOrder']):
         if creation_update:
             content_update = {
                 "split": {
@@ -122,7 +122,7 @@ def adjust_resume_orders(
                 "full": {
                     "unlisted": [*full_content["unlisted"], target]
                 }
-            } if action in ["leftOrder", "rightOrder"] else {
+            } if action in ["mainOrder", "secondaryOrder"] else {
                 "full": {
                     action: [*full_content[action], target]
                 },
@@ -158,17 +158,17 @@ def adjust_resume_orders(
 
         content_update = {
             'split': {
-                "leftOrder": [
+                "mainOrder": [
                     *filter(lambda sec: sec != target,
-                            split_content['leftOrder'])
+                            split_content['mainOrder'])
                 ],
-                "rightOrder": [*split_content['rightOrder'], target]
+                "secondaryOrder": [*split_content['secondaryOrder'], target]
             } if is_in_left_order else {
-                "rightOrder": [
+                "secondaryOrder": [
                     *filter(lambda sec: sec != target,
-                            split_content['rightOrder'])
+                            split_content['secondaryOrder'])
                 ],
-                "leftOrder": [*split_content['leftOrder'], target]
+                "mainOrder": [*split_content['mainOrder'], target]
             }
         }
 

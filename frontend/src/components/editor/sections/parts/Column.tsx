@@ -38,9 +38,9 @@ const Wrapper = styled.section`
 
 const getTitle = (order: string) => {
   switch (order) {
-    case "leftOrder":
+    case "mainOrder":
       return "Left Column";
-    case "rightOrder":
+    case "secondaryOrder":
       return "Right Column";
     case "order":
       return "Content";
@@ -59,7 +59,7 @@ const Column = observer(
     order,
     meta,
   }: {
-    order: "order" | "leftOrder" | "rightOrder" | "unlisted";
+    order: "order" | "mainOrder" | "secondaryOrder" | "unlisted";
     meta: MetaShape;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
@@ -74,7 +74,7 @@ const Column = observer(
 
     if (order === "order") {
       orderArray = full[order];
-    } else if (order === "leftOrder" || order === "rightOrder") {
+    } else if (order === "mainOrder" || order === "secondaryOrder") {
       orderArray = split[order];
     } else {
       orderArray = layout === "full" ? full[order] : split[order];

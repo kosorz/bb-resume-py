@@ -13,7 +13,7 @@ const Classic = ({ data, meta }: ResumeViewer) => {
   const { skills, experience, info } = data;
   const { fontSize, paper, content, fontFamily, colors, background } = meta;
   const { split, full } = content;
-  const { leftOrder, rightOrder } = split;
+  const { mainOrder, secondaryOrder } = split;
   const { order } = full;
   const { layout } = paper;
 
@@ -54,8 +54,8 @@ const Classic = ({ data, meta }: ResumeViewer) => {
       {layout === "split" && (
         <TwoColumns
           meta={meta}
-          leftChildren={leftOrder.map((member) => sections[member])}
-          rightChildren={rightOrder.map((member) => sections[member])}
+          leftChildren={mainOrder.map((member) => sections[member])}
+          rightChildren={secondaryOrder.map((member) => sections[member])}
         />
       )}
       {layout === "full" && (

@@ -24,7 +24,7 @@ type ResumeBubbleShape = {
   addSectionUpdate: (
     data: SkillsShape | ExperienceShape,
     identifier: "skills" | "experience" | "info" | "meta" | "",
-    order: "leftOrder" | "rightOrder" | "order"
+    order: "mainOrder" | "secondaryOrder" | "order"
   ) => void;
   updateInfo: (data: InfoShape) => void;
   updateInfoCroppedPhoto: (croppedPhotoId: string) => void;
@@ -37,7 +37,7 @@ type ResumeBubbleShape = {
   updateExperienceUnit: (data: ExperienceUnitShape) => void;
   updateContentOrder: (
     layout: "full" | "split",
-    order: "unlisted" | "order" | "leftOrder" | "rightOrder",
+    order: "unlisted" | "order" | "mainOrder" | "secondaryOrder",
     data: string[]
   ) => void;
   addExperienceUnit: (data: ExperienceUnitShape) => void;

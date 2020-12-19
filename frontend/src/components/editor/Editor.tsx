@@ -44,15 +44,11 @@ const Editor = observer(({ meta }: ResumeEditor) => {
       <Info />
       {layout === "split" && (
         <>
-          <Column meta={meta} order={"leftOrder"} />
-          <Column meta={meta} order={"rightOrder"} />
+          <Column meta={meta} order={"mainOrder"} />
+          <Column meta={meta} order={"secondaryOrder"} />
         </>
       )}
-      {layout === "full" && (
-        <>
-          <Column meta={meta} order={"order"} />
-        </>
-      )}
+      {layout === "full" && <Column meta={meta} order={"order"} />}
       <Column meta={meta} order={"unlisted"} />
     </Wrapper>
   );

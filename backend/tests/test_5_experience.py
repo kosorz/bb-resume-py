@@ -22,7 +22,7 @@ class TestExperienceRoutes:
             app.url_path_for(
                 "experience:create",
                 resume_id=1,
-                target='leftOrder',
+                target='mainOrder',
             ))
         assert res.status_code != status.HTTP_404_NOT_FOUND
 
@@ -58,7 +58,7 @@ class TestExperience:
         res = await client.post(
             app.url_path_for("experience:create",
                              resume_id=2,
-                             target='leftOrder'))
+                             target='mainOrder'))
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
     async def test_update_experience_authorization_check(
@@ -90,7 +90,7 @@ class TestExperience:
         res = await client.post(
             app.url_path_for("experience:create",
                              resume_id=2,
-                             target='leftOrder'), )
+                             target='mainOrder'), )
         assert res.json() == {
             "title":
             "",
@@ -129,7 +129,7 @@ class TestExperience:
         assert resume.meta['content']['full']['order'] == ['skills']
         assert resume.meta['content']['full']['unlisted'] == ['experience']
         assert resume.meta['content']['split']['unlisted'] == ['skills']
-        assert resume.meta['content']['split']['leftOrder'] == ['experience']
+        assert resume.meta['content']['split']['mainOrder'] == ['experience']
 
     async def test_update_experience_validation(
         self,
@@ -178,7 +178,7 @@ class TestExperience:
             app.url_path_for(
                 "experience:create",
                 resume_id=2,
-                target="leftOrder",
+                target="mainOrder",
             ))
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
@@ -192,7 +192,7 @@ class TestExperience:
             app.url_path_for(
                 "experience:create",
                 resume_id=1,
-                target="leftOrder",
+                target="mainOrder",
             ))
         assert res.status_code == status.HTTP_403_FORBIDDEN
 

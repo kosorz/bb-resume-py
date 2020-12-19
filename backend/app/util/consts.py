@@ -24,10 +24,11 @@ meta = {
     },
     "fontFamily": "Roboto",
     "background": "X-parts",
+    "template": "classic",
     "content": {
         "split": {
-            "leftOrder": [],
-            "rightOrder": [],
+            "mainOrder": [],
+            "secondaryOrder": [],
             "unlisted": [],
         },
         "full": {

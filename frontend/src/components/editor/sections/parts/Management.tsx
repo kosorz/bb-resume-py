@@ -10,14 +10,14 @@ import Show from "../../../page/Show";
 import axios from "../../../../util/axios";
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 
-const AddRight = styled(Right)`
+const AddToSecondary = styled(Right)`
   &:hover {
     fill: ${({ theme }) => theme.green};
     background: ${({ theme }) => theme.lightGreen};
   }
 `;
 
-const AddLeft = styled(Left)`
+const AddToMain = styled(Left)`
   &:hover {
     fill: ${({ theme }) => theme.green};
     background: ${({ theme }) => theme.lightGreen};
@@ -89,8 +89,8 @@ const Management = ({
   if (column === "splitUnlisted") {
     return (
       <>
-        <AddLeft onClick={() => list("leftOrder")} />
-        <AddRight onClick={() => list("rightOrder")} />
+        <AddToMain onClick={() => list("mainOrder")} />
+        <AddToSecondary onClick={() => list("secondaryOrder")} />
         {deletable && trash}
       </>
     );

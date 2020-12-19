@@ -90,9 +90,9 @@ const Skills = observer(() => {
 
   return (
     <Section
-      key={`section-${full.order.indexOf("skills")}-${split.leftOrder.indexOf(
+      key={`section-${full.order.indexOf("skills")}-${split.mainOrder.indexOf(
         "skills"
-      )}-${split.rightOrder.indexOf("skills")}`}
+      )}-${split.secondaryOrder.indexOf("skills")}`}
       identifier={"skills"}
       title={"Skills"}
       editableTitle={getFieldPropsMeta(formik, "title")}

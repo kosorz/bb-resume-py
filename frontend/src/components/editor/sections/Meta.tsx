@@ -100,7 +100,7 @@ const Bitter = styled(Font)`
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, setResume } = resumeBubble;
-  const { colors, paper, fontSize, content, ...rest } = resume.meta!;
+  const { colors, paper, fontSize, content, template, ...rest } = resume.meta!;
   const { id } = resume;
 
   const url = `/resumes/${id}`;
@@ -146,14 +146,16 @@ const Meta = observer(() => {
     or randomised words which.`}
     >
       <Form>
-        <RadioGroup
-          displayName={"Page layout"}
-          {...getFieldPropsMetaHelpers(paperFormik, "layout")}
-          options={[
-            { ownValue: "full", children: <Full /> },
-            { ownValue: "split", children: <Split /> },
-          ]}
-        />
+        {template !== "calm" && (
+          <RadioGroup
+            displayName={"Page layout"}
+            {...getFieldPropsMetaHelpers(paperFormik, "layout")}
+            options={[
+              { ownValue: "full", children: <Full /> },
+              { ownValue: "split", children: <Split /> },
+            ]}
+          />
+        )}
         <Range
           displayName={"Elements spacing"}
           min={40}
@@ -200,7 +202,7 @@ const Meta = observer(() => {
           )}
           {displayFontRange(
             <Range
-              displayName={"Titles size"}
+              displayName={"headlines size"}
               min={20}
               max={24}
               step={1}
@@ -218,36 +220,43 @@ const Meta = observer(() => {
           )}
         </CustomFontSizes>
         <hr />
-        <ColorPicker
-          displayName={"Accents color"}
-          {...getFieldPropsMetaHelpers(colorsFormik, "main")}
-        />
-        <RadioGroup
-          displayName={"Page background"}
-          {...getFieldPropsMetaHelpers(restFormik, "background")}
-          options={[
-            { ownValue: "" },
-            {
-              ownValue: "Crossings",
-              children: <Image src={CrossingsBackground} />,
-            },
-            {
-              ownValue: "Hectagons",
-              children: <Image src={HectagonsBackground} />,
-            },
-            { ownValue: "Net", children: <Image src={NetBackground} /> },
-            { ownValue: "Waves", children: <Image src={WavesBackground} /> },
-            {
-              ownValue: "Triangles",
-              children: <Image src={TrianglesBackground} />,
-            },
-            { ownValue: "Wood", children: <Image src={WoodBackground} /> },
-            {
-              ownValue: "X-parts",
-              children: <Image src={XPartsBackground} />,
-            },
-          ]}
-        />
+        {template !== "calm" && (
+          <>
+            <ColorPicker
+              displayName={"Accents color"}
+              {...getFieldPropsMetaHelpers(colorsFormik, "main")}
+            />
+            <RadioGroup
+              displayName={"Page background"}
+              {...getFieldPropsMetaHelpers(restFormik, "background")}
+              options={[
+                { ownValue: "" },
+                {
+                  ownValue: "Crossings",
+                  children: <Image src={CrossingsBackground} />,
+                },
+                {
+                  ownValue: "Hectagons",
+                  children: <Image src={HectagonsBackground} />,
+                },
+                { ownValue: "Net", children: <Image src={NetBackground} /> },
+                {
+                  ownValue: "Waves",
+                  children: <Image src={WavesBackground} />,
+                },
+                {
+                  ownValue: "Triangles",
+                  children: <Image src={TrianglesBackground} />,
+                },
+                { ownValue: "Wood", children: <Image src={WoodBackground} /> },
+                {
+                  ownValue: "X-parts",
+                  children: <Image src={XPartsBackground} />,
+                },
+              ]}
+            />
+          </>
+        )}
       </Form>
     </Section>
   );

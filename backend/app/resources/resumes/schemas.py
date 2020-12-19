@@ -35,14 +35,14 @@ class PhotoSettings(BaseModel):
 
 
 class SplitContent(BaseModel):
-    leftOrder: List[str] = []
-    rightOrder: List[str] = []
+    mainOrder: List[str] = []
+    secondaryOrder: List[str] = []
     unlisted: List[str] = []
 
 
 class SplitContentUpdate(BaseModel):
-    leftOrder: Optional[List[str]]
-    rightOrder: Optional[List[str]]
+    mainOrder: Optional[List[str]]
+    secondaryOrder: Optional[List[str]]
     unlisted: Optional[List[str]]
 
 
@@ -79,13 +79,14 @@ class PhotoSettingsUpdate(PhotoSettings):
 
 
 class Meta(BaseModel):
+    content: Content
     colors: Colors
     fontSize: FontSize
     paper: Paper
     photoSettings: PhotoSettings
+    template: str
     fontFamily: str
     background: str
-    content: Content
 
 
 class ColorsUpdate(BaseModel):
@@ -158,6 +159,7 @@ class MetaUpdate(BaseModel):
     colors: Optional[ColorsUpdate]
     paper: Optional[PaperUpdate]
     fontSize: Optional[FontSizeUpdate]
+    template: Optional[str]
     fontFamily: Optional[str]
     background: Optional[str]
 
@@ -178,6 +180,14 @@ class MetaUpdate(BaseModel):
                 "X-parts", "Wood", "Triangles", "Waves", "Net", "Hectagons",
                 "Crossings", ''
         ]:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Unprocessable Entity")
+        return v
+
+    @validator("template")
+    def must_be_template(cls, v):
+        if v not in ["classic", "calm"]:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="Unprocessable Entity")
