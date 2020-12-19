@@ -18,6 +18,7 @@ class Info(InfoBase):
     email: str
     location: str
     role: str
+    quote: str
     cropped_photo: str
     photo: str
     phone_enabled: bool
@@ -26,6 +27,7 @@ class Info(InfoBase):
     location_enabled: bool
     role_enabled: bool
     photo_enabled: bool
+    quote_enabled: bool
 
     class Config:
         orm_mode = True
@@ -38,12 +40,14 @@ class InfoUpdate(BaseModel):
     email: Optional[Union[Email, EmptyString]]
     location: Optional[str]
     role: Optional[str]
+    quote: Optional[str]
     phone_enabled: Optional[bool]
     link_enabled: Optional[bool]
     email_enabled: Optional[bool]
     location_enabled: Optional[bool]
     role_enabled: Optional[bool]
     photo_enabled: Optional[bool]
+    quote_enabled: Optional[bool]
 
 
 class ServerInfoUpdate(InfoUpdate):

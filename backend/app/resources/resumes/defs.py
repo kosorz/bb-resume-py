@@ -49,9 +49,9 @@ def adjust_resume_orders(
     full_layout_in_use = resume.meta["paper"]["layout"] == "full"
     full_content = resume.meta["content"]["full"]
     split_content = resume.meta["content"]["split"]
-    is_in_left_order = target in split_content["mainOrder"]
-    is_in_right_order = target in split_content["secondaryOrder"]
-    split_order = "mainOrder" if is_in_left_order else "secondaryOrder" if is_in_right_order else target
+    is_in_main_order = target in split_content["mainOrder"]
+    is_in_secondary_order = target in split_content["secondaryOrder"]
+    split_order = "mainOrder" if is_in_main_order else "secondaryOrder" if is_in_secondary_order else target
 
     content_update = None
 
@@ -152,8 +152,8 @@ def adjust_resume_orders(
             }
 
     if (action == 'migrate'):
-        if (not is_in_left_order
-                and not is_in_right_order) or full_layout_in_use:
+        if (not is_in_main_order
+                and not is_in_secondary_order) or full_layout_in_use:
             raise exception
 
         content_update = {
@@ -163,7 +163,7 @@ def adjust_resume_orders(
                             split_content['mainOrder'])
                 ],
                 "secondaryOrder": [*split_content['secondaryOrder'], target]
-            } if is_in_left_order else {
+            } if is_in_main_order else {
                 "secondaryOrder": [
                     *filter(lambda sec: sec != target,
                             split_content['secondaryOrder'])

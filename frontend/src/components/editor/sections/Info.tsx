@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import Toggle from "./parts/formik/Toggle";
 import Input from "./parts/formik/Input";
+import Area from "./parts/formik/Area";
 import Section from "./parts/Section";
 import Form from "./parts/formik/Form";
 import InfoPhoto from "./parts/InfoPhoto";
@@ -108,6 +109,11 @@ const Info = observer(() => {
             toggle={
               <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
             }
+          />
+          <Area
+            {...getFieldPropsMeta(formik, "quote")}
+            placeholder="Enter your quote"
+            toggle={<Toggle {...getFieldPropsMeta(formik, "quote_enabled")} />}
           />
         </Form>
       </Section>

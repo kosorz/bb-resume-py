@@ -51,6 +51,7 @@ def create_main_tables_seed_data() -> None:
         sa.Column("email", sa.String, default=""),
         sa.Column("location", sa.String, default=""),
         sa.Column("photo", sa.String, default=""),
+        sa.Column("quote", sa.String, default=""),
         sa.Column("cropped_photo", sa.String, default=""),
         sa.Column("role", sa.String, default=""),
         sa.Column("phone_enabled", sa.Boolean, default=True),
@@ -59,6 +60,7 @@ def create_main_tables_seed_data() -> None:
         sa.Column("location_enabled", sa.Boolean, default=True),
         sa.Column("role_enabled", sa.Boolean, default=True),
         sa.Column("photo_enabled", sa.Boolean, default=True),
+        sa.Column("quote_enabled", sa.Boolean, default=True),
         sa.Column(
             "resume_id",
             sa.Integer,

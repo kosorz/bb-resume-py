@@ -209,7 +209,8 @@ class TestResumes:
                 "phone": "",
                 "link": "",
                 "email": "",
-                'cropped_photo': '',
+                "cropped_photo": "",
+                "quote": "",
                 "location": "",
                 "photo": "",
                 "photo_enabled": True,
@@ -218,7 +219,8 @@ class TestResumes:
                 "link_enabled": True,
                 "email_enabled": True,
                 "location_enabled": True,
-                "role_enabled": True
+                "role_enabled": True,
+                "quote_enabled": True
             }
         }
         assert res.status_code == status.HTTP_200_OK

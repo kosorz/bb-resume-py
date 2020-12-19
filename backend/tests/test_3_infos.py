@@ -179,6 +179,7 @@ class TestInfos:
             "phone": "",
             "link": "",
             "email": "",
+            "quote": "",
             "location": "",
             "role": "",
             "phone_enabled": True,
@@ -187,7 +188,8 @@ class TestInfos:
             "link_enabled": True,
             "email_enabled": True,
             "location_enabled": True,
-            "role_enabled": True
+            "role_enabled": True,
+            "quote_enabled": True
         }
         assert res.status_code == status.HTTP_200_OK
 
@@ -210,6 +212,9 @@ class TestInfos:
                 "role": [],
             },
             {
+                "quote": [],
+            },
+            {
                 "phone_enabled": "not_a_boolean_value",
             },
             {
@@ -223,6 +228,9 @@ class TestInfos:
             },
             {
                 "role_enabled": "not_a_boolean_value",
+            },
+            {
+                "quote_enabled": "not_a_boolean_value",
             },
         ),
     )
@@ -259,13 +267,15 @@ class TestInfos:
                 "email": "kosorz.artur@gmail.com",
                 "location": "updated_string",
                 "role": "updated_string",
+                "quote": "updated_string",
                 "phone_enabled": False,
                 "photo": "",
                 "photo_enabled": True,
                 "link_enabled": False,
                 "email_enabled": False,
                 "location_enabled": False,
-                "role_enabled": False
+                "role_enabled": False,
+                "quote_enabled": False
             },
         )
         assert res.json() == {
@@ -276,6 +286,7 @@ class TestInfos:
             "phone": "updated_string",
             "link": "https://heeeeeeeey.com/",
             "email": "kosorz.artur@gmail.com",
+            "quote": "updated_string",
             "location": "updated_string",
             "role": "updated_string",
             "photo": "",
@@ -284,7 +295,8 @@ class TestInfos:
             "link_enabled": False,
             "email_enabled": False,
             "location_enabled": False,
-            "role_enabled": False
+            "role_enabled": False,
+            "quote_enabled": False
         }
         assert res.status_code == status.HTTP_200_OK
 
@@ -298,6 +310,7 @@ class TestInfos:
         assert info.link == "https://heeeeeeeey.com/"
         assert info.role == "updated_string"
         assert info.phone == "updated_string"
+        assert info.quote == "updated_string"
         assert info.email == "kosorz.artur@gmail.com"
         assert info.location == "updated_string"
         assert info.phone_enabled == False
