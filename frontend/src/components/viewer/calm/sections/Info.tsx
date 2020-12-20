@@ -24,7 +24,6 @@ const Info = ({
 
   const styles = StyleSheet.create({
     info: {
-      paddingTop: 1.2 * paper.space,
       marginRight: 0.6 * paper.space,
     },
     line: {

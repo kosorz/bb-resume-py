@@ -7,22 +7,24 @@ const EmptyState = ({
   title,
   text,
   meta,
+  headlineColor,
 }: {
   title: string;
   meta: MetaShape;
   text: string;
+  headlineColor?: string;
 }) => {
   const { colors, fontSize, paper } = meta;
   const styles = StyleSheet.create({
     placeholder: {
-      width: 200,
+      width: 160,
       textAlign: "center",
       marginTop: paper.space,
       marginHorizontal: "auto",
       color: colors.secondary,
     },
     placeholderTitle: {
-      color: colors.main,
+      color: headlineColor || colors.main,
       marginBottom: paper.space / 4,
       fontSize: fontSize.large,
     },

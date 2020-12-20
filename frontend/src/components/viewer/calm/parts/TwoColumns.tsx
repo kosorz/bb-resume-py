@@ -1,9 +1,8 @@
 import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
-import EmptyState from "./EmptyState";
-
-import MetaShape from "../../../../../typings/Meta.typing";
+import MetaShape from "../../../../typings/Meta.typing";
+import EmptyState from "../../classic/sections/parts/EmptyState";
 
 const TwoColumns = ({
   leftChildren,
@@ -18,17 +17,19 @@ const TwoColumns = ({
 
   const styles = StyleSheet.create({
     twoColumn: {
-      marginHorizontal: paper.space,
+      marginTop: 0.3 * paper.space,
+      marginHorizontal: 0.6 * paper.space,
       fontSize: fontSize.main,
       display: "flex",
       flexDirection: "row",
     },
     leftColumn: {
-      width: 595 - 200 - 2 * paper.space,
+      width: 208 - 0.6 * paper.space,
+      paddingRight: paper.space / 5,
     },
     rightColumn: {
-      width: 200,
-      paddingLeft: paper.space / 2,
+      paddingLeft: paper.space / 5,
+      width: 346,
     },
   });
 
@@ -50,6 +51,7 @@ const TwoColumns = ({
           renderWithKeys(leftChildren, "left")
         ) : (
           <EmptyState
+            headlineColor={meta.colors.secondary}
             meta={meta}
             title={"Empty"}
             text={"Use editor to list sections in left column"}
@@ -61,6 +63,7 @@ const TwoColumns = ({
           renderWithKeys(rightChildren, "right")
         ) : (
           <EmptyState
+            headlineColor={meta.colors.secondary}
             meta={meta}
             title={"Empty"}
             text={"Use editor to list sections in right column"}
