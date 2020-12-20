@@ -110,11 +110,15 @@ const Info = observer(() => {
               <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
             }
           />
-          <Area
-            {...getFieldPropsMeta(formik, "quote")}
-            placeholder="Enter your quote"
-            toggle={<Toggle {...getFieldPropsMeta(formik, "quote_enabled")} />}
-          />
+          {template === "calm" && (
+            <Area
+              {...getFieldPropsMeta(formik, "quote")}
+              placeholder="Enter your quote"
+              toggle={
+                <Toggle {...getFieldPropsMeta(formik, "quote_enabled")} />
+              }
+            />
+          )}
         </Form>
       </Section>
     </>

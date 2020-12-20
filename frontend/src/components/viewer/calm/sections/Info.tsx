@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "@react-pdf/renderer";
+import { View, Text, StyleSheet, Image } from "@react-pdf/renderer";
 import { InfoViewer } from "../../../../typings/Info.typing";
 import Data from "../parts/Data";
 
@@ -10,14 +10,17 @@ const Info = ({
   email,
   location,
   role,
+  quote,
   phone_enabled,
   link_enabled,
   email_enabled,
   location_enabled,
   role_enabled,
+  quote_enabled,
   meta,
 }: InfoViewer) => {
-  const { paper, fontSize } = meta;
+  const { paper, fontSize, colors } = meta;
+  const { secondary } = colors;
 
   const styles = StyleSheet.create({
     info: {
@@ -34,10 +37,10 @@ const Info = ({
       display: "flex",
       flexDirection: "row",
     },
-    basic: {
+    left: {
       paddingTop: paper.space / 10,
       paddingRight: paper.space / 3,
-      flexBasis: 209,
+      flexBasis: 208,
       textTransform: "uppercase",
       textAlign: "right",
       display: "flex",
@@ -46,7 +49,7 @@ const Info = ({
     },
     name: {
       marginLeft: paper.space / 5,
-      fontSize: fontSize.big,
+      fontSize: name.length > 15 ? 0.6 * fontSize.big : fontSize.big,
     },
     role: {
       marginLeft: paper.space / 10,
@@ -60,7 +63,7 @@ const Info = ({
       borderColor: "#767779",
       flexGrow: 1,
     },
-    contactHolder: {
+    right: {
       flexBasis: 346,
       display: "flex",
       flexDirection: "row",
@@ -74,61 +77,103 @@ const Info = ({
       flexDirection: "column",
       justifyContent: "flex-start",
     },
-    contact: {
+    data: {
       margin: paper.space / 5,
+    },
+    quote: {
+      marginTop: 0.3 * paper.space,
+      paddingLeft: 0.6 * paper.space,
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    quoteDecor: {
+      position: "relative",
+      flexBasis: 208 - 0.6 * paper.space - paper.space / 5,
+      marginRight: paper.space / 5,
+    },
+    quoteDecorLine: {
+      borderTop: 1,
+      borderStyle: "solid",
+      borderColor: "#767779",
+    },
+    quoteDecorImage: {
+      position: "absolute",
+      top: -20,
+      right: 5,
+      height: 40,
+      width: 40,
+      borderRadius: 20,
+      backgroundColor: secondary,
+      padding: 12,
+    },
+    content: {
+      flex: 346,
+      borderLeft: 7,
+      borderStyle: "solid",
+      borderColor: "#767779",
+      paddingLeft: paper.space / 10,
+      paddingVertical: paper.space / 5,
+      flexGrow: 1,
+      flexShrink: 0,
     },
   });
 
   const contacts = [
     phone_enabled && (
-      <Data style={styles.contact} meta={meta} type="phone" value={phone} />
+      <Data style={styles.data} meta={meta} type="phone" value={phone} />
     ),
     email_enabled && (
-      <Data style={styles.contact} meta={meta} type="email" value={email} />
+      <Data style={styles.data} meta={meta} type="email" value={email} />
     ),
     link_enabled && (
-      <Data style={styles.contact} meta={meta} type="link" value={link} />
+      <Data style={styles.data} meta={meta} type="link" value={link} />
     ),
     location_enabled && (
-      <Data
-        style={styles.contact}
-        meta={meta}
-        type="location"
-        value={location}
-      />
+      <Data style={styles.data} meta={meta} type="location" value={location} />
     ),
   ].filter((contact) => contact);
 
   return (
     <View style={styles.info}>
       <View style={styles.line} />
-      <View>
-        <View style={styles.main}>
-          <View style={styles.basic}>
-            <View>
-              <Text style={styles.name}>{name}</Text>
-            </View>
-            {role_enabled && (
-              <View>
-                <Text style={styles.role}>{role}</Text>
-              </View>
-            )}
+      <View style={styles.main}>
+        <View style={styles.left}>
+          <View>
+            <Text style={styles.name}>{name}</Text>
           </View>
-          <View style={styles.contactHolder}>
-            <View style={styles.contactInfo}>
-              {contacts[0]}
-              {contacts[1]}
+          {role_enabled && (
+            <View>
+              <Text style={styles.role}>{role}</Text>
             </View>
-            {(contacts[2] || contacts[3]) && (
-              <View style={styles.verticalLine} />
-            )}
-            <View style={styles.contactInfo}>
-              {contacts[2]}
-              {contacts[3]}
-            </View>
+          )}
+        </View>
+        <View style={styles.right}>
+          <View style={styles.contactInfo}>
+            {contacts[0]}
+            {contacts[1]}
+          </View>
+          {(contacts[2] || contacts[3]) && <View style={styles.verticalLine} />}
+          <View style={styles.contactInfo}>
+            {contacts[2]}
+            {contacts[3]}
           </View>
         </View>
       </View>
+      {quote_enabled && (
+        <View style={styles.quote}>
+          <View style={styles.quoteDecor}>
+            <View style={styles.quoteDecorLine} />
+            <Image
+              style={styles.quoteDecorImage}
+              source={"/icons/QuoteCalm.png"}
+            />
+          </View>
+          <View style={styles.content}>
+            <Text>{quote}</Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
