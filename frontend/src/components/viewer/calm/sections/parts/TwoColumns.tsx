@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
-import MetaShape from "../../../../typings/Meta.typing";
-import EmptyState from "../../classic/sections/parts/EmptyState";
+import MetaShape from "../../../../../typings/Meta.typing";
+import EmptyState from "../../../classic/sections/parts/EmptyState";
 
 const TwoColumns = ({
   leftChildren,
@@ -25,10 +25,10 @@ const TwoColumns = ({
     },
     leftColumn: {
       width: 208 - 0.6 * paper.space,
-      paddingRight: paper.space / 5,
+      paddingRight: 0.4 * paper.space,
     },
     rightColumn: {
-      paddingLeft: paper.space / 5,
+      paddingLeft: 0.4 * paper.space,
       width: 346,
     },
   });

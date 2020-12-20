@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, StyleSheet } from "@react-pdf/renderer";
-
 import MetaShape from "../../../../../typings/Meta.typing";
 
 const SectionHeadline = ({
@@ -16,11 +15,10 @@ const SectionHeadline = ({
 
   const styles = StyleSheet.create({
     text: {
-      fontSize: fontSize.large,
+      fontSize: fontSize.large * 0.7,
+      marginBottom: paper.space / 5,
       fontFamily: fontFamily + "-Bold",
-      paddingRight: paper.layout === "split" ? 0 : paper.space / 4,
-      borderBottom: 2,
-      marginBottom: paper.space / 4,
+      letterSpacing: 2.5,
       textTransform: "uppercase",
     },
   });

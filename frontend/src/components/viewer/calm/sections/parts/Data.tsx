@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "@react-pdf/renderer";
-import MetaShape from "../../../../typings/Meta.typing";
+import MetaShape from "../../../../../typings/Meta.typing";
 
 const Data = ({
   value,

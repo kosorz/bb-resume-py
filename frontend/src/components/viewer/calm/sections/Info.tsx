@@ -1,7 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "@react-pdf/renderer";
+
+import Data from "./parts/Data";
+
 import { InfoViewer } from "../../../../typings/Info.typing";
-import Data from "../parts/Data";
 
 const Info = ({
   name,
@@ -19,7 +21,7 @@ const Info = ({
   quote_enabled,
   meta,
 }: InfoViewer) => {
-  const { paper, fontSize, colors } = meta;
+  const { paper, fontSize, colors, fontFamily } = meta;
   const { secondary } = colors;
 
   const styles = StyleSheet.create({
@@ -47,10 +49,15 @@ const Info = ({
       justifyContent: "center",
     },
     name: {
+      fontFamily: fontFamily + "-Bold",
       marginLeft: paper.space / 5,
-      fontSize: name.length > 15 ? 0.6 * fontSize.big : fontSize.big,
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      fontSize: name.length > 14 ? 0.7 * fontSize.big : fontSize.big,
     },
     role: {
+      fontFamily: fontFamily + "-Bold",
       marginLeft: paper.space / 10,
       paddingTop: paper.space / 10,
       fontSize: fontSize.large / 2,
@@ -111,7 +118,7 @@ const Info = ({
       borderLeft: 7,
       borderStyle: "solid",
       borderColor: "#767779",
-      paddingLeft: paper.space / 10,
+      paddingLeft: 0.4 * paper.space - 7,
       paddingVertical: paper.space / 5,
       flexGrow: 1,
       flexShrink: 0,
@@ -139,7 +146,11 @@ const Info = ({
       <View style={styles.main}>
         <View style={styles.left}>
           <View>
-            <Text style={styles.name}>{name}</Text>
+            <View style={styles.name}>
+              {name.split(" ").map((prt) => (
+                <Text> {prt}</Text>
+              ))}
+            </View>
           </View>
           {role_enabled && (
             <View>
