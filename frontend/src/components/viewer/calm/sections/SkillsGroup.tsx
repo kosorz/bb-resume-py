@@ -11,7 +11,7 @@ const SkillsGroup = ({ meta, title, values }: SkillsGroupViewer) => {
 
   const styles = StyleSheet.create({
     skillsGroup: {
-      marginBottom: paper.space / 10,
+      marginBottom: paper.space / 3,
       fontSize: fontSize.small,
     },
   });

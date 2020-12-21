@@ -4,11 +4,12 @@ import { StyleSheet, Page, View } from "@react-pdf/renderer";
 import { ResumeViewer } from "../../../typings/Resume.typing";
 import Info from "./sections/Info";
 import TwoColumns from "./sections/parts/TwoColumns";
-import SectionHeadline from "./sections/parts/SectionHeadline";
+import Experience from "./sections/Experience";
+
 import Skills from "./sections/Skills";
 
 const Calm = ({ data, meta }: ResumeViewer) => {
-  const { info, skills } = data;
+  const { info, skills, experience } = data;
   const { fontSize, fontFamily, colors, content, paper } = meta;
   const { split } = content;
   const { mainOrder, secondaryOrder } = split;
@@ -34,13 +35,9 @@ const Calm = ({ data, meta }: ResumeViewer) => {
     skills: skills ? (
       <Skills meta={meta} key={"skills-viewer"} {...skills} />
     ) : undefined,
-    experience: (
-      <SectionHeadline
-        meta={meta}
-        text={"experience"}
-        fallback={"experience"}
-      />
-    ),
+    experience: experience ? (
+      <Experience meta={meta} key={"experience-viewer"} {...experience} />
+    ) : undefined,
   };
 
   return (

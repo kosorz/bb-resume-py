@@ -27,12 +27,13 @@ const ExperienceUnit = observer(
   }: ExperienceUnitEditor) => {
     const resumeBubble = useContext(ResumeBubble);
     const {
+      resume,
       openSubSections,
       setOpenSubSection,
       updateExperienceUnit,
       removeExperienceUnit,
-      // updateSubSectionsOrder,
     } = resumeBubble;
+    const { template } = resume.meta!;
     const opened = openSubSections["experience"] === id;
 
     const formik = useFormik({
@@ -79,18 +80,24 @@ const ExperienceUnit = observer(
               <Toggle {...getFieldPropsMeta(formik, "company_name_enabled")} />
             }
           />
-          <Input
-            {...getFieldPropsMeta(formik, "location")}
-            placeholder="Enter location"
-            toggle={
-              <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
-            }
-          />
-          <Input
-            {...getFieldPropsMeta(formik, "link")}
-            placeholder="Enter website link"
-            toggle={<Toggle {...getFieldPropsMeta(formik, "link_enabled")} />}
-          />
+          {template !== "calm" && (
+            <>
+              <Input
+                {...getFieldPropsMeta(formik, "location")}
+                placeholder="Enter location"
+                toggle={
+                  <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
+                }
+              />
+              <Input
+                {...getFieldPropsMeta(formik, "link")}
+                placeholder="Enter website link"
+                toggle={
+                  <Toggle {...getFieldPropsMeta(formik, "link_enabled")} />
+                }
+              />
+            </>
+          )}
           <Area
             {...getFieldPropsMeta(formik, "description")}
             placeholder="Enter experience description"
