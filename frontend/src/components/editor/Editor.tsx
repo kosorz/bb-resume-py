@@ -23,15 +23,20 @@ const Wrapper = styled.section`
 
 export const Title = styled.h2`
   margin: 0;
-  margin-bottom: ${({ theme }) => theme.spaceSmall + "px"};
   padding: ${({ theme }) => theme.spaceSmall + "px"};
   color: ${({ theme }) => theme.main};
-  background-color: ${({ theme }) => theme.background};
   text-decoration: underline;
   position: sticky;
-  top: 0;
   z-index: 2;
   overflow: hidden;
+  background-image: linear-gradient(
+    ${({ theme }) => theme.background},
+    ${({ theme }) => theme.background},
+    ${({ theme }) => theme.background},
+    ${({ theme }) => theme.background},
+    transparent
+  );
+  top: ${({ theme }) => theme.menuHeight + "px"};
 `;
 
 const Editor = observer(({ meta }: ResumeEditor) => {

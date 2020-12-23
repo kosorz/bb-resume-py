@@ -20,6 +20,7 @@ export type ThemeShape = {
   mediumFont: string;
   biggerFont: string;
 
+  menuHeight: number;
   spaceSmall: number;
   space: number;
   spaceBig: number;

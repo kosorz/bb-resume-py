@@ -14,8 +14,20 @@ const Wrapper = styled.section`
   display: flex;
   flex-wrap: wrap;
   padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
+  padding-top: ${({ theme }) => theme.menuHeight + "px"};
   margin: auto;
   max-width: 1600px;
+`;
+
+const Menu = styled.section`
+  background: ${({ theme }) => theme.white};
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+  height: ${({ theme }) => theme.menuHeight + "px"};
+  box-shadow: ${({ theme }) => theme.cardShadow};
+  transition: ${({ theme }) => theme.cardShadowTransition};
 `;
 
 const BBResume = observer(() => {
@@ -28,10 +40,13 @@ const BBResume = observer(() => {
   }, [getResume]);
 
   return (
-    <Wrapper>
-      {meta && <Editor meta={meta} />}
-      {meta && <Viewer meta={meta} />}
-    </Wrapper>
+    <>
+      <Menu />
+      <Wrapper>
+        {meta && <Editor meta={meta} />}
+        {meta && <Viewer meta={meta} />}
+      </Wrapper>
+    </>
   );
 });
 

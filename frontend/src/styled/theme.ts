@@ -22,6 +22,7 @@ const theme: ThemeShape = {
   mediumFont: "13px",
   biggerFont: "14px",
 
+  menuHeight: 70,
   spaceSmall: 10,
   space: 20,
   spaceBig: 30,
