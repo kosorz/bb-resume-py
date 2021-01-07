@@ -52,8 +52,7 @@ const Info = ({
       fontFamily: fontFamily + "-Bold",
       marginLeft: paper.space / 5,
       display: "flex",
-      flexDirection: "row",
-      flexWrap: "wrap",
+      flexDirection: "column",
       fontSize: name.length > 14 ? 0.7 * fontSize.big : fontSize.big,
     },
     role: {
@@ -147,8 +146,8 @@ const Info = ({
         <View style={styles.left}>
           <View>
             <View style={styles.name}>
-              {name.split(" ").map((prt) => (
-                <Text> {prt}</Text>
+              {name.split(" ").map((prt, i) => (
+                <Text key={prt + i}> {prt}</Text>
               ))}
             </View>
           </View>

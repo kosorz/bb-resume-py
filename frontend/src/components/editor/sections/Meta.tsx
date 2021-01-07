@@ -7,6 +7,7 @@ import Form from "./parts/formik/Form";
 import ColorPicker from "./parts/formik/ColorPicker";
 import Range from "./parts/formik/Range";
 import RadioGroup from "./parts/formik/RadioGroup";
+import Viewer from "../../viewer/util/Viewer";
 
 import Full from "../../page/Full";
 import Split from "../../page/Split";
@@ -69,6 +70,15 @@ const FontRadioGroup = styled(RadioGroup)`
   }
 `;
 
+const TemplateRadioGroup = styled(RadioGroup)`
+  > div {
+    height: auto;
+    flex-basis: ${({ theme }) => 5 * theme.space + "px"};
+    height: ${({ theme }) => 1.41 * 5 * theme.space + "px"};
+    align-items: center;
+  }
+`;
+
 const Roboto = styled(Font)`
   font-family: "Roboto-Prev";
 `;
@@ -100,7 +110,7 @@ const Bitter = styled(Font)`
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, setResume } = resumeBubble;
-  const { colors, paper, fontSize, content, template, ...rest } = resume.meta!;
+  const { colors, paper, fontSize, content, ...rest } = resume.meta!;
   const { id } = resume;
 
   const url = `/resumes/${id}`;
@@ -117,7 +127,7 @@ const Meta = observer(() => {
     onSubmit: (values) =>
       saveChangedValues(values, paper, url, setResume, ["meta", "paper"]),
   });
-  useFormikAutoSave(paperFormik);
+  useFormikAutoSave(paperFormik, 0);
 
   const fontSizeFormik = useFormik({
     initialValues: fontSize,
@@ -146,9 +156,27 @@ const Meta = observer(() => {
     or randomised words which.`}
     >
       <Form>
-        {template !== "calm" && (
+        <TemplateRadioGroup
+          displayName={"template"}
+          {...getFieldPropsMetaHelpers(restFormik, "template")}
+          options={[
+            {
+              ownValue: "calm",
+              children: (
+                <Viewer bare={true} meta={resume.meta!} template={"calm"} />
+              ),
+            },
+            {
+              ownValue: "classic",
+              children: (
+                <Viewer bare={true} meta={resume.meta!} template={"classic"} />
+              ),
+            },
+          ]}
+        />
+        {rest.template !== "calm" && (
           <RadioGroup
-            displayName={"Page layout"}
+            displayName={"Layout"}
             {...getFieldPropsMetaHelpers(paperFormik, "layout")}
             options={[
               { ownValue: "full", children: <Full /> },
@@ -220,7 +248,7 @@ const Meta = observer(() => {
           )}
         </CustomFontSizes>
         <hr />
-        {template !== "calm" && (
+        {rest.template !== "calm" && (
           <>
             <ColorPicker
               displayName={"Accents color"}

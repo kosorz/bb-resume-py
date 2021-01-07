@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
@@ -6,8 +6,8 @@ import Info from "./sections/Info";
 import Column from "./sections/parts/Column";
 import Meta from "./sections/Meta";
 
-import { ResumeEditor } from "../../typings/Resume.typing";
 import media from "../../styled/media";
+import { ResumeBubble } from "../../bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
   flex: 67%;
@@ -29,32 +29,30 @@ export const Title = styled.h2`
   position: sticky;
   z-index: 2;
   overflow: hidden;
-  background-image: linear-gradient(
-    ${({ theme }) => theme.background},
-    ${({ theme }) => theme.background},
-    ${({ theme }) => theme.background},
-    ${({ theme }) => theme.background},
-    transparent
-  );
+  background: ${({ theme }) => theme.background};
   top: ${({ theme }) => theme.menuHeight + "px"};
+  max-width: 100%;
 `;
 
-const Editor = observer(({ meta }: ResumeEditor) => {
-  const { layout } = meta.paper;
+const Editor = observer(() => {
+  const resumeBubble = useContext(ResumeBubble);
+  const { resume } = resumeBubble;
+  const { layout } = resume.meta!.paper;
+  const { template } = resume.meta!;
 
   return (
     <Wrapper>
       <Title>Settings</Title>
       <Meta />
       <Info />
-      {layout === "split" && (
+      {(layout === "split" || template === "calm") && (
         <>
-          <Column meta={meta} order={"mainOrder"} />
-          <Column meta={meta} order={"secondaryOrder"} />
+          <Column order={"mainOrder"} />
+          <Column order={"secondaryOrder"} />
         </>
       )}
-      {layout === "full" && <Column meta={meta} order={"order"} />}
-      <Column meta={meta} order={"unlisted"} />
+      {layout === "full" && template !== "calm" && <Column order={"order"} />}
+      <Column order={"unlisted"} />
     </Wrapper>
   );
 });

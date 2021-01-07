@@ -58,6 +58,7 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     },
     setResume: (data) => {
       store.resume = { ...store.resume, ...data };
+      store.setUpdateTime();
     },
     deleteSectionUpdate: (content, identifier) => {
       store.setResume({ [identifier]: undefined });
@@ -91,7 +92,6 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
         };
       }
     },
-
     addSectionUpdate: (data, identifier, order) => {
       store.setResume({ [identifier]: data });
       if (store.resume.meta) {

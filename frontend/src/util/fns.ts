@@ -84,6 +84,7 @@ export function saveChangedValues(
   objectWrapperStructure?: string[]
 ): void {
   const dataToSave = diff(initialValues, values)
+    // eslint-disable-next-line
     ?.map((el) => {
       if (el.path) return el.path[0];
     })

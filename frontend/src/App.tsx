@@ -2,13 +2,13 @@ import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import styled, { ThemeProvider } from "styled-components";
 
-import GlobalFonts from "./components/page/fonts/fonts-loader";
 import Viewer from "./components/viewer/util/Viewer";
 import Editor from "./components/editor/Editor";
+import Fonts from "./components/page/fonts/fonts-loader";
 
+import ResumeBubbleProvider from "./bubbles/ResumeBubble";
 import theme from "./styled/theme";
-import ResumeBubble from "./bubbles/ResumeBubble";
-import { ResumeBubble as Bubble } from "./bubbles/ResumeBubble";
+import { ResumeBubble } from "./bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
   display: flex;
@@ -30,8 +30,8 @@ const Menu = styled.section`
   transition: ${({ theme }) => theme.cardShadowTransition};
 `;
 
-const BBResume = observer(() => {
-  const resumeBubble = useContext(Bubble);
+const Resume = observer(() => {
+  const resumeBubble = useContext(ResumeBubble);
   const { resume, getResume } = resumeBubble;
   const { meta } = resume;
 
@@ -40,24 +40,28 @@ const BBResume = observer(() => {
   }, [getResume]);
 
   return (
-    <>
-      <Menu />
-      <Wrapper>
-        {meta && <Editor meta={meta} />}
-        {meta && <Viewer meta={meta} />}
-      </Wrapper>
-    </>
+    <Wrapper>
+      {meta && <Editor />}
+      {meta && <Viewer bare={false} meta={meta} />}
+    </Wrapper>
+  );
+});
+
+const Document = observer(() => {
+  return (
+    <ResumeBubbleProvider>
+      <Fonts />
+      <Resume />
+    </ResumeBubbleProvider>
   );
 });
 
 function App() {
   return (
-    <ResumeBubble>
-      <GlobalFonts />
-      <ThemeProvider theme={theme}>
-        <BBResume />
-      </ThemeProvider>
-    </ResumeBubble>
+    <ThemeProvider theme={theme}>
+      <Menu />
+      <Document />
+    </ThemeProvider>
   );
 }
 

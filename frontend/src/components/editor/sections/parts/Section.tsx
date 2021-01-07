@@ -171,7 +171,7 @@ const Section = ({
     const deletable =
       split.unlisted.includes(identifier) && full.unlisted.includes(identifier);
     const data =
-      layout === "split"
+      layout === "split" || template === "calm"
         ? {
             deletable,
             isFirst:
@@ -203,6 +203,7 @@ const Section = ({
   }, [
     layout,
     identifier,
+    template,
     split.secondaryOrder,
     split.mainOrder,
     split.unlisted,

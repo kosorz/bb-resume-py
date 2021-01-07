@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, memo, useState } from "react";
+import React, { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import move from "array-move";
 import { observer } from "mobx-react-lite";
@@ -9,7 +9,6 @@ import { Title } from "../../Editor";
 import { SortableList } from "./SortableList";
 import { wobbleOne, wobbleTwo } from "./Wooble";
 
-import MetaShape from "../../../../typings/Meta.typing";
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
 import axios from "../../../../util/axios";
 
@@ -57,15 +56,13 @@ const sections: { [key: string]: ReactElement | undefined } = {
 const Column = observer(
   ({
     order,
-    meta,
   }: {
     order: "order" | "mainOrder" | "secondaryOrder" | "unlisted";
-    meta: MetaShape;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
     const { resume, updateContentOrder } = resumeBubble;
-    const { id } = resume;
-    const { content, paper } = meta;
+    const { id, meta } = resume;
+    const { content, paper, template } = meta!;
     const { layout } = paper;
     const { full, split } = content;
     const [wobble, setWobble] = useState(false);
@@ -94,7 +91,11 @@ const Column = observer(
       setWobble(false);
       const newOrder = move(orderArray, oldIndex, newIndex);
       if (newOrder.toString() !== order.toString()) {
-        updateContentOrder(layout, order, newOrder);
+        updateContentOrder(
+          template === "calm" ? "split" : layout,
+          order,
+          newOrder
+        );
         axios
           .post(`/resumes/${id}/column/${order}/reorganize`, newOrder)
           .catch(() => {
@@ -128,4 +129,4 @@ const Column = observer(
   }
 );
 
-export default memo(Column);
+export default Column;

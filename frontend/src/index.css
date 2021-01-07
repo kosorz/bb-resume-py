@@ -1,7 +1,7 @@
 body {
   margin: 0;
-  font-family: "Montserrat", "Roboto", "Courier Prime", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: "Montserrat", "Roboto", "Courier Prime", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f4f7fe;
@@ -13,8 +13,8 @@ button,
 textarea,
 label,
 legend {
-  font-family: "Montserrat", "Roboto", "Courier Prime", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: "Montserrat", "Roboto", "Courier Prime", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
 }
 
@@ -43,4 +43,8 @@ hr {
 
 .ReactCollapse--collapse {
   transition: ease height 500ms;
+}
+
+.react-pdf__message {
+  display: none;
 }

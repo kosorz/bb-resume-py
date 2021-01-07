@@ -46,7 +46,8 @@ def adjust_resume_orders(
 ):
     exception = HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                               detail="Bad request")
-    full_layout_in_use = resume.meta["paper"]["layout"] == "full"
+    full_layout_in_use = resume.meta["paper"][
+        "layout"] == "full" and not resume.meta["template"] in ["calm"]
     full_content = resume.meta["content"]["full"]
     split_content = resume.meta["content"]["split"]
     is_in_main_order = target in split_content["mainOrder"]

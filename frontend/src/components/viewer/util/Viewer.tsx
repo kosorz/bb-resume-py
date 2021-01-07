@@ -26,13 +26,9 @@ const PageWrapper = styled.div`
   overflow: hidden;
   top: ${({ height, windowHeight }: { height: number; windowHeight: number }) =>
     (windowHeight - height) / 2 + "px"};
-  span {
-    display: none;
-  }
 `;
 
 const DocumentWrapper = styled.div`
-  color: #f8f9fa;
   border-radius: 0;
   box-shadow: ${({ theme }) => theme.cardShadow};
   transition: ${({ theme }) => theme.cardShadowTransition};
@@ -42,6 +38,7 @@ const DocumentWrapper = styled.div`
 const PDFViewer = (props: {
   onRenderError: Function;
   document: ReactElement;
+  bare: boolean;
 }) => {
   const [state, setState] = useState<{
     loading: boolean;
@@ -62,29 +59,30 @@ const PDFViewer = (props: {
   const bubble = useContext(ResumeBubble);
 
   useEffect(() => {
-    const renderDocument = (doc: ReactElement) => {
+    const renderDocument = async (doc: ReactElement) => {
+      let blob: Blob | undefined = undefined;
+      let retryAttempts = 0;
+
       if (!doc) {
         setState((prevState) => ({ ...prevState, document: null }));
         return;
       }
 
       setState((prevState) => ({ ...prevState, loading: true }));
+      do {
+        try {
+          blob = await pdf(doc).toBlob();
+        } catch (error) {
+          await new Promise((resolve) => setTimeout(resolve, 250));
+          props.onRenderError && props.onRenderError(error.message);
+        }
+      } while (!blob || retryAttempts > 2);
 
-      try {
-        pdf(doc)
-          .toBlob()
-          .then((blob) => {
-            const url = URL.createObjectURL(blob);
-
-            setState((prevState) => ({
-              ...prevState,
-              document: url,
-              loading: false,
-            }));
-          });
-      } catch (error) {
-        props.onRenderError && props.onRenderError(error.message);
-      }
+      setState((prevState) => ({
+        ...prevState,
+        document: URL.createObjectURL(blob),
+        loading: false,
+      }));
     };
 
     renderDocument(props.document);
@@ -114,21 +112,21 @@ const PDFViewer = (props: {
     }));
   };
 
-  return (
+  const document = (
+    <Document file={state.document} onLoadSuccess={onDocumentLoad} {...props}>
+      <Page pageNumber={state.currentPage} />
+    </Document>
+  );
+
+  return props.bare ? (
+    document
+  ) : (
     <PageWrapper
       ref={selfRef}
       height={size.width * 1.414141}
       windowHeight={debouncedWindowHeight}
     >
-      <DocumentWrapper>
-        <Document
-          file={state.document}
-          onLoadSuccess={onDocumentLoad}
-          {...props}
-        >
-          <Page pageNumber={state.currentPage} />
-        </Document>
-      </DocumentWrapper>
+      <DocumentWrapper>{document}</DocumentWrapper>
       {state.numPages && (
         <PageNavigator
           currentPage={state.currentPage}
@@ -218,28 +216,46 @@ const Wrapper = styled.section`
     height: auto !important;
   }
 
+  canvas + div {
+    display: none;
+  }
+
   ${media.tablet`
     display: none;
   `}
 `;
 
-const Viewer = observer(({ meta }: { meta: MetaShape }) => {
-  const resumeBubble = useContext(ResumeBubble);
-  const { updatedAt, resume } = resumeBubble;
+const Viewer = observer(
+  ({
+    meta,
+    bare,
+    template,
+  }: {
+    bare: boolean;
+    meta: MetaShape;
+    template?: "classic" | "calm";
+  }) => {
+    const resumeBubble = useContext(ResumeBubble);
+    const { updatedAt, resume } = resumeBubble;
 
-  return (
-    <Wrapper>
-      {updatedAt && (
-        <PDFViewer
-          onRenderError={() => console.log("error")}
-          document={{
-            ...Resume,
-            props: { meta, data: resume },
-          }}
-        />
-      )}
-    </Wrapper>
-  );
-});
+    return (
+      <Wrapper>
+        {updatedAt && (
+          <PDFViewer
+            bare={bare}
+            onRenderError={() => console.log("error")}
+            document={{
+              ...Resume,
+              props: {
+                data: resume,
+                meta: { ...meta, template: template || meta.template },
+              },
+            }}
+          />
+        )}
+      </Wrapper>
+    );
+  }
+);
 
 export default Viewer;
