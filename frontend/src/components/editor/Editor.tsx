@@ -10,7 +10,7 @@ import media from "../../styled/media";
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
-  flex: 67%;
+  flex: 65%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

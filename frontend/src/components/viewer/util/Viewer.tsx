@@ -15,14 +15,14 @@ import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
 import Resume from "../Resume";
 
-import MetaShape from "../../../typings/Meta.typing";
+import theme from "../../../styled/theme";
 import media from "../../../styled/media";
+import MetaShape from "../../../typings/Meta.typing";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { useWindowHeight, useDebounce } from "../../../util/hooks";
 
 const PageWrapper = styled.div`
   position: sticky;
-  top: ${({ theme }) => theme.spaceSmall + "px"};
   overflow: hidden;
   top: ${({ height, windowHeight }: { height: number; windowHeight: number }) =>
     (windowHeight - height) / 2 + "px"};
@@ -30,9 +30,11 @@ const PageWrapper = styled.div`
 
 const DocumentWrapper = styled.div`
   border-radius: 0;
-  box-shadow: ${({ theme }) => theme.cardShadow};
   transition: ${({ theme }) => theme.cardShadowTransition};
-  margin: ${({ theme }) => theme.spaceSmall + "px"};
+  margin: ${({ theme }) => theme.space + "px"};
+  height: ${({ height }: { height: number }) => height + "px"};
+  background: ${({ theme }) => theme.white};
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 `;
 
 const PDFViewer = (props: {
@@ -126,7 +128,9 @@ const PDFViewer = (props: {
       height={size.width * 1.414141}
       windowHeight={debouncedWindowHeight}
     >
-      <DocumentWrapper>{document}</DocumentWrapper>
+      <DocumentWrapper height={(size.width - 2 * theme.space) * 1.414141}>
+        {document}
+      </DocumentWrapper>
       {state.numPages && (
         <PageNavigator
           currentPage={state.currentPage}
@@ -207,7 +211,7 @@ const Download = ({
 
 const Wrapper = styled.section`
   width: 100%;
-  flex: 33%;
+  flex: 35%;
   box-sizing: border-box;
   text-align: center;
 

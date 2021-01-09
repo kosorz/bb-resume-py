@@ -6,9 +6,9 @@ import Viewer from "./components/viewer/util/Viewer";
 import Editor from "./components/editor/Editor";
 import Fonts from "./components/page/fonts/fonts-loader";
 
+import { ResumeBubble } from "./bubbles/ResumeBubble";
 import ResumeBubbleProvider from "./bubbles/ResumeBubble";
 import theme from "./styled/theme";
-import { ResumeBubble } from "./bubbles/ResumeBubble";
 
 const Wrapper = styled.section`
   display: flex;

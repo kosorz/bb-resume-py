@@ -21,7 +21,9 @@ const Data = ({
   return (
     <Text style={style}>
       {config[type].emoji}
-      {value || config[type].fallback}
+      {type === "link"
+        ? "www." + (value || config[type].fallback).replace(/(^\w+:|^)\/\//, "")
+        : value}
     </Text>
   );
 };

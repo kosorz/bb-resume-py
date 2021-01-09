@@ -51,7 +51,12 @@ const Data = ({
         />
         <Text>{config[type].label}</Text>
       </View>
-      <Text>{value || config[type].fallback}</Text>
+      <Text>
+        {type === "link"
+          ? "www." +
+            (value || config[type].fallback).replace(/(^\w+:|^)\/\//, "")
+          : value}
+      </Text>
     </View>
   );
 };
