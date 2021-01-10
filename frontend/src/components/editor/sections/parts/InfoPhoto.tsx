@@ -90,6 +90,7 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
   const invisibleInputRef = useRef<HTMLInputElement>(null);
   const skipInitialPhotoUpdate = useRef<boolean>(true);
 
+  const [loaded, setLoaded] = useState(false);
   const [image, setImage] = useState(photo);
   const [rotation, setRotation] = useState(photoSettings.rotation);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -173,22 +174,23 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
               zoom={zoom}
               rotation={rotation}
               onCropChange={(crop) => {
-                if (photo_locked) return;
+                if (photo_locked && loaded) return;
                 setCrop(crop);
               }}
               onZoomChange={(zoom) => {
-                if (photo_locked) return;
+                if (photo_locked && loaded) return;
                 setZoom(zoom);
               }}
               onCropComplete={(_, croppedAreaPixels) => {
-                if (photo_locked) return;
+                if (photo_locked && loaded) return;
                 setCroppedPixels({ rotation, ...croppedAreaPixels });
               }}
               restrictPosition={true}
               initialCroppedAreaPixels={photoSettings}
-              onMediaLoaded={({ height }) =>
-                !photoSettings.height && setZoom(height / INFO_PHOTO_HEIGHT)
-              }
+              onMediaLoaded={({ height }) => {
+                !photoSettings.height && setZoom(height / INFO_PHOTO_HEIGHT);
+                setTimeout(() => setLoaded(true), 0);
+              }}
               aspect={1}
               maxZoom={5}
               showGrid={!photo_locked}

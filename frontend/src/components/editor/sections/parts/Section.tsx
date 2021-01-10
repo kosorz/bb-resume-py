@@ -24,6 +24,7 @@ const Wrapper = styled.section`
   justify-content: center;
   min-height: 400px;
   align-items: center;
+  justify-content: space-evenly;
 
   ${media.phone`
     flex-wrap: wrap;
@@ -34,6 +35,7 @@ const About = styled.article`
   padding-right: ${({ theme }) => theme.space + "px"};
   margin-bottom: ${({ theme }) => theme.space + "px"};
   display: flex;
+  flex-basis: 500px;
   flex-direction: column;
   align-items: center;
   align-self: center;
@@ -245,7 +247,7 @@ const Section = ({
           )}
         </SectionNavigation>
       </About>
-      <Content noBorder={identifier === "info" && template !== "calm"}>
+      <Content noBorder={identifier === "info" && template === "classic"}>
         {contentForehead}
         <Children>{children}</Children>
         {subtitle && addFn && (

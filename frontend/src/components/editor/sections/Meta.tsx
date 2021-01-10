@@ -174,7 +174,7 @@ const Meta = observer(() => {
             },
           ]}
         />
-        {rest.template !== "calm" && (
+        {rest.template === "classic" && (
           <RadioGroup
             displayName={"Layout"}
             {...getFieldPropsMetaHelpers(paperFormik, "layout")}
@@ -248,7 +248,7 @@ const Meta = observer(() => {
           )}
         </CustomFontSizes>
         <hr />
-        {rest.template !== "calm" && (
+        {rest.template === "classic" && (
           <>
             <ColorPicker
               displayName={"Accents color"}

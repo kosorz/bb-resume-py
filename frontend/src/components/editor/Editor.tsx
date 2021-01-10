@@ -51,7 +51,9 @@ const Editor = observer(() => {
           <Column order={"secondaryOrder"} />
         </>
       )}
-      {layout === "full" && template !== "calm" && <Column order={"order"} />}
+      {layout === "full" && template === "classic" && (
+        <Column order={"order"} />
+      )}
       <Column order={"unlisted"} />
     </Wrapper>
   );

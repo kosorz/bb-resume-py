@@ -82,7 +82,7 @@ const ExperienceUnit = observer(
               />
             }
           />
-          {template !== "calm" && (
+          {template === "classic" && (
             <>
               <Input
                 {...getFieldPropsMeta(formik, "location")}

@@ -65,7 +65,7 @@ const Info = observer(() => {
         identifier={"info"}
         title={"Info"}
         contentForehead={
-          template !== "calm" && (
+          template === "classic" && (
             <>
               <InfoPhoto
                 toggles={

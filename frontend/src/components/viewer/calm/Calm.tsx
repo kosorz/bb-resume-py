@@ -46,8 +46,8 @@ const Calm = ({ data, meta }: ResumeViewer) => {
       {info && <Info meta={meta} {...info} />}
       <TwoColumns
         meta={meta}
-        leftChildren={mainOrder.map((member) => sections[member])}
-        rightChildren={secondaryOrder.map((member) => sections[member])}
+        leftChildren={secondaryOrder.map((member) => sections[member])}
+        rightChildren={mainOrder.map((member) => sections[member])}
       />
     </Page>
   );

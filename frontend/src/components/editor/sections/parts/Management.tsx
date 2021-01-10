@@ -38,7 +38,8 @@ const Management = ({
   deletable: boolean;
 }) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { updateContent, deleteSectionUpdate } = resumeBubble;
+  const { updateContent, deleteSectionUpdate, resume } = resumeBubble;
+  const splitListedColumnsSwapped = resume.meta?.template === "calm";
 
   const list = (order: string) => {
     axios.post(`${urlBase}/list/${order}`).then((res) => {
@@ -73,14 +74,19 @@ const Management = ({
   const trash = <Trash onClick={() => deleteSection()} />;
   const hide = <Hide onClick={() => unlist()} />;
 
+  const left = <Left onClick={() => migrate()} />;
+  const right = <Right onClick={() => migrate()} />;
+
   if (column === "splitListedLeft" || column === "splitListedRight") {
     return (
       <>
-        {column === "splitListedLeft" ? (
-          <Right onClick={() => migrate()} />
-        ) : (
-          <Left onClick={() => migrate()} />
-        )}
+        {column === "splitListedLeft"
+          ? splitListedColumnsSwapped
+            ? left
+            : right
+          : splitListedColumnsSwapped
+          ? right
+          : left}
         {hide}
       </>
     );
