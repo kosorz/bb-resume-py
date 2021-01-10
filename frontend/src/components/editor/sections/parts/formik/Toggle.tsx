@@ -1,11 +1,11 @@
-import * as React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { FieldInputProps, FieldMetaProps } from "formik";
 import ToggleBase from "react-toggle";
 import "react-toggle/style.css";
 
-import { ReactComponent as Show } from "../../../../page/icons/ShowFilled.svg";
-import { ReactComponent as Hide } from "../../../../page/icons/HideFilled.svg";
+import { ReactComponent as Check } from "../../../../page/icons/Check.svg";
+import { ReactComponent as X } from "../../../../page/icons/X.svg";
 
 import { ThemeShape } from "../../../../../typings/Theme.typing";
 
@@ -14,6 +14,8 @@ const Toggle = styled(ToggleBase)`
     background: ${({ theme }) => theme.ivory};
     box-shadow: ${({ theme }) => theme.cardShadow};
     transition: ${({ theme }) => theme.cardShadowTransition};
+    border-color: ${({ theme }) => theme.main}!important;
+    cursor: pointer;
 
     &:first-of-type {
       background: ${({
@@ -22,7 +24,7 @@ const Toggle = styled(ToggleBase)`
       }: {
         checked: boolean;
         theme: ThemeShape;
-      }) => (checked ? theme.green : theme.darkGray)}!important;
+      }) => (checked ? theme.main : theme.darkGray)}!important;
     }
 
     > div {
@@ -40,6 +42,12 @@ const Toggle = styled(ToggleBase)`
   }
 `;
 
+export interface ToggleShape extends FieldInputProps<any>, FieldMetaProps<any> {
+  className?: string;
+  checkedIcon?: ReactNode;
+  uncheckedIcon?: ReactNode;
+}
+
 const FormikToggle = ({
   initialTouched,
   initialError,
@@ -47,15 +55,17 @@ const FormikToggle = ({
   touched,
   error,
   className,
+  checkedIcon = <Check />,
+  uncheckedIcon = <X />,
   ...rest
-}: FieldInputProps<any> & FieldMetaProps<any> & { className?: string }) => {
+}: ToggleShape) => {
   return (
     <Toggle
       {...rest}
       className={className}
       checked={!!rest.value}
       value={rest.value ? "yes" : "no"}
-      icons={{ checked: <Show />, unchecked: <Hide /> }}
+      icons={{ checked: checkedIcon, unchecked: uncheckedIcon }}
     />
   );
 };

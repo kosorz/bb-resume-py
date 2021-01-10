@@ -11,6 +11,7 @@ type InfoShape = {
   location: string;
   quote: string;
   role: string;
+  photo_locked: boolean;
   phone_enabled: boolean;
   photo_enabled: boolean;
   link_enabled: boolean;

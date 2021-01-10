@@ -10,6 +10,7 @@ import Cropper from "react-easy-crop";
 
 import DeleteIcon from "../../../page/Trash";
 import CameraIcon from "../../../page/Camera";
+
 import RotateLeftIcon from "../../../page/RotateLeft";
 import RotateRightIcon from "../../../page/RotateRight";
 
@@ -60,13 +61,15 @@ const Wrapper = styled.article`
   top: 0;
   left: 0;
   right: 0;
-  height: ${({ height }: { height: number }) => height + "px"};
+  height: ${({ height }: { height: number; locked: boolean }) => height + "px"};
 
   &,
   > div,
   > div > img {
     border-top-left-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
     border-top-right-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+    cursor: ${({ locked }: { height: number; locked: boolean }) =>
+      locked ? "not-allowed" : "grab"};
   }
 
   > svg {
@@ -77,12 +80,12 @@ const Wrapper = styled.article`
   }
 `;
 
-const InfoPhoto = ({ toggle }: { toggle: ReactNode }) => {
+const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, updateInfoCroppedPhoto, resetPhotoSettings } = resumeBubble;
   const { id, info, meta } = resume;
   const { photoSettings } = meta!;
-  const { photo, cropped_photo } = info!;
+  const { photo, cropped_photo, photo_locked } = info!;
 
   const invisibleInputRef = useRef<HTMLInputElement>(null);
   const skipInitialPhotoUpdate = useRef<boolean>(true);
@@ -161,7 +164,7 @@ const InfoPhoto = ({ toggle }: { toggle: ReactNode }) => {
         id="resume-photo"
         accept="image/png,image/jpeg"
       />
-      <Wrapper height={INFO_PHOTO_HEIGHT}>
+      <Wrapper height={INFO_PHOTO_HEIGHT} locked={photo_locked}>
         {image ? (
           <>
             <Cropper
@@ -169,11 +172,18 @@ const InfoPhoto = ({ toggle }: { toggle: ReactNode }) => {
               crop={crop}
               zoom={zoom}
               rotation={rotation}
-              onCropChange={(crop) => setCrop(crop)}
-              onZoomChange={(zoom) => setZoom(zoom)}
-              onCropComplete={(_, croppedAreaPixels) =>
-                setCroppedPixels({ rotation, ...croppedAreaPixels })
-              }
+              onCropChange={(crop) => {
+                if (photo_locked) return;
+                setCrop(crop);
+              }}
+              onZoomChange={(zoom) => {
+                if (photo_locked) return;
+                setZoom(zoom);
+              }}
+              onCropComplete={(_, croppedAreaPixels) => {
+                if (photo_locked) return;
+                setCroppedPixels({ rotation, ...croppedAreaPixels });
+              }}
               restrictPosition={true}
               initialCroppedAreaPixels={photoSettings}
               onMediaLoaded={({ height }) =>
@@ -181,28 +191,33 @@ const InfoPhoto = ({ toggle }: { toggle: ReactNode }) => {
               }
               aspect={1}
               maxZoom={5}
+              showGrid={!photo_locked}
             />
-            {toggle}
-            <Camera onClick={() => invisibleInputRef.current?.click()} />
-            <RotateLeft
-              onClick={() => setRotation((prevState) => prevState - 90)}
-            />
-            <RotateRight
-              onClick={() => setRotation((prevState) => prevState + 90)}
-            />
-            <Delete
-              onClick={() => {
-                axios.delete(url + "/info_photo").then((res) => {
-                  if (invisibleInputRef.current) {
-                    invisibleInputRef.current.value = "";
-                  }
-                  resetPhotoSettings();
-                  setRotation(0);
-                  updateInfoCroppedPhoto("");
-                  setImage("");
-                });
-              }}
-            />
+            {toggles}
+            {!photo_locked && (
+              <>
+                <Camera onClick={() => invisibleInputRef.current?.click()} />
+                <RotateLeft
+                  onClick={() => setRotation((prevState) => prevState - 90)}
+                />
+                <RotateRight
+                  onClick={() => setRotation((prevState) => prevState + 90)}
+                />
+                <Delete
+                  onClick={() => {
+                    axios.delete(url + "/info_photo").then((res) => {
+                      if (invisibleInputRef.current) {
+                        invisibleInputRef.current.value = "";
+                      }
+                      resetPhotoSettings();
+                      setRotation(0);
+                      updateInfoCroppedPhoto("");
+                      setImage("");
+                    });
+                  }}
+                />
+              </>
+            )}
           </>
         ) : (
           <CameraInitial onClick={() => invisibleInputRef.current?.click()} />

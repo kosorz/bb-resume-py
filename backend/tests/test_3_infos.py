@@ -185,6 +185,7 @@ class TestInfos:
             "phone_enabled": True,
             "photo": "",
             "photo_enabled": True,
+            "photo_locked": False,
             "link_enabled": True,
             "email_enabled": True,
             "location_enabled": True,
@@ -219,6 +220,12 @@ class TestInfos:
             },
             {
                 "link_enabled": "not_a_boolean_value",
+            },
+            {
+                "photo_enabled": "not_a_boolean_value",
+            },
+            {
+                "photo_locked": "not_a_boolean_value",
             },
             {
                 "email_enabled": "not_a_boolean_value",
@@ -271,6 +278,7 @@ class TestInfos:
                 "phone_enabled": False,
                 "photo": "",
                 "photo_enabled": True,
+                "photo_locked": False,
                 "link_enabled": False,
                 "email_enabled": False,
                 "location_enabled": False,
@@ -291,6 +299,7 @@ class TestInfos:
             "role": "updated_string",
             "photo": "",
             "photo_enabled": True,
+            "photo_locked": False,
             "phone_enabled": False,
             "link_enabled": False,
             "email_enabled": False,

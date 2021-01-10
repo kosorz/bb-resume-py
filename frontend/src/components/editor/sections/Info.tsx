@@ -3,7 +3,8 @@ import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
-import Toggle from "./parts/formik/Toggle";
+import VisibilityToggle from "./parts/formik/VisibilityToggle";
+import LockToggle from "./parts/formik/LockToggle";
 import Input from "./parts/formik/Input";
 import Area from "./parts/formik/Area";
 import Section from "./parts/Section";
@@ -11,6 +12,7 @@ import Form from "./parts/formik/Form";
 import InfoPhoto from "./parts/InfoPhoto";
 import { Title } from "../Editor";
 import { Footer } from "./parts/Section";
+
 import { infoValidationSchema } from "../validationSchemas";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
 import { getFieldPropsMeta, saveChangedValues } from "../../../util/fns";
@@ -23,9 +25,16 @@ export const PhotoDisclaimer = styled(Footer)`
   background: ${({ theme }) => theme.ivory};
 `;
 
-const PhotoToggle = styled(Toggle)`
+const PhotoVisibilityToggle = styled(VisibilityToggle)`
   position: absolute;
   bottom: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  right: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  margin: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+`;
+
+const PhotoLockToggle = styled(LockToggle)`
+  position: absolute;
+  bottom: ${({ theme }) => theme.spaceBig + theme.spaceSmall / 2 + "px"};
   right: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   margin: ${({ theme }) => theme.spaceSmall / 2 + "px"};
 `;
@@ -59,10 +68,15 @@ const Info = observer(() => {
           template !== "calm" && (
             <>
               <InfoPhoto
-                toggle={
-                  <PhotoToggle
-                    {...getFieldPropsMeta(formik, "photo_enabled")}
-                  />
+                toggles={
+                  <>
+                    <PhotoVisibilityToggle
+                      {...getFieldPropsMeta(formik, "photo_enabled")}
+                    />
+                    <PhotoLockToggle
+                      {...getFieldPropsMeta(formik, "photo_locked")}
+                    />
+                  </>
                 }
               />
               <PhotoDisclaimer>
@@ -86,28 +100,46 @@ const Info = observer(() => {
           <Input
             {...getFieldPropsMeta(formik, "role")}
             placeholder="Enter your role"
-            toggle={<Toggle {...getFieldPropsMeta(formik, "role_enabled")} />}
+            toggle={
+              <VisibilityToggle
+                {...getFieldPropsMeta(formik, "role_enabled")}
+              />
+            }
           />
           <Input
             {...getFieldPropsMeta(formik, "phone")}
             placeholder="Enter your phone number"
-            toggle={<Toggle {...getFieldPropsMeta(formik, "phone_enabled")} />}
+            toggle={
+              <VisibilityToggle
+                {...getFieldPropsMeta(formik, "phone_enabled")}
+              />
+            }
           />
           <Input
             {...getFieldPropsMeta(formik, "email")}
             placeholder="Enter your email address"
-            toggle={<Toggle {...getFieldPropsMeta(formik, "email_enabled")} />}
+            toggle={
+              <VisibilityToggle
+                {...getFieldPropsMeta(formik, "email_enabled")}
+              />
+            }
           />
           <Input
             {...getFieldPropsMeta(formik, "link")}
             placeholder="Enter link to your website"
-            toggle={<Toggle {...getFieldPropsMeta(formik, "link_enabled")} />}
+            toggle={
+              <VisibilityToggle
+                {...getFieldPropsMeta(formik, "link_enabled")}
+              />
+            }
           />
           <Input
             {...getFieldPropsMeta(formik, "location")}
             placeholder="Enter your location"
             toggle={
-              <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
+              <VisibilityToggle
+                {...getFieldPropsMeta(formik, "location_enabled")}
+              />
             }
           />
           {template === "calm" && (
@@ -115,7 +147,9 @@ const Info = observer(() => {
               {...getFieldPropsMeta(formik, "quote")}
               placeholder="Enter your quote"
               toggle={
-                <Toggle {...getFieldPropsMeta(formik, "quote_enabled")} />
+                <VisibilityToggle
+                  {...getFieldPropsMeta(formik, "quote_enabled")}
+                />
               }
             />
           )}

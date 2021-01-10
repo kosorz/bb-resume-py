@@ -27,6 +27,7 @@ class Info(InfoBase):
     location_enabled: bool
     role_enabled: bool
     photo_enabled: bool
+    photo_locked: bool
     quote_enabled: bool
 
     class Config:
@@ -47,6 +48,7 @@ class InfoUpdate(BaseModel):
     location_enabled: Optional[bool]
     role_enabled: Optional[bool]
     photo_enabled: Optional[bool]
+    photo_locked: Optional[bool]
     quote_enabled: Optional[bool]
 
 

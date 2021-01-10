@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 
 import Area from "./parts/formik/Area";
 import Input from "./parts/formik/Input";
-import Toggle from "./parts/formik/Toggle";
+import VisibilityToggle from "./parts/formik/VisibilityToggle";
 import SubSection from "./parts/SubSection";
 import Form from "./parts/formik/Form";
 
@@ -77,7 +77,9 @@ const ExperienceUnit = observer(
             {...getFieldPropsMeta(formik, "company_name")}
             placeholder="Enter company name"
             toggle={
-              <Toggle {...getFieldPropsMeta(formik, "company_name_enabled")} />
+              <VisibilityToggle
+                {...getFieldPropsMeta(formik, "company_name_enabled")}
+              />
             }
           />
           {template !== "calm" && (
@@ -86,14 +88,18 @@ const ExperienceUnit = observer(
                 {...getFieldPropsMeta(formik, "location")}
                 placeholder="Enter location"
                 toggle={
-                  <Toggle {...getFieldPropsMeta(formik, "location_enabled")} />
+                  <VisibilityToggle
+                    {...getFieldPropsMeta(formik, "location_enabled")}
+                  />
                 }
               />
               <Input
                 {...getFieldPropsMeta(formik, "link")}
                 placeholder="Enter website link"
                 toggle={
-                  <Toggle {...getFieldPropsMeta(formik, "link_enabled")} />
+                  <VisibilityToggle
+                    {...getFieldPropsMeta(formik, "link_enabled")}
+                  />
                 }
               />
             </>
@@ -102,7 +108,9 @@ const ExperienceUnit = observer(
             {...getFieldPropsMeta(formik, "description")}
             placeholder="Enter experience description"
             toggle={
-              <Toggle {...getFieldPropsMeta(formik, "description_enabled")} />
+              <VisibilityToggle
+                {...getFieldPropsMeta(formik, "description_enabled")}
+              />
             }
           />
         </Form>

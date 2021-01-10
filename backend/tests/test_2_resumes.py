@@ -214,6 +214,7 @@ class TestResumes:
                 "location": "",
                 "photo": "",
                 "photo_enabled": True,
+                "photo_locked": False,
                 "role": "",
                 "phone_enabled": True,
                 "link_enabled": True,
@@ -458,7 +459,7 @@ class TestResumes:
         },
         {
             "meta": {
-                "template": "calm",
+                "template": "classic",
             },
         },
         {
@@ -524,7 +525,7 @@ class TestResumes:
         assert resume.meta["fontSize"]["main"] == 14
         assert resume.meta["fontSize"]["medium"] == 16
         assert resume.meta["fontSize"]["large"] == 20
-        assert resume.meta["template"] == 'calm'
+        assert resume.meta["template"] == "classic"
         assert resume.meta["fontSize"]["big"] == 42
         assert resume.meta["fontFamily"] == "Roboto"
         assert resume.meta["background"] == "X-parts"

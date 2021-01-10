@@ -60,6 +60,7 @@ class Info(Base):
     location_enabled = Column(Boolean, default=True)
     role_enabled = Column(Boolean, default=True)
     photo_enabled = Column(Boolean, default=True)
+    photo_locked = Column(Boolean, default=False)
     quote_enabled = Column(Boolean, default=True)
 
     resume_id = Column(Integer, ForeignKey("resumes.id"))

@@ -60,6 +60,7 @@ def create_main_tables_seed_data() -> None:
         sa.Column("location_enabled", sa.Boolean, default=True),
         sa.Column("role_enabled", sa.Boolean, default=True),
         sa.Column("photo_enabled", sa.Boolean, default=True),
+        sa.Column("photo_locked", sa.Boolean, default=False),
         sa.Column("quote_enabled", sa.Boolean, default=True),
         sa.Column(
             "resume_id",

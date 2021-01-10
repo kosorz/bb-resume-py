@@ -125,6 +125,12 @@ def get_owned_resume(
 def get_owned_resume_photos(
         owned_resume: ResumeFull = Depends(get_owned_resume)):
 
+    if owned_resume.info.photo_locked:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Unprocessable Entity",
+        )
+
     return {
         "photo": owned_resume.info.photo,
         "cropped_photo": owned_resume.info.cropped_photo
