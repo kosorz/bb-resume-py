@@ -2,7 +2,6 @@ import React, { ReactElement } from "react";
 import { View, StyleSheet } from "@react-pdf/renderer";
 
 import MetaShape from "../../../../../typings/Meta.typing";
-import EmptyState from "./EmptyState";
 
 const TwoColumns = ({
   children,
@@ -22,19 +21,11 @@ const TwoColumns = ({
   });
   return (
     <View style={styles.column}>
-      {children.length > 0 ? (
-        children.map((ch, i) => {
-          if (!ch) return null;
+      {children.map((ch, i) => {
+        if (!ch) return null;
 
-          return <View key={`column-child-${i}`}>{ch}</View>;
-        })
-      ) : (
-        <EmptyState
-          meta={meta}
-          title={"Empty"}
-          text={"Use editor to list sections in your resume"}
-        />
-      )}
+        return <View key={`column-child-${i}`}>{ch}</View>;
+      })}
     </View>
   );
 };

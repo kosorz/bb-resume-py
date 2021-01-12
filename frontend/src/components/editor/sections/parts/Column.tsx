@@ -35,19 +35,6 @@ const Wrapper = styled.section`
   }
 `;
 
-const getTitle = (order: string) => {
-  switch (order) {
-    case "mainOrder":
-      return "Left Column";
-    case "secondaryOrder":
-      return "Right Column";
-    case "order":
-      return "Content";
-    default:
-      return "Unlisted";
-  }
-};
-
 const sections: { [key: string]: ReactElement | undefined } = {
   experience: <Experience />,
   skills: <Skills />,
@@ -66,6 +53,7 @@ const Column = observer(
     const { layout } = paper;
     const { full, split } = content;
     const [wobble, setWobble] = useState(false);
+    const splitListedColumnsSwapped = resume.meta?.template === "calm";
 
     let orderArray: string[];
 
@@ -74,7 +62,10 @@ const Column = observer(
     } else if (order === "mainOrder" || order === "secondaryOrder") {
       orderArray = split[order];
     } else {
-      orderArray = layout === "full" ? full[order] : split[order];
+      orderArray =
+        layout === "full" && template === "classic"
+          ? full[order]
+          : split[order];
     }
 
     const items = orderArray.map((s: string) => {
@@ -106,10 +97,22 @@ const Column = observer(
 
     const onSortStart = () => setWobble(true);
 
-    const title = getTitle(order);
+    const getTitle = (order: string) => {
+      switch (order) {
+        case "mainOrder":
+          return splitListedColumnsSwapped ? "Right Column" : "Left Column";
+        case "secondaryOrder":
+          return splitListedColumnsSwapped ? "Left Column" : "Right Column";
+        case "order":
+          return "Content";
+        default:
+          return "Unlisted";
+      }
+    };
+
     return items.length > 0 ? (
       <>
-        <Title>{title}</Title>
+        <Title>{getTitle(order)}</Title>
         <Wrapper wobble={wobble}>
           <SortableList
             order={order}
