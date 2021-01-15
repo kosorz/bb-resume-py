@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Toggle, { ToggleShape } from "./Toggle";
-import { ThemeShape } from "../../../../../typings/Theme.typing";
 
-import { ReactComponent as Lock } from "../../../../page/icons/Lock.svg";
-import { ReactComponent as LockOpen } from "../../../../page/icons/LockOpen.svg";
+import { ReactComponent as Lock } from "./icons/Lock.svg";
+import { ReactComponent as LockOpen } from "./icons/LockOpen.svg";
+import { ThemeShape } from "../../typings/Theme.typing";
 
 const LockToggle = styled(Toggle)`
   > div {

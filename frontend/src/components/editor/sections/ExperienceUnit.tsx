@@ -2,11 +2,11 @@ import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
-import Area from "./parts/formik/Area";
-import Input from "./parts/formik/Input";
-import VisibilityToggle from "./parts/formik/VisibilityToggle";
+import Area from "../../page/formik/Area";
+import Input from "../../page/formik/Input";
+import VisibilityToggle from "../../page/VisibilityToggle";
 import SubSection from "./parts/SubSection";
-import Form from "./parts/formik/Form";
+import Form from "../../page/formik/Form";
 
 import { experienceUnitValidationSchema } from "../validationSchemas";
 import { getFieldPropsMeta, saveChangedValues } from "../../../util/fns";

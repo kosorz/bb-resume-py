@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { FieldInputProps, FieldHelperProps } from "formik";
-import { ThemeShape } from "../../../../../typings/Theme.typing";
-import CheckIcon from "../../../../page/Check";
+import { ThemeShape } from "../../../typings/Theme.typing";
+import CheckIcon from "../Check";
 
 const Radio = styled.div`
   box-shadow: ${({ theme }) => theme.cardShadow};

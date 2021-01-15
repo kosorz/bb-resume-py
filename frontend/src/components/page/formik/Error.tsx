@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FieldMetaProps } from "formik";
 import styled from "styled-components";
-import { capitalize } from "../../../../../util/fns";
+import { capitalize } from "../../../util/fns";
 
 const Error = styled.span`
   color: ${({ theme }) => theme.red};

@@ -1,7 +1,7 @@
 import React from "react";
 import { FieldInputProps } from "formik";
 import styled from "styled-components";
-import { capitalize } from "../../../../../util/fns";
+import { capitalize } from "../../../util/fns";
 
 const Label = styled.label`
   font-size: ${({ theme }) => theme.smallFont};

@@ -29,7 +29,7 @@ const ExperienceUnit = ({
       marginBottom: paper.space / 4,
     },
     companyName: {
-      fontFamily: fontFamily + "-Black",
+      fontFamily: fontFamily + "-Bold",
       marginBottom: paper.space / 20,
       color: colors.main,
     },

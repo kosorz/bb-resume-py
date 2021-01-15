@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Toggle, { ToggleShape } from "./Toggle";
-import { ThemeShape } from "../../../../../typings/Theme.typing";
 
-import { ReactComponent as Show } from "../../../../page/icons/Show.svg";
-import { ReactComponent as Hide } from "../../../../page/icons/Hide.svg";
+import { ReactComponent as Show } from "./icons/Show.svg";
+import { ReactComponent as Hide } from "./icons/Hide.svg";
+import { ThemeShape } from "../../typings/Theme.typing";
 
 const VisibilityToggle = styled(Toggle)`
   > div {

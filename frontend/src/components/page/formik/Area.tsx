@@ -4,28 +4,29 @@ import styled from "styled-components";
 
 import Field from "./Field";
 
-import { ThemeShape } from "../../../../../typings/Theme.typing";
+import { ThemeShape } from "../../../typings/Theme.typing";
 
-const Input = styled.input`
-  flex: 100%;
+const Area = styled.textarea`
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
   color: ${({ theme }) => theme.main};
   margin-right: ${({
     withToggle,
-    withSpace,
     theme,
+    withSpace,
   }: {
     withToggle: boolean;
-    theme: ThemeShape;
     withSpace: boolean;
+    theme: ThemeShape;
   }) =>
     (withToggle ? theme.spaceSmall : withSpace ? 2 * theme.spaceBig : 0) +
     "px"};
+  flex: 100%;
+  resize: none;
+  box-sizing: border-box;
 `;
 
-const FormikInput = ({
-  displayName,
+const FormikArea = ({
   initialTouched,
   initialError,
   initialValue,
@@ -35,22 +36,20 @@ const FormikInput = ({
   withSpace = true,
   ...rest
 }: {
-  placeholder?: string;
-  displayName?: string;
+  placeholder: string;
   toggle?: ReactNode;
   withSpace?: boolean;
 } & FieldInputProps<any> &
-  FieldMetaProps<any>) => {
-  return (
-    <Field name={displayName || rest.name} touched={touched} error={error}>
-      <Input
-        withToggle={typeof toggle !== "undefined"}
-        withSpace={withSpace}
-        {...rest}
-      />
-      {toggle}
-    </Field>
-  );
-};
+  FieldMetaProps<any>) => (
+  <Field name={rest.name} touched={touched} error={error}>
+    <Area
+      withSpace={withSpace}
+      withToggle={typeof toggle !== "undefined"}
+      rows={4}
+      {...rest}
+    />
+    {toggle}
+  </Field>
+);
 
-export default FormikInput;
+export default FormikArea;

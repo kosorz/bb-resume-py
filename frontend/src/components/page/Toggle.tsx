@@ -4,10 +4,9 @@ import { FieldInputProps, FieldMetaProps } from "formik";
 import ToggleBase from "react-toggle";
 import "react-toggle/style.css";
 
-import { ReactComponent as Check } from "../../../../page/icons/Check.svg";
-import { ReactComponent as X } from "../../../../page/icons/X.svg";
-
-import { ThemeShape } from "../../../../../typings/Theme.typing";
+import { ReactComponent as Check } from "./icons/Check.svg";
+import { ReactComponent as X } from "./icons/X.svg";
+import { ThemeShape } from "../../typings/Theme.typing";
 
 const Toggle = styled(ToggleBase)`
   > div {

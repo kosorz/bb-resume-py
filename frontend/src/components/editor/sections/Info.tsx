@@ -3,13 +3,13 @@ import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
-import VisibilityToggle from "./parts/formik/VisibilityToggle";
-import LockToggle from "./parts/formik/LockToggle";
-import Input from "./parts/formik/Input";
-import Area from "./parts/formik/Area";
+import Input from "../../page/formik/Input";
+import Area from "../../page/formik/Area";
 import Section from "./parts/Section";
-import Form from "./parts/formik/Form";
+import Form from "../../page/formik/Form";
 import InfoPhoto from "./parts/InfoPhoto";
+import VisibilityToggle from "../../page/VisibilityToggle";
+import LockToggle from "../../page/LockToggle";
 import { Title } from "../Editor";
 import { Footer } from "./parts/Section";
 

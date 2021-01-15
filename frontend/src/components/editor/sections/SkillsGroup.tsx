@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 
-import Input from "./parts/formik/Input";
-import Area from "./parts/formik/Area";
+import Input from "../../page/formik/Input";
+import Area from "../../page/formik/Area";
 import SubSection from "./parts/SubSection";
-import Form from "./parts/formik/Form";
+import Form from "../../page/formik/Form";
 
 import { getFieldPropsMeta, saveChangedValues } from "../../../util/fns";
 import { SkillsGroupEditor } from "../../../typings/SkillsGroup.typing";

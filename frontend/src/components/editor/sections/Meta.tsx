@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
 import Section from "./parts/Section";
-import Form from "./parts/formik/Form";
-import ColorPicker from "./parts/formik/ColorPicker";
-import Range from "./parts/formik/Range";
-import RadioGroup from "./parts/formik/RadioGroup";
+import Form from "../../page/formik/Form";
+import ColorPicker from "../../page/formik/ColorPicker";
+import Range from "../../page/formik/Range";
+import RadioGroup from "../../page/formik/RadioGroup";
 import Viewer from "../../viewer/util/Viewer";
 
 import Full from "../../page/Full";

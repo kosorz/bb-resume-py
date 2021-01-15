@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Info from "./sections/Info";
 import Column from "./sections/parts/Column";
 import Meta from "./sections/Meta";
+import Gallery from "./sections/Gallery";
 
 import media from "../../styled/media";
 import { ResumeBubble } from "../../bubbles/ResumeBubble";
@@ -43,6 +44,7 @@ const Editor = observer(() => {
   return (
     <Wrapper>
       <Title>Settings</Title>
+      <Gallery />
       <Meta />
       <Info />
       {(layout === "split" || template === "calm") && (

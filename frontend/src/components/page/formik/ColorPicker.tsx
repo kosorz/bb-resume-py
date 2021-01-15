@@ -5,7 +5,7 @@ import { CirclePicker as Picker } from "react-color";
 
 import Field from "./Field";
 
-import theme from "../../../../../styled/theme";
+import theme from "../../../styled/theme";
 
 const PickerWrapper = styled.div`
   padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};

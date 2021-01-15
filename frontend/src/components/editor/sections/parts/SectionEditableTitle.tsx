@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Editable from "react-contenteditable";
 import { observer } from "mobx-react-lite";
 
-import Form from "./formik/Form";
+import Form from "../../../page/formik/Form";
 
 const EditableTitle = styled(Editable)`
   margin-top: ${({ theme }) => theme.space + "px"};

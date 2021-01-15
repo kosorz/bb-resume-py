@@ -7,9 +7,10 @@ import Management from "./Management";
 import SectionEditableTitle from "./SectionEditableTitle";
 import SuccessButton from "../../../page/SuccessButton";
 import { ReactComponent as ExperienceIcon } from "../icons/Experience.svg";
+import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
 import { ReactComponent as MetaIcon } from "../icons/Design.svg";
 import { ReactComponent as InfoIcon } from "../icons/Info.svg";
-import { ReactComponent as SkillsIcon } from "../icons/Personal Skills.svg";
+import { ReactComponent as GalleryIcon } from "../icons/Gallery.svg";
 
 import media from "../../../../styled/media";
 import { ResumeBubble } from "../../../../bubbles/ResumeBubble";
@@ -122,6 +123,7 @@ const icons: { [key: string]: ReactNode } = {
   skills: <SkillsIcon />,
   meta: <MetaIcon />,
   info: <InfoIcon />,
+  gallery: <GalleryIcon />,
 };
 
 const Section = ({
@@ -133,15 +135,17 @@ const Section = ({
   purpose,
   addFn,
   editableTitle,
+  className,
 }: {
   children: ReactNode | ReactNode[];
   title: string;
   purpose: string;
-  identifier: "skills" | "experience" | "info" | "meta" | "";
+  identifier: "skills" | "experience" | "info" | "meta" | "gallery" | "";
   contentForehead?: ReactNode;
   addFn?: Function;
   subtitle?: string;
   editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
+  className?: string;
 }) => {
   const [positionData, setPositionData] = useState<{
     deletable: boolean;
@@ -155,21 +159,18 @@ const Section = ({
     isFirst: false,
     isLast: false,
     movable: false,
-    manageable: !["info", "meta"].includes(identifier),
+    manageable: !["info", "meta", "gallery"].includes(identifier),
     column: "",
   });
   const resumeBubble = useContext(ResumeBubble);
-  const {
-    resume,
-    // updateContent
-  } = resumeBubble;
+  const { resume } = resumeBubble;
   const { id, meta } = resume;
   const { content, paper, template } = meta!;
   const { split, full } = content;
   const { layout } = paper;
 
   useEffect(() => {
-    const staticSectionOpen = ["info", "meta"].includes(identifier);
+    const isStatic = ["info", "meta", "gallery"].includes(identifier);
     const deletable =
       split.unlisted.includes(identifier) && full.unlisted.includes(identifier);
     const data =
@@ -183,7 +184,7 @@ const Section = ({
               split.mainOrder[split.mainOrder.length - 1] === identifier ||
               split.secondaryOrder[split.secondaryOrder.length - 1] ===
                 identifier,
-            movable: !split.unlisted.includes(identifier) && !staticSectionOpen,
+            movable: !split.unlisted.includes(identifier) && !isStatic,
             column: split.mainOrder.includes(identifier)
               ? "splitListedLeft"
               : split.secondaryOrder.includes(identifier)
@@ -194,7 +195,7 @@ const Section = ({
             deletable,
             isFirst: full.order[0] === identifier,
             isLast: full.order[full.order.length - 1] === identifier,
-            movable: !full.unlisted.includes(identifier) && !staticSectionOpen,
+            movable: !full.unlisted.includes(identifier) && !isStatic,
             column: full.order.includes(identifier)
               ? "fullListed"
               : "fullUnlisted",
@@ -225,7 +226,7 @@ const Section = ({
   const urlBase = `/resumes/${id}/section/${identifier}`;
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <About>
         {icons[identifier]}
         {editableTitle ? (

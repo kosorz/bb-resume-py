@@ -1,24 +1,9 @@
-import React, { SyntheticEvent } from "react";
 import styled from "styled-components";
 
-import DangerButton from "./DangerButton";
+import Button from "./Button";
 
-const WarningButtonWrapper = styled(DangerButton)`
+const WarningButton = styled(Button)`
   background: ${({ theme }) => theme.orange};
 `;
-
-const WarningButton = ({
-  children,
-  onClick,
-  className,
-}: {
-  children: string | string[];
-  onClick: (event: SyntheticEvent) => void;
-  className?: string;
-}) => (
-  <WarningButtonWrapper className={className} onClick={onClick}>
-    {children}
-  </WarningButtonWrapper>
-);
 
 export default WarningButton;
