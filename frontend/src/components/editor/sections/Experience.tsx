@@ -2,19 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import move from "array-move";
+import { useMutation } from "react-query";
+import { SortEndHandler } from "react-sortable-hoc";
 
 import ExperienceUnit from "./ExperienceUnit";
 import Section from "./parts/Section";
 import { SortableList } from "./parts/SortableList";
 
+import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { useFormikAutoSave } from "../../../util/hooks";
+import { experienceValidationSchema } from "../validationSchemas";
 import {
   getFieldPropsMeta,
   saveChangedValues,
   sortExperienceUnits,
 } from "../../../util/fns";
-import { ResumeBubble } from "../../../bubbles/ResumeBubble";
-import { useFormikAutoSave } from "../../../util/hooks";
-import { experienceValidationSchema } from "../validationSchemas";
 import axios from "../../../util/axios";
 
 const Experience = observer(() => {
@@ -50,19 +52,13 @@ const Experience = observer(() => {
       saveChangedValues(
         values,
         experienceEditorData,
-        `/parts/experience/${id}`,
+        urlBase,
         updateExperience
       );
     },
     validationSchema: experienceValidationSchema,
   });
   useFormikAutoSave(formik);
-
-  const addFn = () => {
-    axios
-      .post(`/parts/${id}/experience_unit`)
-      .then((res) => addExperienceUnit(res.data));
-  };
 
   const sortableUnits = sortExperienceUnits(order, units).map((u, i, arr) => {
     return {
@@ -80,22 +76,35 @@ const Experience = observer(() => {
     };
   });
 
-  const onSortEnd = ({
-    oldIndex,
-    newIndex,
-  }: {
-    oldIndex: number;
-    newIndex: number;
-  }) => {
-    setWobble(false);
-    const newOrder = move(order, oldIndex, newIndex);
-    if (newOrder.toString() !== order.toString()) {
-      updateSubSectionsOrder("experience", newOrder);
-      axios.post(`${urlBase}/reorganize`, newOrder).catch(() => {
-        updateSubSectionsOrder("experience", order);
-      });
+  const addUnit = useMutation(
+    () => axios.post(`/parts/${id}/experience_unit`),
+    {
+      onSuccess: (res) => {
+        addExperienceUnit(res.data);
+      },
     }
-  };
+  );
+
+  const endSorting = useMutation(
+    ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) =>
+      axios.post(`${urlBase}/reorganize`, move(order, oldIndex, newIndex)),
+    {
+      onMutate: ({
+        oldIndex,
+        newIndex,
+      }: {
+        oldIndex: number;
+        newIndex: number;
+      }) => {
+        setWobble(false);
+        updateSubSectionsOrder("experience", move(order, oldIndex, newIndex));
+      },
+      onError: (error) => {
+        updateSubSectionsOrder("experience", order);
+        console.log(`Something went wrong... ${error}`);
+      },
+    }
+  );
 
   const onSortStart = () => setWobble(true);
 
@@ -110,7 +119,7 @@ const Experience = observer(() => {
       editableTitle={getFieldPropsMeta(formik, "title")}
       subtitle={"experience"}
       title={"Experience"}
-      addFn={addFn}
+      addFn={addUnit.mutate}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
@@ -119,7 +128,7 @@ const Experience = observer(() => {
         order={"experience-units"}
         items={sortableUnits}
         lockToContainerEdges={true}
-        onSortEnd={onSortEnd}
+        onSortEnd={endSorting.mutate as SortEndHandler}
         lockAxis={"y"}
         lockOffset={"0%"}
         onSortStart={onSortStart}

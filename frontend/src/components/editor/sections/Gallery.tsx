@@ -2,6 +2,7 @@ import React, { useContext, useState, ReactNode } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { Collapse } from "react-collapse";
+import { useMutation } from "react-query";
 
 import Section from "./parts/Section";
 import SuccessButton from "../../page/SuccessButton";
@@ -22,7 +23,7 @@ const AvailableContent = styled.article`
 
 const Title = styled.h4`
   margin: ${({ theme }) => theme.spaceSmall / 2 + "px"} auto auto;
-  border-top-addtomain-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
+  border-top-left-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-top-right-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   padding-top: ${({ theme }) => theme.spaceSmall + "px"};
   padding-bottom: ${({ theme }) => theme.spaceSmall + "px"};
@@ -85,18 +86,24 @@ const Gallery = observer(() => {
   const { layout } = paper;
 
   const [activePickIndex, setActivePick] = useState<number>(0);
-  const [activePickIdentifier, setActivePickIdentifier] = useState<string>("");
+  const [activePickIdentifier, setActivePickIdentifier] = useState<
+    "" | "skills" | "experience"
+  >("");
   const splitListedColumnsSwapped = template === "calm";
 
-  const addSection = (
-    identifier: "skills" | "experience",
-    order: "order" | "mainOrder" | "secondaryOrder"
-  ) =>
-    axios.post(`/parts/${id}/${identifier}/${order}`).then((res) => {
-      addSectionUpdate(res.data, identifier, order);
-      setActivePick(0);
-      setActivePickIdentifier("");
-    });
+  const addSection = useMutation(
+    (order: "order" | "mainOrder" | "secondaryOrder") =>
+      axios.post(`/parts/${id}/${activePickIdentifier}/${order}`),
+    {
+      onSuccess: (res, order: "order" | "mainOrder" | "secondaryOrder") => {
+        addSectionUpdate(res.data, activePickIdentifier, order);
+      },
+      onSettled: () => {
+        setActivePickIdentifier("");
+        setActivePick(0);
+      },
+    }
+  );
 
   const descriptions: { [key: string]: string } = {
     skills: `Skills there are many variations of passages of Lorem Ipsum available, but 
@@ -111,7 +118,7 @@ const Gallery = observer(() => {
     [key: string]: {
       present: boolean;
       icon: ReactNode;
-      identifier: string;
+      identifier: "skills" | "experience";
     };
   } = {
     experience: {
@@ -140,14 +147,7 @@ const Gallery = observer(() => {
           availablePicks.map((p, i, arr) => {
             const index = i + 1;
             const addToMain = (
-              <SuccessButton
-                onClick={() =>
-                  addSection(
-                    activePickIdentifier as "skills" | "experience",
-                    "mainOrder"
-                  )
-                }
-              >
+              <SuccessButton onClick={() => addSection.mutate("mainOrder")}>
                 Add to {splitListedColumnsSwapped ? "right" : "left"} column
               </SuccessButton>
             );
@@ -156,12 +156,7 @@ const Gallery = observer(() => {
                 style={{
                   order: splitListedColumnsSwapped ? 0 : undefined,
                 }}
-                onClick={() =>
-                  addSection(
-                    activePickIdentifier as "skills" | "experience",
-                    "secondaryOrder"
-                  )
-                }
+                onClick={() => addSection.mutate("secondaryOrder")}
               >
                 Add to {splitListedColumnsSwapped ? "left" : "right"} column
               </SuccessButton>
@@ -194,7 +189,9 @@ const Gallery = observer(() => {
                       isOpened={
                         3 * Math.ceil(activePickIndex / 3) === index ||
                         activePickIndex === index ||
-                        (activePickIndex === 1 && arr.length === 2)
+                        (activePickIndex === 1 &&
+                          arr.length === 2 &&
+                          !addSection.isLoading)
                       }
                     >
                       <Description>
@@ -214,14 +211,7 @@ const Gallery = observer(() => {
                             )
                           ) : (
                             <SuccessButton
-                              onClick={() =>
-                                addSection(
-                                  activePickIdentifier as
-                                    | "skills"
-                                    | "experience",
-                                  "order"
-                                )
-                              }
+                              onClick={() => addSection.mutate("order")}
                             >
                               Add to resume
                             </SuccessButton>

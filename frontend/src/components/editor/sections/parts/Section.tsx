@@ -239,7 +239,6 @@ const Section = ({
           {(!isFirst || !isLast) && movable && <Move />}
           {manageable && (
             <Management
-              title={title}
               urlBase={urlBase}
               identifier={identifier}
               column={column}

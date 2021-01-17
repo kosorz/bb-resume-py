@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import Cropper from "react-easy-crop";
+import { useMutation } from "react-query";
 
 import DeleteIcon from "../../../page/Trash";
 import CameraIcon from "../../../page/Camera";
@@ -102,9 +103,51 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
     width: 0,
     rotation: 0,
   });
-  const debouncedCroppedPixels = useDebounce(croppedPixels, 1500);
+  const debouncedCroppedPixels = useDebounce(croppedPixels, 100);
 
   const url = `/parts/${id}`;
+
+  const cropPhoto = useMutation(
+    (formData: FormData) =>
+      axios.patch(url + "/info_photo_crop", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+    {
+      onSuccess: (res) => {
+        updateInfoCroppedPhoto(res.data);
+      },
+    }
+  );
+
+  const addPhoto = useMutation(
+    (formData: FormData) =>
+      axios.patch(url + "/info_photo", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }),
+    {
+      onSuccess: (res) => {
+        resetPhotoSettings();
+        setRotation(0);
+        setImage(res.data);
+      },
+    }
+  );
+
+  const deletePhoto = useMutation(() => axios.delete(url + "/info_photo"), {
+    onSuccess: () => {
+      if (invisibleInputRef.current) {
+        invisibleInputRef.current.value = "";
+      }
+      resetPhotoSettings();
+      setRotation(0);
+      updateInfoCroppedPhoto("");
+      setImage("");
+    },
+  });
 
   useEffect(() => {
     const { width, height } = debouncedCroppedPixels;
@@ -122,13 +165,7 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
             JSON.stringify(debouncedCroppedPixels)
           );
 
-          axios
-            .patch(url + "/info_photo_crop", formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((res) => updateInfoCroppedPhoto(res.data));
+          cropPhoto.mutate(formData);
         });
       }
 
@@ -147,17 +184,7 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
             var formData = new FormData();
             formData.append("f", e.target.files[0]);
 
-            axios
-              .patch(url + "/info_photo", formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              })
-              .then((res) => {
-                resetPhotoSettings();
-                setRotation(0);
-                setImage(res.data);
-              });
+            addPhoto.mutate(formData);
           }
         }}
         type="file"
@@ -205,19 +232,7 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
                 <RotateRight
                   onClick={() => setRotation((prevState) => prevState + 90)}
                 />
-                <Delete
-                  onClick={() => {
-                    axios.delete(url + "/info_photo").then((res) => {
-                      if (invisibleInputRef.current) {
-                        invisibleInputRef.current.value = "";
-                      }
-                      resetPhotoSettings();
-                      setRotation(0);
-                      updateInfoCroppedPhoto("");
-                      setImage("");
-                    });
-                  }}
-                />
+                <Delete onClick={() => deletePhoto.mutate()} />
               </>
             )}
           </>

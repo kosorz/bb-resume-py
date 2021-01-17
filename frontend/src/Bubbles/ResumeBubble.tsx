@@ -1,7 +1,6 @@
 import React, { createContext, ReactNode } from "react";
 import { useLocalObservable } from "mobx-react-lite";
 
-import axios from "../util/axios";
 import ResumeBubbleShape from "../typings/ResumeBubble.typing";
 
 let initialState: ResumeBubbleShape = {
@@ -21,7 +20,6 @@ let initialState: ResumeBubbleShape = {
     info: undefined,
   },
   setUpdateTime: () => {},
-  getResume: () => {},
   setResume: () => {},
   updateInfo: () => {},
   updateInfoCroppedPhoto: () => {},
@@ -49,12 +47,6 @@ const BubbleProvider = ({ children }: { children: ReactNode }) => {
     ...initialState,
     setUpdateTime: () => {
       store.updatedAt = new Date().getTime();
-    },
-    getResume: () => {
-      axios.get("/resumes/1").then((res) => {
-        store.resume = res.data;
-      });
-      store.setUpdateTime();
     },
     setResume: (data) => {
       store.resume = { ...store.resume, ...data };

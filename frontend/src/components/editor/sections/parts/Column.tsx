@@ -2,6 +2,8 @@ import React, { ReactElement, useContext, useState } from "react";
 import styled from "styled-components";
 import move from "array-move";
 import { observer } from "mobx-react-lite";
+import { useMutation } from "react-query";
+import { SortEndHandler } from "react-sortable-hoc";
 
 import Experience from "../Experience";
 import Skills from "../Skills";
@@ -72,28 +74,33 @@ const Column = observer(
       return { key: s, value: sections[s] };
     });
 
-    const onSortEnd = ({
-      oldIndex,
-      newIndex,
-    }: {
-      oldIndex: number;
-      newIndex: number;
-    }) => {
-      setWobble(false);
-      const newOrder = move(orderArray, oldIndex, newIndex);
-      if (newOrder.toString() !== order.toString()) {
-        updateContentOrder(
-          template === "calm" ? "split" : layout,
-          order,
-          newOrder
-        );
-        axios
-          .post(`/resumes/${id}/column/${order}/reorganize`, newOrder)
-          .catch(() => {
-            updateContentOrder(layout, order, orderArray);
-          });
+    const endSorting = useMutation(
+      ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) =>
+        axios.post(
+          `/resumes/${id}/column/${order}/reorganize`,
+          move(orderArray, oldIndex, newIndex)
+        ),
+      {
+        onMutate: ({
+          oldIndex,
+          newIndex,
+        }: {
+          oldIndex: number;
+          newIndex: number;
+        }) => {
+          setWobble(false);
+          updateContentOrder(
+            template === "calm" ? "split" : layout,
+            order,
+            move(orderArray, oldIndex, newIndex)
+          );
+        },
+        onError: (error) => {
+          updateContentOrder(layout, order, orderArray);
+          console.log(`Something went wrong... ${error}`);
+        },
       }
-    };
+    );
 
     const onSortStart = () => setWobble(true);
 
@@ -117,7 +124,7 @@ const Column = observer(
           <SortableList
             order={order}
             layout={layout}
-            onSortEnd={onSortEnd}
+            onSortEnd={endSorting.mutate as SortEndHandler}
             onSortStart={onSortStart}
             items={items}
             lockToContainerEdges={true}

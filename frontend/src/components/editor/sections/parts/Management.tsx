@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
+import { useMutation } from "react-query";
 
 import Trash from "../../../page/Trash";
 import Right from "../../../page/Right";
@@ -25,13 +26,11 @@ const AddToMain = styled(Left)`
 `;
 
 const Management = ({
-  title,
   column,
   urlBase,
   identifier,
   deletable,
 }: {
-  title: string;
   column: string;
   urlBase: string;
   identifier: "skills" | "experience" | "meta" | "info" | "gallery" | "";
@@ -41,41 +40,39 @@ const Management = ({
   const { updateContent, deleteSectionUpdate, resume } = resumeBubble;
   const splitListedColumnsSwapped = resume.meta?.template === "calm";
 
-  const list = (order: string) => {
-    axios.post(`${urlBase}/list/${order}`).then((res) => {
-      updateContent(res.data);
-    });
-  };
-
-  const migrate = () => {
-    axios.post(`${urlBase}/migrate`).then((res) => {
-      updateContent(res.data);
-    });
-  };
-
-  const unlist = () => {
-    axios.post(`${urlBase}/unlist`).then((res) => {
-      updateContent(res.data);
-    });
-  };
-
-  const deleteSection = () => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete ${title}? This operation is irreversible.`
-      )
-    ) {
-      axios.delete(`${urlBase}`).then((res) => {
-        deleteSectionUpdate(res.data, identifier);
-      });
+  const list = useMutation(
+    (order: "mainOrder" | "secondaryOrder" | "order") =>
+      axios.post(`${urlBase}/list/${order}`),
+    {
+      onSuccess: (res) => {
+        updateContent(res.data);
+      },
     }
-  };
+  );
 
-  const trash = <Trash onClick={() => deleteSection()} />;
-  const hide = <Hide onClick={() => unlist()} />;
+  const migrate = useMutation(() => axios.post(`${urlBase}/migrate`), {
+    onSuccess: (res) => {
+      updateContent(res.data);
+    },
+  });
 
-  const left = <Left onClick={() => migrate()} />;
-  const right = <Right onClick={() => migrate()} />;
+  const unlist = useMutation(() => axios.post(`${urlBase}/unlist`), {
+    onSuccess: (res) => {
+      updateContent(res.data);
+    },
+  });
+
+  const deleteSection = useMutation(() => axios.delete(`${urlBase}`), {
+    onSuccess: (res) => {
+      deleteSectionUpdate(res.data, identifier);
+    },
+  });
+
+  const trash = <Trash onClick={() => deleteSection.mutate()} />;
+  const hide = <Hide onClick={() => unlist.mutate()} />;
+
+  const left = <Left onClick={() => migrate.mutate()} />;
+  const right = <Right onClick={() => migrate.mutate()} />;
 
   if (column === "splitListedLeft" || column === "splitListedRight") {
     return (
@@ -95,8 +92,8 @@ const Management = ({
   if (column === "splitUnlisted") {
     return (
       <>
-        <AddToMain onClick={() => list("mainOrder")} />
-        <AddToSecondary onClick={() => list("secondaryOrder")} />
+        <AddToMain onClick={() => list.mutate("mainOrder")} />
+        <AddToSecondary onClick={() => list.mutate("secondaryOrder")} />
         {deletable && trash}
       </>
     );
@@ -107,7 +104,7 @@ const Management = ({
   if (column === "fullUnlisted") {
     return (
       <>
-        <Show onClick={() => list("order")} />
+        <Show onClick={() => list.mutate("order")} />
         {deletable && trash}
       </>
     );

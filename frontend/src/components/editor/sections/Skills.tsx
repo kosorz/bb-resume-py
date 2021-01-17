@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import move from "array-move";
+import { useMutation } from "react-query";
+import { SortEndHandler } from "react-sortable-hoc";
 
 import SkillsGroup from "./SkillsGroup";
 import Section from "./parts/Section";
 import { SortableList } from "./parts/SortableList";
 
-import { skillsValidationSchema } from "../validationSchemas";
-import { useFormikAutoSave } from "../../../util/hooks";
 import { ResumeBubble } from "../../../bubbles/ResumeBubble";
+import { useFormikAutoSave } from "../../../util/hooks";
+import { skillsValidationSchema } from "../validationSchemas";
 import {
   getFieldPropsMeta,
   saveChangedValues,
@@ -47,12 +49,6 @@ const Skills = observer(() => {
   });
   useFormikAutoSave(formik);
 
-  const addFn = () => {
-    axios
-      .post(`/parts/${id}/skills_group`)
-      .then((res) => addSkillsGroup(res.data));
-  };
-
   const sortableGroups = sortSkillsGroups(order, groups).map((gr, i, arr) => {
     return {
       key: `skills_group_${gr.id}_editor`,
@@ -69,22 +65,32 @@ const Skills = observer(() => {
     };
   });
 
-  const onSortEnd = ({
-    oldIndex,
-    newIndex,
-  }: {
-    oldIndex: number;
-    newIndex: number;
-  }) => {
-    setWobble(false);
-    const newOrder = move(order, oldIndex, newIndex);
-    if (newOrder.toString() !== order.toString()) {
-      updateSubSectionsOrder("skills", newOrder);
-      axios.post(`${urlBase}/reorganize`, newOrder).catch(() => {
+  const addGroup = useMutation(() => axios.post(`/parts/${id}/skills_group`), {
+    onSuccess: (res) => {
+      addSkillsGroup(res.data);
+    },
+  });
+
+  const endSorting = useMutation(
+    ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) =>
+      axios.post(`${urlBase}/reorganize`, move(order, oldIndex, newIndex)),
+    {
+      onMutate: ({
+        oldIndex,
+        newIndex,
+      }: {
+        oldIndex: number;
+        newIndex: number;
+      }) => {
+        setWobble(false);
+        updateSubSectionsOrder("skills", move(order, oldIndex, newIndex));
+      },
+      onError: (error) => {
         updateSubSectionsOrder("skills", order);
-      });
+        console.log(`Something went wrong... ${error}`);
+      },
     }
-  };
+  );
 
   const onSortStart = () => setWobble(true);
 
@@ -97,7 +103,7 @@ const Skills = observer(() => {
       title={"Skills"}
       editableTitle={getFieldPropsMeta(formik, "title")}
       subtitle={"skills group"}
-      addFn={addFn}
+      addFn={addGroup.mutate}
       purpose={`There are many variations of passages of Lorem Ipsum available, but 
     the majority have suffered alteration in some form, by injected humour, 
     or randomised words which.`}
@@ -108,7 +114,7 @@ const Skills = observer(() => {
         lockToContainerEdges={true}
         lockAxis={"y"}
         lockOffset={"0%"}
-        onSortEnd={onSortEnd}
+        onSortEnd={endSorting.mutate as SortEndHandler}
         onSortStart={onSortStart}
         useDragHandle={true}
       />

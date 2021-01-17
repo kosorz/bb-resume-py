@@ -13,7 +13,6 @@ type ResumeBubbleShape = {
     experience?: number;
   };
   resume: ResumeShape;
-  getResume: () => void;
   resetPhotoSettings: () => void;
   setResume: (data: Partial<ResumeShape>) => void;
   setUpdateTime: () => void;

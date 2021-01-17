@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
+import { useMutation } from "react-query";
 
 import Input from "../../page/formik/Input";
 import Area from "../../page/formik/Area";
@@ -47,11 +48,17 @@ const SkillsGroup = observer(
     });
     useFormikAutoSave(formik);
 
-    const deleteFn = () =>
-      axios.delete(`/parts/skills_group/${id}`).then((res) => {
-        opened && setOpenSubSection("skills", undefined);
-        setTimeout(() => removeSkillsGroup(res.data), 350);
-      });
+    const deleteUnit = useMutation(
+      () => axios.delete(`/parts/skills_group/${id}`),
+      {
+        onMutate: () => {
+          opened && setOpenSubSection("skills", undefined);
+        },
+        onSuccess: (res) => {
+          setTimeout(() => removeSkillsGroup(res.data), 350);
+        },
+      }
+    );
 
     return (
       <SubSection
@@ -63,7 +70,7 @@ const SkillsGroup = observer(
         title={skillsGroupEditorData.title || `Skills ${i}`}
         isLast={isLast}
         isFirst={isFirst}
-        deleteFn={deleteFn}
+        deleteFn={deleteUnit.mutate}
       >
         <Form>
           <Input
