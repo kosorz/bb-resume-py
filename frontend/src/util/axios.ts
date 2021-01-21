@@ -3,10 +3,20 @@ import axiosBase from "axios";
 const axios = axiosBase.create({
   baseURL: process.env.REACT_APP_BACKEND_URL,
   headers: {
-    Authorization:
-      "Bearer " +
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2MzQ1MzUxNjd9.APpdWRQEEk3_LpReJeAF7Z2ifAwBtmZsl6GE1Z-THOA",
+    Authorization: "Bearer " + localStorage.getItem("token"),
   },
 });
+
+axios.interceptors.response.use(
+  function (config) {
+    return config;
+  },
+  function (error) {
+    if (error.response.status === 401) {
+      localStorage.removeItem("token");
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axios;

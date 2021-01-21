@@ -1,5 +1,5 @@
 import { blobToFile } from "./fns";
-import { PhotoSettingsShape } from "../typings/Meta.typing";
+import { PhotoSettingsShape } from "../chunks/resume/editor/sections/Meta/Meta.typing";
 
 function createImage(url: string) {
   return new Promise((resolve, reject) => {

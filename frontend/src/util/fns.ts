@@ -8,16 +8,16 @@ import { diff } from "deep-diff";
 import { toJS } from "mobx";
 
 import axios from "./axios";
-import InfoShape from "../typings/Info.typing";
-import ExperienceShape from "../typings/Experience.typing";
-import SkillsShape from "../typings/Skills.typing";
-import SkillsGroupShape from "../typings/SkillsGroup.typing";
-import ExperienceUnitShape from "../typings/ExperienceUnit.typing";
+import InfoShape from "../chunks/resume/editor/sections/Info/Info.typing";
+import ExperienceShape from "../chunks/resume/editor/sections/Experience/Experience.typing";
+import SkillsShape from "../chunks/resume/editor/sections/Skills/Skills.typing";
+import SkillsGroupShape from "../chunks/resume/editor/sections/Skills/SkillsGroup.typing";
+import ExperienceUnitShape from "../chunks/resume/editor/sections/Experience/ExperienceUnit.typing";
 import MetaShape, {
   ColorsShape,
   PaperShape,
   FontSizeShape,
-} from "../typings/Meta.typing";
+} from "../chunks/resume/editor/sections/Meta/Meta.typing";
 
 export function getFieldPropsMeta(
   formik: FormikProps<any>,

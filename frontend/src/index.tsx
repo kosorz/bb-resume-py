@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { loadFonts } from "./components/page/fonts/fonts-loader";
+import { loadFonts } from "./assets/fonts/fonts-loader";
 
 loadFonts();
 ReactDOM.render(<App />, document.getElementById("root"));
