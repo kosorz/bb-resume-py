@@ -34,7 +34,7 @@ const DocumentWrapper = styled.div`
   margin: ${({ theme }) => theme.space + "px"};
   height: ${({ height }: { height: number }) => height + "px"};
   background: ${({ theme }) => theme.white};
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: ${({ theme }) => theme.cardShadow};
 `;
 
 const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {

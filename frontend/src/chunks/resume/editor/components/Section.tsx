@@ -6,6 +6,9 @@ import Management from "./Management";
 import Move from "../../../../components/symbols/Move";
 import SectionEditableTitle from "./SectionEditableTitle";
 import SuccessButton from "../../../../components/SuccessButton";
+import Box from "../../../../components/Box";
+import Footer from "../../../../components/BoxFooter";
+
 import { ReactComponent as ExperienceIcon } from "../../../../assets/icons/Experience.svg";
 import { ReactComponent as SkillsIcon } from "../../../../assets/icons/Personal Skills.svg";
 import { ReactComponent as MetaIcon } from "../../../../assets/icons/Design.svg";
@@ -82,39 +85,19 @@ const SectionNavigation = styled.nav`
   }
 `;
 
-const Content = styled.section`
+export const Content = styled(Box)`
   border-top: solid
     ${({ noBorder, theme }: { noBorder: boolean; theme: ThemeShape }) =>
       noBorder ? 0 : "4px" + theme.main};
-  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  background-color: ${({ theme }) => theme.white};
-  box-shadow: ${({ theme }) => theme.cardShadow};
-  transition: ${({ theme }) => theme.cardShadowTransition};
-  flex-shrink: 0;
-  flex-basis: 375px;
 
   ${media.tablet`
     flex-basis: 50%;
-  `};
-
-  ${media.phone`
-    flex: 100%;
   `};
 `;
 
 const Children = styled.article`
   padding: ${({ theme }) => theme.spaceSmall + "px"} 0
     ${({ theme }) => theme.space + "px"} 0;
-`;
-
-export const Footer = styled.div`
-  padding-top: ${({ theme }) => theme.space + "px"};
-  padding-bottom: ${({ theme }) => theme.space + "px"};
-  display: flex;
-  flex-wrap: wrap;
-  background: ${({ theme }) => theme.gray};
-  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  padding: ${({ theme }) => theme.spaceSmall + "px"};
 `;
 
 const icons: { [key: string]: ReactNode } = {

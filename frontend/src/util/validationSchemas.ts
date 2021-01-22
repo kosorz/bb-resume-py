@@ -38,3 +38,17 @@ export const experienceUnitValidationSchema = yup.object().shape({
   location: yup.string(),
   link: yup.string().url(),
 });
+
+export const loginValidationSchema = yup.object().shape({
+  username: yup.string().required("Email is a required field."),
+  password: yup.string().required(),
+});
+
+export const registerValidationSchema = yup.object().shape({
+  username: yup.string().email().required("Email is a required field."),
+  password: yup.string().required(),
+  password_confirm: yup
+    .string()
+    .oneOf([yup.ref("password"), undefined], "Passwords must match")
+    .required(),
+});

@@ -133,11 +133,11 @@ def create_main_tables_seed_data() -> None:
     )
 
     op.bulk_insert(users, [{
-        "username": "seed_user",
+        "username": "seed@email.com",
         "hashed_password": "seed_hashed_password",
     }])
     op.bulk_insert(resumes, [{"title": "seed_title", "owner_id": 1}])
-    op.bulk_insert(infos, [{"name": "seed_user", "resume_id": 1}])
+    op.bulk_insert(infos, [{"name": "seed@email.com", "resume_id": 1}])
     op.bulk_insert(skills, [{"resume_id": 1, "order": [1]}])
     op.bulk_insert(skills_groups, [{"skills_id": 1}])
     op.bulk_insert(experiences, [{"resume_id": 1, "order": [1]}])

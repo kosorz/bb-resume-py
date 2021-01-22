@@ -4,13 +4,13 @@ import styled from "styled-components";
 
 import Field from "./Field";
 
-const Range = styled.input`
+const FormikRange = styled.input`
   margin: 0;
   margin-top: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   width: 100%;
 `;
 
-const FormikRange = ({
+const Range = ({
   displayName,
   initialTouched,
   initialError,
@@ -28,10 +28,10 @@ const FormikRange = ({
   return (
     <>
       <Field name={displayName || rest.name} touched={touched} error={error}>
-        <Range {...rest} type={"range"} />
+        <FormikRange {...rest} type={"range"} />
       </Field>
     </>
   );
 };
 
-export default FormikRange;
+export default Range;

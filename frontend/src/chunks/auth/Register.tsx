@@ -5,39 +5,33 @@ import Input from "../../components/formik/Input";
 import Button from "../../components/Button";
 import Form, { Link } from "./components/Form";
 
-import { login } from "../../util/auth";
-import { loginValidationSchema } from "../../util/validationSchemas";
+import { register } from "../../util/auth";
+import { registerValidationSchema } from "../../util/validationSchemas";
 import { getFieldPropsMeta } from "../../util/fns";
 
-const Login = () => {
+const Register = () => {
   const [baseError, setBaseError] = useState("");
 
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
+      password_confirm: "",
     },
-    onSubmit: ({ username, password }) => {
-      login(username, password).catch((err) => {
-        if (err.response.status === 401) {
-          formik.resetForm();
-          formik.validateForm();
-          setBaseError("Invalid email or password, please try again");
-        }
+    onSubmit: ({ username, password, password_confirm }) => {
+      register(username, password, password_confirm).catch(() => {
+        formik.resetForm();
+        formik.validateForm();
+        setBaseError("Account creation failed, please try again");
       });
     },
     validateOnMount: true,
-    validationSchema: loginValidationSchema,
+    validationSchema: registerValidationSchema,
   });
 
   return (
     <Form
-      links={
-        <>
-          <Link to={"/recover_password"}>Forgot your password?</Link>
-          <Link to={"/register"}>Don't have an account?</Link>
-        </>
-      }
+      links={<Link to={"/login"}>Already have an account?</Link>}
       baseError={baseError}
       inputs={
         <>
@@ -56,15 +50,23 @@ const Login = () => {
             onFocus={() => setBaseError("")}
             {...getFieldPropsMeta(formik, "password")}
           />
+          <Input
+            withSpace={false}
+            displayName={"Password confirmation"}
+            placeholder={"Enter your password again"}
+            type={"password"}
+            onFocus={() => setBaseError("")}
+            {...getFieldPropsMeta(formik, "password_confirm")}
+          />
         </>
       }
       button={
         <Button disabled={!formik.isValid} onClick={() => formik.submitForm()}>
-          Log in
+          Create an account
         </Button>
       }
     />
   );
 };
 
-export default Login;
+export default Register;

@@ -11,7 +11,7 @@ import { SortableList } from "../../components/SortableList";
 
 import { ResumeBubble } from "../../../ResumeBubble";
 import { useFormikAutoSave } from "../../../../../util/hooks";
-import { experienceValidationSchema } from "../../util/validationSchemas";
+import { experienceValidationSchema } from "../../../../../util/validationSchemas";
 import {
   getFieldPropsMeta,
   saveChangedValues,

@@ -4,7 +4,7 @@ import { FieldInputProps, FieldHelperProps, FieldMetaProps } from "formik";
 import Radio from "./Radio";
 import Field from "./Field";
 
-const RadioGroup = styled.div`
+const FormikRadioGroup = styled.div`
   margin-bottom: ${({ theme }) => theme.spaceSmall + "px"};
   display: flex;
   width: 100%;
@@ -21,7 +21,7 @@ const RadioGroup = styled.div`
   }
 `;
 
-const FormikRadioGroup = ({
+const RadioGroup = ({
   options,
   displayName,
   initialTouched,
@@ -40,15 +40,15 @@ const FormikRadioGroup = ({
   }) => {
   return (
     <Field name={displayName || rest.name} touched={touched} error={error}>
-      <RadioGroup className={className}>
+      <FormikRadioGroup className={className}>
         {options.map((o) => (
           <Radio key={`radio-${o.ownValue}`} {...rest} ownValue={o.ownValue}>
             {o.children}
           </Radio>
         ))}
-      </RadioGroup>
+      </FormikRadioGroup>
     </Field>
   );
 };
 
-export default FormikRadioGroup;
+export default RadioGroup;

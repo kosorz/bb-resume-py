@@ -203,12 +203,12 @@ class TestResumes:
                 }
             },
             "info": {
-                "name": "string",
+                "name": "",
                 "id": 2,
                 "resume_id": 2,
                 "phone": "",
                 "link": "",
-                "email": "",
+                "email": "test@email.com",
                 "cropped_photo": "",
                 "quote": "",
                 "location": "",

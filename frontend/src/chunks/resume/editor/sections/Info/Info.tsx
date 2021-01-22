@@ -8,12 +8,12 @@ import Area from "../../../../../components/formik/Area";
 import Section from "../../components/Section";
 import Form from "../../../../../components/formik/Form";
 import InfoPhoto from "../../components/InfoPhoto";
+import Footer from "../../../../../components/BoxFooter";
 import VisibilityToggle from "../../../../../components/VisibilityToggle";
 import LockToggle from "../../../../../components/LockToggle";
 import { Title } from "../../Editor";
-import { Footer } from "../../components/Section";
 
-import { infoValidationSchema } from "../../util/validationSchemas";
+import { infoValidationSchema } from "../../../../../util/validationSchemas";
 import { ResumeBubble } from "../../../ResumeBubble";
 import { getFieldPropsMeta, saveChangedValues } from "../../../../../util/fns";
 import { useFormikAutoSave } from "../../../../../util/hooks";

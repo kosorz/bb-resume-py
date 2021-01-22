@@ -36,7 +36,7 @@ class TestAuthRoutes:
 @pytest.fixture
 def new_user_login():
     return {
-        "username": "string",
+        "username": "test@email.com",
         "password": "string",
     }
 
@@ -46,11 +46,11 @@ class TestAuth:
         "body",
         (
             {
-                "username": "string",
+                "username": "test@email.com",
                 "password": "string"
             },
             {
-                "username": "string",
+                "username": "test@email.com",
                 "password_confirm": "string",
             },
             {
@@ -58,7 +58,7 @@ class TestAuth:
                 "password_confirm": "string",
             },
             {
-                "username": "string",
+                "username": "test@email.com",
                 "password": "string",
                 "password_confirm": "string_not_match",
             },
@@ -138,7 +138,7 @@ class TestAuth:
                 "password": "string"
             },
             {
-                "username": "string",
+                "username": "test@email.com",
                 "password": "invalid_password"
             },
         ),

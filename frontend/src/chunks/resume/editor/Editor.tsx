@@ -20,6 +20,14 @@ const Wrapper = styled.section`
   /* ${media.tablet`
     display: none;
   `} */
+
+  button {
+    ${media.phone`
+    flex: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  `};
+  }
 `;
 
 export const Title = styled.h2`

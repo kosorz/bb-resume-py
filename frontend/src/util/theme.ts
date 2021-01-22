@@ -16,9 +16,13 @@ export type ThemeShape = {
   activeMain: string;
   lightMain: string;
 
+  complementary: string;
+
   smallFont: string;
   mediumFont: string;
   biggerFont: string;
+  numericSmallFont: number;
+  numericBiggerFont: number;
 
   menuHeight: number;
   spaceSmall: number;
@@ -47,16 +51,20 @@ const theme: ThemeShape = {
   activeMain: "#16429B",
   lightMain: "#e9effc",
 
+  complementary: "#6E4F10",
+
   smallFont: "12px",
   mediumFont: "13px",
   biggerFont: "14px",
+  numericSmallFont: 12,
+  numericBiggerFont: 14,
 
-  menuHeight: 60,
+  menuHeight: 65,
   spaceSmall: 10,
   space: 20,
   spaceBig: 30,
 
-  cardShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
+  cardShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
   cardShadowTransition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
 };
 

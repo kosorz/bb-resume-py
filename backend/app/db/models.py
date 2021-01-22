@@ -45,7 +45,7 @@ class Info(Base):
     __tablename__ = "infos"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
+    name = Column(String, default="")
     phone = Column(String, default="")
     link = Column(String, default="")
     email = Column(String, default="")

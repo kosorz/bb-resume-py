@@ -12,7 +12,7 @@ const Children = styled.div`
   flex: 100%;
 `;
 
-const FormikField = ({
+const Field = ({
   name,
   touched,
   error,
@@ -30,4 +30,4 @@ const FormikField = ({
   );
 };
 
-export default FormikField;
+export default Field;

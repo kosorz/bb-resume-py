@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Field from "./Field";
 import { ThemeShape } from "../../util/theme";
 
-const Area = styled.textarea`
+const FormikArea = styled.textarea`
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
   color: ${({ theme }) => theme.main};
@@ -25,7 +25,7 @@ const Area = styled.textarea`
   box-sizing: border-box;
 `;
 
-const FormikArea = ({
+const Area = ({
   initialTouched,
   initialError,
   initialValue,
@@ -41,7 +41,7 @@ const FormikArea = ({
 } & FieldInputProps<any> &
   FieldMetaProps<any>) => (
   <Field name={rest.name} touched={touched} error={error}>
-    <Area
+    <FormikArea
       withSpace={withSpace}
       withToggle={typeof toggle !== "undefined"}
       rows={4}
@@ -51,4 +51,4 @@ const FormikArea = ({
   </Field>
 );
 
-export default FormikArea;
+export default Area;

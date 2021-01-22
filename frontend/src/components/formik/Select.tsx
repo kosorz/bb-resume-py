@@ -4,14 +4,14 @@ import styled from "styled-components";
 
 import Field from "./Field";
 
-const Select = styled.select`
+const FormikSelect = styled.select`
   width: 100%;
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
   margin: ${({ theme }) => theme.spaceSmall / 2 + "px"} 0;
 `;
 
-const FormikSelect = ({
+const Select = ({
   displayName,
   initialTouched,
   initialError,
@@ -27,9 +27,9 @@ const FormikSelect = ({
   FieldMetaProps<any>) => {
   return (
     <Field name={displayName || rest.name} touched={touched} error={error}>
-      <Select {...rest}>{children}</Select>
+      <FormikSelect {...rest}>{children}</FormikSelect>
     </Field>
   );
 };
 
-export default FormikSelect;
+export default Select;

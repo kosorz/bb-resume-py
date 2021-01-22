@@ -2,6 +2,7 @@ import React, { SyntheticEvent } from "react";
 import styled from "styled-components";
 
 import media from "../util/media";
+import { ThemeShape } from "../util/theme";
 
 const GeneralButton = styled.button`
   border: 0;
@@ -15,10 +16,23 @@ const GeneralButton = styled.button`
   font-size: ${({ theme }) => theme.biggerFont};
   cursor: pointer;
 
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    transform: scale(1.01);
+    box-shadow: ${({ theme }: { theme: ThemeShape }) => theme.cardShadow};
+    transition: transform 1s;
+  }
+
   ${media.phone`
-    flex: 100%;
-    margin-left: 0;
-    margin-right: 0;
+    padding: 0 ${({ theme }: { theme: ThemeShape }) =>
+      theme.spaceSmall / 1.5 + "px"};
+    margin: ${({ theme }: { theme: ThemeShape }) =>
+      theme.spaceSmall / 4 + "px"};
+    font-size: ${({ theme }: { theme: ThemeShape }) => theme.mediumFont};
   `};
 `;
 
@@ -27,17 +41,20 @@ const Button = ({
   onClick,
   className,
   style,
+  disabled,
 }: {
   children: string | string[];
   onClick: (event: SyntheticEvent) => void;
   className?: string;
   style?: Object;
+  disabled?: boolean;
 }) => (
   <GeneralButton
     style={style}
     className={className}
     type={"button"}
     onClick={onClick}
+    disabled={disabled}
   >
     {children}
   </GeneralButton>

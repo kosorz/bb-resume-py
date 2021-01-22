@@ -1,18 +1,27 @@
 import * as React from "react";
 import { FieldMetaProps } from "formik";
 import styled from "styled-components";
+import { Collapse } from "react-collapse";
+
 import { capitalize } from "../../util/fns";
 
-const Error = styled.span`
+const FormikError = styled.span`
   color: ${({ theme }) => theme.red};
   font-size: ${({ theme }) => theme.smallFont};
 `;
 
-const FormikError = ({
+const Error = ({
   touched,
   error,
-}: Pick<FieldMetaProps<any>, "error" | "touched">) => {
-  return <Error>{touched && error && capitalize(error.concat("."))}</Error>;
+  bare,
+}: Pick<FieldMetaProps<any>, "error" | "touched"> & { bare?: boolean }) => {
+  const content = (
+    <FormikError>
+      {touched && error && capitalize(error.concat("."))}
+    </FormikError>
+  );
+
+  return bare ? content : <Collapse isOpened={!!error}>{content}</Collapse>;
 };
 
-export default FormikError;
+export default Error;

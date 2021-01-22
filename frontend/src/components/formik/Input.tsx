@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Field from "./Field";
 import { ThemeShape } from "../../util/theme";
 
-const Input = styled.input`
+const FormikInput = styled.input`
   flex: 100%;
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
@@ -23,7 +23,7 @@ const Input = styled.input`
     "px"};
 `;
 
-const FormikInput = ({
+const Input = ({
   displayName,
   initialTouched,
   initialError,
@@ -35,14 +35,16 @@ const FormikInput = ({
   ...rest
 }: {
   placeholder?: string;
+  type?: "password";
   displayName?: string;
+  onFocus?: () => void;
   toggle?: ReactNode;
   withSpace?: boolean;
 } & FieldInputProps<any> &
   FieldMetaProps<any>) => {
   return (
     <Field name={displayName || rest.name} touched={touched} error={error}>
-      <Input
+      <FormikInput
         withToggle={typeof toggle !== "undefined"}
         withSpace={withSpace}
         {...rest}
@@ -52,4 +54,4 @@ const FormikInput = ({
   );
 };
 
-export default FormikInput;
+export default Input;

@@ -173,12 +173,12 @@ class TestInfos:
         )
         assert res.json() == {
             "cropped_photo": "",
-            "name": "string",
+            "name": "",
             "id": 2,
             "resume_id": 2,
             "phone": "",
             "link": "",
-            "email": "",
+            "email": "test@email.com",
             "quote": "",
             "location": "",
             "role": "",
@@ -287,8 +287,8 @@ class TestInfos:
             },
         )
         assert res.json() == {
-            'cropped_photo': '',
-            "name": "string",
+            "cropped_photo": "",
+            "name": "",
             "id": 2,
             "resume_id": 2,
             "phone": "updated_string",

@@ -3,7 +3,7 @@ import { FieldInputProps } from "formik";
 import styled from "styled-components";
 import { capitalize } from "../../util/fns";
 
-const Label = styled.label`
+const FormikLabel = styled.label`
   font-size: ${({ theme }) => theme.smallFont};
   color: ${({ theme }) => theme.activeMain};
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
@@ -12,17 +12,17 @@ const Label = styled.label`
   text-transform: uppercase;
 `;
 
-const FormikLabel = ({
+const Label = ({
   name,
   className,
 }: Pick<FieldInputProps<any>, "name"> & {
   className?: string;
 }) => {
   return (
-    <Label className={className}>
+    <FormikLabel className={className}>
       {capitalize(name.replace(/_/g, "\xa0"))}
-    </Label>
+    </FormikLabel>
   );
 };
 
-export default FormikLabel;
+export default Label;

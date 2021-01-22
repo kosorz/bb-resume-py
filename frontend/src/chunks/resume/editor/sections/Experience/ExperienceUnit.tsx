@@ -9,7 +9,7 @@ import VisibilityToggle from "../../../../../components/VisibilityToggle";
 import SubSection from "../../components/SubSection";
 import Form from "../../../../../components/formik/Form";
 
-import { experienceUnitValidationSchema } from "../../util/validationSchemas";
+import { experienceUnitValidationSchema } from "../../../../../util/validationSchemas";
 import { getFieldPropsMeta, saveChangedValues } from "../../../../../util/fns";
 import { ResumeBubble } from "../../../ResumeBubble";
 import { ExperienceUnitEditor } from "./ExperienceUnit.typing";

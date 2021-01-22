@@ -41,7 +41,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 @router.post(
     "/join",
-    response_model=UserPublic,
+    response_model=Token,
     name="auth:join",
 )
 def create_user(user: UserCreate, db: Session = Depends(db)):
@@ -53,7 +53,11 @@ def create_user(user: UserCreate, db: Session = Depends(db)):
     if not password_match:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                             detail="Unprocessable Entity")
-    return crud.create_user(db, user)
+    created_user = crud.create_user(db, user)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(data={"sub": created_user.username},
+                                       expires_delta=access_token_expires)
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.post(

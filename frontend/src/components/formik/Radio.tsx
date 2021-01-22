@@ -4,7 +4,7 @@ import { FieldInputProps, FieldHelperProps } from "formik";
 import CheckIcon from "../symbols/Check";
 import { ThemeShape } from "../../util/theme";
 
-const Radio = styled.div`
+const FormikRadio = styled.div`
   box-shadow: ${({ theme }) => theme.cardShadow};
   transition: ${({ theme }) => theme.cardShadowTransition};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
@@ -56,7 +56,7 @@ const Check = styled(CheckIcon)`
     checked ? "block" : "none"};
 `;
 
-const FormikRadio = ({
+const Radio = ({
   ownValue,
   setValue,
   className,
@@ -71,7 +71,7 @@ const FormikRadio = ({
   const checked = rest.value === ownValue;
 
   return (
-    <Radio
+    <FormikRadio
       checked={checked}
       className={className}
       onClick={() => setValue(ownValue)}
@@ -80,8 +80,8 @@ const FormikRadio = ({
       <Decor>
         <Check checked={checked} />
       </Decor>
-    </Radio>
+    </FormikRadio>
   );
 };
 
-export default FormikRadio;
+export default Radio;

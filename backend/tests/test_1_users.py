@@ -40,7 +40,7 @@ class TestUsers:
         # Checks if get users me endpoint responds correctly
         res = await client.get(app.url_path_for("users:get-me"))
         assert res.json() == {
-            "username": "string",
+            "username": "test@email.com",
             "id": 2,
             "disabled": False,
             "resumes": [],
@@ -69,10 +69,10 @@ class TestUsers:
         assert res.json() == [{
             "disabled": False,
             "id": 1,
-            "username": "seed_user"
+            "username": "seed@email.com"
         }, {
             "disabled": False,
             "id": 2,
-            "username": "string"
+            "username": "test@email.com"
         }]
         assert res.status_code == status.HTTP_200_OK

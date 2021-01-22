@@ -72,8 +72,8 @@ def create_user_resume(db: Session, resume: ResumeCreate, user_id: int):
 
 
 # Infos
-def create_resume_info(db: Session, resume_id: int, name: str):
-    return finalize_create(db, models.Info(resume_id=resume_id, name=name))
+def create_resume_info(db: Session, resume_id: int, email: str):
+    return finalize_create(db, models.Info(resume_id=resume_id, email=email))
 
 
 def get_resume_info(db: Session, resume_id: int):

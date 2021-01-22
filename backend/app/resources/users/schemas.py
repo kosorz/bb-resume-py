@@ -1,10 +1,12 @@
 from typing import List
 from pydantic import BaseModel
-from ..resumes.schemas import Resume
+
+from ..resumes.schemas import ResumeFull
+from ..parts.info.schemas import Email
 
 
 class UserBase(BaseModel):
-    username: str
+    username: Email
 
 
 class UserCreate(UserBase):
@@ -21,7 +23,7 @@ class UserPublic(UserBase):
 
 
 class User(UserPublic):
-    resumes: List[Resume] = []
+    resumes: List[ResumeFull] = []
 
     class Config:
         orm_mode = True

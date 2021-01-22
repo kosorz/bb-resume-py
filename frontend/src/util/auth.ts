@@ -30,6 +30,19 @@ export const isAuthenticated = () => {
   return false;
 };
 
+export const register = async (
+  username: string,
+  password: string,
+  password_confirm: string
+) => {
+  return axios
+    .post("/join", { username, password, password_confirm })
+    .then((res) => {
+      localStorage.setItem("token", res.data["access_token"]);
+      window.location.reload();
+    });
+};
+
 export const login = async (username: string, password: string) => {
   const formData = new FormData();
   formData.append("username", username);

@@ -20,7 +20,7 @@ const PickerWrapper = styled.div`
   }
 `;
 
-const FormikColorPicker = ({
+const ColorPicker = ({
   setValue,
   displayName,
   initialTouched,
@@ -51,4 +51,4 @@ const FormikColorPicker = ({
   );
 };
 
-export default FormikColorPicker;
+export default ColorPicker;

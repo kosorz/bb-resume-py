@@ -12,7 +12,7 @@ import { getFieldPropsMeta, saveChangedValues } from "../../../../../util/fns";
 import { SkillsGroupEditor } from "./SkillsGroup.typing";
 import { ResumeBubble } from "../../../ResumeBubble";
 import { useFormikAutoSave } from "../../../../../util/hooks";
-import { skillsGroupValidationSchema } from "../../util/validationSchemas";
+import { skillsGroupValidationSchema } from "../../../../../util/validationSchemas";
 import axios from "../../../../../util/axios";
 
 const SkillsGroup = observer(

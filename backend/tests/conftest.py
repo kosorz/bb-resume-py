@@ -89,7 +89,7 @@ async def app_with_test_overrides(app: FastAPI) -> FastAPI:
     async def override_get_current_user():
         user = get_user_by_username(
             app.state._db,
-            username="string",
+            username="test@email.com",
         )
         return user
 
@@ -126,7 +126,7 @@ def db(app: FastAPI):
 @pytest.fixture
 def new_user():
     return {
-        "username": "string",
+        "username": "test@email.com",
         "password": "string",
         "password_confirm": "string"
     }
