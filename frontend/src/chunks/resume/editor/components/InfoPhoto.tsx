@@ -85,8 +85,8 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, updateInfoCroppedPhoto, resetPhotoSettings } = resumeBubble;
   const { id, info, meta } = resume;
-  const { photoSettings } = meta!;
-  const { photo, cropped_photo, photo_locked } = info!;
+  const { photoSettings } = meta;
+  const { photo, cropped_photo, photo_locked } = info;
 
   const invisibleInputRef = useRef<HTMLInputElement>(null);
   const skipInitialPhotoUpdate = useRef<boolean>(true);

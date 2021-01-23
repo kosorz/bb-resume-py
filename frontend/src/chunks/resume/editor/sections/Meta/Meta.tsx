@@ -7,7 +7,7 @@ import Form from "../../../../../components/formik/Form";
 import ColorPicker from "../../../../../components/formik/ColorPicker";
 import Range from "../../../../../components/formik/Range";
 import RadioGroup from "../../../../../components/formik/RadioGroup";
-import Viewer from "../../../viewer/components/Previewer";
+import Previewer from "../../../viewer/components/Previewer";
 
 import Full from "../../../../../components/symbols/Full";
 import Split from "../../../../../components/symbols/Split";
@@ -110,7 +110,7 @@ const Bitter = styled(Font)`
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, setResume } = resumeBubble;
-  const { colors, paper, fontSize, content, ...rest } = resume.meta!;
+  const { colors, paper, fontSize, content, ...rest } = resume.meta;
   const { id } = resume;
 
   const url = `/resumes/${id}`;
@@ -163,13 +163,13 @@ const Meta = observer(() => {
             {
               ownValue: "calm",
               children: (
-                <Viewer bare={true} meta={resume.meta!} template={"calm"} />
+                <Previewer data={resume} bare={true} template={"calm"} />
               ),
             },
             {
               ownValue: "classic",
               children: (
-                <Viewer bare={true} meta={resume.meta!} template={"classic"} />
+                <Previewer data={resume} bare={true} template={"classic"} />
               ),
             },
           ]}

@@ -13,13 +13,13 @@ import useComponentSize from "@rehooks/component-size";
 //@ts-ignore
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 
-import Resume from "../Viewer";
+import Viewer from "../Viewer";
 
 import theme from "../../../../util/theme";
 import media from "../../../../util/media";
-import MetaShape from "../../editor/sections/Meta/Meta.typing";
 import { ResumeBubble } from "../../ResumeBubble";
 import { useWindowHeight, useDebounce } from "../../../../util/hooks";
+import ResumeShape from "../../Resume.typing";
 
 const PageWrapper = styled.div`
   position: sticky;
@@ -226,31 +226,36 @@ const Wrapper = styled.section`
 
 const Previewer = observer(
   ({
-    meta,
     bare,
     template,
+    data,
+    className,
   }: {
     bare: boolean;
-    meta: MetaShape;
     template?: "classic" | "calm";
+    data: ResumeShape;
+    className?: string;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
-    const { updatedAt, resume } = resumeBubble;
-
+    // eslint-disable-next-line
+    const { updatedAt } = resumeBubble;
     return (
-      <Wrapper>
-        {updatedAt && (
-          <PDFViewer
-            bare={bare}
-            document={{
-              ...Resume,
-              props: {
-                data: resume,
-                meta: { ...meta, template: template || meta.template },
+      <Wrapper className={className}>
+        <PDFViewer
+          bare={bare}
+          document={{
+            ...Viewer,
+            props: {
+              data: {
+                ...data,
+                meta: {
+                  ...data.meta,
+                  template: template || data.meta.template,
+                },
               },
-            }}
-          />
-        )}
+            },
+          }}
+        />
       </Wrapper>
     );
   }

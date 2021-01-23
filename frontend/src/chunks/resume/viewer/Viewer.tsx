@@ -4,15 +4,13 @@ import { ResumeViewer } from "../Resume.typing";
 import Calm from "./calm/Calm";
 import Classic from "./classic/Classic";
 
-const Viewer = ({ data, meta }: ResumeViewer) => {
-  const templateProps = { data, meta };
-
+const Viewer = ({ data }: ResumeViewer) => {
   const templates: { [key: string]: ReactNode } = {
-    classic: <Classic {...templateProps} />,
-    calm: <Calm {...templateProps} />,
+    classic: <Classic data={data} />,
+    calm: <Calm data={data} />,
   };
 
-  return <Document>{templates[meta.template]}</Document>;
+  return <Document>{templates[data.meta.template]}</Document>;
 };
 
 //@ts-ignore

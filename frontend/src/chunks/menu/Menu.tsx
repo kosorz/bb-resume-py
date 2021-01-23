@@ -36,9 +36,8 @@ const Name = styled.span`
   color: ${({ theme }) => theme.main};
   font-weight: bold;
   display: flex;
-  letter-spacing: 1px;
   font-size: 16px;
-  margin-left: -1px;
+  margin-left: -2px;
 
   ${Logo}:hover & {
     color: ${({ theme }) => theme.activeMain};

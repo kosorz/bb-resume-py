@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, ReactNode } from "react";
 import styled from "styled-components";
 
 import media from "../util/media";
@@ -43,8 +43,8 @@ const Button = ({
   style,
   disabled,
 }: {
-  children: string | string[];
-  onClick: (event: SyntheticEvent) => void;
+  children: string | string[] | ReactNode;
+  onClick?: (event: SyntheticEvent) => void;
   className?: string;
   style?: Object;
   disabled?: boolean;

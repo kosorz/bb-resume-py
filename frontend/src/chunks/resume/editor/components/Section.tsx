@@ -147,7 +147,7 @@ const Section = ({
   const resumeBubble = useContext(ResumeBubble);
   const { resume } = resumeBubble;
   const { id, meta } = resume;
-  const { content, paper, template } = meta!;
+  const { content, paper, template } = meta;
   const { split, full } = content;
   const { layout } = paper;
 

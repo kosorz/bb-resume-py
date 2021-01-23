@@ -7,6 +7,7 @@ import PublicRoute from "./components/PublicRoute";
 import Logout from "../auth/Logout";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
+import Dashboard from "../dashboard/Dashboard";
 
 import ResumeBubbleProvider from "../resume/ResumeBubble";
 
@@ -19,7 +20,7 @@ function Routes() {
         </ResumeBubbleProvider>
       </PrivateRoute>
       <PrivateRoute path="/dashboard">
-        <div>Empty state</div>
+        <Dashboard />
       </PrivateRoute>
       <PrivateRoute path="/logout">
         <Logout />

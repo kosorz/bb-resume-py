@@ -9,8 +9,8 @@ import Column from "./components/Column";
 
 import { ResumeViewer } from "../../Resume.typing";
 
-const Classic = ({ data, meta }: ResumeViewer) => {
-  const { skills, experience, info } = data;
+const Classic = ({ data }: ResumeViewer) => {
+  const { skills, experience, info, meta } = data;
   const { fontSize, paper, content, fontFamily, colors, background } = meta;
   const { split, full } = content;
   const { mainOrder, secondaryOrder } = split;

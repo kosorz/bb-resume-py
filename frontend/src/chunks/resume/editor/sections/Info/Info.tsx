@@ -42,8 +42,8 @@ const PhotoLockToggle = styled(LockToggle)`
 const Info = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, updateInfo } = resumeBubble;
-  const { resume_id, cropped_photo, photo, ...infoEditorData } = resume.info!;
-  const { template } = resume.meta!;
+  const { resume_id, cropped_photo, photo, ...infoEditorData } = resume.info;
+  const { template } = resume.meta;
 
   const formik = useFormik({
     initialValues: infoEditorData,

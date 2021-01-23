@@ -8,15 +8,14 @@ type ResumeShape = {
   id: number;
   owner_id: number;
   deleted: boolean;
-  meta?: MetaShape;
+  info: InfoShape;
+  meta: MetaShape;
   skills?: SkillsShape;
   experience?: ExperienceShape;
-  info?: InfoShape;
 };
 
 export interface ResumeViewer {
   data: ResumeShape;
-  meta: MetaShape;
 }
 
 export default ResumeShape;

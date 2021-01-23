@@ -28,7 +28,7 @@ const Skills = observer(() => {
     setOpenSubSection,
     updateSubSectionsOrder,
   } = resumeBubble;
-  const { full, split } = resume.meta!.content;
+  const { full, split } = resume.meta.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
   const [wobble, setWobble] = useState(false);
 

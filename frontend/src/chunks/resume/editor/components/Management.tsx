@@ -11,14 +11,14 @@ import Show from "../../../../components/symbols/Show";
 import axios from "../../../../util/axios";
 import { ResumeBubble } from "../../ResumeBubble";
 
-const AddToSecondary = styled(Right)`
+const AddRight = styled(Right)`
   &:hover {
     fill: ${({ theme }) => theme.green};
     background: ${({ theme }) => theme.lightGreen};
   }
 `;
 
-const AddToMain = styled(Left)`
+const AddLeft = styled(Left)`
   &:hover {
     fill: ${({ theme }) => theme.green};
     background: ${({ theme }) => theme.lightGreen};
@@ -92,8 +92,20 @@ const Management = ({
   if (column === "splitUnlisted") {
     return (
       <>
-        <AddToMain onClick={() => list.mutate("mainOrder")} />
-        <AddToSecondary onClick={() => list.mutate("secondaryOrder")} />
+        <AddLeft
+          onClick={() =>
+            list.mutate(
+              splitListedColumnsSwapped ? "secondaryOrder" : "mainOrder"
+            )
+          }
+        />
+        <AddRight
+          onClick={() =>
+            list.mutate(
+              splitListedColumnsSwapped ? "mainOrder" : "secondaryOrder"
+            )
+          }
+        />
         {deletable && trash}
       </>
     );

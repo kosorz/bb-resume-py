@@ -34,7 +34,7 @@ const ExperienceUnit = observer(
       updateExperienceUnit,
       removeExperienceUnit,
     } = resumeBubble;
-    const { template } = resume.meta!;
+    const { template } = resume.meta;
     const opened = openSubSections["experience"] === id;
 
     const formik = useFormik({

@@ -80,15 +80,6 @@ const SubSection = ({
 }) => {
   const resumeBubble = useContext(ResumeBubble);
   const { setOpenSubSection } = resumeBubble;
-  const handleDelete = () => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete this ${title}? This operation is irreversible.`
-      )
-    ) {
-      deleteFn();
-    }
-  };
 
   return (
     <Wrapper wobble={wobble}>
@@ -97,7 +88,7 @@ const SubSection = ({
         <Controls>
           {(!isFirst || !isLast) && (
             <>
-              {renderDelete && <Trash onClick={handleDelete} />}
+              {renderDelete && <Trash onClick={() => deleteFn()} />}
               {opened ? (
                 <Close
                   onClick={() => setOpenSubSection(identifier, undefined)}

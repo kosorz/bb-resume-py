@@ -28,7 +28,7 @@ const Experience = observer(() => {
     setOpenSubSection,
     updateSubSectionsOrder,
   } = resumeBubble;
-  const { full, split } = resume.meta!.content;
+  const { full, split } = resume.meta.content;
   const {
     id,
     units,

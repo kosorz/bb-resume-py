@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.post(
     "/",
-    response_model=Resume,
+    response_model=ResumeFull,
     name="resumes:create",
 )
 def create_resume(resume: ResumeCreate,

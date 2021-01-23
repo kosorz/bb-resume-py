@@ -46,8 +46,8 @@ export const Title = styled.h2`
 const Editor = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume } = resumeBubble;
-  const { layout } = resume.meta!.paper;
-  const { template } = resume.meta!;
+  const { layout } = resume.meta.paper;
+  const { template } = resume.meta;
 
   return (
     <Wrapper>

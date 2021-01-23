@@ -9,7 +9,6 @@ const FormikRadio = styled.div`
   transition: ${({ theme }) => theme.cardShadowTransition};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-width: ${({ theme }) => theme.spaceSmall / 4 + "px"};
-  background: ${({ theme }) => theme.white};
   border-color: ${({
     checked,
     theme,

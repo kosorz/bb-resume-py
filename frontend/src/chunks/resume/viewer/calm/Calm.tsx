@@ -8,8 +8,8 @@ import Experience from "./sections/Experience";
 
 import Skills from "./sections/Skills";
 
-const Calm = ({ data, meta }: ResumeViewer) => {
-  const { info, skills, experience } = data;
+const Calm = ({ data }: ResumeViewer) => {
+  const { info, skills, experience, meta } = data;
   const { fontSize, fontFamily, colors, content, paper } = meta;
   const { split } = content;
   const { mainOrder, secondaryOrder } = split;

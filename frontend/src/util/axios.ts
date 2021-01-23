@@ -4,6 +4,9 @@ const axios = axiosBase.create({
   baseURL: process.env.REACT_APP_BACKEND_URL,
   headers: {
     Authorization: "Bearer " + localStorage.getItem("token"),
+    "Cache-Control": "no-cache",
+    Pragma: "no-cache",
+    Expires: "0",
   },
 });
 

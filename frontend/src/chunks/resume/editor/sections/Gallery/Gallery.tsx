@@ -82,7 +82,7 @@ const Gallery = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, addSectionUpdate } = resumeBubble;
   const { experience, skills, meta, id } = resume;
-  const { paper, template } = meta!;
+  const { paper, template } = meta;
   const { layout } = paper;
 
   const [activePickIndex, setActivePick] = useState<number>(0);
