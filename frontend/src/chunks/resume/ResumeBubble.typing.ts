@@ -7,7 +7,6 @@ import ExperienceUnitShape from "./editor/sections/Experience/ExperienceUnit.typ
 import { ContentShape } from "./editor/sections/Meta/Meta.typing";
 
 type ResumeBubbleShape = {
-  updatedAt?: number;
   openSubSections: {
     skills?: number;
     experience?: number;
@@ -15,7 +14,6 @@ type ResumeBubbleShape = {
   resume: ResumeShape;
   resetPhotoSettings: () => void;
   setResume: (data: Partial<ResumeShape>) => void;
-  setUpdateTime: () => void;
   deleteSectionUpdate: (
     content: ContentShape,
     identifier: "skills" | "experience" | "info" | "meta" | "gallery" | ""

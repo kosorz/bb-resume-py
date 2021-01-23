@@ -24,7 +24,7 @@ const Resume = observer(() => {
     }
   );
   const resumeBubble = useContext(ResumeBubble);
-  const { setResume, resume } = resumeBubble;
+  const { setResume } = resumeBubble;
 
   if (isLoading) return <div>Loading..</div>;
   if (error) return <div>An error has occurred</div>;
@@ -33,7 +33,7 @@ const Resume = observer(() => {
     <>
       <Fonts />
       <Editor />
-      <Previewer data={resume} bare={false} />
+      <Previewer bare={false} />
     </>
   );
 });

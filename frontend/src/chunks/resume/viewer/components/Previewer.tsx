@@ -1,12 +1,14 @@
 import React, {
   useEffect,
   useState,
-  useContext,
   ReactElement,
   MouseEvent,
   useRef,
+  useContext,
 } from "react";
 import { observer } from "mobx-react-lite";
+import { makeAutoObservable, toJS } from "mobx";
+
 import styled from "styled-components";
 import { pdf } from "@react-pdf/renderer";
 import useComponentSize from "@rehooks/component-size";
@@ -17,9 +19,9 @@ import Viewer from "../Viewer";
 
 import theme from "../../../../util/theme";
 import media from "../../../../util/media";
-import { ResumeBubble } from "../../ResumeBubble";
 import { useWindowHeight, useDebounce } from "../../../../util/hooks";
 import ResumeShape from "../../Resume.typing";
+import { ResumeBubble } from "../../ResumeBubble";
 
 const PageWrapper = styled.div`
   position: sticky;
@@ -54,8 +56,6 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
   const selfRef = useRef<HTMLDivElement>(null);
   let size = useComponentSize(selfRef);
 
-  const bubble = useContext(ResumeBubble);
-
   useEffect(() => {
     const renderDocument = async (doc: ReactElement) => {
       let blob: Blob | undefined = undefined;
@@ -83,7 +83,7 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     };
 
     renderDocument(props.document);
-  }, [props, setState, bubble.resume]);
+  }, [props, setState]);
 
   const onDocumentLoad = ({ numPages }: { numPages: number }) => {
     const { currentPage } = state;
@@ -233,12 +233,14 @@ const Previewer = observer(
   }: {
     bare: boolean;
     template?: "classic" | "calm";
-    data: ResumeShape;
+    data?: ResumeShape;
     className?: string;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
-    // eslint-disable-next-line
-    const { updatedAt } = resumeBubble;
+    const { resume } = resumeBubble;
+    makeAutoObservable(toJS(resume));
+    const content = data || resume;
+
     return (
       <Wrapper className={className}>
         <PDFViewer
@@ -247,10 +249,10 @@ const Previewer = observer(
             ...Viewer,
             props: {
               data: {
-                ...data,
+                ...content,
                 meta: {
-                  ...data.meta,
-                  template: template || data.meta.template,
+                  ...content.meta,
+                  template: template || content.meta.template,
                 },
               },
             },

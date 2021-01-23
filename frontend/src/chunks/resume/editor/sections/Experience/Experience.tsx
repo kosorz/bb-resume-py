@@ -36,6 +36,7 @@ const Experience = observer(() => {
     order,
     ...experienceEditorData
   } = resume.experience!;
+
   const [wobble, setWobble] = useState(false);
 
   const urlBase = `/parts/experience/${id}`;

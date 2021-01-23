@@ -6,10 +6,11 @@ import Previewer from "../resume/viewer/components/Previewer";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
-const Preview = styled.div`
-  flex-basis: ${({ theme }) => 7 * theme.spaceBig + "px"};
-  height: ${({ theme }) => 1.41 * 7 * theme.spaceBig + "px"};
+const Document = styled.div`
   display: flex;
+  flex-basis: ${({ theme }) => 7 * theme.spaceBig + "px"};
+  flex-shrink: 0;
+  height: ${({ theme }) => 1.41 * 7 * theme.spaceBig + "px"};
   box-shadow: ${({ theme }) => theme.cardShadow};
   transition: ${({ theme }) => theme.cardShadowTransition};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
@@ -44,12 +45,12 @@ const Dashboard = () => {
       {data?.data.resumes
         .sort((r1: ResumeShape, r2: ResumeShape) => r1.id < r2.id)
         .map((r: ResumeShape) => (
-          <Preview
+          <Document
             key={r.id + "resume preview"}
             onClick={() => history.push(`/resume/${r.id}`)}
           >
             <Previewer bare={true} data={r} />
-          </Preview>
+          </Document>
         ))}
     </Wrapper>
   );
