@@ -11,7 +11,7 @@ const Data = ({
   style?: Object;
 }) => {
   const config: { [key: string]: { emoji: string; fallback: string } } = {
-    link: { emoji: " 🌐 ", fallback: "www.example.com" },
+    link: { emoji: " 🌐 ", fallback: "example.com" },
     location: { emoji: " 📍", fallback: "Somewhere" },
     date: { emoji: " 📅 ", fallback: "12/2018" },
     phone: { emoji: " 📞 ", fallback: "+12 3456789" },

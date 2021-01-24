@@ -3,6 +3,8 @@ import decodeJwt from "jwt-decode";
 import { DateTime } from "luxon";
 import Timeout from "smart-timeout";
 
+import { normalizeEmail } from "./fns";
+
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
 
@@ -36,7 +38,11 @@ export const register = async (
   password_confirm: string
 ) => {
   return axios
-    .post("/join", { username, password, password_confirm })
+    .post("/join", {
+      username: normalizeEmail(username),
+      password,
+      password_confirm,
+    })
     .then((res) => {
       localStorage.setItem("token", res.data["access_token"]);
       window.location.reload();
@@ -45,7 +51,7 @@ export const register = async (
 
 export const login = async (username: string, password: string) => {
   const formData = new FormData();
-  formData.append("username", username);
+  formData.append("username", normalizeEmail(username));
   formData.append("password", password);
 
   return axios

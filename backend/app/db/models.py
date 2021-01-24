@@ -13,7 +13,9 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     disabled = Column(Boolean, default=False)
-    resumes = relationship("Resume", back_populates="owner")
+    resumes = relationship("Resume",
+                           back_populates="owner",
+                           order_by="Resume.id")
 
 
 class Resume(Base):
