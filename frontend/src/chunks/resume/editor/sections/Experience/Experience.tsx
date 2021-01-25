@@ -9,7 +9,7 @@ import ExperienceUnit from "./ExperienceUnit";
 import Section from "../../components/Section";
 import { SortableList } from "../../components/SortableList";
 
-import { ResumeBubble } from "../../../ResumeBubble";
+import { ResumeBubble } from "../../../Resume.bubble";
 import { useFormikAutoSave } from "../../../../../util/hooks";
 import { experienceValidationSchema } from "../../../../../util/validationSchemas";
 import {

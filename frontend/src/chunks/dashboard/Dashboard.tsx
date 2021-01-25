@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import axios from "../../util/axios";
-import ResumeShape from "../resume/Resume.typing";
+import ResumeShape from "../resume/Resume.bubble.typing";
 import Previewer from "../resume/viewer/components/Previewer";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";

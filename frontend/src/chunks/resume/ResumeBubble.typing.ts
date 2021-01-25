@@ -1,4 +1,4 @@
-import ResumeShape from "./Resume.typing";
+import ResumeShape from "./Resume.bubble.typing";
 import InfoShape from "./editor/sections/Info/Info.typing";
 import SkillsShape from "./editor/sections/Skills/Skills.typing";
 import SkillsGroupShape from "./editor/sections/Skills/SkillsGroup.typing";

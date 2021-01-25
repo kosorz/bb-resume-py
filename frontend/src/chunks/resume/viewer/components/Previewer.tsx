@@ -20,8 +20,8 @@ import Viewer from "../Viewer";
 import theme from "../../../../util/theme";
 import media from "../../../../util/media";
 import { useWindowHeight, useDebounce } from "../../../../util/hooks";
-import ResumeShape from "../../Resume.typing";
-import { ResumeBubble } from "../../ResumeBubble";
+import ResumeShape from "../../Resume.bubble.typing";
+import { ResumeBubble } from "../../Resume.bubble";
 
 const PageWrapper = styled.div`
   position: sticky;

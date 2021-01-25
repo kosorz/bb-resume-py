@@ -6,7 +6,7 @@ import Move from "../../../../components/symbols/Move";
 import Trash from "../../../../components/symbols/Trash";
 import Close from "../../../../components/symbols/Close";
 import Pencil from "../../../../components/symbols/Pencil";
-import { ResumeBubble } from "../../ResumeBubble";
+import { ResumeBubble } from "../../Resume.bubble";
 import { wobbleTwo, wobbleOne } from "./Wooble";
 import { ThemeShape } from "../../../../util/theme";
 

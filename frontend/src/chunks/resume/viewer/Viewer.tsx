@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Document } from "@react-pdf/renderer";
-import { ResumeViewer } from "../Resume.typing";
+import { ResumeViewer } from "../Resume.bubble.typing";
 import Calm from "./calm/Calm";
 import Classic from "./classic/Classic";
 

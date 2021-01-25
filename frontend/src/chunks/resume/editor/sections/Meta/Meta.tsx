@@ -19,7 +19,7 @@ import WavesBackground from "../../../../../assets/backgrounds/Waves.png";
 import WoodBackground from "../../../../../assets/backgrounds/Wood.png";
 import XPartsBackground from "../../../../../assets/backgrounds/X-parts.png";
 
-import { ResumeBubble } from "../../../ResumeBubble";
+import { ResumeBubble } from "../../../Resume.bubble";
 import { useFormik } from "formik";
 import {
   saveChangedValues,

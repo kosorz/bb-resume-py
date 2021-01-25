@@ -17,7 +17,7 @@ import RotateRightIcon from "../../../../components/symbols/RotateRight";
 
 import axios from "../../../../util/axios";
 import imageCrop from "../../../../util/imageCrop";
-import { ResumeBubble } from "../../ResumeBubble";
+import { ResumeBubble } from "../../Resume.bubble";
 import { useDebounce } from "../../../../util/hooks";
 
 const INFO_PHOTO_HEIGHT = 150;

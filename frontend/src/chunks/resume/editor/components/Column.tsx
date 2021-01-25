@@ -11,7 +11,7 @@ import { Title } from "../Editor";
 import { SortableList } from "./SortableList";
 import { wobbleOne, wobbleTwo } from "./Wooble";
 
-import { ResumeBubble } from "../../ResumeBubble";
+import { ResumeBubble } from "../../Resume.bubble";
 import axios from "../../../../util/axios";
 
 const Wrapper = styled.section`

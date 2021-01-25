@@ -9,7 +9,7 @@ import SkillsGroup from "./SkillsGroup";
 import Section from "../../components/Section";
 import { SortableList } from "../../components/SortableList";
 
-import { ResumeBubble } from "../../../ResumeBubble";
+import { ResumeBubble } from "../../../Resume.bubble";
 import { useFormikAutoSave } from "../../../../../util/hooks";
 import { skillsValidationSchema } from "../../../../../util/validationSchemas";
 import {

@@ -14,7 +14,7 @@ import LockToggle from "../../../../../components/LockToggle";
 import { Title } from "../../Editor";
 
 import { infoValidationSchema } from "../../../../../util/validationSchemas";
-import { ResumeBubble } from "../../../ResumeBubble";
+import { ResumeBubble } from "../../../Resume.bubble";
 import { getFieldPropsMeta, saveChangedValues } from "../../../../../util/fns";
 import { useFormikAutoSave } from "../../../../../util/hooks";
 

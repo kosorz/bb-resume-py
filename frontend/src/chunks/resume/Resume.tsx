@@ -8,7 +8,7 @@ import Fonts from "../../assets/fonts/fonts-loader";
 import Editor from "./editor/Editor";
 import Previewer from "./viewer/components/Previewer";
 
-import { ResumeBubble } from "./ResumeBubble";
+import { ResumeBubble } from "./Resume.bubble";
 
 const Resume = observer(() => {
   const { id } = useParams();

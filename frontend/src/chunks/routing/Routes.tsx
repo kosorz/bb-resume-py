@@ -9,7 +9,7 @@ import Login from "../auth/Login";
 import Register from "../auth/Register";
 import Dashboard from "../dashboard/Dashboard";
 
-import ResumeBubbleProvider from "../resume/ResumeBubble";
+import ResumeBubbleProvider from "../resume/Resume.bubble";
 
 function Routes() {
   return (

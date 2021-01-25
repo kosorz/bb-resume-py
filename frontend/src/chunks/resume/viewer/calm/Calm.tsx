@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { StyleSheet, Page, View } from "@react-pdf/renderer";
 
-import { ResumeViewer } from "../../Resume.typing";
+import { ResumeViewer } from "../../Resume.bubble.typing";
 import Info from "./sections/Info";
 import TwoColumns from "./components/TwoColumns";
 import Experience from "./sections/Experience";

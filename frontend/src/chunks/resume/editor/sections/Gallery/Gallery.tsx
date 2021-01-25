@@ -11,7 +11,7 @@ import { ReactComponent as SkillsIcon } from "../../../../../assets/icons/Person
 
 import media from "../../../../../util/media";
 import axios from "../../../../../util/axios";
-import { ResumeBubble } from "../../../ResumeBubble";
+import { ResumeBubble } from "../../../Resume.bubble";
 import { capitalize } from "../../../../../util/fns";
 import { ThemeShape } from "../../../../../util/theme";
 

@@ -16,7 +16,7 @@ import { ReactComponent as InfoIcon } from "../../../../assets/icons/Info.svg";
 import { ReactComponent as GalleryIcon } from "../../../../assets/icons/Gallery.svg";
 
 import media from "../../../../util/media";
-import { ResumeBubble } from "../../ResumeBubble";
+import { ResumeBubble } from "../../Resume.bubble";
 import { ThemeShape } from "../../../../util/theme";
 
 const Wrapper = styled.section`

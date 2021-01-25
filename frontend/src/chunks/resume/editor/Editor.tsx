@@ -8,7 +8,7 @@ import Meta from "./sections/Meta/Meta";
 import Gallery from "./sections/Gallery/Gallery";
 
 import media from "../../../util/media";
-import { ResumeBubble } from "../ResumeBubble";
+import { ResumeBubble } from "../Resume.bubble";
 
 const Wrapper = styled.section`
   flex: 65%;

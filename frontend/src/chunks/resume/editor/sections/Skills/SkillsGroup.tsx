@@ -10,7 +10,7 @@ import Form from "../../../../../components/formik/Form";
 
 import { getFieldPropsMeta, saveChangedValues } from "../../../../../util/fns";
 import { SkillsGroupEditor } from "./SkillsGroup.typing";
-import { ResumeBubble } from "../../../ResumeBubble";
+import { ResumeBubble } from "../../../Resume.bubble";
 import { useFormikAutoSave } from "../../../../../util/hooks";
 import { skillsGroupValidationSchema } from "../../../../../util/validationSchemas";
 import axios from "../../../../../util/axios";

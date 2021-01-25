@@ -9,7 +9,7 @@ import Hide from "../../../../components/symbols/Hide";
 import Show from "../../../../components/symbols/Show";
 
 import axios from "../../../../util/axios";
-import { ResumeBubble } from "../../ResumeBubble";
+import { ResumeBubble } from "../../Resume.bubble";
 
 const AddRight = styled(Right)`
   &:hover {

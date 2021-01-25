@@ -7,7 +7,7 @@ import Experience from "./sections/Experience";
 import TwoColumns from "./components/TwoColumns";
 import Column from "./components/Column";
 
-import { ResumeViewer } from "../../Resume.typing";
+import { ResumeViewer } from "../../Resume.bubble.typing";
 
 const Classic = ({ data }: ResumeViewer) => {
   const { skills, experience, info, meta } = data;

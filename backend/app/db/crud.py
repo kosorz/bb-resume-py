@@ -52,8 +52,9 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 def create_user(db: Session, user: UserCreate):
     hashed_password = get_password_hash(user.password)
     return finalize_create(
-        db, models.User(username=user.username,
-                        hashed_password=hashed_password))
+        db,
+        models.User(username=user.username.lower(),
+                    hashed_password=hashed_password))
 
 
 # Resumes
