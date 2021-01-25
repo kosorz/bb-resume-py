@@ -145,7 +145,30 @@ class TestResumes:
                 }
             },
             "owner_id": 2,
-            "deleted": False
+            "experience": None,
+            "info": {
+                "cropped_photo": "",
+                "email": "test@email.com",
+                "email_enabled": True,
+                "id": 2,
+                "link": "",
+                "link_enabled": True,
+                "location": "",
+                "location_enabled": True,
+                "name": "",
+                "phone": "",
+                "phone_enabled": True,
+                "photo": "",
+                "photo_enabled": True,
+                "photo_locked": False,
+                "quote": "",
+                "quote_enabled": True,
+                "resume_id": 2,
+                "role": "",
+                "role_enabled": True,
+            },
+            "skills": None,
+            "deleted": False,
         }
         assert res.status_code == status.HTTP_200_OK
 

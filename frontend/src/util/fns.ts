@@ -55,7 +55,7 @@ export function capitalize(text: string) {
 }
 
 export function normalizeEmail(text: string) {
-  return text.toLowerCase().replace(".", "");
+  return text.toLowerCase();
 }
 
 const setValueToField = (fields: string[], value: Object) => {

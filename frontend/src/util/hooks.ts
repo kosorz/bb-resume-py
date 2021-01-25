@@ -40,7 +40,7 @@ export const useWindowHeight = () => {
 
 export const useFormikAutoSave = (
   formik: FormikValues,
-  debounceTime: number = 300
+  debounceTime: number = 1000
 ) => {
   const debouncedValues = useDebounce(formik.values, debounceTime);
   const isMount = useIsMount();

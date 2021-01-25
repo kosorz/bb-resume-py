@@ -8,6 +8,7 @@ import Close from "../../../../components/symbols/Close";
 import Pencil from "../../../../components/symbols/Pencil";
 import { ResumeBubble } from "../../ResumeBubble";
 import { wobbleTwo, wobbleOne } from "./Wooble";
+import { ThemeShape } from "../../../../util/theme";
 
 const Wrapper = styled.section`
   overflow-anchor: none;
@@ -31,9 +32,22 @@ const Wrapper = styled.section`
 `;
 
 const Row = styled.article`
-  border-bottom: 1px solid ${({ theme }) => theme.gray};
+  border-bottom: ${({
+    opened,
+    theme,
+  }: {
+    opened: boolean;
+    theme: ThemeShape;
+  }) => (opened ? 0 : "1px solid " + theme.gray)};
   border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
-  padding: ${({ theme }) => theme.spaceSmall + "px"};
+  margin: ${({ theme }: { theme: ThemeShape }) => theme.spaceSmall + "px"};
+  margin-bottom: ${({
+    opened,
+    theme,
+  }: {
+    opened: boolean;
+    theme: ThemeShape;
+  }) => (opened ? -2 * theme.spaceSmall : theme.spaceSmall) + "px"};
   box-sizing: border-box;
   display: flex;
   flex: 100%;
@@ -43,6 +57,8 @@ const Row = styled.article`
 
 const Title = styled.h4`
   color: ${({ theme }) => theme.main};
+  opacity: ${({ transparent }: { transparent: boolean }) =>
+    transparent ? "0" : "1"};
   margin: 0;
 `;
 
@@ -83,12 +99,12 @@ const SubSection = ({
 
   return (
     <Wrapper wobble={wobble}>
-      <Row>
-        <Title>{title}</Title>
+      <Row opened={opened}>
+        <Title transparent={opened}>{title}</Title>
         <Controls>
           {(!isFirst || !isLast) && (
             <>
-              {renderDelete && <Trash onClick={() => deleteFn()} />}
+              {renderDelete && !opened && <Trash onClick={() => deleteFn()} />}
               {opened ? (
                 <Close
                   onClick={() => setOpenSubSection(identifier, undefined)}

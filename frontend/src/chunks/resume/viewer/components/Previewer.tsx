@@ -82,31 +82,16 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
         try {
           blob = await pdf(doc).toBlob();
         } catch (error) {
-          await new Promise((resolve) => setTimeout(resolve, 250));
+          await new Promise((resolve) => setTimeout(resolve, 150));
         }
       } while (!blob || retryAttempts > 2);
 
-      if (state.twinActive) {
-        setState((prevState) => ({
-          ...prevState,
-          document: URL.createObjectURL(blob),
-        }));
-
-        setTimeout(() => {
-          URL.revokeObjectURL(state.twinDocument);
-          setState((prevState) => ({ ...prevState, twinActive: false }));
-        }, 500);
-      } else {
-        setState((prevState) => ({
-          ...prevState,
-          twinDocument: URL.createObjectURL(blob),
-        }));
-
-        setTimeout(() => {
-          URL.revokeObjectURL(state.document);
-          setState((prevState) => ({ ...prevState, twinActive: true }));
-        }, 500);
-      }
+      setState((prevState) => ({
+        ...prevState,
+        [state.twinActive ? "document" : "twinDocument"]: URL.createObjectURL(
+          blob
+        ),
+      }));
     };
 
     renderDocument(props.document);
@@ -121,6 +106,15 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
       ...prevState,
       numPages,
       currentPage: Math.min(currentPage),
+    }));
+  };
+
+  const onRenderSuccess = () => {
+    URL.revokeObjectURL(state.twinActive ? state.twinDocument : state.document);
+
+    setState((prevState) => ({
+      ...prevState,
+      twinActive: !state.twinActive,
     }));
   };
 
@@ -141,7 +135,10 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
   const document = (
     <DocumentHolder isActive={!state.twinActive}>
       <Document file={state.document} onLoadSuccess={onDocumentLoad} {...props}>
-        <Page pageNumber={state.currentPage} />
+        <Page
+          onRenderSuccess={onRenderSuccess}
+          pageNumber={state.currentPage}
+        />
       </Document>
     </DocumentHolder>
   );
@@ -153,7 +150,10 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
         onLoadSuccess={onDocumentLoad}
         {...props}
       >
-        <Page pageNumber={state.currentPage} />
+        <Page
+          onRenderSuccess={onRenderSuccess}
+          pageNumber={state.currentPage}
+        />
       </Document>
     </DocumentHolder>
   );
