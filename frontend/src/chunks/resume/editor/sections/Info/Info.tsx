@@ -19,6 +19,7 @@ import { getFieldPropsMeta, saveChangedValues } from "../../../../../util/fns";
 import { useFormikAutoSave } from "../../../../../util/hooks";
 
 export const PhotoDisclaimer = styled(Footer)`
+  color: ${({ theme }) => theme.main};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   font-size: ${({ theme }) => theme.smallFont};

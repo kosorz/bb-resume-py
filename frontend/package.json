@@ -5,6 +5,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^1.6.11",
     "@rehooks/component-size": "github:rehooks/component-size",
+    "@rehooks/window-scroll-position": "^1.0.1",
     "@types/deep-diff": "^1.0.0",
     "@types/jest": "^24.9.1",
     "@types/luxon": "^1.25.0",

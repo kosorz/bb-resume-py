@@ -9,7 +9,6 @@ import Routes from "./chunks/routing/Routes";
 import Menu from "./chunks/menu/Menu";
 
 const Content = styled.section`
-  display: flex;
   padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
   padding-top: ${({ theme }) => theme.menuHeight + "px"};
   margin: auto;

@@ -7,7 +7,7 @@ type CombinedQueriesShape = {
   [key: string]: (...args: any[]) => FlattenSimpleInterpolation;
 };
 
-const sizes: SizesShape = {
+export const sizes: SizesShape = {
   tablet: 992,
   phone: 576,
 };

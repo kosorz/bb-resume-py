@@ -1,57 +1,66 @@
-import React from "react";
-import { useQuery } from "react-query";
-import axios from "../../util/axios";
-import ResumeShape from "../resume/Resume.bubble.typing";
-import Previewer from "../resume/viewer/components/Previewer";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { useQuery } from "react-query";
+
+import Previewer from "../resume/viewer/components/Previewer";
+import Loader from "../../components/Loader";
+
+import axios from "../../util/axios";
+import ResumeShape from "../resume/Resume.bubble.typing";
+import media from "../../util/media";
+
+const Wrapper = styled.section`
+  display: flex;
+  flex-wrap: wrap;
+
+  ${media.phone`
+    justify-content: center;
+  `};
+`;
 
 const Document = styled.div`
-  display: flex;
-  flex-basis: ${({ theme }) => 7 * theme.spaceBig + "px"};
-  flex-shrink: 0;
-  height: ${({ theme }) => 1.41 * 7 * theme.spaceBig + "px"};
-  box-shadow: ${({ theme }) => theme.cardShadow};
-  transition: ${({ theme }) => theme.cardShadowTransition};
   border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-width: ${({ theme }) => theme.spaceSmall / 4 + "px"};
+  margin-right: ${({ theme }) => theme.space + "px"};
+  margin-top: ${({ theme }) => theme.space + "px"};
+  height: ${({ theme }) => 1.41 * 7 * theme.spaceBig + "px"};
+  flex-basis: ${({ theme }) => 7 * theme.spaceBig + "px"};
+  background: ${({ theme }) => theme.ivory};
+  box-shadow: ${({ theme }) => theme.cardShadow};
+  transition: ${({ theme }) => theme.cardShadowTransition};
   border-style: solid;
   border-color: transparent;
   cursor: pointer;
-  background: ${({ theme }) => theme.ivory};
-  margin-right: ${({ theme }) => theme.spaceSmall + "px"};
-  margin-top: ${({ theme }) => theme.spaceSmall + "px"};
+  position: relative;
 
   &:hover {
     border-color: ${({ theme }) => theme.activeMain};
   }
 `;
 
-const Wrapper = styled.section`
-  display: flex;
-`;
-
 const Dashboard = () => {
   const history = useHistory();
-  const { isLoading, error, data } = useQuery(["me"], () => {
-    return axios.get(`/users/me`);
+  const [resumes, setResumes] = useState<ResumeShape[]>([]);
+  const { isLoading, error } = useQuery(["me"], () => {
+    return axios.get(`/users/me`).then((res) => {
+      setResumes(res.data.resumes);
+    });
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (error) return <div>Error...</div>;
 
   return (
     <Wrapper>
-      {data?.data.resumes
-        .sort((r1: ResumeShape, r2: ResumeShape) => r1.id < r2.id)
-        .map((r: ResumeShape) => (
-          <Document
-            key={r.id + "resume preview"}
-            onClick={() => history.push(`/resume/${r.id}`)}
-          >
-            <Previewer bare={true} data={r} />
-          </Document>
-        ))}
+      {resumes.map((r) => (
+        <Document
+          key={r.id + "resume preview"}
+          onClick={() => history.push(`/resume/${r.id}`)}
+        >
+          <Previewer bare={true} data={r} />
+        </Document>
+      ))}
     </Wrapper>
   );
 };

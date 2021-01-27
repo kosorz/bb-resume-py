@@ -38,6 +38,19 @@ export const useWindowHeight = () => {
   return height;
 };
 
+export const useWindowWidth = () => {
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+  return width;
+};
+
 export const useFormikAutoSave = (
   formik: FormikValues,
   debounceTime: number = 1000

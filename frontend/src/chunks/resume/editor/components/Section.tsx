@@ -61,6 +61,7 @@ const About = styled.article`
 const Title = styled.h2`
   margin-top: ${({ theme }) => theme.space + "px"};
   color: ${({ theme }) => theme.main};
+  text-align: center;
 `;
 
 const Purpose = styled.p`

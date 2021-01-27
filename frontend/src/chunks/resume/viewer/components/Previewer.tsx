@@ -5,23 +5,26 @@ import React, {
   MouseEvent,
   useRef,
   useContext,
+  ReactNode,
 } from "react";
 import { observer } from "mobx-react-lite";
 import { makeAutoObservable, toJS } from "mobx";
-
 import styled from "styled-components";
 import { pdf } from "@react-pdf/renderer";
 import useComponentSize from "@rehooks/component-size";
-//@ts-ignore
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
+import {
+  Document as ReactPDFDocument,
+  Page,
+  //@ts-ignore
+} from "react-pdf/dist/esm/entry.webpack";
 
 import Viewer from "../Viewer";
 
 import theme from "../../../../util/theme";
-import media from "../../../../util/media";
 import { useWindowHeight, useDebounce } from "../../../../util/hooks";
 import ResumeShape from "../../Resume.bubble.typing";
 import { ResumeBubble } from "../../Resume.bubble";
+import Loader from "./Loader";
 
 const PageWrapper = styled.div`
   position: sticky;
@@ -31,11 +34,12 @@ const PageWrapper = styled.div`
 `;
 
 const DocumentWrapper = styled.div`
+  position: relative;
   border-radius: 0;
   transition: ${({ theme }) => theme.cardShadowTransition};
   margin: ${({ theme }) => theme.space + "px"};
   height: ${({ height }: { height: number }) => height + "px"};
-  background: ${({ theme }) => theme.white};
+  background: ${({ theme }) => theme.ivory};
   box-shadow: ${({ theme }) => theme.cardShadow};
 `;
 
@@ -43,6 +47,24 @@ const DocumentHolder = styled.div`
   display: ${({ isActive }: { isActive: boolean }) =>
     isActive ? "block" : "none"};
 `;
+
+const Document = ({
+  file,
+  isActive,
+  onDocumentLoad,
+  children,
+}: {
+  file: string;
+  isActive: boolean;
+  onDocumentLoad: Function;
+  children: ReactNode;
+}) => (
+  <DocumentHolder isActive={isActive}>
+    <ReactPDFDocument file={file} onLoadSuccess={onDocumentLoad}>
+      {children}
+    </ReactPDFDocument>
+  </DocumentHolder>
+);
 
 const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
   const [state, setState] = useState<{
@@ -59,7 +81,7 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     twinActive: false,
   });
   const windowHeight = useWindowHeight();
-  const debouncedWindowHeight = useDebounce(windowHeight, 200);
+  const debouncedWindowHeight = useDebounce(0, 200);
   const selfRef = useRef<HTMLDivElement>(null);
   let size = useComponentSize(selfRef);
 
@@ -132,46 +154,44 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     }));
   };
 
-  const document = (
-    <DocumentHolder isActive={!state.twinActive}>
-      <Document file={state.document} onLoadSuccess={onDocumentLoad} {...props}>
-        <Page
-          onRenderSuccess={onRenderSuccess}
-          pageNumber={state.currentPage}
-        />
-      </Document>
-    </DocumentHolder>
+  const page = (
+    <Page onRenderSuccess={onRenderSuccess} pageNumber={state.currentPage} />
   );
 
-  const twinDocument = (
-    <DocumentHolder isActive={state.twinActive}>
-      <Document
-        file={state.twinDocument}
-        onLoadSuccess={onDocumentLoad}
-        {...props}
-      >
-        <Page
-          onRenderSuccess={onRenderSuccess}
-          pageNumber={state.currentPage}
-        />
-      </Document>
-    </DocumentHolder>
+  const doc = (
+    <Document
+      onDocumentLoad={onDocumentLoad}
+      file={state.document}
+      isActive={!state.twinActive}
+      children={page}
+    />
+  );
+
+  const twinDoc = (
+    <Document
+      onDocumentLoad={onDocumentLoad}
+      file={state.twinDocument}
+      isActive={state.twinActive}
+      children={page}
+    />
   );
 
   return props.bare ? (
     <>
-      {document}
-      {twinDocument}
+      <Loader />
+      {doc}
+      {twinDoc}
     </>
   ) : (
     <PageWrapper
       ref={selfRef}
       height={size.width * 1.414141}
-      windowHeight={debouncedWindowHeight}
+      windowHeight={debouncedWindowHeight || windowHeight}
     >
       <DocumentWrapper height={(size.width - 2 * theme.space) * 1.414141}>
-        {document}
-        {twinDocument}
+        <Loader />
+        {doc}
+        {twinDoc}
       </DocumentWrapper>
       {state.numPages && (
         <PageNavigator
@@ -263,10 +283,6 @@ const Wrapper = styled.section`
   canvas + div {
     display: none;
   }
-
-  ${media.tablet`
-    display: none;
-  `}
 `;
 
 const Previewer = observer(

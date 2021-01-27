@@ -25,6 +25,8 @@ export type ThemeShape = {
   numericBiggerFont: number;
 
   menuHeight: number;
+  navHeight: number;
+  navWidth: number;
   spaceSmall: number;
   space: number;
   spaceBig: number;
@@ -60,6 +62,8 @@ const theme: ThemeShape = {
   numericBiggerFont: 14,
 
   menuHeight: 65,
+  navHeight: 50,
+  navWidth: 300,
   spaceSmall: 10,
   space: 20,
   spaceBig: 30,

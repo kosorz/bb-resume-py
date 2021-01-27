@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import useWindowScrollPosition from "@rehooks/window-scroll-position";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
@@ -9,6 +10,7 @@ import Gallery from "./sections/Gallery/Gallery";
 
 import media from "../../../util/media";
 import { ResumeBubble } from "../Resume.bubble";
+import { useDebounce } from "../../../util/hooks";
 
 const Wrapper = styled.section`
   flex: 65%;
@@ -16,10 +18,6 @@ const Wrapper = styled.section`
   flex-direction: column;
   box-sizing: border-box;
   margin-top: ${({ theme }) => theme.space + "px"};
-
-  /* ${media.tablet`
-    display: none;
-  `} */
 
   button {
     ${media.phone`
@@ -32,41 +30,49 @@ const Wrapper = styled.section`
 
 export const Title = styled.h2`
   margin: 0;
+  margin-bottom: ${({ theme }) => 1.5 * theme.spaceBig + "px"};
   padding: ${({ theme }) => theme.spaceSmall + "px"};
-  color: ${({ theme }) => theme.main};
-  text-decoration: underline;
-  position: sticky;
-  z-index: 2;
-  overflow: hidden;
-  background: ${({ theme }) => theme.background};
   top: ${({ theme }) => theme.menuHeight + "px"};
+  color: ${({ theme }) => theme.main};
+  background: ${({ theme }) => theme.background};
+  z-index: 2;
   max-width: 100%;
+  overflow: hidden;
+  position: sticky;
 `;
 
-const Editor = observer(() => {
-  const resumeBubble = useContext(ResumeBubble);
-  const { resume } = resumeBubble;
-  const { layout } = resume.meta.paper;
-  const { template } = resume.meta;
+const Editor = observer(
+  ({ setSavedScrollPosition }: { setSavedScrollPosition: Function }) => {
+    const resumeBubble = useContext(ResumeBubble);
+    const { resume } = resumeBubble;
+    const { layout } = resume.meta.paper;
+    const { template } = resume.meta;
+    const scrollPosition = useWindowScrollPosition();
+    const debouncedScrollPosition = useDebounce(scrollPosition, 300);
 
-  return (
-    <Wrapper>
-      <Title>Settings</Title>
-      <Gallery />
-      <Meta />
-      <Info />
-      {(layout === "split" || template === "calm") && (
-        <>
-          <Column order={"mainOrder"} />
-          <Column order={"secondaryOrder"} />
-        </>
-      )}
-      {layout === "full" && template === "classic" && (
-        <Column order={"order"} />
-      )}
-      <Column order={"unlisted"} />
-    </Wrapper>
-  );
-});
+    useEffect(() => {
+      setSavedScrollPosition(debouncedScrollPosition);
+    }, [setSavedScrollPosition, debouncedScrollPosition]);
+
+    return (
+      <Wrapper>
+        <Title>Settings</Title>
+        <Gallery />
+        <Meta />
+        <Info />
+        {(layout === "split" || template === "calm") && (
+          <>
+            <Column order={"mainOrder"} />
+            <Column order={"secondaryOrder"} />
+          </>
+        )}
+        {layout === "full" && template === "classic" && (
+          <Column order={"order"} />
+        )}
+        <Column order={"unlisted"} />
+      </Wrapper>
+    );
+  }
+);
 
 export default Editor;

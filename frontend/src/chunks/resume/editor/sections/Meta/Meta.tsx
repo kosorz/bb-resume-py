@@ -76,6 +76,7 @@ const TemplateRadioGroup = styled(RadioGroup)`
     flex-basis: ${({ theme }) => 5 * theme.space + "px"};
     height: ${({ theme }) => 1.41 * 5 * theme.space + "px"};
     align-items: center;
+    position: relative;
   }
 `;
 
