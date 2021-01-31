@@ -33,8 +33,15 @@ const ColorPicker = ({
   FieldHelperProps<any> &
   FieldMetaProps<any>) => {
   const colors: { [key: string]: string[] } = {
-    main: ["#038cff", "#ff0105", "#ff6e04", "#88b04b", "#92a8d1", "#a303cb"],
-    secondary: ["#000000", "#1f1f1f", "#434343"],
+    "colors.main": [
+      "#038cff",
+      "#ff0105",
+      "#ff6e04",
+      "#88b04b",
+      "#92a8d1",
+      "#a303cb",
+    ],
+    "colors.secondary": ["#000000", "#1f1f1f", "#434343"],
   };
 
   return (

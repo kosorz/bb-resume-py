@@ -13,17 +13,11 @@ import Loader from "../../components/Loader";
 
 import { ResumeBubble } from "./Resume.bubble";
 import { useWindowWidth } from "../../util/hooks";
-import { ThemeShape } from "../../util/theme";
-import media, { sizes } from "../../util/media";
+import { sizes } from "../../util/media";
 import axios from "../../util/axios";
 
 const Wrapper = styled.section`
   position: relative;
-
-  ${media.tablet`
-    padding-bottom: ${({ theme }: { theme: ThemeShape }) =>
-      theme.menuHeight + "px"};
-  `};
 `;
 
 const Modes = styled.section`
@@ -44,8 +38,13 @@ const Resume = observer(() => {
   const isMobile = windowWidth < sizes.tablet;
 
   useEffect(() => {
-    if (mode === "preview") return;
-    window.scrollTo(savedScrollPosition.x, savedScrollPosition.y);
+    if (isMobile) {
+      if (mode === "preview") {
+        window.scrollTo(0, 0);
+      } else {
+        window.scrollTo(savedScrollPosition.x, savedScrollPosition.y);
+      }
+    }
     // eslint-disable-next-line
   }, [mode]);
 
@@ -68,12 +67,16 @@ const Resume = observer(() => {
     <Wrapper>
       <Fonts />
       <Modes>
-        {(!isMobile || mode === "edit") && (
-          <Editor setSavedScrollPosition={setSavedScrollPosition} />
-        )}
+        {(!isMobile || mode === "edit") && <Editor />}
         {(!isMobile || mode === "preview") && <Previewer bare={false} />}
       </Modes>
-      {isMobile && <Nav setMode={setMode} mode={mode} />}
+      {isMobile && (
+        <Nav
+          setMode={setMode}
+          setSavedScrollPosition={setSavedScrollPosition}
+          mode={mode}
+        />
+      )}
     </Wrapper>
   );
 });

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import useWindowScrollPosition from "@rehooks/window-scroll-position";
+import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
@@ -10,7 +9,6 @@ import Gallery from "./sections/Gallery/Gallery";
 
 import media from "../../../util/media";
 import { ResumeBubble } from "../Resume.bubble";
-import { useDebounce } from "../../../util/hooks";
 
 const Wrapper = styled.section`
   flex: 65%;
@@ -41,38 +39,30 @@ export const Title = styled.h2`
   position: sticky;
 `;
 
-const Editor = observer(
-  ({ setSavedScrollPosition }: { setSavedScrollPosition: Function }) => {
-    const resumeBubble = useContext(ResumeBubble);
-    const { resume } = resumeBubble;
-    const { layout } = resume.meta.paper;
-    const { template } = resume.meta;
-    const scrollPosition = useWindowScrollPosition();
-    const debouncedScrollPosition = useDebounce(scrollPosition, 300);
+const Editor = observer(({ className }: { className?: string }) => {
+  const resumeBubble = useContext(ResumeBubble);
+  const { resume } = resumeBubble;
+  const { layout } = resume.meta.paper;
+  const { template } = resume.meta;
 
-    useEffect(() => {
-      setSavedScrollPosition(debouncedScrollPosition);
-    }, [setSavedScrollPosition, debouncedScrollPosition]);
-
-    return (
-      <Wrapper>
-        <Title>Settings</Title>
-        <Gallery />
-        <Meta />
-        <Info />
-        {(layout === "split" || template === "calm") && (
-          <>
-            <Column order={"mainOrder"} />
-            <Column order={"secondaryOrder"} />
-          </>
-        )}
-        {layout === "full" && template === "classic" && (
-          <Column order={"order"} />
-        )}
-        <Column order={"unlisted"} />
-      </Wrapper>
-    );
-  }
-);
+  return (
+    <Wrapper className={className}>
+      <Title>Settings</Title>
+      <Gallery />
+      <Meta />
+      <Info />
+      {(layout === "split" || template === "calm") && (
+        <>
+          <Column order={"mainOrder"} />
+          <Column order={"secondaryOrder"} />
+        </>
+      )}
+      {layout === "full" && template === "classic" && (
+        <Column order={"order"} />
+      )}
+      <Column order={"unlisted"} />
+    </Wrapper>
+  );
+});
 
 export default Editor;

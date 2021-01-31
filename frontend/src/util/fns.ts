@@ -13,11 +13,7 @@ import ExperienceShape from "../chunks/resume/editor/sections/Experience/Experie
 import SkillsShape from "../chunks/resume/editor/sections/Skills/Skills.typing";
 import SkillsGroupShape from "../chunks/resume/editor/sections/Skills/SkillsGroup.typing";
 import ExperienceUnitShape from "../chunks/resume/editor/sections/Experience/ExperienceUnit.typing";
-import MetaShape, {
-  ColorsShape,
-  PaperShape,
-  FontSizeShape,
-} from "../chunks/resume/editor/sections/Meta/Meta.typing";
+import MetaShape from "../chunks/resume/editor/sections/Meta/Meta.typing";
 
 export function getFieldPropsMeta(
   formik: FormikProps<any>,
@@ -71,18 +67,12 @@ export function saveChangedValues(
     | Partial<InfoShape>
     | Partial<ExperienceShape>
     | Partial<SkillsShape>
-    | Partial<ColorsShape>
-    | Partial<PaperShape>
-    | Partial<FontSizeShape>
-    | Pick<MetaShape, "fontFamily" | "background">,
+    | Partial<MetaShape>,
   initialValues:
     | Partial<InfoShape>
     | Partial<ExperienceShape>
     | Partial<SkillsShape>
-    | Partial<ColorsShape>
-    | Partial<PaperShape>
-    | Partial<FontSizeShape>
-    | Pick<MetaShape, "fontFamily" | "background">,
+    | Partial<MetaShape>,
   url: string,
   updateFn: Function,
   objectWrapperStructure?: string[]

@@ -53,10 +53,10 @@ export const useWindowWidth = () => {
 
 export const useFormikAutoSave = (
   formik: FormikValues,
-  debounceTime: number = 1000
+  debounceTime: number = 750
 ) => {
-  const debouncedValues = useDebounce(formik.values, debounceTime);
   const isMount = useIsMount();
+  const debouncedValues = useDebounce(formik.values, debounceTime);
 
   useEffect(() => {
     if (!isMount) {

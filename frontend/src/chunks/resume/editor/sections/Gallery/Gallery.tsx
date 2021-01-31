@@ -46,7 +46,7 @@ const Pick = styled.div`
   cursor: pointer;
 
   svg {
-    width: 75px;
+    width: ${({ theme }) => theme.sectionNavIconsHeight};
     height: auto;
     display: block;
     margin: auto;

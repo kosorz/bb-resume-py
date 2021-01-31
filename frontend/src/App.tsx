@@ -12,7 +12,7 @@ const Content = styled.section`
   padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
   padding-top: ${({ theme }) => theme.menuHeight + "px"};
   margin: auto;
-  max-width: 1600px;
+  max-width: 1200px;
 `;
 
 function App() {

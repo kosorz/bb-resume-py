@@ -113,36 +113,14 @@ const Meta = observer(() => {
   const { resume, setResume } = resumeBubble;
   const { colors, paper, fontSize, content, ...rest } = resume.meta;
   const { id } = resume;
-
   const url = `/resumes/${id}`;
 
-  const colorsFormik = useFormik({
-    initialValues: colors,
+  const formik = useFormik({
+    initialValues: resume.meta,
     onSubmit: (values) =>
-      saveChangedValues(values, colors, url, setResume, ["meta", "colors"]),
+      saveChangedValues(values, resume.meta, url, setResume, ["meta"]),
   });
-  useFormikAutoSave(colorsFormik, 0);
-
-  const paperFormik = useFormik({
-    initialValues: paper,
-    onSubmit: (values) =>
-      saveChangedValues(values, paper, url, setResume, ["meta", "paper"]),
-  });
-  useFormikAutoSave(paperFormik, 0);
-
-  const fontSizeFormik = useFormik({
-    initialValues: fontSize,
-    onSubmit: (values) =>
-      saveChangedValues(values, fontSize, url, setResume, ["meta", "fontSize"]),
-  });
-  useFormikAutoSave(fontSizeFormik, 0);
-
-  const restFormik = useFormik({
-    initialValues: rest,
-    onSubmit: (values) =>
-      saveChangedValues(values, rest, url, setResume, ["meta"]),
-  });
-  useFormikAutoSave(restFormik, 0);
+  useFormikAutoSave(formik);
 
   const displayFontRange = (range: ReactNode) => {
     return <FontSizeRangeHolder>{range}</FontSizeRangeHolder>;
@@ -159,7 +137,7 @@ const Meta = observer(() => {
       <Form>
         <TemplateRadioGroup
           displayName={"template"}
-          {...getFieldPropsMetaHelpers(restFormik, "template")}
+          {...getFieldPropsMetaHelpers(formik, "template")}
           options={[
             {
               ownValue: "calm",
@@ -178,7 +156,7 @@ const Meta = observer(() => {
         {rest.template === "classic" && (
           <RadioGroup
             displayName={"Layout"}
-            {...getFieldPropsMetaHelpers(paperFormik, "layout")}
+            {...getFieldPropsMetaHelpers(formik, "paper.layout")}
             options={[
               { ownValue: "full", children: <Full /> },
               { ownValue: "split", children: <Split /> },
@@ -190,12 +168,12 @@ const Meta = observer(() => {
           min={40}
           max={60}
           step={5}
-          {...getFieldPropsMeta(paperFormik, "space")}
+          {...getFieldPropsMeta(formik, "paper.space")}
         />
         <hr />
         <FontRadioGroup
           displayName={"font"}
-          {...getFieldPropsMetaHelpers(restFormik, "fontFamily")}
+          {...getFieldPropsMetaHelpers(formik, "fontFamily")}
           options={[
             { ownValue: "Roboto", children: <Roboto>Roboto</Roboto> },
             { ownValue: "Rubik", children: <Rubik>Rubik</Rubik> },
@@ -208,7 +186,7 @@ const Meta = observer(() => {
         />
         <ColorPicker
           displayName={"Text shade"}
-          {...getFieldPropsMetaHelpers(colorsFormik, "secondary")}
+          {...getFieldPropsMetaHelpers(formik, "colors.secondary")}
         />
         <CustomFontSizes>
           {displayFontRange(
@@ -217,7 +195,7 @@ const Meta = observer(() => {
               min={10}
               max={12}
               step={1}
-              {...getFieldPropsMeta(fontSizeFormik, "small")}
+              {...getFieldPropsMeta(formik, "fontSize.small")}
             />
           )}
           {displayFontRange(
@@ -226,7 +204,7 @@ const Meta = observer(() => {
               min={34}
               max={42}
               step={1}
-              {...getFieldPropsMeta(fontSizeFormik, "big")}
+              {...getFieldPropsMeta(formik, "fontSize.big")}
             />
           )}
           {displayFontRange(
@@ -235,7 +213,7 @@ const Meta = observer(() => {
               min={20}
               max={24}
               step={1}
-              {...getFieldPropsMeta(fontSizeFormik, "large")}
+              {...getFieldPropsMeta(formik, "fontSize.large")}
             />
           )}
           {displayFontRange(
@@ -244,7 +222,7 @@ const Meta = observer(() => {
               min={15}
               max={17}
               step={1}
-              {...getFieldPropsMeta(fontSizeFormik, "medium")}
+              {...getFieldPropsMeta(formik, "fontSize.medium")}
             />
           )}
         </CustomFontSizes>
@@ -253,11 +231,11 @@ const Meta = observer(() => {
           <>
             <ColorPicker
               displayName={"Accents color"}
-              {...getFieldPropsMetaHelpers(colorsFormik, "main")}
+              {...getFieldPropsMetaHelpers(formik, "colors.main")}
             />
             <RadioGroup
               displayName={"Page background"}
-              {...getFieldPropsMetaHelpers(restFormik, "background")}
+              {...getFieldPropsMetaHelpers(formik, "background")}
               options={[
                 { ownValue: "" },
                 {

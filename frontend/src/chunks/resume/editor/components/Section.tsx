@@ -53,7 +53,8 @@ const About = styled.article`
     padding-right: 0;
 
     svg {
-      width: 75px;
+      width: ${({ theme }: { theme: ThemeShape }) =>
+        theme.sectionNavIconsHeight};
     }
   `};
 `;
@@ -65,9 +66,10 @@ const Title = styled.h2`
 `;
 
 const Purpose = styled.p`
-  text-align: center;
+  text-align: justify;
   color: ${({ theme }) => theme.main};
   margin: 0;
+  line-height: 1.5em;
 
   ${media.phone`
     flex: 100%;
@@ -78,6 +80,7 @@ const SectionNavigation = styled.nav`
   display: flex;
   align-self: center;
   margin-top: ${({ theme }) => theme.spaceSmall + "px"};
+  min-height: ${({ theme }) => theme.sectionNavIconsHeight};
 
   svg {
     padding: ${({ theme }) => theme.spaceSmall + "px"};

@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-const rotate360 = keyframes`
+export const Rotate = keyframes`
   from {
     transform: rotate(0deg);
   }
@@ -10,7 +10,7 @@ const rotate360 = keyframes`
 `;
 
 const Spinner = styled.div`
-  animation: ${rotate360} 1s linear infinite;
+  animation: ${Rotate} 1s linear infinite;
   transform: translateZ(0);
   border-top: 2px solid;
   border-right: 2px solid;

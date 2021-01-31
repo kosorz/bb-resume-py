@@ -30,6 +30,7 @@ export type ThemeShape = {
   spaceSmall: number;
   space: number;
   spaceBig: number;
+  sectionNavIconsHeight: string;
 
   cardShadow: string;
   cardShadowTransition: string;
@@ -62,11 +63,12 @@ const theme: ThemeShape = {
   numericBiggerFont: 14,
 
   menuHeight: 65,
-  navHeight: 50,
-  navWidth: 300,
+  navHeight: 90,
+  navWidth: 40,
   spaceSmall: 10,
   space: 20,
   spaceBig: 30,
+  sectionNavIconsHeight: "75px",
 
   cardShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
   cardShadowTransition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",

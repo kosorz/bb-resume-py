@@ -104,7 +104,6 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
     rotation: 0,
   });
   const debouncedCroppedPixels = useDebounce(croppedPixels, 100);
-
   const url = `/parts/${id}`;
 
   const cropPhoto = useMutation(

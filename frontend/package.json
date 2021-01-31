@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-pdf/renderer": "^1.6.11",
+    "@react-pdf/renderer": "^1.6.13",
     "@rehooks/component-size": "github:rehooks/component-size",
     "@rehooks/window-scroll-position": "^1.0.1",
     "@types/deep-diff": "^1.0.0",

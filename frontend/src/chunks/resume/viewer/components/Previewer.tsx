@@ -43,27 +43,27 @@ const DocumentWrapper = styled.div`
   box-shadow: ${({ theme }) => theme.cardShadow};
 `;
 
-const DocumentHolder = styled.div`
-  display: ${({ isActive }: { isActive: boolean }) =>
-    isActive ? "block" : "none"};
+const DocWrapper = styled.div`
+  display: ${({ isVisible }: { isVisible: boolean }) =>
+    isVisible ? "block" : "none"};
 `;
 
 const Document = ({
   file,
-  isActive,
   onDocumentLoad,
   children,
+  isVisible,
 }: {
   file: string;
-  isActive: boolean;
   onDocumentLoad: Function;
   children: ReactNode;
+  isVisible: boolean;
 }) => (
-  <DocumentHolder isActive={isActive}>
+  <DocWrapper isVisible={isVisible}>
     <ReactPDFDocument file={file} onLoadSuccess={onDocumentLoad}>
       {children}
     </ReactPDFDocument>
-  </DocumentHolder>
+  </DocWrapper>
 );
 
 const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
@@ -71,14 +71,12 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     currentPage: number;
     numPages: number | null;
     document: string;
-    twinDocument: string;
-    twinActive: boolean;
+    loading: boolean;
   }>({
+    loading: true,
     document: "",
-    twinDocument: "",
     numPages: null,
     currentPage: 1,
-    twinActive: false,
   });
   const windowHeight = useWindowHeight();
   const debouncedWindowHeight = useDebounce(0, 200);
@@ -99,44 +97,45 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
         return;
       }
 
-      setState((prevState) => ({ ...prevState }));
+      setState((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
+
       do {
         try {
           blob = await pdf(doc).toBlob();
         } catch (error) {
           await new Promise((resolve) => setTimeout(resolve, 150));
         }
-      } while (!blob || retryAttempts > 2);
+      } while (!blob || retryAttempts > 10);
 
-      setState((prevState) => ({
-        ...prevState,
-        [state.twinActive ? "document" : "twinDocument"]: URL.createObjectURL(
-          blob
-        ),
-      }));
+      URL.revokeObjectURL(state.document);
+
+      if (blob) {
+        setState((prevState) => ({
+          ...prevState,
+          document: URL.createObjectURL(blob),
+        }));
+      }
     };
 
     renderDocument(props.document);
-
     // eslint-disable-next-line
-  }, [props, setState]);
+  }, [props]);
 
   const onDocumentLoad = ({ numPages }: { numPages: number }) => {
-    const { currentPage } = state;
-
     setState((prevState) => ({
       ...prevState,
       numPages,
-      currentPage: Math.min(currentPage),
+      currentPage: Math.min(numPages, prevState.currentPage),
     }));
   };
 
   const onRenderSuccess = () => {
-    URL.revokeObjectURL(state.twinActive ? state.twinDocument : state.document);
-
     setState((prevState) => ({
       ...prevState,
-      twinActive: !state.twinActive,
+      loading: false,
     }));
   };
 
@@ -154,25 +153,17 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     }));
   };
 
-  const page = (
-    <Page onRenderSuccess={onRenderSuccess} pageNumber={state.currentPage} />
-  );
-
   const doc = (
     <Document
+      isVisible={!state.loading}
       onDocumentLoad={onDocumentLoad}
       file={state.document}
-      isActive={!state.twinActive}
-      children={page}
-    />
-  );
-
-  const twinDoc = (
-    <Document
-      onDocumentLoad={onDocumentLoad}
-      file={state.twinDocument}
-      isActive={state.twinActive}
-      children={page}
+      children={
+        <Page
+          onRenderSuccess={onRenderSuccess}
+          pageNumber={props.bare ? 1 : state.currentPage}
+        />
+      }
     />
   );
 
@@ -180,7 +171,6 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     <>
       <Loader />
       {doc}
-      {twinDoc}
     </>
   ) : (
     <PageWrapper
@@ -191,7 +181,6 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
       <DocumentWrapper height={(size.width - 2 * theme.space) * 1.414141}>
         <Loader />
         {doc}
-        {twinDoc}
       </DocumentWrapper>
       {state.numPages && (
         <PageNavigator
@@ -204,7 +193,7 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
       <Download
         fileName={"your-resume.pdf"}
         label={"Download free"}
-        url={state.twinActive ? state.twinDocument : state.document}
+        url={state.document}
       />
     </PageWrapper>
   );
@@ -290,12 +279,10 @@ const Previewer = observer(
     bare,
     template,
     data,
-    className,
   }: {
     bare: boolean;
     template?: "classic" | "calm";
     data?: ResumeShape;
-    className?: string;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
     const { resume } = resumeBubble;
@@ -303,7 +290,7 @@ const Previewer = observer(
     const content = data || resume;
 
     return (
-      <Wrapper className={className}>
+      <Wrapper>
         <PDFViewer
           bare={bare}
           document={{
