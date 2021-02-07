@@ -6,6 +6,7 @@ import {
 } from "formik";
 import { diff } from "deep-diff";
 import { toJS } from "mobx";
+import { isArray } from "util";
 
 import axios from "./axios";
 import InfoShape from "../chunks/resume/editor/sections/Info/Info.typing";
@@ -23,6 +24,18 @@ export function getFieldPropsMeta(
     ...formik.getFieldProps(name),
     ...formik.getFieldMeta(name),
   };
+}
+
+export function updateObject(o: any, u: any) {
+  for (const [k, v] of Object.entries(u)) {
+    if (typeof v === "object" && !isArray(v)) {
+      o[k] = updateObject(o[k] || {}, v);
+    } else {
+      o[k] = v;
+    }
+  }
+
+  return o;
 }
 
 export function getFieldPropsHelpers(
@@ -77,7 +90,7 @@ export function saveChangedValues(
   updateFn: Function,
   objectWrapperStructure?: string[]
 ): void {
-  const dataToSave = diff(initialValues, values)
+  const data = diff(initialValues, values)
     // eslint-disable-next-line
     ?.map((el) => {
       if (el.path) return el.path[0];
@@ -88,17 +101,13 @@ export function saveChangedValues(
       return tally;
     }, {});
 
-  axios
-    .patch(
-      url,
-      objectWrapperStructure && objectWrapperStructure.length > 0
-        ? setValueToField(objectWrapperStructure, dataToSave)
-        : dataToSave
-    )
-    .then((res) => {
-      updateFn(res.data);
-    })
-    .catch((err) => console.log(err));
+  const dataToSave =
+    objectWrapperStructure && objectWrapperStructure.length > 0
+      ? setValueToField(objectWrapperStructure, data)
+      : data;
+
+  updateFn(dataToSave);
+  axios.patch(url, dataToSave).catch((err) => console.log(err));
 }
 
 export function sortSkillsGroups(

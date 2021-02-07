@@ -140,15 +140,15 @@ const Meta = observer(() => {
           {...getFieldPropsMetaHelpers(formik, "template")}
           options={[
             {
-              ownValue: "calm",
-              children: (
-                <Previewer data={resume} bare={true} template={"calm"} />
-              ),
-            },
-            {
               ownValue: "classic",
               children: (
                 <Previewer data={resume} bare={true} template={"classic"} />
+              ),
+            },
+            {
+              ownValue: "calm",
+              children: (
+                <Previewer data={resume} bare={true} template={"calm"} />
               ),
             },
           ]}

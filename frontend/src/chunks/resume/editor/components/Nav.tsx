@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import useWindowScrollPosition from "@rehooks/window-scroll-position";
-import { observer } from "mobx-react-lite";
 
 import Pencil from "../../../../components/symbols/Pencil";
 import Show from "../../../../components/symbols/Show";
@@ -63,30 +62,28 @@ const Action = styled.div`
   }
 `;
 
-const NavAction = observer(
-  ({
-    icon,
-    mode,
-    ownMode,
-    setMode,
-  }: {
-    icon: ReactNode;
-    mode: "edit" | "preview";
-    ownMode: "edit" | "preview";
-    setMode: Function;
-  }) => {
-    return (
-      <Action
-        isActive={mode === ownMode}
-        onClick={() => {
-          setMode(ownMode);
-        }}
-      >
-        {icon}
-      </Action>
-    );
-  }
-);
+const NavAction = ({
+  icon,
+  mode,
+  ownMode,
+  setMode,
+}: {
+  icon: ReactNode;
+  mode: "edit" | "preview";
+  ownMode: "edit" | "preview";
+  setMode: Function;
+}) => {
+  return (
+    <Action
+      isActive={mode === ownMode}
+      onClick={() => {
+        setMode(ownMode);
+      }}
+    >
+      {icon}
+    </Action>
+  );
+};
 
 const Nav = ({
   setMode,

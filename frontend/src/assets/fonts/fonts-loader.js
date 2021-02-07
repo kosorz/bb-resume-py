@@ -98,7 +98,6 @@ export const loadFonts = () => {
       format: "truetype",
     })
   );
-
   Font.registerEmojiSource({
     format: "png",
     url: "https://twemoji.maxcdn.com/2/72x72/",

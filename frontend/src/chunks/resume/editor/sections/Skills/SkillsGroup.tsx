@@ -41,7 +41,7 @@ const SkillsGroup = observer(
           values,
           skillsGroupEditorData,
           `/parts/skills_group/${id}`,
-          updateSkillsGroup
+          updateSkillsGroup(id)
         );
       },
       validationSchema: skillsGroupValidationSchema,

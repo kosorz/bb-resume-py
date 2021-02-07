@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useState,
   ReactElement,
-  MouseEvent,
   useRef,
   useContext,
   ReactNode,
@@ -20,24 +19,63 @@ import {
 
 import Viewer from "../Viewer";
 
-import theme from "../../../../util/theme";
+import theme, { ThemeShape } from "../../../../util/theme";
 import { useWindowHeight, useDebounce } from "../../../../util/hooks";
-import ResumeShape from "../../Resume.bubble.typing";
+import ResumeShape from "../../Resume.typing";
 import { ResumeBubble } from "../../Resume.bubble";
 import Loader from "./Loader";
+import media from "../../../../util/media";
 
 const PageWrapper = styled.div`
   position: sticky;
   overflow: hidden;
-  top: ${({ height, windowHeight }: { height: number; windowHeight: number }) =>
-    theme.menuHeight / 2 + (windowHeight - height) / 2 + "px"};
+  top: ${({
+    height,
+    windowHeight,
+    theme,
+  }: {
+    height: number;
+    windowHeight: number;
+    theme: ThemeShape;
+  }) => theme.menuHeight / 2 + (windowHeight - height) / 2 + "px"};
+
+  height: ${({
+    height,
+    windowHeight,
+    theme,
+  }: {
+    height: number;
+    windowHeight: number;
+    theme: ThemeShape;
+  }) =>
+    height + theme.menuHeight > windowHeight
+      ? windowHeight - theme.menuHeight - 2 * theme.spaceSmall + "px"
+      : height + "px"};
+  overflow-y: ${({
+    height,
+    windowHeight,
+  }: {
+    height: number;
+    windowHeight: number;
+  }) => (height + theme.menuHeight > windowHeight ? "scroll" : "auto")};
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  ${media.tablet`
+    margin-top: ${({ theme }: { theme: ThemeShape }) => theme.space + "px"};
+    margin-bottom: ${({ theme }: { theme: ThemeShape }) => theme.space + "px"};
+  `};
 `;
 
 const DocumentWrapper = styled.div`
   position: relative;
   border-radius: 0;
   transition: ${({ theme }) => theme.cardShadowTransition};
-  margin: ${({ theme }) => theme.space + "px"};
+  margin: ${({ theme }: { theme: ThemeShape; height: number }) =>
+    `0 ${theme.space}px`};
   height: ${({ height }: { height: number }) => height + "px"};
   background: ${({ theme }) => theme.ivory};
   box-shadow: ${({ theme }) => theme.cardShadow};
@@ -72,10 +110,12 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     numPages: number | null;
     document: string;
     loading: boolean;
+    reload: string;
   }>({
     loading: true,
     document: "",
     numPages: null,
+    reload: "",
     currentPage: 1,
   });
   const windowHeight = useWindowHeight();
@@ -92,7 +132,6 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
         setState((prevState) => ({
           ...prevState,
           document: "",
-          twinDocument: "",
         }));
         return;
       }
@@ -122,7 +161,7 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
 
     renderDocument(props.document);
     // eslint-disable-next-line
-  }, [props]);
+  }, [props, state.reload]);
 
   const onDocumentLoad = ({ numPages }: { numPages: number }) => {
     setState((prevState) => ({
@@ -136,20 +175,6 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     setState((prevState) => ({
       ...prevState,
       loading: false,
-    }));
-  };
-
-  const onPreviousPage = () => {
-    setState((prevState) => ({
-      ...prevState,
-      currentPage: prevState.currentPage - 1,
-    }));
-  };
-
-  const onNextPage = () => {
-    setState((prevState) => ({
-      ...prevState,
-      currentPage: prevState.currentPage + 1,
     }));
   };
 
@@ -167,6 +192,9 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
     />
   );
 
+  const changeSize =
+    windowHeight < theme.menuHeight + size.width * 1.414141 + theme.space;
+
   return props.bare ? (
     <>
       <Loader />
@@ -175,92 +203,23 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
   ) : (
     <PageWrapper
       ref={selfRef}
-      height={size.width * 1.414141}
+      height={
+        changeSize
+          ? windowHeight - 2 * theme.space - theme.menuHeight
+          : size.width * 1.414141
+      }
       windowHeight={debouncedWindowHeight || windowHeight}
     >
-      <DocumentWrapper height={(size.width - 2 * theme.space) * 1.414141}>
-        <Loader />
-        {doc}
+      <DocumentWrapper height={1.414141 * (size.width - 2 * theme.space)}>
+        <Loader /> {doc}
       </DocumentWrapper>
-      {state.numPages && (
-        <PageNavigator
-          currentPage={state.currentPage}
-          numPages={state.numPages}
-          onNextPage={onNextPage}
-          onPreviousPage={onPreviousPage}
-        />
-      )}
-      <Download
-        fileName={"your-resume.pdf"}
-        label={"Download free"}
-        url={state.document}
-      />
     </PageWrapper>
   );
 };
 
-const NavigatorWrapper = styled.div`
-  display: flex;
-  height: 32px;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.black};
-`;
-
-const PageIndicator = styled.div`
-  margin: 0px 12px;
-`;
-
-const PageNavigator = ({
-  currentPage,
-  numPages,
-  onPreviousPage,
-  onNextPage,
-}: {
-  currentPage: number;
-  numPages: number;
-  onPreviousPage: (event: MouseEvent) => void;
-  onNextPage: (event: MouseEvent) => void;
-}) => {
-  return numPages ? (
-    <NavigatorWrapper>
-      {currentPage !== 1 && <div onClick={onPreviousPage}>{"<"}</div>}
-      <PageIndicator>{`Page ${currentPage} / ${numPages}`}</PageIndicator>
-      {currentPage !== numPages && <div onClick={onNextPage}>{">"}</div>}
-    </NavigatorWrapper>
-  ) : null;
-};
-
-const DownloadWrapper = styled.div`
-  flex: 100%;
-`;
-
-const Download = ({
-  url,
-  fileName,
-  label,
-}: {
-  url: string | null;
-  fileName: string;
-  label: string;
-}) => {
-  return url ? (
-    <DownloadWrapper>
-      <a
-        download={fileName}
-        href={url}
-        target={"_blank"}
-        rel="noopener noreferrer"
-      >
-        {label}
-      </a>
-    </DownloadWrapper>
-  ) : null;
-};
-
 const Wrapper = styled.section`
   width: 100%;
-  flex: 35%;
+  flex: 45%;
   box-sizing: border-box;
   text-align: center;
 

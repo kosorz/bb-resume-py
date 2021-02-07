@@ -38,9 +38,6 @@ const ExperienceUnit = ({
       flexDirection: "row",
       fontSize: fontSize.small,
     },
-    info: {
-      fontSize: fontSize.small,
-    },
     description: {
       fontSize: fontSize.small,
       marginTop: paper.space / 10,
@@ -69,7 +66,7 @@ const ExperienceUnit = ({
         )}
         {location_enabled && <Data type="location" value={location} />}
       </View>
-      {link_enabled && <Data type="link" style={styles.info} value={link} />}
+      {link_enabled && <Data type="link" value={link} />}
       {description_enabled && (
         <Text style={styles.description}>
           {description || "Lorem ipsum..."}

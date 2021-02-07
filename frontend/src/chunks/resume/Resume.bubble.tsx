@@ -1,7 +1,8 @@
 import React, { createContext, ReactNode } from "react";
 import { useLocalObservable } from "mobx-react-lite";
 
-import ResumeBubbleShape from "./ResumeBubble.typing";
+import ResumeBubbleShape from "./Resume.bubble.typing";
+import { updateObject } from "../../util/fns";
 
 let store: ResumeBubbleShape;
 let initialState: ResumeBubbleShape = {
@@ -74,7 +75,7 @@ let initialState: ResumeBubbleShape = {
     },
   },
   setResume: (data) => {
-    store.resume = { ...store.resume, ...data };
+    store.resume = updateObject(store.resume, data);
   },
   deleteSectionUpdate: (content, identifier) => {
     store.setResume({ [identifier]: undefined });
@@ -88,10 +89,9 @@ let initialState: ResumeBubbleShape = {
   },
   updateContentOrder: (layout, order, data) => {
     const { content } = store.resume.meta;
-    store.resume.meta.content = {
-      ...content,
+    store.resume.meta.content = updateObject(store.resume.meta.content, {
       [layout]: { ...content[layout], [order]: data },
-    };
+    });
   },
   resetPhotoSettings: () => {
     store.resume.meta.photoSettings = {
@@ -105,33 +105,29 @@ let initialState: ResumeBubbleShape = {
   addSectionUpdate: (data, identifier, order) => {
     store.setResume({ [identifier]: data });
     const { content } = store.resume.meta;
-    store.resume.meta.content =
+    store.resume.meta.content = updateObject(
+      store.resume.meta.content,
       order === "order"
         ? {
-            ...content,
             full: {
-              ...content.full,
               order: [...content.full.order, identifier],
             },
             split: {
-              ...content.split,
               unlisted: [...content.split.unlisted, identifier],
             },
           }
         : {
-            ...content,
             full: {
-              ...content.full,
               unlisted: [...content.full.unlisted, identifier],
             },
             split: {
-              ...content.split,
               [order]: [...content.split[order], identifier],
             },
-          };
+          }
+    );
   },
   updateInfo: (data) => {
-    store.resume.info = data;
+    store.resume.info = updateObject(store.resume.info, data);
   },
   updateInfoCroppedPhoto: (croppedPhotoId) => {
     if (store.resume.info) {
@@ -141,10 +137,10 @@ let initialState: ResumeBubbleShape = {
   updateSkills: (data) => {
     store.resume.skills = { ...store.resume.skills, ...data };
   },
-  updateSkillsGroup: (data) => {
+  updateSkillsGroup: (id) => (data) => {
     if (store.resume.skills) {
       store.resume.skills.groups = store.resume.skills.groups.map((gr) =>
-        gr.id === data.id ? data : gr
+        gr.id === id ? updateObject(gr, data) : gr
       );
     }
   },
@@ -167,10 +163,10 @@ let initialState: ResumeBubbleShape = {
   updateExperience: (data) => {
     store.resume.experience = { ...store.resume.experience, ...data };
   },
-  updateExperienceUnit: (data) => {
+  updateExperienceUnit: (id) => (data) => {
     if (store.resume.experience) {
       store.resume.experience.units = store.resume.experience.units.map((u) =>
-        u.id === data.id ? data : u
+        u.id === id ? updateObject(u, data) : u
       );
     }
   },

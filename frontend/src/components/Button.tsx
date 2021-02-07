@@ -22,9 +22,8 @@ const GeneralButton = styled.button`
   }
 
   &:hover:not(:disabled) {
-    transform: scale(1.01);
     box-shadow: ${({ theme }: { theme: ThemeShape }) => theme.cardShadow};
-    transition: transform 1s;
+    filter: contrast(150%);
   }
 
   ${media.phone`

@@ -7,8 +7,8 @@ export const Box = styled.section`
   background-color: ${({ theme }) => theme.white};
   box-shadow: ${({ theme }) => theme.cardShadow};
   transition: ${({ theme }) => theme.cardShadowTransition};
+  flex-basis: 330px;
   flex-shrink: 0;
-  flex-basis: 400px;
 
   ${media.phone`
     flex: 100%;

@@ -1,7 +1,6 @@
 import { css, FlattenSimpleInterpolation } from "styled-components";
 
 type SizesShape = { [key: string]: number };
-type QueriesShape = { [key: string]: string };
 
 type CombinedQueriesShape = {
   [key: string]: (...args: any[]) => FlattenSimpleInterpolation;
@@ -10,11 +9,6 @@ type CombinedQueriesShape = {
 export const sizes: SizesShape = {
   tablet: 992,
   phone: 576,
-};
-
-export const queries: QueriesShape = {
-  tablet: `(max-width: ${sizes.tablet}px)`,
-  phone: `(max-width: ${sizes.phone}px)`,
 };
 
 const media = Object.keys(sizes).reduce(

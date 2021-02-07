@@ -1,5 +1,6 @@
-import Spinner from "../../../../components/Spinner";
 import styled from "styled-components";
+
+import Spinner from "../../../../components/Spinner";
 
 const Loader = styled(Spinner)`
   position: absolute;

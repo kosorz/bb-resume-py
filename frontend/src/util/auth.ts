@@ -2,14 +2,13 @@ import axios from "./axios";
 import decodeJwt from "jwt-decode";
 import { DateTime } from "luxon";
 import Timeout from "smart-timeout";
-
 import { normalizeEmail } from "./fns";
 
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
 
   if (token) {
-    const decodedToken: { exp: number; sub: string } = decodeJwt(token);
+    const decodedToken: { exp: number } = decodeJwt(token);
     const expiryDate = DateTime.fromMillis(decodedToken.exp * 1000);
 
     if (expiryDate > DateTime.local()) {

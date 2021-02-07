@@ -44,7 +44,7 @@ const ExperienceUnit = observer(
           values,
           experienceUnitEditorData,
           `/parts/experience_unit/${id}`,
-          updateExperienceUnit
+          updateExperienceUnit(id)
         );
       },
       validationSchema: experienceUnitValidationSchema,

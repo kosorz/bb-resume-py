@@ -7,7 +7,7 @@ import Previewer from "../resume/viewer/components/Previewer";
 import Loader from "../../components/Loader";
 
 import axios from "../../util/axios";
-import ResumeShape from "../resume/Resume.bubble.typing";
+import ResumeShape from "../resume/Resume.typing";
 import media from "../../util/media";
 
 const Wrapper = styled.section`
@@ -43,7 +43,7 @@ const Dashboard = () => {
   const history = useHistory();
   const [resumes, setResumes] = useState<ResumeShape[]>([]);
   const { isLoading, error } = useQuery(["me"], () => {
-    return axios.get(`/users/me`).then((res) => {
+    return axios.get(`/users/me/`).then((res) => {
       setResumes(res.data.resumes);
     });
   });

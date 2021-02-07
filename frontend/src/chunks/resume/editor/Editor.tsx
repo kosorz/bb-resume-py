@@ -11,7 +11,7 @@ import media from "../../../util/media";
 import { ResumeBubble } from "../Resume.bubble";
 
 const Wrapper = styled.section`
-  flex: 65%;
+  flex: 55%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -39,14 +39,14 @@ export const Title = styled.h2`
   position: sticky;
 `;
 
-const Editor = observer(({ className }: { className?: string }) => {
+const Editor = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume } = resumeBubble;
   const { layout } = resume.meta.paper;
   const { template } = resume.meta;
 
   return (
-    <Wrapper className={className}>
+    <Wrapper>
       <Title>Settings</Title>
       <Gallery />
       <Meta />
