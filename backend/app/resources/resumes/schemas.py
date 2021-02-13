@@ -205,7 +205,6 @@ class ResumeCreate(ResumeBase):
 class Resume(ResumeBase):
     id: int
     owner_id: int
-    deleted: bool
     meta: Meta
 
     class Config:
@@ -222,7 +221,6 @@ class ResumeFull(Resume):
 
 
 class ResumeUpdate(BaseModel):
-    deleted: Optional[bool]
     title: Optional[str]
     meta: Optional[MetaUpdate]
 

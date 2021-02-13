@@ -14,7 +14,6 @@ let initialState: ResumeBubbleShape = {
     title: "",
     id: 0,
     owner_id: 0,
-    deleted: false,
     meta: {
       template: "classic",
       colors: { main: "", secondary: "" },

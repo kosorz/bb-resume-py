@@ -168,7 +168,6 @@ class TestResumes:
                 "role_enabled": True,
             },
             "skills": None,
-            "deleted": False,
         }
         assert res.status_code == status.HTTP_200_OK
 
@@ -183,7 +182,6 @@ class TestResumes:
             "title": "string",
             "id": 2,
             "owner_id": 2,
-            "deleted": False,
             "skills": None,
             "experience": None,
             "meta": {
@@ -305,13 +303,10 @@ class TestResumes:
                 }
             },
             "owner_id": 2,
-            "deleted": False
         }
         assert res.status_code == status.HTTP_200_OK
 
     @pytest.mark.parametrize("body", ({
-        "deleted": "not boolean value"
-    }, {
         "meta": {
             "colors": {
                 "main": "not a hex"
@@ -426,9 +421,6 @@ class TestResumes:
 
     @pytest.mark.parametrize("body", (
         {
-            "deleted": True
-        },
-        {
             "title": "updated_string"
         },
         {
@@ -541,7 +533,6 @@ class TestResumes:
         # Checks if resume will be updated when correct data submitted and user owns resume
         resume = get_resume(app.state._db, 2)
         assert resume.title == "updated_string"
-        assert resume.deleted == True
         assert resume.meta["colors"]["main"] == "#038cff"
         assert resume.meta["colors"]["secondary"] == "#1f1f1f"
         assert resume.meta["fontSize"]["small"] == 10
@@ -568,7 +559,6 @@ class TestResumes:
                 resume_id=1,
             ),
             json={
-                "deleted": True,
                 "title": "updated_string"
             },
         )

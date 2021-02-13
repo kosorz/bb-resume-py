@@ -111,14 +111,14 @@ const Bitter = styled(Font)`
 const Meta = observer(() => {
   const resumeBubble = useContext(ResumeBubble);
   const { resume, setResume } = resumeBubble;
-  const { colors, paper, fontSize, content, ...rest } = resume.meta;
+  const { content, ...rest } = resume.meta;
   const { id } = resume;
   const url = `/resumes/${id}`;
 
   const formik = useFormik({
-    initialValues: resume.meta,
+    initialValues: rest,
     onSubmit: (values) =>
-      saveChangedValues(values, resume.meta, url, setResume, ["meta"]),
+      saveChangedValues(values, rest, url, setResume, ["meta"]),
   });
   useFormikAutoSave(formik);
 

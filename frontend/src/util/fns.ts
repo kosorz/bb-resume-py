@@ -28,7 +28,7 @@ export function getFieldPropsMeta(
 
 export function updateObject(o: any, u: any) {
   for (const [k, v] of Object.entries(u)) {
-    if (typeof v === "object" && !isArray(v)) {
+    if (typeof v === "object" && !isArray(v) && v !== null) {
       o[k] = updateObject(o[k] || {}, v);
     } else {
       o[k] = v;

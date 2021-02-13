@@ -32,7 +32,6 @@ def create_main_tables_seed_data() -> None:
         "resumes",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
         sa.Column("title", sa.String),
-        sa.Column("deleted", sa.Boolean, default=False),
         sa.Column("meta", postgresql.JSONB, default=meta),
         sa.Column(
             "owner_id",

@@ -148,7 +148,7 @@ const Gallery = observer(() => {
             const index = i + 1;
             const addToMain = (
               <SuccessButton onClick={() => addSection.mutate("mainOrder")}>
-                Add to {splitListedColumnsSwapped ? "right" : "left"} column
+                List in the {splitListedColumnsSwapped ? "right" : "left"}
               </SuccessButton>
             );
             const addToSecondary = (
@@ -158,7 +158,7 @@ const Gallery = observer(() => {
                 }}
                 onClick={() => addSection.mutate("secondaryOrder")}
               >
-                Add to {splitListedColumnsSwapped ? "left" : "right"} column
+                List in the {splitListedColumnsSwapped ? "left" : "right"}
               </SuccessButton>
             );
 
@@ -213,7 +213,7 @@ const Gallery = observer(() => {
                             <SuccessButton
                               onClick={() => addSection.mutate("order")}
                             >
-                              Add to resume
+                              List
                             </SuccessButton>
                           )}
                         </AddWrapper>

@@ -7,7 +7,6 @@ type ResumeShape = {
   title: string;
   id: number;
   owner_id: number;
-  deleted: boolean;
   info: InfoShape;
   meta: MetaShape;
   skills?: SkillsShape;

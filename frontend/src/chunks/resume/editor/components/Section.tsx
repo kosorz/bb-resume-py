@@ -1,6 +1,7 @@
 import React, { ReactNode, useContext, useState, useEffect } from "react";
-import styled from "styled-components";
 import { FieldInputProps, FieldMetaProps } from "formik";
+import styled from "styled-components";
+import { observer } from "mobx-react-lite";
 
 import Management from "./Management";
 import Move from "../../../../components/symbols/Move";
@@ -112,140 +113,145 @@ const icons: { [key: string]: ReactNode } = {
   gallery: <GalleryIcon />,
 };
 
-const Section = ({
-  children,
-  contentForehead,
-  title,
-  identifier,
-  subtitle,
-  purpose,
-  addFn,
-  editableTitle,
-  className,
-}: {
-  children: ReactNode | ReactNode[];
-  title: string;
-  purpose: string;
-  identifier: "skills" | "experience" | "info" | "meta" | "gallery" | "";
-  contentForehead?: ReactNode;
-  addFn?: Function;
-  subtitle?: string;
-  editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
-  className?: string;
-}) => {
-  const [positionData, setPositionData] = useState<{
-    deletable: boolean;
-    isFirst: boolean;
-    isLast: boolean;
-    movable: boolean;
-    manageable: boolean;
-    column: string;
-  }>({
-    deletable: false,
-    isFirst: false,
-    isLast: false,
-    movable: false,
-    manageable: !["info", "meta", "gallery"].includes(identifier),
-    column: "",
-  });
-  const resumeBubble = useContext(ResumeBubble);
-  const { resume } = resumeBubble;
-  const { id, meta } = resume;
-  const { content, paper, template } = meta;
-  const { split, full } = content;
-  const { layout } = paper;
-
-  useEffect(() => {
-    const isStatic = ["info", "meta", "gallery"].includes(identifier);
-    const deletable =
-      split.unlisted.includes(identifier) && full.unlisted.includes(identifier);
-    const data =
-      layout === "split" || template === "calm"
-        ? {
-            deletable,
-            isFirst:
-              split.mainOrder[0] === identifier ||
-              split.secondaryOrder[0] === identifier,
-            isLast:
-              split.mainOrder[split.mainOrder.length - 1] === identifier ||
-              split.secondaryOrder[split.secondaryOrder.length - 1] ===
-                identifier,
-            movable: !split.unlisted.includes(identifier) && !isStatic,
-            column: split.mainOrder.includes(identifier)
-              ? "splitListedLeft"
-              : split.secondaryOrder.includes(identifier)
-              ? "splitListedRight"
-              : "splitUnlisted",
-          }
-        : {
-            deletable,
-            isFirst: full.order[0] === identifier,
-            isLast: full.order[full.order.length - 1] === identifier,
-            movable: !full.unlisted.includes(identifier) && !isStatic,
-            column: full.order.includes(identifier)
-              ? "fullListed"
-              : "fullUnlisted",
-          };
-    setPositionData((prevState) => {
-      return { ...prevState, ...data };
-    });
-  }, [
-    layout,
+const Section = observer(
+  ({
+    children,
+    contentForehead,
+    title,
     identifier,
-    template,
-    split.secondaryOrder,
-    split.mainOrder,
-    split.unlisted,
-    full.order,
-    full.unlisted,
-  ]);
+    subtitle,
+    purpose,
+    addFn,
+    editableTitle,
+    className,
+  }: {
+    children: ReactNode | ReactNode[];
+    title: string;
+    purpose: string;
+    identifier: "skills" | "experience" | "info" | "meta" | "gallery" | "";
+    contentForehead?: ReactNode;
+    addFn?: Function;
+    subtitle?: string;
+    editableTitle?: FieldInputProps<any> & FieldMetaProps<any>;
+    className?: string;
+  }) => {
+    const [positionData, setPositionData] = useState<{
+      deletable: boolean;
+      isFirst: boolean;
+      isLast: boolean;
+      movable: boolean;
+      manageable: boolean;
+      column: string;
+    }>({
+      deletable: false,
+      isFirst: false,
+      isLast: false,
+      movable: false,
+      manageable: false,
+      column: "",
+    });
+    const resumeBubble = useContext(ResumeBubble);
+    const { resume } = resumeBubble;
+    const { id, meta } = resume;
+    const { content, paper, template } = meta;
+    const { split, full } = content;
+    const { layout } = paper;
 
-  const {
-    isFirst,
-    isLast,
-    movable,
-    manageable,
-    column,
-    deletable,
-  } = positionData;
+    useEffect(() => {
+      const isStatic = ["info", "meta", "gallery"].includes(identifier);
+      const deletable =
+        split.unlisted.includes(identifier) &&
+        full.unlisted.includes(identifier);
+      const data =
+        layout === "split" || template === "calm"
+          ? {
+              deletable,
+              isFirst:
+                split.mainOrder[0] === identifier ||
+                split.secondaryOrder[0] === identifier,
+              isLast:
+                split.mainOrder[split.mainOrder.length - 1] === identifier ||
+                split.secondaryOrder[split.secondaryOrder.length - 1] ===
+                  identifier,
+              movable: !split.unlisted.includes(identifier) && !isStatic,
+              column: split.mainOrder.includes(identifier)
+                ? "splitListedLeft"
+                : split.secondaryOrder.includes(identifier)
+                ? "splitListedRight"
+                : "splitUnlisted",
+              manageable: !isStatic,
+            }
+          : {
+              deletable,
+              isFirst: full.order[0] === identifier,
+              isLast: full.order[full.order.length - 1] === identifier,
+              movable: !full.unlisted.includes(identifier) && !isStatic,
+              column: full.order.includes(identifier)
+                ? "fullListed"
+                : "fullUnlisted",
+              manageable: !isStatic,
+            };
+      setPositionData((prevState) => {
+        return { ...prevState, ...data };
+      });
+    }, [
+      layout,
+      identifier,
+      template,
+      split.secondaryOrder,
+      split.mainOrder,
+      split.unlisted,
+      full.order,
+      full.unlisted,
+    ]);
 
-  const urlBase = `/resumes/${id}/section/${identifier}`;
+    const {
+      isFirst,
+      isLast,
+      movable,
+      manageable,
+      column,
+      deletable,
+    } = positionData;
 
-  return (
-    <Wrapper className={className}>
-      <About>
-        {icons[identifier]}
-        {editableTitle ? (
-          <SectionEditableTitle values={editableTitle} title={title} />
-        ) : (
-          <Title>{title}</Title>
-        )}
-        <Purpose>{purpose}</Purpose>
-        <SectionNavigation>
-          {(!isFirst || !isLast) && movable && <Move />}
-          {manageable && (
-            <Management
-              urlBase={urlBase}
-              identifier={identifier}
-              column={column}
-              deletable={deletable}
-            />
+    const urlBase = `/resumes/${id}/section/${identifier}`;
+
+    return (
+      <Wrapper className={className}>
+        <About>
+          {icons[identifier]}
+          {editableTitle ? (
+            <SectionEditableTitle values={editableTitle} title={title} />
+          ) : (
+            <Title>{title}</Title>
           )}
-        </SectionNavigation>
-      </About>
-      <Content noBorder={identifier === "info" && template === "classic"}>
-        {contentForehead}
-        <Children>{children}</Children>
-        {subtitle && addFn && (
-          <Footer>
-            <SuccessButton onClick={() => addFn()}>
-              Add {subtitle}
-            </SuccessButton>
-          </Footer>
-        )}
-      </Content>
-    </Wrapper>
-  );
-};
+          <Purpose>{purpose}</Purpose>
+          <SectionNavigation>
+            {(!isFirst || !isLast) && movable && <Move />}
+            {manageable && (
+              <Management
+                urlBase={urlBase}
+                identifier={identifier}
+                column={column}
+                deletable={deletable}
+              />
+            )}
+          </SectionNavigation>
+        </About>
+        <Content noBorder={identifier === "info" && template === "classic"}>
+          {contentForehead}
+          <Children>{children}</Children>
+          {subtitle && addFn && (
+            <Footer>
+              <SuccessButton onClick={() => addFn()}>
+                Add {subtitle}
+              </SuccessButton>
+            </Footer>
+          )}
+        </Content>
+      </Wrapper>
+    );
+  }
+);
 
 export default Section;

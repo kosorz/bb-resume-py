@@ -29,11 +29,11 @@ const Resume = observer(() => {
   const [mode, setMode] = useState<"edit" | "preview">("edit");
   const windowWidth = useWindowWidth();
 
-  const resumeBubble = useContext(ResumeBubble);
   const [savedScrollPosition, setSavedScrollPosition] = useState({
     x: 0,
     y: 0,
   });
+  const resumeBubble = useContext(ResumeBubble);
   const { setResume } = resumeBubble;
   const isMobile = windowWidth < sizes.tablet;
 

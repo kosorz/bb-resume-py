@@ -28,7 +28,6 @@ const Skills = observer(() => {
     setOpenSubSection,
     updateSubSectionsOrder,
   } = resumeBubble;
-  const { full, split } = resume.meta.content;
   const { id, groups, unlisted, order, ...skillsEditorData } = resume.skills!;
   const [wobble, setWobble] = useState(false);
 
@@ -96,9 +95,6 @@ const Skills = observer(() => {
 
   return (
     <Section
-      key={`section-${full.order.indexOf("skills")}-${split.mainOrder.indexOf(
-        "skills"
-      )}-${split.secondaryOrder.indexOf("skills")}`}
       identifier={"skills"}
       title={"Skills"}
       editableTitle={getFieldPropsMeta(formik, "title")}

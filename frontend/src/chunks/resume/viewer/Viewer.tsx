@@ -2,7 +2,6 @@ import React, { ReactNode } from "react";
 import { Document } from "@react-pdf/renderer";
 import Calm from "./calm/Calm";
 import Classic from "./classic/Classic";
-
 import { ResumeViewer } from "../Resume.typing";
 
 const Viewer = ({ data }: ResumeViewer) => {

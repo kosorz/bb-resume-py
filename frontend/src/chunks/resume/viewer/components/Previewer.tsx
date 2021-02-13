@@ -18,13 +18,13 @@ import {
 } from "react-pdf/dist/esm/entry.webpack";
 
 import Viewer from "../Viewer";
+import Loader from "./Loader";
 
-import theme, { ThemeShape } from "../../../../util/theme";
 import { useWindowHeight, useDebounce } from "../../../../util/hooks";
 import ResumeShape from "../../Resume.typing";
 import { ResumeBubble } from "../../Resume.bubble";
-import Loader from "./Loader";
 import media from "../../../../util/media";
+import theme, { ThemeShape } from "../../../../util/theme";
 
 const PageWrapper = styled.div`
   position: sticky;

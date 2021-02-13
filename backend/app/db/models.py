@@ -23,7 +23,6 @@ class Resume(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
-    deleted = Column(Boolean, default=False)
     meta = Column(JSONB)
 
     owner = relationship("User", back_populates="resumes")

@@ -28,7 +28,6 @@ const Experience = observer(() => {
     setOpenSubSection,
     updateSubSectionsOrder,
   } = resumeBubble;
-  const { full, split } = resume.meta.content;
   const {
     id,
     units,
@@ -111,11 +110,6 @@ const Experience = observer(() => {
 
   return (
     <Section
-      key={`section-${full.order.indexOf(
-        "experience"
-      )}-${split.mainOrder.indexOf(
-        "experience"
-      )}-${split.secondaryOrder.indexOf("experience")}`}
       identifier={"experience"}
       editableTitle={getFieldPropsMeta(formik, "title")}
       subtitle={"experience"}
