@@ -87,7 +87,7 @@ export function saveChangedValues(
     | Partial<SkillsShape>
     | Partial<MetaShape>,
   url: string,
-  updateFn: Function,
+  updateFn?: Function,
   objectWrapperStructure?: string[]
 ): void {
   const data = diff(initialValues, values)
@@ -106,8 +106,8 @@ export function saveChangedValues(
       ? setValueToField(objectWrapperStructure, data)
       : data;
 
-  updateFn(dataToSave);
   axios.patch(url, dataToSave).catch((err) => console.log(err));
+  updateFn && updateFn(dataToSave);
 }
 
 export function sortSkillsGroups(

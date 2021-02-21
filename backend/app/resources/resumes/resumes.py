@@ -128,3 +128,20 @@ def delete_resume_section(
         delete_methods[section],
     )
     return order
+
+
+@router.delete(
+    "/{resume_id}",
+    response_model=int,
+    name="resumes:delete",
+)
+def delete_resume(
+        db: Session = Depends(db),
+        owned_resume: ResumeFull = Depends(get_owned_resume),
+):
+    delete_existing_resource(
+        db,
+        owned_resume.id,
+        crud.delete_resume,
+    )
+    return owned_resume.id

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useMutation } from "react-query";
 
-import Previewer from "../resume/viewer/components/Previewer";
 import Loader from "../../components/Loader";
 import { Title } from "../resume/editor/Editor";
+import Preview, { Document, Name } from "./components/Preview";
 
 import axios from "../../util/axios";
 import ResumeShape from "../resume/Resume.typing";
@@ -41,70 +40,57 @@ const Plus = styled(PlusIcon)`
   fill: ${({ theme }) => theme.main};
 `;
 
-const Preview = styled.div`
-  border-radius: ${({ theme }) => theme.spaceSmall / 2 + "px"};
-  border-width: ${({ theme }) => theme.spaceSmall / 4 + "px"};
-  margin-right: ${({ theme }) => theme.space + "px"};
-  margin-top: ${({ theme }) => theme.space + "px"};
-  height: ${({ theme }) => 1.42 * 7 * theme.spaceBig + "px"};
-  flex-basis: ${({ theme }) => 7 * theme.spaceBig + "px"};
-  background: ${({ theme }) => theme.ivory};
-  box-shadow: ${({ theme }) => theme.cardShadow};
-  transition: ${({ theme }) => theme.cardShadowTransition};
-  border-style: solid;
-  border-color: transparent;
-  cursor: pointer;
-  position: relative;
-
-  &:hover {
-    border-color: ${({ theme }) => theme.activeMain};
-  }
-`;
-
-const AddNew = styled(Preview)`
+const AddNew = styled(Document)`
   &:hover ${Plus} {
     background: ${({ theme }) => theme.lightGreen};
     fill: ${({ theme }) => theme.green};
   }
 `;
 
-const Description = styled.footer`
-  border-bottom-left-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
-  border-bottom-right-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
-  padding: ${({ theme }) => theme.spaceSmall + "px"};
-  height: ${({ theme }) => 1.5 * theme.spaceBig + "px"};
-  border-top: 1px solid ${({ theme }) => theme.gray};
-  background: ${({ theme }) => theme.ivory};
-  color: ${({ theme }) => theme.main};
-  position: absolute;
-  box-sizing: border-box;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-`;
+const Resumes = ({
+  resumes,
+  setResumes,
+}: {
+  resumes: ResumeShape[];
+  setResumes: Function;
+}) => {
+  const addResume = useMutation(() => axios.post(`/resumes/`, { title: "" }), {
+    onSuccess: (res) => {
+      setResumes((prev: ResumeShape[]) => [...prev, res.data]);
+    },
+  });
 
-const Name = styled.p`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  font-weight: bold;
-  margin: 0;
-`;
+  const deleteResume = useMutation((id) => axios.delete(`/resumes/${id}`), {
+    onSuccess: (res) => {
+      setResumes((prev: ResumeShape[]) =>
+        prev.filter((r) => r.id !== res.data)
+      );
+    },
+  });
+
+  return (
+    <Group>
+      {resumes.map((r) => (
+        <Preview
+          deleteFn={deleteResume.mutate}
+          key={r.id + "document preview"}
+          data={r}
+        />
+      ))}
+      <AddNew onClick={() => addResume.mutate()}>
+        <Plus />
+        <Name>New</Name>
+      </AddNew>
+    </Group>
+  );
+};
 
 const Dashboard = () => {
-  const history = useHistory();
   const [resumes, setResumes] = useState<ResumeShape[]>([]);
   const { isLoading, error } = useQuery(["me"], () => {
     return axios.get(`/users/me/`).then((res) => {
       setResumes(res.data.resumes);
     });
-  });
-
-  const addResume = useMutation(() => axios.post(`/resumes/`, { title: "" }), {
-    onSuccess: (res) => {
-      setResumes((prev) => [...prev, res.data]);
-    },
   });
 
   if (isLoading) return <Loader />;
@@ -113,25 +99,7 @@ const Dashboard = () => {
   return (
     <>
       <GroupTitle>Resumes</GroupTitle>
-      <Group>
-        {resumes.map((r) => (
-          <Preview
-            key={r.id + "resume preview"}
-            onClick={() => history.push(`/resume/${r.id}`)}
-          >
-            <Previewer bare={true} data={r} />
-            <Description>
-              <Name>{r.title}</Name>
-            </Description>
-          </Preview>
-        ))}
-        <AddNew onClick={() => addResume.mutate()}>
-          <Plus />
-          <Description>
-            <Name>New</Name>
-          </Description>
-        </AddNew>
-      </Group>
+      <Resumes setResumes={setResumes} resumes={resumes} />
     </>
   );
 };

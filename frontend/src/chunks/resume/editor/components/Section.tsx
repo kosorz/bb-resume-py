@@ -1,11 +1,12 @@
 import React, { ReactNode, useContext, useState, useEffect } from "react";
 import { FieldInputProps, FieldMetaProps } from "formik";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { observer } from "mobx-react-lite";
+import Editable from "react-contenteditable";
 
 import Management from "./Management";
 import Move from "../../../../components/symbols/Move";
-import SectionEditableTitle from "./SectionEditableTitle";
+import ContentEditable from "../../../../components/formik/ContentEditable";
 import SuccessButton from "../../../../components/SuccessButton";
 import Box from "../../../../components/Box";
 import Footer from "../../../../components/BoxFooter";
@@ -60,17 +61,39 @@ const About = styled.article`
   `};
 `;
 
-const Title = styled.h2`
+export const title = css`
   margin-top: ${({ theme }) => theme.space + "px"};
+  margin-bottom: ${({ theme }) => theme.spaceSmall + "px"};
+  font-size: ${({ theme }) => theme.subheadingSize};
   color: ${({ theme }) => theme.main};
   text-align: center;
+`;
+
+const Title = styled.h2`
+  ${title}
+`;
+
+const ContentEditableTitle = styled(Editable)`
+  ${title}
+
+  outline: 0;
+  min-width: 150px;
+  word-break: break-all;
+
+  &:focus {
+    border-bottom: 1px solid;
+  }
+
+  &:empty:not(:focus):before {
+    content: attr(data-ph);
+    pointer-events: none;
+  }
 `;
 
 const Purpose = styled.p`
   text-align: justify;
   color: ${({ theme }) => theme.main};
   margin: 0;
-  line-height: 1.5em;
 
   ${media.phone`
     flex: 100%;
@@ -221,7 +244,12 @@ const Section = observer(
         <About>
           {icons[identifier]}
           {editableTitle ? (
-            <SectionEditableTitle values={editableTitle} title={title} />
+            <ContentEditable
+              Base={ContentEditableTitle}
+              tagName={"h2"}
+              values={editableTitle}
+              placeholder={title}
+            />
           ) : (
             <Title>{title}</Title>
           )}

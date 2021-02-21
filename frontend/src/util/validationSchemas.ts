@@ -26,6 +26,10 @@ export const experienceValidationSchema = yup.object().shape({
   title: yup.string(),
 });
 
+export const previewValidationSchema = yup.object().shape({
+  title: yup.string(),
+});
+
 export const experienceUnitValidationSchema = yup.object().shape({
   title: yup.string(),
   company_name_enabled: yup.boolean().required(),

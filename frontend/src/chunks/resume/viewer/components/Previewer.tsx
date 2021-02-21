@@ -5,6 +5,7 @@ import React, {
   useRef,
   useContext,
   ReactNode,
+  useMemo,
 } from "react";
 import { observer } from "mobx-react-lite";
 import { makeAutoObservable, toJS } from "mobx";
@@ -122,6 +123,7 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
   const debouncedWindowHeight = useDebounce(0, 200);
   const selfRef = useRef<HTMLDivElement>(null);
   let size = useComponentSize(selfRef);
+  const isMount = useRef(true);
 
   useEffect(() => {
     const renderDocument = async (doc: ReactElement) => {
@@ -147,16 +149,20 @@ const PDFViewer = (props: { document: ReactElement; bare: boolean }) => {
         } catch (error) {
           await new Promise((resolve) => setTimeout(resolve, 150));
         }
-      } while (!blob || retryAttempts > 10);
+      } while (!blob || retryAttempts > 10 || !isMount.current);
 
       URL.revokeObjectURL(state.document);
 
-      if (blob) {
+      if (blob && isMount.current) {
         setState((prevState) => ({
           ...prevState,
           document: URL.createObjectURL(blob),
         }));
       }
+
+      return () => {
+        isMount.current = false;
+      };
     };
 
     renderDocument(props.document);
@@ -238,18 +244,26 @@ const Previewer = observer(
     bare,
     template,
     data,
+    onClick,
+    className,
+    children,
+    memoized,
   }: {
     bare: boolean;
     template?: "classic" | "calm";
     data?: ResumeShape;
+    onClick?: () => void;
+    className?: string;
+    children?: ReactNode;
+    memoized?: boolean;
   }) => {
     const resumeBubble = useContext(ResumeBubble);
     const { resume } = resumeBubble;
     makeAutoObservable(toJS(resume));
     const content = data || resume;
 
-    return (
-      <Wrapper>
+    const preview = (
+      <Wrapper className={className} onClick={onClick}>
         <PDFViewer
           bare={bare}
           document={{
@@ -265,8 +279,14 @@ const Previewer = observer(
             },
           }}
         />
+        {children}
       </Wrapper>
     );
+
+    //eslint-disable-next-line
+    const memoizedPreview = useMemo(() => preview, []);
+
+    return memoized ? memoizedPreview : preview;
   }
 );
 

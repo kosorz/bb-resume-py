@@ -31,7 +31,6 @@ const LinksWrapper = styled.div`
 
 export const Link = styled(RouterLink)`
   color: ${({ theme }) => theme.main};
-  font-size: ${({ theme }) => theme.smallFont};
   padding: ${({ theme }) => theme.spaceSmall / 4 + "px"} 0;
 `;
 

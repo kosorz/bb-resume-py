@@ -48,6 +48,7 @@ const Row = styled.article`
     opened: boolean;
     theme: ThemeShape;
   }) => (opened ? -2 * theme.spaceSmall : theme.spaceSmall) + "px"};
+  padding-bottom: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   box-sizing: border-box;
   display: flex;
   flex: 100%;

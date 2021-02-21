@@ -33,6 +33,7 @@ export const Title = styled.h2`
   top: ${({ theme }) => theme.menuHeight + "px"};
   color: ${({ theme }) => theme.main};
   background: ${({ theme }) => theme.background};
+  font-size: ${({ theme }) => theme.headingSize};
   z-index: 2;
   max-width: 100%;
   overflow: hidden;

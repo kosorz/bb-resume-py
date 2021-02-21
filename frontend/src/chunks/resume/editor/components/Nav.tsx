@@ -30,7 +30,6 @@ const Action = styled.div`
     isActive ? theme.main : theme.darkGray};
   font-weight: ${({ isActive }: { isActive: boolean }) =>
     isActive ? "bold" : "normal"};
-  font-size: ${({ theme }) => theme.smallFont};
   flex: 50%;
   flex-direction: column;
   align-items: center;

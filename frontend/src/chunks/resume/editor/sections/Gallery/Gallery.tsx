@@ -226,7 +226,7 @@ const Gallery = observer(() => {
             return pick;
           })
         ) : (
-          <Title active={false}>All sections in use!</Title>
+          <Title active={false}>No more sections available</Title>
         )}
       </AvailableContent>
     </Section>

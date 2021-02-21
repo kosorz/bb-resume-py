@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import theme from "./util/theme";
 import Routes from "./chunks/routing/Routes";
 import Menu from "./chunks/menu/Menu";
+import GlobalStyles, { ResetStyles } from "./GlobalStyles";
 
 const Content = styled.section`
   padding: 0 ${({ theme }) => theme.spaceSmall + "px"};
@@ -30,6 +31,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
+        <ResetStyles />
+        <GlobalStyles />
         <Router>
           <Menu />
           <Content>

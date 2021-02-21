@@ -13,7 +13,6 @@ const GeneralButton = styled.button`
   min-height: ${({ theme }) => 1.5 * theme.spaceBig + "px"};
   padding: 0 ${({ theme }) => theme.spaceBig + "px"};
   font-weight: bold;
-  font-size: ${({ theme }) => theme.biggerFont};
   cursor: pointer;
 
   &:disabled {
@@ -31,7 +30,6 @@ const GeneralButton = styled.button`
       theme.spaceSmall / 1.5 + "px"};
     margin: ${({ theme }: { theme: ThemeShape }) =>
       theme.spaceSmall / 4 + "px"};
-    font-size: ${({ theme }: { theme: ThemeShape }) => theme.mediumFont};
   `};
 `;
 

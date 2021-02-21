@@ -7,7 +7,6 @@ import { capitalize } from "../../util/fns";
 
 const FormikError = styled.span`
   color: ${({ theme }) => theme.red};
-  font-size: ${({ theme }) => theme.smallFont};
 `;
 
 const Error = ({

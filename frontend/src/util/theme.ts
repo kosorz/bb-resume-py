@@ -18,9 +18,9 @@ export type ThemeShape = {
 
   complementary: string;
 
-  smallFont: string;
-  mediumFont: string;
-  biggerFont: string;
+  copySize: string;
+  subheadingSize: string;
+  headingSize: string;
   numericSmallFont: number;
   numericBiggerFont: number;
 
@@ -56,9 +56,9 @@ const theme: ThemeShape = {
 
   complementary: "#6E4F10",
 
-  smallFont: "12px",
-  mediumFont: "13px",
-  biggerFont: "14px",
+  copySize: "14px",
+  subheadingSize: "18px",
+  headingSize: "24px",
   numericSmallFont: 12,
   numericBiggerFont: 14,
 

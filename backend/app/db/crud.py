@@ -67,6 +67,10 @@ def update_resume(db: Session, resume: Resume):
     return finalize_update(db, get_resume(db, resume.id), resume)
 
 
+def delete_resume(db: Session, resume_id: int):
+    return finalize_delete(db, get_resume(db, resume_id), resume_id)
+
+
 def create_user_resume(db: Session, resume: ResumeCreate, user_id: int):
     return finalize_create(
         db, models.Resume(**resume.dict(), owner_id=user_id, meta=meta))

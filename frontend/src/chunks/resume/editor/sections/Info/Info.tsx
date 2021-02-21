@@ -22,7 +22,6 @@ export const PhotoDisclaimer = styled(Footer)`
   color: ${({ theme }) => theme.main};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  font-size: ${({ theme }) => theme.smallFont};
   background: ${({ theme }) => theme.ivory};
 `;
 
