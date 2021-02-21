@@ -83,7 +83,13 @@ const Wrapper = styled.article`
 
 const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
   const resumeBubble = useContext(ResumeBubble);
-  const { resume, updateInfoCroppedPhoto, resetPhotoSettings } = resumeBubble;
+  const {
+    resume,
+    updateInfoCroppedPhoto,
+    resetPhotoSettings,
+    updatePhotoSettings,
+    updateInfoPhoto,
+  } = resumeBubble;
   const { id, info, meta } = resume;
   const { photoSettings } = meta;
   const { photo, cropped_photo, photo_locked } = info;
@@ -116,6 +122,7 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
     {
       onSuccess: (res) => {
         updateInfoCroppedPhoto(res.data);
+        updatePhotoSettings(croppedPixels);
       },
     }
   );
@@ -129,6 +136,7 @@ const InfoPhoto = ({ toggles }: { toggles: ReactNode }) => {
       }),
     {
       onSuccess: (res) => {
+        updateInfoPhoto(res.data);
         resetPhotoSettings();
         setRotation(0);
         setImage(res.data);

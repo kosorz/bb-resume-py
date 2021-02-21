@@ -101,6 +101,9 @@ let initialState: ResumeBubbleShape = {
       rotation: 0,
     };
   },
+  updatePhotoSettings: (settings) => {
+    store.resume.meta.photoSettings = settings;
+  },
   addSectionUpdate: (data, identifier, order) => {
     store.setResume({ [identifier]: data });
     const { content } = store.resume.meta;
@@ -131,6 +134,11 @@ let initialState: ResumeBubbleShape = {
   updateInfoCroppedPhoto: (croppedPhotoId) => {
     if (store.resume.info) {
       store.resume.info.cropped_photo = croppedPhotoId;
+    }
+  },
+  updateInfoPhoto: (photo) => {
+    if (store.resume.info) {
+      store.resume.info.photo = photo;
     }
   },
   updateSkills: (data) => {

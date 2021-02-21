@@ -4,7 +4,10 @@ import SkillsShape from "./editor/sections/Skills/Skills.typing";
 import SkillsGroupShape from "./editor/sections/Skills/SkillsGroup.typing";
 import ExperienceShape from "./editor/sections/Experience/Experience.typing";
 import ExperienceUnitShape from "./editor/sections/Experience/ExperienceUnit.typing";
-import { ContentShape } from "./editor/sections/Meta/Meta.typing";
+import {
+  ContentShape,
+  PhotoSettingsShape,
+} from "./editor/sections/Meta/Meta.typing";
 
 type ResumeBubbleShape = {
   openSubSections: {
@@ -25,6 +28,7 @@ type ResumeBubbleShape = {
   ) => void;
   updateInfo: (data: InfoShape) => void;
   updateInfoCroppedPhoto: (croppedPhotoId: string) => void;
+  updateInfoPhoto: (photo: string) => void;
   updateSkills: (data: SkillsShape) => void;
   updateSkillsGroup: (id: number) => (data: SkillsGroupShape) => void;
   setOpenSubSection: (identifier: "skills" | "experience", id?: number) => void;
@@ -32,6 +36,7 @@ type ResumeBubbleShape = {
   removeSkillsGroup: (id: number) => void;
   updateExperience: (data: ExperienceShape) => void;
   updateExperienceUnit: (id: number) => (data: ExperienceUnitShape) => void;
+  updatePhotoSettings: (settings: PhotoSettingsShape) => void;
   updateContentOrder: (
     layout: "full" | "split",
     order: "unlisted" | "order" | "mainOrder" | "secondaryOrder",
