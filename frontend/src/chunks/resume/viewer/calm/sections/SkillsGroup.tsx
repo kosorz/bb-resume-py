@@ -19,8 +19,10 @@ const SkillsGroup = ({ meta, title, values }: SkillsGroupViewer) => {
   return (
     <View style={styles.skillsGroup} wrap={false}>
       <SubSectionHeadline text={title} fallback={"Title"} meta={meta} />
-      {values.length ? (
-        values.map((v, i) => <Point key={`skill-group-${i}-values`}>{v}</Point>)
+      {values.filter((el) => el !== "").length ? (
+        values.map((v, i) => (
+          <Point key={`skill-group-${i}-values`}>{v.trim()}</Point>
+        ))
       ) : (
         <Point>Lorem ipsum</Point>
       )}

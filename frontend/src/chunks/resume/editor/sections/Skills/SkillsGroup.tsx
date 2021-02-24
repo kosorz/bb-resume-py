@@ -4,9 +4,9 @@ import { observer } from "mobx-react-lite";
 import { useMutation } from "react-query";
 
 import Input from "../../../../../components/formik/Input";
-import Area from "../../../../../components/formik/Area";
 import SubSection from "../../components/SubSection";
 import Form from "../../../../../components/formik/Form";
+import CollectionArea from "../../../../../components/formik/CollectionArea";
 
 import { getFieldPropsMeta, saveChangedValues } from "../../../../../util/fns";
 import { SkillsGroupEditor } from "./SkillsGroup.typing";
@@ -78,9 +78,9 @@ const SkillsGroup = observer(
             placeholder="Enter skills group name"
             withSpace={false}
           />
-          <Area
+          <CollectionArea
             {...getFieldPropsMeta(formik, "values")}
-            placeholder="Communication,problem solving,stress handling"
+            placeholder="Communication, problem solving, stress handling"
             withSpace={false}
           />
         </Form>

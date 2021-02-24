@@ -21,7 +21,6 @@ export type ThemeShape = {
   copySize: string;
   subheadingSize: string;
   headingSize: string;
-  numericSmallFont: number;
   numericBiggerFont: number;
 
   menuHeight: number;
@@ -56,11 +55,10 @@ const theme: ThemeShape = {
 
   complementary: "#6E4F10",
 
-  copySize: "14px",
-  subheadingSize: "18px",
-  headingSize: "24px",
-  numericSmallFont: 12,
-  numericBiggerFont: 14,
+  copySize: "15px",
+  subheadingSize: "20px",
+  headingSize: "26px",
+  numericBiggerFont: 15,
 
   menuHeight: 65,
   navHeight: 90,

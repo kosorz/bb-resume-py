@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Field from "./Field";
 import { ThemeShape } from "../../util/theme";
 
-const FormikArea = styled.textarea`
+export const FormikArea = styled.textarea`
   padding: ${({ theme }) => theme.spaceSmall / 2 + "px"};
   border-radius: ${({ theme }) => theme.spaceSmall / 4 + "px"};
   color: ${({ theme }) => theme.main};
